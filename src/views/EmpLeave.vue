@@ -5,6 +5,7 @@
         <b-col sm="12">
           <div style="position: relative;">
             <h2 align="left">ข้อมูลการลา</h2>
+            <h2>ddddddddddddddddddddddddddddddddddd</h2>
               <div style="position: absolute; top: 50%; right: 0; transform: translate(0, -40%);">
                 <popupLeave />
               </div>
