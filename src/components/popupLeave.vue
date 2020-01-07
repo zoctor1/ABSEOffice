@@ -16,6 +16,7 @@
     <vs-popup  classContent="popup-example"  title="ประวัติการลาของนายเอกชัย หมโมลี" :active.sync="popupLeave" >
       <center><h4>นายเอกชัย หมโมลี</h4></center>
       <center><h5>แผนก : โปรแกรมเมอร์</h5></center>
+      <center><h5>แผนก : โปรแกรมเมอร์</h5></center>
         <div>
               <div style="margin-top:25px">
                 <b-row class="my-1" v-for="type in types" :key="type">
