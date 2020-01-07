@@ -100,6 +100,7 @@ export default {
           if (response.data != "" && response.data != null && response.data != undefined) {
             console.log(response.data)
             this.toURL("Homepage");
+            localStorage.setItem("user", JSON.stringify(response.data));
           } else {
              Swal.fire({
              icon: 'error',
