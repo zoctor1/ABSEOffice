@@ -1,5 +1,5 @@
 <template>
-  <div id="resetPassword" :style="{ backgroundImage: 'url(' + require('@/assets/vacation6.jpg') + ')' }">
+  <div id="userLogin" :style="{ backgroundImage: 'url(' + require('@/assets/vacation6.jpg') + '); background-position: 0% 100%; background-repeat: no-repeat; background-size: auto;' }">
     <div class="card-image">
       <div align="center"><br>
         <img style="margin-top: 120px;" alt="Vue logo" src="../assets/FontLeave2.png" width="360" height="120" /><br>
@@ -51,17 +51,25 @@
 </template>
 
 <script>
+import Vue from "vue";
 import * as authService from '@/services/auth.service';
+import VueSimpleAlert from "vue-simple-alert"; //npm i vue-simple-alert       for import VueSimpleAlert from "vue-simple-alert";
+import Swal from 'sweetalert2/dist/sweetalert2.js' //npm install sweetalert2      for import Swal from 'sweetalert2/dist/sweetalert2.js'
+
+Vue.use(VueSimpleAlert, { reverseButtons: true });
 
 export default {
   name: "Login",
-  components: {},
+  components: {
+    Swal
+  },
   props: {},
   data() {
     return {
       flagShow: 1,
       email: "",
-      pass: ""
+      pass: "",
+      textError : "รหัสผ่านไม่ถูกต้อง",
     }
   },
   computed: {},
@@ -71,15 +79,35 @@ export default {
       this.$router.push("/" + url);
     },
     loginUser: function(){
-      authService.loginUser(this.email,this.pass).then(response => {
-        if (response.data != undefined && response.data != null && response.data != "") {
-          console.log(response.data)
-          this.toURL("Homepage");
-        } else {
-          console.log("Nooo!!")
+      if (this.email == "" && this.pass == "") {
+          Swal.fire({
+            grow: '#app',
+            icon: 'warning',
+              title: 'กรุณากรอก Email และ รหัสผ่าน'
+            })
+      } else if (this.email == "") {
+          Swal.fire({
+            icon: 'warning',
+              title: 'กรุณากรอกอีเมล'
+            })
+      } else if (this.pass == "") {
+          Swal.fire({
+            icon: 'warning',
+              title: 'กรุณากรอกรหัสผ่าน'
+            })
+      } else {
+        authService.loginUser(this.email,this.pass).then(response => {
+          if (response.data != "" && response.data != null && response.data != undefined) {
+            console.log(response.data)
+            this.toURL("Homepage");
+          } else {
+             Swal.fire({
+             icon: 'error',
+             title: this.textError
+            });
+            }
+        });
         }
-        
-      });
     }
   },
   watch: {}
@@ -87,11 +115,18 @@ export default {
 </script>
 
 <style scoped>
-  #resetPassword {
-    height: 100%;
-    background-size: cover;
+  #userLogin {
+    /* width: 100%; */
+    min-height: 100%;
+    /* background-size: cover;
     background-position: 0% 100%;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
+  }
+  body {
+    font-family: 
+    "Open Sans", -apple-system, BlinkMacSystemFont, 
+    "Segoe UI",  Roboto, Oxygen-Sans, Ubuntu, Cantarell, 
+    "Helvetica Neue", Helvetica,  Arial, sans-serif; 
   }
 </style>
