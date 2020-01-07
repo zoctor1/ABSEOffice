@@ -8,6 +8,7 @@
         <b-card v-if="flagShow == 1" bg-variant="light" tag="article" style="max-width: 22rem; margin-top: 80px;" class="mb-2">
           <p style="font-size:150%; margin:12px 0px 12px"> sign in </p>
             <b-col sm="12">
+              <h3>sdddddddddddddddddddddd</h3>
               <p align="left">User ID:</p>
               <b-form-input type="text" placeholder="กรุณาใส่อีเมลหรือชื่อผู้ใช้งาน" v-model="email"></b-form-input>
             </b-col>
