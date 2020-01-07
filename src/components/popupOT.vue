@@ -24,7 +24,7 @@
                   >
                   </datetime>
                   <div class="error" v-if="!$v.form.date.required"><font color="red">*จำเป็น</font></div>
-                  <div class="error" v-else><font color="Success"></font></div>
+                  <div class="error" v-else><font color="Success"><img src="../assets/Success_icon2.png" width="20" height="20" /></font></div>
                 </b-container>
               </div>
 
@@ -41,7 +41,7 @@
                       >
                       </b-form-textarea>
                       <div class="error" v-if="!$v.form.descriptionWork.required"><font color="red">*จำเป็น</font></div>
-                      <div class="error" v-else><font color="Success"></font></div>
+                      <div class="error" v-else><font color="Success"><img src="../assets/Success_icon2.png" width="20" height="20" /></font></div>
                     </b-container>
                 </div>
 
@@ -59,7 +59,7 @@
                             <b-container fluid>
                               <b-form-input :id="`type-${type}`" :type="type" v-model.trim="$v.form.timeStart.$model" style="width:180px;height:37px; cursor: pointer;"> </b-form-input>
                               <div class="error" v-if="!$v.form.timeStart.required"><font color="red">*จำเป็น</font></div>
-                              <div class="error" v-else><font color="Success"></font></div>
+                              <div class="error" v-else><font color="Success"><img src="../assets/Success_icon2.png" width="20" height="20" /></font></div>
                             </b-container>
                           </div> 
                       </b-col>
@@ -70,7 +70,7 @@
                             <b-container fluid>
                               <b-form-input :id="`type-${type}`" :type="type" v-model.trim="$v.form.timeEnd.$model" style="width:180px;height:37px; cursor: pointer;"> </b-form-input>
                               <div class="error" v-if="!$v.form.timeEnd.required"><font color="red">*จำเป็น</font></div>
-                              <div class="error" v-else><font color="Success"></font></div>
+                              <div class="error" v-else><font color="Success"><img src="../assets/Success_icon2.png" width="20" height="20" /></font></div>
                           </b-container>
                           </div> 
                         </div>
@@ -104,7 +104,6 @@
 <script>
 import datetime from 'vuejs-datetimepicker';
 import { required, minLength } from 'vuelidate/lib/validators'
-
 export default {
   name: "popupOT",
   components: {
