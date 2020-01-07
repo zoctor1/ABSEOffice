@@ -9,11 +9,11 @@
           <p style="font-size:150%; margin:12px 0px 12px"> sign in </p>
             <b-col sm="12">
               <p align="left">Email:</p>
-              <b-form-input type="text" placeholder="กรุณากรอกอีเมล" v-model="email">hr@abs.co.th</b-form-input>
+              <b-form-input type="text" placeholder="กรุณากรอกอีเมล" v-model="email"></b-form-input>
             </b-col>
             <b-col sm="12">
               <p style="margin-top:12px;" align="left">Password:</p>
-              <b-form-input  style="margin-bottom:12px" type="password" placeholder="กรุณากรอกรหัสผ่าน" v-model="pass">1234</b-form-input>
+              <b-form-input  style="margin-bottom:12px" type="password" placeholder="กรุณากรอกรหัสผ่าน" v-model="pass"></b-form-input>
             </b-col>
             <b-col sm="12">
                 <b-link @click="flagShow = 2">Forgot your password?</b-link>
