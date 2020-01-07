@@ -8,12 +8,12 @@
         <b-card v-if="flagShow == 1" bg-variant="light" tag="article" style="max-width: 22rem; margin-top: 80px;" class="mb-2">
           <p style="font-size:150%; margin:12px 0px 12px"> sign in </p>
             <b-col sm="12">
-              <p align="left">User ID:</p>
-              <b-form-input type="text" placeholder="กรุณาใส่อีเมลหรือชื่อผู้ใช้งาน" v-model="email"></b-form-input>
+              <p align="left">Email:</p>
+              <b-form-input type="text" placeholder="กรุณากรอกอีเมล" v-model="email">hr@abs.co.th</b-form-input>
             </b-col>
             <b-col sm="12">
               <p style="margin-top:12px;" align="left">Password:</p>
-              <b-form-input  style="margin-bottom:12px" type="password" placeholder="กรุณาใส่รหัสผ่าน" v-model="pass"></b-form-input>
+              <b-form-input  style="margin-bottom:12px" type="password" placeholder="กรุณากรอกรหัสผ่าน" v-model="pass">1234</b-form-input>
             </b-col>
             <b-col sm="12">
                 <b-link @click="flagShow = 2">Forgot your password?</b-link>
@@ -41,7 +41,7 @@
             <b-col sm="12">
               <center><b-button style="margin-top: 10px" @click="flagShow = 1" variant="outline-primary">ตกลง</b-button></center>
                 <b-link @click="flagShow = 1">Return to sign in</b-link>
-            </b-col> 
+            </b-col>
           </b-card>
         </div>
         <br>
@@ -67,9 +67,9 @@ export default {
   data() {
     return {
       flagShow: 1,
-      email: "",
-      pass: "",
-      textError : "รหัสผ่านไม่ถูกต้อง",
+      email: "hr@abs.co.th",
+      pass: "1234",
+      textError: "รหัสผ่านไม่ถูกต้อง",
     }
   },
   computed: {},
@@ -83,7 +83,7 @@ export default {
           Swal.fire({
             grow: '#app',
             icon: 'warning',
-              title: 'กรุณากรอก Email และ รหัสผ่าน'
+              title: 'กรุณากรอกอีเมล และ รหัสผ่าน'
             })
       } else if (this.email == "") {
           Swal.fire({
@@ -96,7 +96,8 @@ export default {
               title: 'กรุณากรอกรหัสผ่าน'
             })
       } else {
-        authService.loginUser(this.email,this.pass).then(response => {
+        authService.loginUser(this.email,this.pass).then(response => { 
+          console.log(response)
           if (response.data != "" && response.data != null && response.data != undefined) {
             console.log(response.data)
             this.toURL("Homepage");
@@ -116,12 +117,12 @@ export default {
 
 <style scoped>
   #userLogin {
-    /* width: 100%; */
+    width: 100%;
     min-height: 100%;
-    /* background-size: cover;
+    background-size: cover;
     background-position: 0% 100%;
     background-position: center;
-    background-repeat: no-repeat; */
+    background-repeat: no-repeat; 
   }
   body {
     font-family: 
