@@ -1,5 +1,6 @@
 <template>
   <calendar
+    id ="calendarMain"
     style="margin-left:0px;margin-top:20px; background: #fbfbfb;"
       :first-day="1"
       :all-events="events"
@@ -47,3 +48,6 @@
         }
     }
 </script>
+
+<style scoped>
+</style>
