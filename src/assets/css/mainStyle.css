@@ -33,4 +33,11 @@ html, body {
   cursor: pointer !important;
 }
 
+#calendarMain #locale {
+  display: none;
+}
+
+#calendarMain label[for="locale"] {
+  display: none;
+}
 /* ========= bootstrap ========= */
