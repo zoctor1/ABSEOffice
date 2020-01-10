@@ -118,6 +118,7 @@ export default {
           {text:'ลาบวช',value:5},
           {text:'ลากิจไม่รับค่าจ้าง',value:6},
         ],
+        options1:[],
         selected1: null,
         dateStart: '',
         dateEnd: '',

@@ -1,5 +1,5 @@
 <template>
-  <div id="userLogin" :style="{ backgroundImage: 'url(' + require('@/assets/vacation6.jpg') + '); background-position: 0% 100%; background-repeat: no-repeat; background-size: auto;' }">
+  <div id="userLogin" class="login" :style="{ backgroundImage: 'url(' + require('@/assets/vacation6.jpg') + ')' }">
     <div class="card-image">
       <div align="center"><br>
         <img style="margin-top: 120px;" alt="Vue logo" src="../assets/FontLeave2.png" width="360" height="120" /><br>
@@ -9,11 +9,11 @@
           <p style="font-size:150%; margin:12px 0px 12px"> sign in </p>
             <b-col sm="12">
               <p align="left">Email:</p>
-              <b-form-input type="text" placeholder="กรุณากรอกอีเมล" v-model="email"></b-form-input>
+              <b-form-input type="text" placeholder="กรุณากรอกอีเมล" v-model="email" @keypress="onEvtEnter"></b-form-input>
             </b-col>
             <b-col sm="12">
               <p style="margin-top:12px;" align="left">Password:</p>
-              <b-form-input  style="margin-bottom:12px" type="password" placeholder="กรุณากรอกรหัสผ่าน" v-model="pass"></b-form-input>
+              <b-form-input  style="margin-bottom:12px" type="password" placeholder="กรุณากรอกรหัสผ่าน" v-model="pass" @keypress="onEvtEnter"></b-form-input>
             </b-col>
             <b-col sm="12">
                 <b-link @click="flagShow = 2">Forgot your password?</b-link>
@@ -36,9 +36,6 @@
               <p align="left">กรอกอีเมลเพื่อรับรหัสในการเข้าสู่ระบบการเปลี่ยนรหัสต่อไป </p><b-form-input type="Username" placeholder="กรอก Email"></b-form-input>
             </b-col>
             <b-col sm="12">
-              <p align="left" style="margin-top: 10px" >รหัสยืนยันตัวตน 6 หลัก </p><b-form-input type="password" placeholder="กรอกรหัสผ่าน"></b-form-input>
-            </b-col>
-            <b-col sm="12">
               <center><b-button style="margin-top: 10px" @click="flagShow = 1" variant="outline-primary">ตกลง</b-button></center>
                 <b-link @click="flagShow = 1">Return to sign in</b-link>
             </b-col>
@@ -53,15 +50,19 @@
 <script>
 import Vue from "vue";
 import * as authService from '@/services/auth.service';
-import VueSimpleAlert from "vue-simple-alert"; //npm i vue-simple-alert       for import VueSimpleAlert from "vue-simple-alert";
-import Swal from 'sweetalert2/dist/sweetalert2.js' //npm install sweetalert2      for import Swal from 'sweetalert2/dist/sweetalert2.js'
 
-Vue.use(VueSimpleAlert, { reverseButtons: true });
+import VueSweetalert2 from 'vue-sweetalert2';
+// import Swal from 'sweetalert2/dist/sweetalert2.js' //npm install sweetalert2      for import Swal from 'sweetalert2/dist/sweetalert2.js'
+
+// import VueSimpleAlert from "vue-simple-alert"; //npm i vue-simple-alert       for import VueSimpleAlert from "vue-simple-alert";
+// Vue.use(VueSimpleAlert, { reverseButtons: true });
+import 'sweetalert2/dist/sweetalert2.min.css'
+Vue.use(VueSweetalert2);
 
 export default {
   name: "Login",
   components: {
-    Swal
+    // Swal
   },
   props: {},
   data() {
@@ -75,39 +76,48 @@ export default {
   computed: {},
   mounted() {},
   methods: {
+    onEvtEnter: function(evt) {
+      if (evt.keyCode == 13) {
+        // console.log(evt)
+        this.loginUser();
+      }
+    },
     toURL: function(url) {
       this.$router.push("/" + url);
     },
     loginUser: function(){
       if (this.email == "" && this.pass == "") {
-          Swal.fire({
-            grow: '#app',
+          this.$swal.fire({
+            heightAuto: false,
             icon: 'warning',
-              title: 'กรุณากรอกอีเมล และ รหัสผ่าน'
-            })
+            title: 'กรุณากรอกอีเมล และ รหัสผ่าน'
+          })
       } else if (this.email == "") {
-          Swal.fire({
+          this.$swal.fire({
+            heightAuto: false,
             icon: 'warning',
-              title: 'กรุณากรอกอีเมล'
-            })
+            title: 'กรุณากรอกอีเมล'
+          })
       } else if (this.pass == "") {
-          Swal.fire({
+          this.$swal.fire({
+            heightAuto: false,
             icon: 'warning',
-              title: 'กรุณากรอกรหัสผ่าน'
-            })
+            title: 'กรุณากรอกรหัสผ่าน'
+          })
       } else {
-        authService.loginUser(this.email,this.pass).then(response => { 
+        authService.loginUser( encodeURI(this.email), encodeURI(this.pass)).then(response => { 
           console.log(response)
           if (response.data != "" && response.data != null && response.data != undefined) {
             console.log(response.data)
             this.toURL("Homepage");
             localStorage.setItem("user", JSON.stringify(response.data));
           } else {
-             Swal.fire({
-             icon: 'error',
-             title: this.textError
+            this.$swal.fire({
+              heightAuto: false,
+              icon: 'error',
+              title: this.textError
             });
-            }
+          }
         });
         }
     }
@@ -125,6 +135,10 @@ export default {
     background-position: center;
     background-repeat: no-repeat; 
   }
+  /* 
+  background-position: 0% 100%; background-repeat: no-repeat; background-size: auto; 
+  */
+
   body {
     font-family: 
     "Open Sans", -apple-system, BlinkMacSystemFont, 
