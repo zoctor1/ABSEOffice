@@ -34,15 +34,28 @@
       <vs-spacer></vs-spacer>
 
       <div class="dropdown">
-        <div style="cursor: pointer; margin:0px 20px 0px 20px;" class="dropbtn"><img src="../assets/user.png" width="40" height="40"></div>
-          <div class="dropdown-content">
-          <a href="#">ข้อมูลส่วนตัว</a>
-          <a href="#">Link 2</a>
-          </div>
+        <div style="cursor: pointer; margin:0px 20px 0px 20px;" class="dropbtn">
+          <img src="../assets/user.png" width="40" height="40">
+        </div>
+        <div class="dropdown-content">
+          <a href="#" v-b-modal.modal-center>ข้อมูลส่วนตัว
+            <b-modal id="modal-center" :hide-footer="true" centered >
+              <template v-slot:modal-header="{ close }">
+                <label style="font-size: 18px;" ><img src="../assets/user.png" style="margin-right:7px; width: 30px; height: 30px;"  class="userIcon">ข้อมูลส่วนตัว</label>
+              </template>
+              <p class="my-4">ชื่อ :</p>
+              <p class="my-4">แผนก :</p>
+              <p class="my-4">ตำแหน่ง :</p>
+              <p class="my-4">E-mail :</p>
+              <p class="my-4">เบอร์ติดต่อ :</p>
+              <center><b-button v-b-modal.modal-footer-sm>แก้ไขข้อมูล</b-button></center>
+            </b-modal>
+          </a>
+        </div>
       </div>
         <!-- <img style="cursor: pointer; margin:0px 20px 0px 10px;" @click="toUrl('Main')" alt="Vue logo" src="../assets/user.png" width="40" height="40" /> -->
     
-      <vs-button  @click="toUrl('Login')" style="margin-right:25px;" color="danger" type="gradient" > 
+      <vs-button @click="toUrl('Login')" style="margin-right:25px;" color="danger" type="gradient" > 
         <font-awesome-icon icon="sign-out-alt" style="margin-right:8px;" />
         ออกจากระบบ 
       </vs-button>
@@ -83,6 +96,8 @@ export default {
 </script>
 
 <style scoped>
+
+
 .dropbtn {
   background-color: transparent;
 }

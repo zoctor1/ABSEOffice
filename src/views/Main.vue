@@ -1,10 +1,10 @@
 <template>
-  <div id="Main">
-    <b-row >
-      <b-col lg="9" sm="4" xs="12" >
+  <div id="Main" style="background:#f9f9f9;">
+    <b-row style="width: 100%;">
+      <b-col lg="9" sm="4" xs="12">
         <calendar />
       </b-col>
-      <b-col w="3" lg="3" sm="4" xs="12" style="background: #f9f9f9;">
+      <b-col lg="3" sm="4" xs="12" style="background: #f9f9f9; margin: 0px 0px 0px 0px; padding: 0 10px 0 10px;">
         <tab />
       </b-col>
     </b-row>

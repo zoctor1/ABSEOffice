@@ -1,7 +1,7 @@
 <template>
   <calendar
     id ="calendarMain"
-    style="margin-left:0px;margin-top:20px; background: #fbfbfb;"
+    style="margin: 20px -10px 10px 10px; background: #f8f8f8;"
       :first-day="1"
       :all-events="events"
       :canAddEvent="true"
@@ -49,6 +49,9 @@
     }
 </script>
 
-<style scoped>
+<style>
+    #calendarMain .week-number {
+        display: none;
+    }
 
 </style>
