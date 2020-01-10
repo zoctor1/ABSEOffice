@@ -49,8 +49,9 @@
     }
 </script>
 
-<style scoped>
+<style>
     #calendarMain .week-number {
         display: none;
     }
+
 </style>
