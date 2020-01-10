@@ -45,8 +45,8 @@
                     <b-form-select
                       
                       label="เหตุผลการลา"
-                      v-model="selected1" 
-                      :options="options1" 
+                      v-model="selected1"
+                      :options="options1"
                       class="mt-3"
                       style="width:235px;height:37px; margin-bottom:8px; cursor: pointer;"
                     >
@@ -118,7 +118,7 @@ export default {
           { text: 'ลาเต็มวัน', value: 3 }
         ],
         options1:[
-          {text:'--กรุณาเลือกสาเหตุการลา--',value: null},
+          {text:'--กรุณาเลือกสาเหตุการลา--',value: null , disabled: true},
           {text:'ลากิจ',value:1},
           {text:'ลาป่วย',value:2},
           {text:'ลาพักร้อน',value:3},
