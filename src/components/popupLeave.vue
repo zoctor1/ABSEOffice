@@ -24,7 +24,7 @@
                   <p>ขอลาในวันที่ :</p>
                   <datetime v-model.trim="$v.form.valDate1.$model" format="DD/MM/YYYY H:i" style="width:250px;height:37px;cursor: pointer;"></datetime>
                   <div class="error" v-if="!$v.form.valDate1.required"><font color="red">*จำเป็น</font></div>
-                  <div class="error" v-else><font color="Success"><img src="../assets/Success_icon2.png" width="20" height="20" /></font></div>
+                  <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                 </div>
               </b-col>
               <b-col>
@@ -32,7 +32,7 @@
                   <p>ถึงวันที่(กรณีลามากกว่า 1 วัน) :</p>
                   <datetime v-model.trim="$v.form.valDate2.$model" style="width:250px;height:37px;cursor: pointer;" format="DD/MM/YYYY H:i"></datetime>
                   <div class="error" v-if="!$v.form.valDate2.required"><font color="red">*จำเป็น</font></div>
-                  <div class="error" v-else><font color="Success"><img src="../assets/Success_icon2.png" width="20" height="20" /></font></div>
+                  <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                 </div>
               </b-col>
             </b-row>
@@ -40,20 +40,20 @@
           <div class="con-select-example">
             <b-row>
               <b-col>
-                <!-- <div class="form-group" :class="{ 'form-group--error': $v.form.leaveReason.$error }"> -->
+                <div class="form-group" :class="{ 'form-group--error': $v.form.leaveReason.$error }">
                   <p style="margin-bottom:-10px">เหตุผลการลา :</p>
-                    <b-form-select 
+                    <b-form-select
+                      v-model.trim="$v.form.leaveReason.$model"
                       label="เหตุผลการลา"
                       v-model="selected1" 
                       :options="options1" 
-                      size="sm" 
-                      class="mt-3" 
+                      class="mt-3"
                       style="width:235px;height:37px; margin-bottom:8px; cursor: pointer;"
                     >
                     </b-form-select> 
-                    <!-- <div class="error" v-if="!$v.form.leaveReason.required">Require</div>
-                    <div class="error" v-else>Success</div>
-                </div>  -->
+                    <div class="error" v-if="!$v.form.leaveReason.required"><font color="red">*จำเป็น</font></div>
+                    <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
+                </div> 
               </b-col>
               <b-col>
                 <!-- <div class="form-group" :class="{ 'form-group--error': $v.form.leaveType.$error }"> -->
@@ -69,18 +69,6 @@
               </b-col>            
             </b-row>
           </div>
-          <div>
-            <!-- <div class="form-group" :class="{ 'form-group--error': $v.form.descriptionWork.$error }">
-              <p>รายะเอียดการลา :</p>
-                <b-form-textarea
-                  v-model.trim="$v.form.descriptionWork.$model"
-                  style="width:340px; padding:1px"
-                  placeholder="กรอกรายละเอียดการลา"
-                >
-                </b-form-textarea>
-                <div class="error" v-if="!$v.form.descriptionWork.required"><font color="red">*จำเป็น</font></div>
-                <div class="error" v-else><font color="Success"></font></div>
-            </div> -->
           <div style="margin-top:10px" class="form-group" :class="{ 'form-group--error': $v.form.description.$error }">
             <p>รายะเอียดการลา</p>
             <b-form-textarea
@@ -92,8 +80,7 @@
               >
             </b-form-textarea>
             <div class="error" v-if="!$v.form.description.required"><font color="red">*จำเป็น</font></div>
-            <div class="error" v-else><font color="Success"><img src="../assets/Success_icon2.png" width="20" height="20" /></font></div>
-          </div>
+            <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
           </div>
         </div>
         <div style="margin-top:25px">
@@ -190,7 +177,7 @@ export default {
 };
 </script>
 
-<style >
+<style>
   input[type="date"]::-webkit-inner-spin-button {
       display: none;
       -webkit-appearance: none;
