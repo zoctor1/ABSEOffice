@@ -87,7 +87,7 @@
                   </center>
                 </b-col>
               </div>
-      
+      </vs-popup>
   </div>
 </template>
 
@@ -96,14 +96,11 @@ import * as mainJs from '@/assets/js/mainJS.js';
 import * as authService from '@/services/auth.service';
 import datetime from 'vuejs-datetimepicker';
 import { required, minLength } from 'vuelidate/lib/validators'
-import VueSimpleAlert from "vue-simple-alert"; //npm i vue-simple-alert       for import VueSimpleAlert from "vue-simple-alert";
-import Swal from 'sweetalert2/dist/sweetalert2.js' //npm install sweetalert2      for import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 export default {
   name: "popupLeave",
   components: {
-    datetime,
-    Swal
+    datetime
   },
   props: {},
   data() {
@@ -121,7 +118,6 @@ export default {
           {text:'ลาบวช',value:5},
           {text:'ลากิจไม่รับค่าจ้าง',value:6},
         ],
-        options1:[],
         selected1: null,
         dateStart: '',
         dateEnd: '',
@@ -157,13 +153,13 @@ export default {
     //   });
     // },
     insertData:function() {
-      if (this.selected1 == "" && this.selected == "" && this.$v.form.valDate1.$model == "" && this.$v.form.valDate2.$model == "" && this.$v.form.description.$model == "") {
-          Swal.fire({
-            grow: '#app',
-            icon: 'warning',
-              title: 'กรุณากรอกอีเมล และ รหัสผ่าน'
-            })
-      }
+      // if (this.selected1 == "" && this.selected == "" && this.$v.form.valDate1.$model == "" && this.$v.form.valDate2.$model == "" && this.$v.form.description.$model == "") {
+      //     Swal.fire({
+      //       grow: '#app',
+      //       icon: 'warning',
+      //         title: 'กรุณากรอกอีเมล และ รหัสผ่าน'
+      //       })
+      // }
       // } else if (this.email == "") {
       //     Swal.fire({
       //       icon: 'warning',
@@ -175,7 +171,7 @@ export default {
       //         title: 'กรุณากรอกรหัสผ่าน'
       //       })
       // }
-      else{
+      // else{
         var user = JSON.parse(localStorage.getItem("user"));
         var obj = {};
           obj["emp_id"] = user.uuid;
@@ -196,19 +192,20 @@ export default {
           // obj["cancel_date"] = null;
           // obj["cancel_remark"] = null;
         console.log(obj);
-        authService.insertData(obj).then(respone => {
-          if (response.data != "" && response.data != null && response.data != undefined) {
-            console.log(response.data)
-            this.toURL("Homepage");
-          } else {
-              Swal.fire({
-                icon: 'error',
-                title: this.textError
-              });
-            }
-        });
-        }
-      } 
+        authService.insertData(obj)
+        // .then(respone => {
+        //   if (response.data != "" && response.data != null && response.data != undefined) {
+        //     console.log(response.data)
+        //     this.toURL("Homepage");
+        //   } else {
+        //       Swal.fire({
+        //         icon: 'error',
+        //         title: this.textError
+        //       });
+        //     }
+        // });
+        // }
+       } 
   },
   watch: {},
   validations: {
