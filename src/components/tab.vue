@@ -131,9 +131,7 @@ export default {
           })
       }
   },
-  mounted() {
-    // this.totalRows = this.items.length
-  },
+  mounted() {},
   methods: {
       info(item, index, button) {
         this.infoModal.title = `Row index: ${index}`
@@ -166,13 +164,4 @@ export default {
   .media {
     max-width: 99%
   }
-
-  /* @media (min-width: 576px) {
-    .col-sm-12 {
-      -ms-flex: 0 0 100%;
-      -webkit-box-flex: 0;
-      flex: 0 0 100%;
-      max-width: 99%;
-    }
-  } */
 </style>

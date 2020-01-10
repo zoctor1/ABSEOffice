@@ -41,7 +41,6 @@
             <div>
               <b-table
                 :busy="isBusy" 
-                striped hover :items="items"
                 :fields="fields"
                 :filter="filter"
                 :current-page="currentPage"
@@ -49,7 +48,6 @@
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :sort-direction="sortDirection"
-                @filtered="onFiltered" 
               >
               <!-- :busy="isBusy" is reload variable  -->
               <template v-slot:table-busy>
@@ -96,23 +94,6 @@ export default {
   props: {},
   data() {
     return {
-          items: [ 
-            { no: 1, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 2, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 3, reason: 'ลาป่วย', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 4, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 5, reason: 'ลาบวช', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 6, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 7, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 8, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 9, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 10, reason: 'ลาป่วย', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 11, reason: 'ลาป่วย', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 12, reason: 'ลาป่วย', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 13, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 14, reason: 'ลาบวช', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 15, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-          ],
           fields: [
             { key: 'no', label: 'ลำดับ', class: 'text-center' },
             { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center' },
@@ -157,21 +138,16 @@ export default {
     authService.getLeaveByUser({}).then(response => {
       console.log(response.data)
     });
-    this.totalRows = this.items.length
   },
   methods: {
-    info(item, index, button) {
+    info(index, button) {
       this.infoModal.title = `Row index: ${index}`
-      this.infoModal.content = JSON.stringify(item, null, 2)
+      this.infoModal.content = JSON.stringify(null, 2)
       this.$root.$emit('bv::show::modal', this.infoModal.id, button)
     },
     resetInfoModal() {
       this.infoModal.title = ''
       this.infoModal.content = ''
-    },
-    onFiltered(filteredItems) {
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
     },
     toggleBusy() {
       this.isBusy = !this.isBusy
