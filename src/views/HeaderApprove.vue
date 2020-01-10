@@ -131,18 +131,17 @@ export default {
       }
   },
   mounted() {
+    this.totalRows = this.items.length
     authService.getDataHeader({}).then(response => {
       console.log(response.data)
 
-    for (var i = 0; i < response.data.length; i++) {
-      response.data[i].no = i+1;
-      response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-    }
-    console.log(response.data)
+      for (var i = 0; i < response.data.length; i++) {
+        response.data[i].no = i+1;
+        response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+      }
+      console.log(response.data)
       this.items = response.data;
-
     });
-    this.totalRows = this.items.length
   },
   methods: {
       info(item, index, button) {
