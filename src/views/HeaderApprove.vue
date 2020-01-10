@@ -131,7 +131,6 @@ export default {
       }
   },
   mounted() {
-    this.totalRows = this.items.length
     authService.getDataHeader({}).then(response => {
       console.log(response.data)
 
@@ -141,6 +140,7 @@ export default {
       }
       console.log(response.data)
       this.items = response.data;
+      this.totalRows = this.items.length
     });
   },
   methods: {
