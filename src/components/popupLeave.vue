@@ -113,11 +113,12 @@ export default {
   data() {
     return {
         options: [
-            { text: 'ลาครึ่งเช้า', value: 1 },
-            { text: 'ลาครึ่งบ่าย', value: 2 },
-            { text: 'ลาเต็มวัน', value: 3 }
+          { text: 'ลาครึ่งเช้า', value: 1 },
+          { text: 'ลาครึ่งบ่าย', value: 2 },
+          { text: 'ลาเต็มวัน', value: 3 }
         ],
         options1:[
+          {text:'--กรุณาเลือกสาเหตุการลา--',value: null},
           {text:'ลากิจ',value:1},
           {text:'ลาป่วย',value:2},
           {text:'ลาพักร้อน',value:3},
@@ -137,6 +138,8 @@ export default {
           'date',
         ],
         selected: 3,
+        textError: "บันทึกข้อมูลไม่สำเร็จ",
+        textSuccess: "บันทึกข้อมูลสำเร็จ",
         form: {
           description: '',
           valDate1: '',
@@ -159,13 +162,16 @@ export default {
     //     });
     //   });
     // },
+    // reloadPage(){
+    //   window.location.reload();
+    // },
     insertData:function() {
-      // if (this.selected1 == "" && this.selected == "" && this.$v.form.valDate1.$model == "" && this.$v.form.valDate2.$model == "" && this.$v.form.description.$model == "") {
-      //     Swal.fire({
-      //       grow: '#app',
+      // if (this.$v.form.valDate1.$model == null && this.$v.form.valDate2.$model == null && this.$v.form.description.$model == null) {
+      //     this.$swal.fire({
+      //       heightAuto: false,
       //       icon: 'warning',
-      //         title: 'กรุณากรอกอีเมล และ รหัสผ่าน'
-      //       })
+      //       title: 'กรุณากรอกอีเมล และ รหัสผ่าน'
+      //     })
       // }
       // } else if (this.email == "") {
       //     Swal.fire({
@@ -182,7 +188,6 @@ export default {
         var user = JSON.parse(localStorage.getItem("user"));
         var obj = {};
           obj["emp_id"] = user.uuid;
-          // obj["emp_leave_id"] = user.emp_leave_id + 1;
           obj["leave_date"] = mainJs.setDateToServer(new Date().toLocaleString());
           // obj["first_name"] = user.first_name;
           // obj["last_name"] = user.last_name;
@@ -206,15 +211,19 @@ export default {
         });
         // .then(respone => {
         //   if (response.data != "" && response.data != null && response.data != undefined) {
-        //     console.log(response.data)
-        //     this.toURL("Homepage");
+        //     this.$swal.fire({
+        //       icon: 'error',
+        //       title: this.textSuccess
+        //     });
+        //     this.reloadPage();
         //   } else {
-        //       Swal.fire({
+        //       this.$swal.fire({
         //         icon: 'error',
         //         title: this.textError
         //       });
         //     }
         // });
+          // }
         // }
       } 
   },
