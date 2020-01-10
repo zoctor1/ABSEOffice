@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-left:-23px; background-color:#f8f8f8">
+  <div style="background-color:#f8f8f8">
     <b-col sm="12">
       <div style="position: relative;">
         <b-card style="margin-top:20px;">
@@ -132,7 +132,7 @@ export default {
       }
   },
   mounted() {
-    this.totalRows = this.items.length
+    // this.totalRows = this.items.length
   },
   methods: {
       info(item, index, button) {
@@ -155,11 +155,24 @@ export default {
 
 <style scoped>
   .backcolor {
-  background-color:#f8f8f8
-}
+    background-color:#f8f8f8
+  }
 
   input[type="date"]::-webkit-inner-spin-button {
-      display: none;
-      -webkit-appearance: none;
+    display: none;
+    -webkit-appearance: none;
   }
-</style>>
+
+  .media {
+    max-width: 99%
+  }
+
+  /* @media (min-width: 576px) {
+    .col-sm-12 {
+      -ms-flex: 0 0 100%;
+      -webkit-box-flex: 0;
+      flex: 0 0 100%;
+      max-width: 99%;
+    }
+  } */
+</style>
