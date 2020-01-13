@@ -151,7 +151,6 @@ export default {
       }
   },
   mounted() {
-
     authService.getEmployee({}).then(response => {
       console.log(response.data)
       for (var i = 0; i < response.data.length; i++) {
