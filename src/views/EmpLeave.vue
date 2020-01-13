@@ -33,7 +33,7 @@
                 </b-button>
               </b-input-group-append>
             </b-input-group>
-              <div style="cursor: pointer; margin-left:10px" @click="toggleBusy">
+              <div style="cursor: pointer; margin-left:10px" @click="getDataUserRefresh()">
                 <img src="../assets/refresh.png" width="33" height="33">
               </div>
           </b-nav-form>
@@ -137,11 +137,24 @@ export default {
     }
   },
   mounted() {
-    authService.getLeaveByUser({}).then(response => {
-      console.log(response.data)
-    });
+    this.getDataUserRefresh();
   },
   methods: {
+    getDataUserRefresh: function(){
+      this.isBusy = true;
+      authService.getLeaveByUser({}).then(response => {
+      console.log(response.data)
+      if (response.data != null && response.data.length > 0) {
+        this.isBusy = false;
+        console.log(response.data)
+          this.items = response.data;
+          this.totalRows = this.items.length
+      }
+        else {
+          this.isBusy = false;
+        }
+    });
+    },
     info(index, button) {
       this.infoModal.title = `Row index: ${index}`
       this.infoModal.content = JSON.stringify(null, 2)

@@ -28,7 +28,7 @@
                   >
                     Clear
                   </b-button>
-                  <div style="cursor: pointer; margin-left:10px" @click="toggleBusy">
+                  <div style="cursor: pointer; margin-left:10px" @click="getHeaderApprove()">
                     <img src="../assets/refresh.png" width="33" height="33">
                   </div>
                 </b-input-group-append>
@@ -128,18 +128,27 @@ export default {
     }
   },
   mounted() {
-    authService.getDataHeader({}).then(response => {
-      console.log(response.data)
-      for (var i = 0; i < response.data.length; i++) {
-        response.data[i].no = i+1;
-        response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-      }
-      console.log(response.data)
-      this.items = response.data;
-      this.totalRows = this.items.length
-    });
+    this.getHeaderApprove();
   },
   methods: {
+    getHeaderApprove: function() {
+      this.isBusy = true;
+      authService.getDataHeader({}).then(response => {
+        console.log(response.data)
+        if (response.data != null && response.data.length > 0) {
+          for (var i = 0; i < response.data.length; i++) {
+            response.data[i].no = i+1;
+            response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+          }
+          console.log(response.data)
+          this.items = response.data;
+          this.totalRows = this.items.length
+          this.isBusy = false;
+        } else {
+          this.isBusy = false;
+        }
+      });
+    },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`
       this.infoModal.content = JSON.stringify(item, null, 2)
@@ -152,9 +161,6 @@ export default {
     onFiltered(filteredItems) {
       this.totalRows = filteredItems.length
       this.currentPage = 1
-    },
-    toggleBusy() {
-      this.isBusy = !this.isBusy
     }
   },
   watch: {}
@@ -163,7 +169,7 @@ export default {
 
 <style scoped>
   #parent2 {
-    position: Sticky ;
+    position: Sticky;
     top: 8%;
     left: 60%;
   }
