@@ -27,9 +27,7 @@ export default {
   },
   props: {},
   data() {
-    return {
-      
-    }
+    return {}
   },
   computed: {},
   mounted() {},
@@ -37,9 +35,9 @@ export default {
   watch: {}
 }
 </script>
-<style>
-html, body {
-  height: 100%;
-}
 
+<style>
+  html, body {
+    height: 100%;
+  }
 </style>

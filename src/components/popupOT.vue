@@ -158,11 +158,11 @@ export default {
 </script>
 
 <style>
-#sizePopupOT .con-vs-popup .vs-popup {
-  width: 35%;
-  height: 83%;
-}
-#sizePopupOT .vs-popup--content {
+  #sizePopupOT .con-vs-popup .vs-popup {
+    width: 35%;
+    height: 83%;
+  }
+  #sizePopupOT .vs-popup--content {
     overflow: hidden !important;
   }
 </style>

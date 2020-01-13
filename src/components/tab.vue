@@ -78,7 +78,6 @@
             </b-tr>
           </b-thead>
       </b-table-simple>
-   
     </b-col>
   </div>
 </template>
@@ -96,57 +95,57 @@ export default {
     popupOT
   },
   data() {
-        return {
-          value1:'',
-          value2:'',
-          popupLeave:false,
-          popupActivo3:false,
-          popupOT:false,
-          popupActivo4:false,
-          filter: null,
-          filterOn: [],
-          select1:3,
-          selected: null,
-          selected2: null,
-          options1:[
-            {text: '--- กรุณาเลือกเหตุผลในการลา ---',value: null},
-            {text:'ลากิจ',value:0},
-            {text:'ลาป่วย',value:1},
-            {text:'ลาพักร้อน',value:2},
-            {text:'ลาคลอด',value:3},
-            {text:'ลาบวช',value:4},
-            {text:'ลากิจไม่รับค่าจ้าง',value:5},
-          ],
-          types: [
-              'date',
-          ]
-        }
-    },
+    return {
+      value1:'',
+      value2:'',
+      popupLeave:false,
+      popupActivo3:false,
+      popupOT:false,
+      popupActivo4:false,
+      filter: null,
+      filterOn: [],
+      select1:3,
+      selected: null,
+      selected2: null,
+      options1:[
+        {text: '--- กรุณาเลือกเหตุผลในการลา ---',value: null},
+        {text:'ลากิจ',value:0},
+        {text:'ลาป่วย',value:1},
+        {text:'ลาพักร้อน',value:2},
+        {text:'ลาคลอด',value:3},
+        {text:'ลาบวช',value:4},
+        {text:'ลากิจไม่รับค่าจ้าง',value:5},
+      ],
+      types: [
+          'date',
+      ]
+    }
+  },
   computed: {
-      sortOptions() {
-        return this.fields
-          .filter(f => f.sortable)
-          .map(f => {
-            return { text: f.label, value: f.key }
-          })
-      }
+    sortOptions() {
+      return this.fields
+        .filter(f => f.sortable)
+        .map(f => {
+          return { text: f.label, value: f.key }
+        })
+    }
   },
   mounted() {},
   methods: {
-      info(item, index, button) {
-        this.infoModal.title = `Row index: ${index}`
-        this.infoModal.content = JSON.stringify(item, null, 2)
-        this.$root.$emit('bv::show::modal', this.infoModal.id, button)
-      },
-      resetInfoModal() {
-        this.infoModal.title = ''
-        this.infoModal.content = ''
-      },
-      onFiltered(filteredItems) {
-        this.totalRows = filteredItems.length
-        this.currentPage = 1
-      }
+    info(item, index, button) {
+      this.infoModal.title = `Row index: ${index}`
+      this.infoModal.content = JSON.stringify(item, null, 2)
+      this.$root.$emit('bv::show::modal', this.infoModal.id, button)
     },
+    resetInfoModal() {
+      this.infoModal.title = ''
+      this.infoModal.content = ''
+    },
+    onFiltered(filteredItems) {
+      this.totalRows = filteredItems.length
+      this.currentPage = 1
+    }
+  },
   watch: {}
 }
 </script>

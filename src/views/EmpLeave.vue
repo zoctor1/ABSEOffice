@@ -96,45 +96,45 @@ export default {
   props: {},
   data() {
     return {
-          fields: [
-            { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
-            { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
-            { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center' },
-            { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-            { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-            { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
-            { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
-            { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-            { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
-          ],
-          sortDesc: false,
-          isBusy: false,
-          options1:[],
-          totalRows:1,
-          currentPage: 1,
-          perPage: 10,
-          pageOptions: [10, 15],
-          filter: null,
-          filterOn: [],
-          sortBy: '',
-          sortDesc: false,
-          sortDirection: 'asc',
-          name: " ",
-          val1: " ",
-          val2: " "
-        }
+      fields: [
+        { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
+        { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center' },
+        { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
+        { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
+        { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+        { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+        { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
+      ],
+      sortDesc: false,
+      isBusy: false,
+      options1:[],
+      totalRows:1,
+      currentPage: 1,
+      perPage: 10,
+      pageOptions: [10, 15],
+      filter: null,
+      filterOn: [],
+      sortBy: '',
+      sortDesc: false,
+      sortDirection: 'asc',
+      name: " ",
+      val1: " ",
+      val2: " "
+    }
   },
   computed: {
-      sortOptions() {
-        return this.fields
-          .filter(f => f.sortable)
-          .map(f => {
-            return { text: f.label, value: f.key }
-          })
-      },
-      state() {
-        return this.name.length >= 4 ? true : false
-      }
+    sortOptions() {
+      return this.fields
+        .filter(f => f.sortable)
+        .map(f => {
+          return { text: f.label, value: f.key }
+        })
+    },
+    state() {
+      return this.name.length >= 4 ? true : false
+    }
   },
   mounted() {
     authService.getLeaveByUser({}).then(response => {
@@ -161,17 +161,17 @@ export default {
 
 <style scoped>
   input[type="date"]::-webkit-inner-spin-button {
-      display: none;
-      -webkit-appearance: none;
+    display: none;
+    -webkit-appearance: none;
   }
-  
+
   .popup-example {
     max-width: 100%;
     height: 100%;
   }
 
   #parent2 {
-    position: Sticky ;
+    position: Sticky;
     top: 8%;
     left: 60%;
   }

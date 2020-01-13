@@ -112,41 +112,41 @@ export default {
   props: {},
   data() {
     return {
-        options: [
-          { text: 'ลาครึ่งเช้า', value: 1 },
-          { text: 'ลาครึ่งบ่าย', value: 2 },
-          { text: 'ลาเต็มวัน', value: 3 }
-        ],
-        options1:[
-          {text:'--กรุณาเลือกสาเหตุการลา--',value: null , disabled: true},
-          {text:'ลากิจ',value:1},
-          {text:'ลาป่วย',value:2},
-          {text:'ลาพักร้อน',value:3},
-          {text:'ลาคลอด',value:4},
-          {text:'ลาบวช',value:5},
-          {text:'ลากิจไม่รับค่าจ้าง',value:6},
-        ],
-        selected1: null,
-        dateStart: '',
-        dateEnd: '',
-        description:'',
-        selected2: null,
-        value1:'',
-        value2:'',
-        popupLeave:false,
-        types: [
-          'date',
-        ],
-        selected: 3,
-        textError: "บันทึกข้อมูลไม่สำเร็จ",
-        textSuccess: "บันทึกข้อมูลสำเร็จ",
-        form: {
-          description: '',
-          valDate1: '',
-          valDate2: '',
-          leaveType: '',
-          leaveReason: ''
-        }
+      options: [
+        { text: 'ลาครึ่งเช้า', value: 1 },
+        { text: 'ลาครึ่งบ่าย', value: 2 },
+        { text: 'ลาเต็มวัน', value: 3 }
+      ],
+      options1:[
+        {text:'--กรุณาเลือกสาเหตุการลา--',value: null , disabled: true},
+        {text:'ลากิจ',value:1},
+        {text:'ลาป่วย',value:2},
+        {text:'ลาพักร้อน',value:3},
+        {text:'ลาคลอด',value:4},
+        {text:'ลาบวช',value:5},
+        {text:'ลากิจไม่รับค่าจ้าง',value:6},
+      ],
+      selected1: null,
+      dateStart: '',
+      dateEnd: '',
+      description:'',
+      selected2: null,
+      value1:'',
+      value2:'',
+      popupLeave:false,
+      types: [
+        'date',
+      ],
+      selected: 3,
+      textError: "บันทึกข้อมูลไม่สำเร็จ",
+      textSuccess: "บันทึกข้อมูลสำเร็จ",
+      form: {
+        description: '',
+        valDate1: '',
+        valDate2: '',
+        leaveType: '',
+        leaveReason: ''
+      }
     }
   },
   computed: {},
@@ -257,8 +257,8 @@ export default {
 
 <style>
   input[type="date"]::-webkit-inner-spin-button {
-      display: none;
-      -webkit-appearance: none;
+    display: none;
+    -webkit-appearance: none;
   }
   .popupLeave-example{
     max-width: 100%;
