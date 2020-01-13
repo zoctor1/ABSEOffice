@@ -32,7 +32,7 @@
                     </b-input-group-append>
                   </b-input-group>
                 </b-nav-form>
-                <table width=100% style="border :1px solid black; margin-top:10px;" >
+                <table style="border :1px solid black; margin-top:10px; width:100% " >
                   <div>
                     <b-table
                       :busy="isBusy" 
@@ -91,18 +91,18 @@ export default {
     return {
       items: [],
       fields: [
-        { key: 'no', label: 'ลำดับ', class: 'text-center' },
-        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center' },
+        { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
-        { key: 'dept_name', label: 'เเผนก', class: 'text-center' },
+        { key: 'dept_name', label: 'เเผนก', class: 'text-center',sortable: true },
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center' },
         { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center' },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-        { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center' },
+        { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
         { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-        { key: 'status', label: 'สถานะ', class: 'text-center' },
+        { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
       ],
       isBusy: false,
       totalRows:1,
@@ -134,8 +134,9 @@ export default {
     }
     console.log(response.data)
       this.items = response.data;
+      this.totalRows = this.items.length
     });
-    this.totalRows = this.items.length
+    
   },
   methods: {
       info(item, index, button) {

@@ -1,5 +1,5 @@
 <template>
-  <div id="EmpLeave" offset-lg="12" offset-sm="12" offset-xs="12">
+  <div id="EmpLeave">
     <center>
       <div><br>
         <b-col sm="12">
@@ -48,6 +48,8 @@
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :sort-direction="sortDirection"
+                sort-icon-left
+                responsive="sm"
               >
               <!-- :busy="isBusy" is reload variable  -->
               <template v-slot:table-busy>
@@ -95,16 +97,17 @@ export default {
   data() {
     return {
           fields: [
-            { key: 'no', label: 'ลำดับ', class: 'text-center' },
-            { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center' },
+            { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+            { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
             { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center' },
             { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-            { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center' },
+            { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
             { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
             { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
             { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-            { key: 'status', label: 'สถานะ', class: 'text-center' }
+            { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
           ],
+          sortDesc: false,
           isBusy: false,
           options1:[],
           totalRows:1,
