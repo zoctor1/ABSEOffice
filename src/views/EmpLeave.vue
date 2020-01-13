@@ -10,29 +10,29 @@
               </div>
           </div>
           <b-nav-form >
-              <b-input-group size="sm">
-                <b-form-input
+            <b-input-group size="sm">
+              <b-form-input
+                size="sm" 
+                class="mr-sm-2"
+                v-model="filter"
+                type="search"
+                id="filterInput"
+                placeholder="ค้นหา.."
+              >
+              </b-form-input>
+              <b-input-group-append>
+                <b-button
                   size="sm" 
-                  class="mr-sm-2"
-                  v-model="filter"
-                  type="search"
-                  id="filterInput"
-                  placeholder="ค้นหา.."
-                >
-                </b-form-input>
-                <b-input-group-append>
-                  <b-button
-                    size="sm" 
-                    class="my-2 my-sm-0" 
-                    type="submit" 
-                    variant="primary" 
-                    :disabled="!filter" 
-                    @click="filter = ''"
-                    >
-                    Clear
-                  </b-button>
-                </b-input-group-append>
-              </b-input-group>
+                  class="my-2 my-sm-0" 
+                  type="submit" 
+                  variant="primary" 
+                  :disabled="!filter" 
+                  @click="filter = ''"
+                  >
+                  Clear
+                </b-button>
+              </b-input-group-append>
+            </b-input-group>
               <div style="cursor: pointer; margin-left:10px" @click="toggleBusy">
                 <img src="../assets/refresh.png" width="33" height="33">
               </div>
@@ -64,22 +64,22 @@
         </b-col>
       </div>
     </center>
-        <div>
-          <b-col sm="5" class="my-1" id="parent2"> 
-              <b-row class="my-1">
-                  <b-col sm="8">
-                      <b-pagination
-                        v-model="currentPage"
-                        :total-rows="totalRows"
-                        :per-page="perPage"
-                        align="fill"
-                        size="md"
-                        class="my-0"
-                      ></b-pagination>
-                  </b-col>
-              </b-row>
+    <div>
+      <b-col sm="5" class="my-1" id="parent2"> 
+        <b-row class="my-1">
+          <b-col sm="8">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              align="fill"
+              size="md"
+              class="my-0"
+            ></b-pagination>
           </b-col>
-        </div>
+        </b-row>
+      </b-col>
+    </div>
   </div>
 </template>
 
@@ -123,7 +123,6 @@ export default {
           val1: " ",
           val2: " "
         }
-        
   },
   computed: {
       sortOptions() {
@@ -165,6 +164,7 @@ export default {
       display: none;
       -webkit-appearance: none;
   }
+  
   .popup-example {
     max-width: 100%;
     height: 100%;
