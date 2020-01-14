@@ -3,9 +3,9 @@
     <div>
       <b-col sm="12">
         <div>
-          <vs-button 
-            @click="popupLeave=true" 
-            color="primary" 
+          <vs-button
+            @click="popupLeave=true, flagSave = 0"
+            color="primary"
             type="filled"
           >
             <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
@@ -13,7 +13,12 @@
         </div>
       </b-col>
     </div>
-    <vs-popup id="sizePopupLeave" classContent="popupLeave-example"  title="กรอกรายละเอียดประวัติการลา" :active.sync="popupLeave" >
+    <vs-popup 
+      id="sizePopupLeave" 
+      classContent="popupLeave-example"  
+      title="กรอกรายละเอียดประวัติการลา" 
+      :active.sync="popupLeave" 
+    >
       <center><h4>{{userIn.first_name}} {{userIn.last_name}}</h4></center>
       <center><h5>แผนก : {{userIn.dept_name}}</h5></center>
         <div>
@@ -83,12 +88,24 @@
             <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
           </div>
         </div>
+        <div v-show="flagSave == 1" style="margin-top:25px">
+          <b-col sm="12">
+            <center>
+              <font color="red">
+              {{textError}}
+              </font>
+            </center>
+          </b-col>
+        </div>
         <div style="margin-top:25px">
           <b-col sm="12">
             <center>
-              <vs-button style="margin-top:0px" @click="insertData()" color="primary" type="filled" to="/leaveUser">
-                บันทึก
-              </vs-button>
+              <vs-button
+                style="margin-top:0px"
+                @click="insertData()"
+                color="primary"
+                type="filled"
+              >บันทึก</vs-button>
             </center>
           </b-col>
         </div>
@@ -112,42 +129,43 @@ export default {
   props: {},
   data() {
     return {
-        options: [
-          { text: 'ลาครึ่งเช้า', value: 1 },
-          { text: 'ลาครึ่งบ่าย', value: 2 },
-          { text: 'ลาเต็มวัน', value: 3 }
-        ],
-        options1:[
-          {text:'--กรุณาเลือกสาเหตุการลา--',value: null},
-          {text:'ลากิจ',value:1},
-          {text:'ลาป่วย',value:2},
-          {text:'ลาพักร้อน',value:3},
-          {text:'ลาคลอด',value:4},
-          {text:'ลาบวช',value:5},
-          {text:'ลากิจไม่รับค่าจ้าง',value:6},
-        ],
-        selected1: null,
-        dateStart: '',
-        dateEnd: '',
-        description:'',
-        selected2: null,
-        value1:'',
-        value2:'',
-        popupLeave:false,
-        types: [
-          'date',
-        ],
-        selected: 3,
-        textError: "บันทึกข้อมูลไม่สำเร็จ",
-        textSuccess: "บันทึกข้อมูลสำเร็จ",
-        form: {
-          description: '',
-          valDate1: '',
-          valDate2: '',
-          leaveType: '',
-          leaveReason: ''
-        },
-        userIn:{}
+      options: [
+        { text: 'ลาครึ่งเช้า', value: 1 },
+        { text: 'ลาครึ่งบ่าย', value: 2 },
+        { text: 'ลาเต็มวัน', value: 3 }
+      ],
+      options1: [
+        { text: "--กรุณาเลือกสาเหตุการลา--", value: null, disabled: true },
+        { text: "ลาป่วย", value: 1 },
+        { text: "ลากิจ", value: 2 },
+        { text: "ลาพักร้อน", value: 3 },
+        { text: "ลาคลอด", value: 4 },
+        { text: "ลาบวช", value: 5 },
+        { text: "ลาไม่รับค่าจ้าง", value: 6 }
+      ],
+      selected1: null,
+      dateStart: '',
+      dateEnd: '',
+      description:'',
+      selected2: null,
+      value1:'',
+      value2:'',
+      popupLeave:false,
+      types: [
+        'date',
+      ],
+      selected: 3,
+      flagSave: 0,
+      textError: "*กรุณากรอกข้อมูลให้ครบถ้วน",
+      textSuccess: "บันทึกข้อมูลสำเร็จ",
+      form: {
+        description: '',
+        valDate1: '',
+        valDate2: '',
+        leaveType: '',
+        leaveReason: ''
+      },
+      userIn:{}
     }
   },
   computed: {},

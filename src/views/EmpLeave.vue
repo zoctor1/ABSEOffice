@@ -98,34 +98,33 @@ export default {
   props: {},
   data() {
     return {
-          items: [],
-          fields: [
-            { key: 'no', label: 'ลำดับ', class: 'text-center' },
-            { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center' },
-            { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center' },
-            { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-            { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center' },
-            { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
-            { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
-            { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-            { key: 'status', label: 'สถานะ', class: 'text-center' }
-          ],
-          isBusy: false,
-          options1:[],
-          totalRows:1,
-          currentPage: 1,
-          perPage: 10,
-          pageOptions: [10, 15],
-          filter: null,
-          filterOn: [],
-          sortBy: '',
-          sortDesc: false,
-          sortDirection: 'asc',
-          name: " ",
-          val1: " ",
-          val2: " "
-        }
-        
+      items: [],
+      fields: [
+        { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
+        { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center' },
+        { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
+        { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
+        { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+        { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+        { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
+      ],
+      isBusy: false,
+      options1:[],
+      totalRows:1,
+      currentPage: 1,
+      perPage: 10,
+      pageOptions: [10, 15],
+      filter: null,
+      filterOn: [],
+      sortBy: '',
+      sortDesc: false,
+      sortDirection: 'asc',
+      name: " ",
+      val1: " ",
+      val2: " "
+    }
   },
   computed: {
     sortOptions() {
@@ -141,20 +140,36 @@ export default {
   },
   mounted() {
     this.getDataAsync();
+    this.getDataUserRefresh();
   },
   methods: {
     getDataAsync: async function(){
-        var user = JSON.parse(localStorage.getItem("user"));
-        await authService.getUserLeave(user.uuid).then(response => {
-          console.log(response.data)
-          for (var i = 0; i < response.data.length; i++) {
-            response.data[i].no = i+1;
-            response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-          }
-          console.log(response.data)
+      var user = JSON.parse(localStorage.getItem("user"));
+      await authService.getUserLeave(user.uuid).then(response => {
+        console.log(response.data)
+        for (var i = 0; i < response.data.length; i++) {
+          response.data[i].no = i+1;
+          response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+        }
+        console.log(response.data)
+        this.items = response.data;
+      });
+      this.totalRows = this.items.length
+    },
+    getDataUserRefresh: function(){
+      this.isBusy = true;
+      authService.getLeaveByUser({}).then(response => {
+      console.log(response.data)
+      if (response.data != null && response.data.length > 0) {
+        this.isBusy = false;
+        console.log(response.data)
           this.items = response.data;
-        });
-        this.totalRows = this.items.length
+          this.totalRows = this.items.length
+      }
+        else {
+          this.isBusy = false;
+        }
+    });
     },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`
