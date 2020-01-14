@@ -78,7 +78,6 @@
             </b-tr>
           </b-thead>
       </b-table-simple>
-   
     </b-col>
   </div>
 </template>
@@ -139,6 +138,7 @@ export default {
     // this.totalRows = this.items.length
     // this.getDataInformationAsync();
   },
+  mounted() {},
   methods: {
     // getDataInformationAsync: async function(){
     //     var user = JSON.parse(localStorage.getItem("user"));
@@ -164,6 +164,15 @@ export default {
         this.currentPage = 1
       }
     },
+    resetInfoModal() {
+      this.infoModal.title = ''
+      this.infoModal.content = ''
+    },
+    onFiltered(filteredItems) {
+      this.totalRows = filteredItems.length
+      this.currentPage = 1
+    }
+  },
   watch: {}
 }
 </script>
@@ -181,13 +190,4 @@ export default {
   .media {
     max-width: 99%
   }
-
-  /* @media (min-width: 576px) {
-    .col-sm-12 {
-      -ms-flex: 0 0 100%;
-      -webkit-box-flex: 0;
-      flex: 0 0 100%;
-      max-width: 99%;
-    }
-  } */
 </style>

@@ -16,7 +16,7 @@
         <a style="cursor: pointer;" @click="toUrl('Main')"><font size=3 color="#FEFCFF">หน้าเเรก</font></a>
       </vs-navbar-item>
       <vs-navbar-item index="1">
-        <a style="cursor: pointer;" @click="toUrl('EmpLeave')"><font size=3 color="#FEFCFF">(User) ข้อมูลการลางาน</font></a>
+        <a style="cursor: pointer;" @click="toUrl('EmpLeave')"><font size=3 color="#FEFCFF"> ข้อมูลการลางาน</font></a>
       </vs-navbar-item>
       <vs-navbar-item index="2" >
         <a style="cursor: pointer;" @click="toUrl('EmpOT')"><font size=3 color="#FEFCFF">(User) ข้อมูลการทำงานนอกเวลา(OT)</font></a>

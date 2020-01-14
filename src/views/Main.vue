@@ -26,14 +26,10 @@ export default {
   },
   props: {},
   data() {
-    return {
-      
-    }
+    return {}
   },
   computed: {},
-  mounted() {
-    
-  },
+  mounted() {},
   methods: {},
   watch: {}
 };

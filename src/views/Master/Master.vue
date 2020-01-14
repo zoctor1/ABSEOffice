@@ -1,6 +1,5 @@
 <template>
   <div id="master">
-    
   </div>
 </template>
 
@@ -32,4 +31,5 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
