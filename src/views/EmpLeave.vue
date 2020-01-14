@@ -96,23 +96,7 @@ export default {
   props: {},
   data() {
     return {
-          items: [ 
-            { no: 1, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 2, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 3, reason: 'ลาป่วย', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 4, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 5, reason: 'ลาบวช', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 6, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 7, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 8, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 9, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 10, reason: 'ลาป่วย', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 11, reason: 'ลาป่วย', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 12, reason: 'ลาป่วย', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 13, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 14, reason: 'ลาบวช', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-            { no: 15, reason: 'ลากิจ', type: 'ลาเต็มวัน', dateStart: '25/08/2019', dateStop: '25/08/2019', approve: 'N', phone: '087-7776666'},
-          ],
+          items: [],
           fields: [
             { key: 'no', label: 'ลำดับ', class: 'text-center' },
             { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center' },
@@ -154,12 +138,22 @@ export default {
       }
   },
   mounted() {
-    authService.getLeaveByUser({}).then(response => {
-      console.log(response.data)
-    });
-    this.totalRows = this.items.length
+    this.getDataAsync();
   },
   methods: {
+    getDataAsync: async function(){
+        var user = JSON.parse(localStorage.getItem("user"));
+        await authService.getUserLeave(user.uuid).then(response => {
+          console.log(response.data)
+          for (var i = 0; i < response.data.length; i++) {
+            response.data[i].no = i+1;
+            response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+          }
+          console.log(response.data)
+          this.items = response.data;
+        });
+        this.totalRows = this.items.length
+    },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`
       this.infoModal.content = JSON.stringify(item, null, 2)

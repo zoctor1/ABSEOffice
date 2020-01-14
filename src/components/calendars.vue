@@ -53,5 +53,4 @@
     #calendarMain .week-number {
         display: none;
     }
-
 </style>

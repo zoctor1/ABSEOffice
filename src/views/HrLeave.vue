@@ -82,6 +82,7 @@
 <script>
 import * as mJS from "../assets/js/mainJS"
 import * as authService from '@/services/auth.service';
+import { async } from 'q';
 
 export default {
   name: "HrLeave",
@@ -126,18 +127,21 @@ export default {
     }
   },
   mounted() {
-    authService.getDataHR({}).then(response => {
-      console.log(response.data)
-    for (var i = 0; i < response.data.length; i++) {
-      response.data[i].no = i+1;
-      response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-    }
-    console.log(response.data)
-      this.items = response.data;
-    });
-    this.totalRows = this.items.length
+    this.getDataAsync();
   },
   methods: {
+      getDataAsync: async function() {
+        await authService.getDataHR({}).then(response => {
+          console.log(response.data)
+          for (var i = 0; i < response.data.length; i++) {
+            response.data[i].no = i+1;
+            response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+          }
+          console.log(response.data)
+          this.items = response.data;
+        });
+        this.totalRows = this.items.length;
+      },
       info(item, index, button) {
         this.infoModal.title = `Row index: ${index}`
         this.infoModal.content = JSON.stringify(item, null, 2)

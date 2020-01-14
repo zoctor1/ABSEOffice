@@ -13,9 +13,9 @@
         </div>
       </b-col>
     </div>
-    <vs-popup id="sizePopupLeave" classContent="popupLeave-example"  title="ประวัติการลาของนายเอกชัย หมโมลี" :active.sync="popupLeave" >
-      <center><h4>นายเอกชัย หมโมลี</h4></center>
-      <center><h5>แผนก : โปรแกรมเมอร์</h5></center>
+    <vs-popup id="sizePopupLeave" classContent="popupLeave-example"  title="กรอกรายละเอียดประวัติการลา" :active.sync="popupLeave" >
+      <center><h4>{{userIn.first_name}} {{userIn.last_name}}</h4></center>
+      <center><h5>แผนก : {{userIn.dept_name}}</h5></center>
         <div>
           <div>
             <b-row class="my-1" v-for="type in types" :key="type">
@@ -146,12 +146,14 @@ export default {
           valDate2: '',
           leaveType: '',
           leaveReason: ''
-        }
+        },
+        userIn:{}
     }
   },
   computed: {},
   mounted() {
       // this.getleaveType();
+      this.userIn = JSON.parse(localStorage.getItem("user"));
   },
   methods: {
     // getleaveType:function() {

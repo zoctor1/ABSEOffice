@@ -3,9 +3,9 @@
     <b-col sm="12">
       <div style="position: relative;">
         <b-card style="margin-top:20px;">
-          <h3>นายเอกชัย หมโมลี</h3>
-          <h3>แผนก : โปรแกรมเมอร์</h3>
-          <h3 style="margin-bottom:10px">ตำแหน่ง : นิสิตฝึกงาน </h3>
+          <h3>{{userIn.first_name}} {{userIn.last_name}}</h3>
+          <h4 style="margin-bottom:10px">เเผนก : {{userIn.dept_name}}</h4>
+          <h4 style="margin-bottom:10px">ตำแหน่ง : {{userIn.position_name}} </h4>
           <div class="center">
             <center>
               <div style="margin: 60px 150px 0px 0px">
@@ -84,8 +84,10 @@
 </template>
 
 <script>
+import * as mJS from "../assets/js/mainJS"
 import 'material-icons/iconfont/material-icons.css'
 import 'vuesax/dist/vuesax.css'
+import * as authService from '@/services/auth.service';
 import popupLeave from "@/components/popupLeave.vue"
 import popupOT from "@/components/popupOT.vue"
 
@@ -97,6 +99,7 @@ export default {
   },
   data() {
         return {
+          userIn: {},
           value1:'',
           value2:'',
           popupLeave:false,
@@ -132,9 +135,21 @@ export default {
       }
   },
   mounted() {
+    this.userIn = JSON.parse(localStorage.getItem("user"));
     // this.totalRows = this.items.length
+    // this.getDataInformationAsync();
   },
   methods: {
+    // getDataInformationAsync: async function(){
+    //     var user = JSON.parse(localStorage.getItem("user"));
+    //     await authService.getUserData(user.uuid).then(response => {
+    //       for (var i = 0; i < response.data.length; i++) {
+    //         response.data[i].no = i+1;
+    //         response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+    //         this.name = response.data[i].full_Name;
+    //       }
+    //     });
+    // },
       info(item, index, button) {
         this.infoModal.title = `Row index: ${index}`
         this.infoModal.content = JSON.stringify(item, null, 2)
