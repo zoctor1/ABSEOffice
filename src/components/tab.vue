@@ -97,33 +97,33 @@ export default {
     popupOT
   },
   data() {
-        return {
-          userIn: {},
-          value1:'',
-          value2:'',
-          popupLeave:false,
-          popupActivo3:false,
-          popupOT:false,
-          popupActivo4:false,
-          filter: null,
-          filterOn: [],
-          select1:3,
-          selected: null,
-          selected2: null,
-          options1:[
-            {text: '--- กรุณาเลือกเหตุผลในการลา ---',value: null},
-            {text:'ลากิจ',value:0},
-            {text:'ลาป่วย',value:1},
-            {text:'ลาพักร้อน',value:2},
-            {text:'ลาคลอด',value:3},
-            {text:'ลาบวช',value:4},
-            {text:'ลากิจไม่รับค่าจ้าง',value:5},
-          ],
-          types: [
-              'date',
-          ]
-        }
-    },
+    return {
+      userIn: {},
+      value1:'',
+      value2:'',
+      popupLeave:false,
+      popupActivo3:false,
+      popupOT:false,
+      popupActivo4:false,
+      filter: null,
+      filterOn: [],
+      select1:3,
+      selected: null,
+      selected2: null,
+      options1:[
+        {text: '--- กรุณาเลือกเหตุผลในการลา ---',value: null},
+        {text:'ลากิจ',value:0},
+        {text:'ลาป่วย',value:1},
+        {text:'ลาพักร้อน',value:2},
+        {text:'ลาคลอด',value:3},
+        {text:'ลาบวช',value:4},
+        {text:'ลากิจไม่รับค่าจ้าง',value:5},
+      ],
+      types: [
+        'date',
+      ]
+    }
+  },
   computed: {
       sortOptions() {
         return this.fields
@@ -138,7 +138,6 @@ export default {
     // this.totalRows = this.items.length
     // this.getDataInformationAsync();
   },
-  mounted() {},
   methods: {
     // getDataInformationAsync: async function(){
     //     var user = JSON.parse(localStorage.getItem("user"));
@@ -172,9 +171,9 @@ export default {
       this.totalRows = filteredItems.length
       this.currentPage = 1
     }
-  },
+  }
   watch: {}
-}
+
 </script>
 
 <style scoped>
