@@ -83,3 +83,22 @@ export function insertData(obj) {
             })
     }).catch(error => reject(new ErrorWrapper(error)))
 }
+
+export function getUserLeave(userId) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/UserLeave`, {}, { headers: {dataUser: userId} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+// export function getUserData(usid) {
+//     return new Promise((resolve, reject) => {
+//         axios.post(`${API_URL}/UserData`, {}, { headers: {dataIn: usid} }).then(
+//             response => {
+//                 return resolve(new ResponseWrapper(response, response.data))
+//             })
+//     }).catch(error => reject(new ErrorWrapper(error)))
+// }
+

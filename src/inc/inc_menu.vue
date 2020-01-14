@@ -40,14 +40,14 @@
         <div class="dropdown-content">
           <a href="#" v-b-modal.modal-center>ข้อมูลส่วนตัว
             <b-modal id="modal-center" :hide-footer="true" centered >
-              <template v-slot:modal-header="{ close }">
+              <template v-slot:modal-header="{  }">
                 <label style="font-size: 18px;" ><img src="../assets/user.png" style="margin-right:7px; width: 30px; height: 30px;"  class="userIcon">ข้อมูลส่วนตัว</label>
               </template>
-                <p class="my-4">ชื่อ :</p>
-                <p class="my-4">แผนก :</p>
-                <p class="my-4">ตำแหน่ง :</p>
-                <p class="my-4">E-mail :</p>
-                <p class="my-4">เบอร์ติดต่อ :</p>
+              <p class="my-4">ชื่อ : {{userIn.first_name}} {{userIn.last_name}}</p>
+              <p class="my-4">แผนก : {{userIn.dept_name}}</p>
+              <p class="my-4">ตำแหน่ง : {{userIn.position_name}}</p>
+              <p class="my-4">E-mail : {{userIn.username}}</p>
+              <p class="my-4">เบอร์ติดต่อ : {{userIn.mobile}}</p>
               <center><b-button v-b-modal.modal-footer-sm>แก้ไขข้อมูล</b-button></center>
             </b-modal>
           </a>
@@ -55,7 +55,7 @@
       </div>
         <!-- <img style="cursor: pointer; margin:0px 20px 0px 10px;" @click="toUrl('Main')" alt="Vue logo" src="../assets/user.png" width="40" height="40" /> -->
     
-      <vs-button @click="toUrl('Login')" style="margin-right:25px;" color="danger" type="gradient" > 
+      <vs-button @click="logout()" style="margin-right:25px;" color="danger" type="gradient" > 
         <font-awesome-icon icon="sign-out-alt" style="margin-right:8px;" />
         ออกจากระบบ 
       </vs-button>
@@ -65,6 +65,8 @@
 
 <script>
 import 'vuesax/dist/vuesax.css'
+import * as mJS from "../assets/js/mainJS"
+import * as authService from '@/services/auth.service';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faSignOutAlt, faBell } from "@fortawesome/free-solid-svg-icons";
@@ -78,6 +80,7 @@ export default {
   props: {},
   data() {
     return {
+      userIn:{},
       colorx:'#ff6173',
       indexActive: 0,
       colorxx:'#c72a75',
@@ -85,10 +88,16 @@ export default {
     };
   },
   computed: {},
-  mounted() {},
+  mounted() {
+    this.userIn = JSON.parse(localStorage.getItem("user"));
+  },
   methods: {
     toUrl: function(url) {
       this.$router.push("/" + url);
+    },
+    logout: function(){
+      this.$router.push("/Login");
+      localStorage.removeItem("user");
     }
   },
   watch: {}

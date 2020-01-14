@@ -11,8 +11,8 @@
     </div>
 
       <vs-popup id="sizePopupOT" classContent="popupOT-example"  title="กรอกรายละเอียดการทำงานนอกเวลา" :active.sync="popupOT">
-        <center><h4>นายเอกชัย หมโมลี</h4></center>
-        <center><h5>แผนก : โปรแกรมเมอร์</h5></center>
+        <!-- <center><h4>{{userIn.first_name}} {{userIn.last_name}}</h4></center>
+        <center><h5>แผนก : {{userIn.dept_name}}</h5></center> -->
           <div>
             <div style="margin:5px 0px 1px 0px" class="form-group" :class="{ 'form-group--error': $v.form.date.$error }">
               <p>วันที่ทำงาน</p>
@@ -101,6 +101,8 @@
 </template>
 
 <script>
+// import * as mainJs from '@/assets/js/mainJS.js';
+// import * as authService from '@/services/auth.service';
 import datetime from 'vuejs-datetimepicker';
 import { required, minLength } from 'vuelidate/lib/validators'
 
@@ -126,12 +128,15 @@ export default {
         descriptionWork: '',
         timeStart: '',
         timeEnd:'',
-        date:''
+        date:'',
+        userIn:{}
       }
     }
   },
   computed: {},
-  mounted() {},
+  mounted() {
+    // this.userIn = JSON.parse(localStorage.getItem("user"));
+  },
   methods: {},
   watch: {},
   validations: {

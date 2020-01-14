@@ -50,12 +50,7 @@
 <script>
 import Vue from "vue";
 import * as authService from '@/services/auth.service';
-
 import VueSweetalert2 from 'vue-sweetalert2';
-// import Swal from 'sweetalert2/dist/sweetalert2.js' //npm install sweetalert2      for import Swal from 'sweetalert2/dist/sweetalert2.js'
-
-// import VueSimpleAlert from "vue-simple-alert"; //npm i vue-simple-alert       for import VueSimpleAlert from "vue-simple-alert";
-// Vue.use(VueSimpleAlert, { reverseButtons: true });
 import 'sweetalert2/dist/sweetalert2.min.css'
 Vue.use(VueSweetalert2);
 
