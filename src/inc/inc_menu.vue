@@ -43,11 +43,11 @@
               <template v-slot:modal-header="{ close }">
                 <label style="font-size: 18px;" ><img src="../assets/user.png" style="margin-right:7px; width: 30px; height: 30px;"  class="userIcon">ข้อมูลส่วนตัว</label>
               </template>
-              <p class="my-4">ชื่อ :</p>
-              <p class="my-4">แผนก :</p>
-              <p class="my-4">ตำแหน่ง :</p>
-              <p class="my-4">E-mail :</p>
-              <p class="my-4">เบอร์ติดต่อ :</p>
+                <p class="my-4">ชื่อ :</p>
+                <p class="my-4">แผนก :</p>
+                <p class="my-4">ตำแหน่ง :</p>
+                <p class="my-4">E-mail :</p>
+                <p class="my-4">เบอร์ติดต่อ :</p>
               <center><b-button v-b-modal.modal-footer-sm>แก้ไขข้อมูล</b-button></center>
             </b-modal>
           </a>

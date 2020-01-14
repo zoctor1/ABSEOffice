@@ -145,7 +145,7 @@ export default {
   name: "popupLeave",
   components: {
     datetime,
-    Swal,
+    Swal
   },
   props: {},
   data() {
@@ -170,7 +170,7 @@ export default {
       types: ["date"],
       selected: 3,
       flagSave: 0,
-      textError: "กรุณากรอกข้อมูลให้ครบถ้วน",
+      textError: "*กรุณากรอกข้อมูลให้ครบถ้วน",
       textSuccess: "บันทึกข้อมูลสำเร็จ",
       form: {
         description: "",
@@ -308,19 +308,20 @@ export default {
 </script>
 
 <style>
-input[type="date"]::-webkit-inner-spin-button {
-  display: none;
-  -webkit-appearance: none;
-}
-.popupLeave-example {
-  max-width: 100%;
-  height: 100%;
-}
-#sizePopupLeave .con-vs-popup .vs-popup {
-  width: 35%;
-  height: 63%;
-}
-#sizePopupLeave .vs-popup--content {
-  overflow: hidden !important;
-}
+  
+  input[type="date"]::-webkit-inner-spin-button {
+    display: none;
+    -webkit-appearance: none;
+  }
+  .popupLeave-example {
+    max-width: 100%;
+    height: 100%;
+  }
+  #sizePopupLeave .con-vs-popup .vs-popup {
+    width: 35%;
+    height: 63%;
+  }
+  #sizePopupLeave .vs-popup--content {
+    overflow: hidden !important;
+  }
 </style>
