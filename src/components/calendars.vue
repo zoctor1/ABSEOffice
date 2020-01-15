@@ -53,4 +53,13 @@
     #calendarMain .week-number {
         display: none;
     }
+    #calendarMain .modal-content { 
+        margin-top: 30%;
+    }
+    #calendarMain .modal-header .close { 
+        display: none;
+    }
+    /* #calendarMain .modal-body .event-color {
+        display: none;
+    } */
 </style>

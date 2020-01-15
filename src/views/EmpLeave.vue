@@ -98,15 +98,15 @@ export default {
     return {
           items: [],
           fields: [
-            { key: 'no', label: 'ลำดับ', class: 'text-center' },
-            { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center' },
-            { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center' },
+            { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+            { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
+            { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
             { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-            { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center' },
+            { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
             { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
             { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
             { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-            { key: 'status', label: 'สถานะ', class: 'text-center' }
+            { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
           ],
           isBusy: false,
           options1:[],
@@ -142,12 +142,14 @@ export default {
   },
   methods: {
     getDataAsync: async function(){
+      this.isBusy = true;
         var user = JSON.parse(localStorage.getItem("user"));
         await authService.getUserLeave(user.uuid).then(response => {
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;
           }
           this.items = response.data;
+          this.isBusy = false;
         });
         this.totalRows = this.items.length
     },

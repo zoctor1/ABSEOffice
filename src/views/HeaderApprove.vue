@@ -95,13 +95,13 @@ export default {
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
-        { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
+        { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
         { key: 'dept_name', label: 'เเผนก', class: 'text-center',sortable: true },
-        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center' },
-        { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center' },
+        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
+        { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
         { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-        { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center', },
+        { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
@@ -128,7 +128,8 @@ export default {
     }
   },
   mounted() {
-    this.getDataAsync()
+    this.getDataAsync();
+    this.getHeaderApprove();
   },
   methods: {
       getDataAsync: async function(){
@@ -143,6 +144,24 @@ export default {
         });
         this.totalRows = this.items.length
       },
+      getHeaderApprove: function() {
+      this.isBusy = true;
+      authService.getDataHeader({}).then(response => {
+        console.log(response.data)
+        if (response.data != null && response.data.length > 0) {
+          for (var i = 0; i < response.data.length; i++) {
+            response.data[i].no = i+1;
+            response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+          }
+          console.log(response.data)
+          this.items = response.data;
+          this.totalRows = this.items.length
+          this.isBusy = false;
+        } else {
+          this.isBusy = false;
+        }
+      });
+    },
       info(item, index, button) {
         this.infoModal.title = `Row index: ${index}`
         this.infoModal.content = JSON.stringify(item, null, 2)
