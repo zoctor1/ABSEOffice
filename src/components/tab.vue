@@ -17,8 +17,7 @@
             </center>
           </div>
         </b-card>
-      </div>
-          
+      </div>  
       <b-table-simple hover small caption-top responsive style="border :1px solid red; margin-top:10px; ">
           <b-thead class="thead-dark" head-variant="danger">
             <b-tr >
@@ -35,46 +34,19 @@
             </b-tr>
           </b-thead>
         <b-tbody>
-          <b-tr>
-            <b-th>ลากิจ</b-th>
-            <b-td>6</b-td>
-            <b-td>4</b-td>
-            <b-td>2</b-td>
-          </b-tr>
-          <b-tr>
-            <b-th>ลาป่วย</b-th>
-            <b-td>30</b-td>
-            <b-td>14</b-td>
-            <b-td>16</b-td>
-          </b-tr>
-          <b-tr>
-            <b-th>ลาพักร้อน</b-th>
-            <b-td>6</b-td>
-            <b-td>0</b-td>
-            <b-td>6</b-td> </b-tr
-          ><b-tr>
-            <b-th>ลาคลอด</b-th>
-            <b-td>98</b-td>
-            <b-td>0</b-td>
-            <b-td>98</b-td> </b-tr
-          ><b-tr>
-            <b-th>ลาบวช</b-th>
-            <b-td>15</b-td>
-            <b-td>4</b-td>
-            <b-td>1</b-td> </b-tr
-          ><b-tr>
-            <b-th>ลากิจไม่รับค่าจ้าง</b-th>
-            <b-td>6</b-td>
-            <b-td>1</b-td>
-            <b-td>5</b-td>
+          <b-tr v-for="i in responseData">
+            <b-th>{{ i.leave_reason_name }}</b-th>
+            <b-td><center>{{ i.leave_limit }}</center></b-td>
+            <b-td><center>{{ i.dayOff }}</center></b-td>
+            <b-td><center>{{ Math.abs(i.leave_limit - i.dayOff) }}</center></b-td>
           </b-tr>
         </b-tbody>
           <b-thead  class="thead-light" head-variant="danger">
-            <b-tr>
-              <b-th>Total Rows:</b-th>
-              <b-th>-</b-th>
-              <b-th>23</b-th>
-              <b-th>-</b-th>
+            <b-tr v-if="responseData">
+              <b-th>รวมทั้งหมด: </b-th>
+              <b-td><center>{{ sumLimits(responseData) }}</center></b-td>
+              <b-td><center></center>{{ sumLeave(responseData) }}</b-td>
+              <b-td><center>{{ sumRemain(responseData) }}</center></b-td>
             </b-tr>
           </b-thead>
       </b-table-simple>
@@ -99,6 +71,7 @@ export default {
   data() {
     return {
       userIn: {},
+      responseData:[],
       value1:'',
       value2:'',
       popupLeave:false,
@@ -135,20 +108,32 @@ export default {
   },
   mounted() {
     this.userIn = JSON.parse(localStorage.getItem("user"));
-    // this.totalRows = this.items.length
-    // this.getDataInformationAsync();
+    this.showStat();
   },
   methods: {
-    // getDataInformationAsync: async function(){
-    //     var user = JSON.parse(localStorage.getItem("user"));
-    //     await authService.getUserData(user.uuid).then(response => {
-    //       for (var i = 0; i < response.data.length; i++) {
-    //         response.data[i].no = i+1;
-    //         response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-    //         this.name = response.data[i].full_Name;
-    //       }
-    //     });
-    // },
+      sumLimits: function (responseData) {
+  	    return responseData.reduce((acc, val) => {
+	  		  return acc + parseInt(val.leave_limit);
+			  }, 0);    
+      },
+      sumLeave: function (responseData) {
+  	    return responseData.reduce((acc, val) => {
+	  		  return acc + parseInt(val.dayOff);
+			  }, 0);
+      },
+      sumRemain: function (responseData) {
+  	    return responseData.reduce((acc, val) => {
+          var remain = Math.abs(val.leave_limit - val.dayOff);
+	  		  return acc + parseInt(remain);
+			  }, 0);
+      },
+      showStat:function(){
+        var user = JSON.parse(localStorage.getItem("user"));
+        authService.getLeaveStat(user.uuid).then(response => {
+          this.responseData = response.data;
+          console.log(response.data);
+        });
+      },
       info(item, index, button) {
         this.infoModal.title = `Row index: ${index}`
         this.infoModal.content = JSON.stringify(item, null, 2)
