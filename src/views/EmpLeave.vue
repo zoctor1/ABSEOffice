@@ -1,5 +1,5 @@
 <template>
-  <div id="EmpLeave">
+  <div id="EmpLeave" offset-lg="12" offset-sm="12" offset-xs="12">
     <center>
       <div><br>
         <b-col sm="12">
@@ -10,30 +10,30 @@
               </div>
           </div>
           <b-nav-form >
-            <b-input-group size="sm">
-              <b-form-input
-                size="sm" 
-                class="mr-sm-2"
-                v-model="filter"
-                type="search"
-                id="filterInput"
-                placeholder="ค้นหา.."
-              >
-              </b-form-input>
-              <b-input-group-append>
-                <b-button
+              <b-input-group size="sm">
+                <b-form-input
                   size="sm" 
-                  class="my-2 my-sm-0" 
-                  type="submit" 
-                  variant="primary" 
-                  :disabled="!filter" 
-                  @click="filter = ''"
-                  >
-                  Clear
-                </b-button>
-              </b-input-group-append>
-            </b-input-group>
-              <div style="cursor: pointer; margin-left:10px" @click="getDataUserRefresh()">
+                  class="mr-sm-2"
+                  v-model="filter"
+                  type="search"
+                  id="filterInput"
+                  placeholder="ค้นหา.."
+                >
+                </b-form-input>
+                <b-input-group-append>
+                  <b-button
+                    size="sm" 
+                    class="my-2 my-sm-0" 
+                    type="submit" 
+                    variant="primary" 
+                    :disabled="!filter" 
+                    @click="filter = ''"
+                    >
+                    Clear
+                  </b-button>
+                </b-input-group-append>
+              </b-input-group>
+              <div style="cursor: pointer; margin-left:10px" @click="getDataAsync()">
                 <img src="../assets/refresh.png" width="33" height="33">
               </div>
           </b-nav-form>
@@ -41,6 +41,7 @@
             <div>
               <b-table
                 :busy="isBusy" 
+                striped hover :items="items"
                 :fields="fields"
                 :filter="filter"
                 :current-page="currentPage"
@@ -48,40 +49,37 @@
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :sort-direction="sortDirection"
-                sort-icon-left
-                responsive="sm"
+                @filtered="onFiltered" 
               >
               <!-- :busy="isBusy" is reload variable  -->
-              
               <template v-slot:table-busy>
                 <div class="text-center text-danger ">
                   <b-spinner class="align-middle"></b-spinner>
                   <strong>Loading...</strong>
                 </div>
               </template>
-
               </b-table>
             </div>
           </table>
         </b-col>
       </div>
     </center>
-    <div>
-      <b-col sm="5" class="my-1" id="parent2"> 
-        <b-row class="my-1">
-          <b-col sm="8">
-            <b-pagination
-              v-model="currentPage"
-              :total-rows="totalRows"
-              :per-page="perPage"
-              align="fill"
-              size="md"
-              class="my-0"
-            ></b-pagination>
+        <div>
+          <b-col sm="5" class="my-1" id="parent2"> 
+              <b-row class="my-1">
+                  <b-col sm="8">
+                      <b-pagination
+                        v-model="currentPage"
+                        :total-rows="totalRows"
+                        :per-page="perPage"
+                        align="fill"
+                        size="md"
+                        class="my-0"
+                      ></b-pagination>
+                  </b-col>
+              </b-row>
           </b-col>
-        </b-row>
-      </b-col>
-    </div>
+        </div>
   </div>
 </template>
 
@@ -98,87 +96,75 @@ export default {
   props: {},
   data() {
     return {
-      items: [],
-      fields: [
-        { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
-        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
-        { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center' },
-        { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-        { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-        { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
-        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
-        { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-        { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
-      ],
-      isBusy: false,
-      options1:[],
-      totalRows:1,
-      currentPage: 1,
-      perPage: 10,
-      pageOptions: [10, 15],
-      filter: null,
-      filterOn: [],
-      sortBy: '',
-      sortDesc: false,
-      sortDirection: 'asc',
-      name: " ",
-      val1: " ",
-      val2: " "
-    }
+          items: [],
+          fields: [
+            { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+            { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
+            { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
+            { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
+            { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
+            { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+            { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+            { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+            { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
+          ],
+          isBusy: false,
+          options1:[],
+          totalRows:1,
+          currentPage: 1,
+          perPage: 10,
+          pageOptions: [10, 15],
+          filter: null,
+          filterOn: [],
+          sortBy: '',
+          sortDesc: false,
+          sortDirection: 'asc',
+          name: " ",
+          val1: " ",
+          val2: " "
+        }
+        
   },
   computed: {
-    sortOptions() {
-      return this.fields
-        .filter(f => f.sortable)
-        .map(f => {
-          return { text: f.label, value: f.key }
-        })
-    },
-    state() {
-      return this.name.length >= 4 ? true : false
-    }
+      sortOptions() {
+        return this.fields
+          .filter(f => f.sortable)
+          .map(f => {
+            return { text: f.label, value: f.key }
+          })
+      },
+      state() {
+        return this.name.length >= 4 ? true : false
+      }
   },
   mounted() {
     this.getDataAsync();
-    this.getDataUserRefresh();
   },
   methods: {
     getDataAsync: async function(){
-      var user = JSON.parse(localStorage.getItem("user"));
-      await authService.getUserLeave(user.uuid).then(response => {
-        console.log(response.data)
-        for (var i = 0; i < response.data.length; i++) {
-          response.data[i].no = i+1;
-          response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-        }
-        console.log(response.data)
-        this.items = response.data;
-      });
-      this.totalRows = this.items.length
-    },
-    getDataUserRefresh: function(){
       this.isBusy = true;
-      authService.getLeaveByUser({}).then(response => {
-      console.log(response.data)
-      if (response.data != null && response.data.length > 0) {
-        this.isBusy = false;
-        console.log(response.data)
+        var user = JSON.parse(localStorage.getItem("user"));
+        await authService.getUserLeave(user.uuid).then(response => {
+          for (var i = 0; i < response.data.length; i++) {
+            response.data[i].no = i+1;
+          }
           this.items = response.data;
-          this.totalRows = this.items.length
-      }
-        else {
           this.isBusy = false;
-        }
-    });
+        });
+        this.totalRows = this.items.length
     },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`
-      this.infoModal.content = JSON.stringify(null, 2)
+      this.infoModal.content = JSON.stringify(item, null, 2)
       this.$root.$emit('bv::show::modal', this.infoModal.id, button)
     },
     resetInfoModal() {
       this.infoModal.title = ''
       this.infoModal.content = ''
+    },
+    onFiltered(filteredItems) {
+      this.totalRows = filteredItems.length
+      this.currentPage = 1
     },
     toggleBusy() {
       this.isBusy = !this.isBusy
@@ -190,17 +176,16 @@ export default {
 
 <style scoped>
   input[type="date"]::-webkit-inner-spin-button {
-    display: none;
-    -webkit-appearance: none;
+      display: none;
+      -webkit-appearance: none;
   }
-
   .popup-example {
     max-width: 100%;
     height: 100%;
   }
 
   #parent2 {
-    position: Sticky;
+    position: Sticky ;
     top: 8%;
     left: 60%;
   }

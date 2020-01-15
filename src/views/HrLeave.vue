@@ -94,10 +94,10 @@ export default {
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
-        { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
+        { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
         { key: 'dept_name', label: 'เเผนก', class: 'text-center',sortable: true },
-        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center' },
-        { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center' },
+        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
+        { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
         { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
         { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
