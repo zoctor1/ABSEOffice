@@ -93,12 +93,14 @@ export function getUserLeave(userId) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-// export function getUserData(usid) {
-//     return new Promise((resolve, reject) => {
-//         axios.post(`${API_URL}/UserData`, {}, { headers: {dataIn: usid} }).then(
-//             response => {
-//                 return resolve(new ResponseWrapper(response, response.data))
-//             })
-//     }).catch(error => reject(new ErrorWrapper(error)))
-// }
+export function getLeaveStat(dataS) {
+    console.log(".................");
+    console.log(dataS);
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/LeaveStat`, {}, { headers: {dataStat : dataS} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
 
