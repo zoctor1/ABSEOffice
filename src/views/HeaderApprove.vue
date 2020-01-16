@@ -133,7 +133,6 @@ export default {
   methods: {
       getDataAsync: async function(){
         await authService.getDataHeader({}).then(response => {
-          console.log(response.data)
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;
             response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;

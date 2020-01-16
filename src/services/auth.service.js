@@ -93,12 +93,31 @@ export function getUserLeave(userId) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-// export function getUserData(usid) {
-//     return new Promise((resolve, reject) => {
-//         axios.post(`${API_URL}/UserData`, {}, { headers: {dataIn: usid} }).then(
-//             response => {
-//                 return resolve(new ResponseWrapper(response, response.data))
-//             })
-//     }).catch(error => reject(new ErrorWrapper(error)))
-// }
+export function getLeaveStat(dataS) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/LeaveStat`, {}, { headers: {dataStat : dataS} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function getHRConfirm(approveHr) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/ApproveHR`, {}, { headers: {dataHR : approveHr} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function getHeadConfirm(approveH) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/ApproveHead`, {}, { headers: {dataHead : approveH} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
 
