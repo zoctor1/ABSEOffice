@@ -1,17 +1,17 @@
 <template>
-  <div style="background-color:#f8f8f8">
-    <b-col sm="12">
-      <div style="position: relative;">
+  <div style="background-color:#f8f8f8" lg="12" sm="8" xs="6">
+    <b-col >
+      <div style="position: relative;" >
         <b-card style="margin-top:20px;">
           <h3>{{userIn.first_name}} {{userIn.last_name}}</h3>
           <h4 style="margin-bottom:10px">เเผนก : {{userIn.dept_name}}</h4>
           <h4 style="margin-bottom:10px">ตำแหน่ง : {{userIn.position_name}} </h4>
           <div class="center">
             <center>
-              <div style="margin: 60px 150px 0px 0px">
+              <div lg="6" sm="6" xs="6" style="margin: 60px 150px 0px 0px">
                 <popupLeave />
               </div>
-              <div style="margin:-44px 0px 0px 150px">
+              <div lg="6" sm="6" xs="6" style="margin:-44px 0px 0px 150px">
                 <popupOT />
               </div>
             </center>
@@ -28,9 +28,9 @@
             </b-tr>
             <b-tr >
               <b-th>ประเภท</b-th>
-              <b-th>สิทธิ</b-th>
-              <b-th>ใช้ไป</b-th>
-              <b-th>คงเหลือ</b-th>
+              <b-th><center>สิทธิ</center></b-th>
+              <b-th><center>ใช้ไป</center></b-th>
+              <b-th><center>คงเหลือ</center></b-th>
             </b-tr>
           </b-thead>
         <b-tbody>
@@ -45,7 +45,7 @@
             <b-tr v-if="responseData">
               <b-th>รวมทั้งหมด: </b-th>
               <b-td><center>{{ sumLimits(responseData) }}</center></b-td>
-              <b-td><center></center>{{ sumLeave(responseData) }}</b-td>
+              <b-td><center>{{ sumLeave(responseData) }}</center></b-td>
               <b-td><center>{{ sumRemain(responseData) }}</center></b-td>
             </b-tr>
           </b-thead>

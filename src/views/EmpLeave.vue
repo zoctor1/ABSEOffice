@@ -1,8 +1,8 @@
 <template>
-  <div id="EmpLeave" offset-lg="12" offset-sm="12" offset-xs="12">
+  <div id="EmpLeave" lg="12" sm="12" xs="12">
     <center>
       <div><br>
-        <b-col sm="12">
+        <b-col lg="12" sm="12" xs="12">
           <div style="position: relative;">
             <h2 align="left">ข้อมูลการลา</h2>
               <div style="position: absolute; top: 50%; right: 0; transform: translate(0, -40%);">
@@ -18,10 +18,9 @@
                   type="search"
                   id="filterInput"
                   placeholder="ค้นหา.."
+                  autocomplete = on
                 >
                 </b-form-input>
-                <b-input-group-append>
-                </b-input-group-append>
               </b-input-group>
               <div class="close" style="cursor: pointer; margin-left:10px" @click="getDataAsync()">
                 <img src="../assets/refresh.png" id="tooltip-target-1"  width="33" height="33">
@@ -30,8 +29,8 @@
                 </b-tooltip>
               </div>
           </b-nav-form>
-          <table width=100% style="margin-top:10px; border: 1px solid black;">
-            <div>
+          <table  width=100% style="margin-top:10px; border: 1px solid black;">
+            <div >
               <b-table
                 :busy="isBusy" 
                 striped hover :items="items"
@@ -58,7 +57,7 @@
       </div>
     </center>
         <div>
-          <b-col sm="5" class="my-1" id="parent2"> 
+          <b-col lg="9" sm="7" xs="5" class="my-1" id="parent2"> 
               <b-row class="my-1">
                   <b-col sm="8">
                       <b-pagination
@@ -116,7 +115,6 @@ export default {
           val1: " ",
           val2: " "
         }
-        
   },
   computed: {
       sortOptions() {

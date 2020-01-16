@@ -1,5 +1,5 @@
 <template>
-  <div id="inc_menu">
+  <div id="inc_menu" lg="12" sm="8" xs="6">
       <vs-navbar
         v-model="indexActive"
         :color="colorx"
@@ -51,7 +51,7 @@
               <!-- <center><b-button v-b-modal.modal-footer-sm>แก้ไขข้อมูล</b-button></center> -->
             </b-modal>
           </a>
-          <a style="color:black;" @click="logout()">ออกจากระบบ</a>
+          <a style="color:black;cursor: pointer" @click="logout()">ออกจากระบบ</a>
         </div>
       </div>
         <!-- <img style="cursor: pointer; margin:0px 20px 0px 10px;" @click="toUrl('Main')" alt="Vue logo" src="../assets/user.png" width="40" height="40" /> -->

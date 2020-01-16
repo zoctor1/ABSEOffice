@@ -1,8 +1,8 @@
 <template>
-  <div id="HeaderAppve">
+  <div id="HeaderAppve" lg="12" sm="12" xs="12">
     <center>
       <div><br>
-        <b-col sm="12">
+        <b-col lg="12" sm="12" xs="12">
           <h2 style="text-align: left;">
             คำขออนุมัติการลางาน
           </h2>
@@ -15,6 +15,7 @@
                   type="search"
                   id="filterInput"
                   placeholder="ค้นหา.."
+                  autocomplete = on
                 >
                 </b-form-input>
                 <b-input-group-append>
@@ -27,7 +28,7 @@
                 </b-input-group-append>
               </b-input-group>
             </b-nav-form>
-            <table width=100% sm="12" style="border :1px solid black; margin-top:10px; " >
+            <table width=100% style="border :1px solid black; margin-top:10px; " >
               <div>
                 <b-table
                   :busy="isBusy" 
@@ -66,7 +67,7 @@
       </div>
     </center>
     <div>
-      <b-col sm="5" class="my-1" id="parent2">
+      <b-col lg="9" sm="7" xs="5" class="my-1" id="parent2">
         <b-row class="my-1">
           <b-col sm="8">
             <b-pagination
@@ -155,7 +156,12 @@ export default {
             this.items[index].HeaderbtnApprove = true;
             this.items[index].HrbtnApprove = true;
             authService.postApproveHead(this.items[index].emp_leave_id).then(response => {
-              
+              // if (response.data != null){
+
+              // }
+              // else {
+
+              // }
             });
             console.log("aaa");
           } else {
