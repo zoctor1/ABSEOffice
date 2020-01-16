@@ -94,6 +94,8 @@ export function getUserLeave(userId) {
 }
 
 export function getLeaveStat(dataS) {
+    console.log(".................");
+    console.log(dataS);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/LeaveStat`, {}, { headers: {dataStat : dataS} }).then(
             response => {
@@ -102,7 +104,7 @@ export function getLeaveStat(dataS) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function getHRConfirm(approveHr) {
+export function postApproveHR(approveHr) {
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/ApproveHR`, {}, { headers: {dataHR : approveHr} }).then(
             response => {
@@ -111,7 +113,7 @@ export function getHRConfirm(approveHr) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function getHeadConfirm(approveH) {
+export function postApproveHead(approveH) {
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/ApproveHead`, {}, { headers: {dataHead : approveH} }).then(
             response => {
@@ -119,5 +121,3 @@ export function getHeadConfirm(approveH) {
             })
     }).catch(error => reject(new ErrorWrapper(error)))
 }
-
-

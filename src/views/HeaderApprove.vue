@@ -18,18 +18,11 @@
                 >
                 </b-form-input>
                 <b-input-group-append>
-                  <b-button 
-                    size="sm" 
-                    class="my-2 my-sm-0" 
-                    type="submit" 
-                    variant="primary" 
-                    :disabled="!filter" 
-                    @click="filter = ''"
-                  >
-                    Clear
-                  </b-button>
-                  <div style="cursor: pointer; margin-left:10px" @click="getHeaderApprove()">
-                    <img src="../assets/refresh.png" width="33" height="33">
+                  <div class="close" style="cursor: pointer; margin-left:10px" @click="getHeaderApprove()">
+                    <img src="../assets/refresh.png" id="tooltip-target-1" width="33" height="33">
+                    <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
+                      Refresh
+                    </b-tooltip>
                   </div>
                 </b-input-group-append>
               </b-input-group>
@@ -53,6 +46,17 @@
                     <div class="text-center text-danger ">
                       <b-spinner class="align-middle"></b-spinner>
                       <strong>Loading...</strong>
+                    </div>
+                  </template>
+                  <template v-slot:cell(head_approve_date)="data">
+                    <div>
+                      <b-button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.index)" >รอการอนุมัติ</b-button>
+                      <!-- data.items.cancelDate == null &&  -->
+                    </div>
+                  </template>
+                  <template v-slot:cell(hr_approve_date)="data">
+                    <div>
+                      <b-button v-if="!data.item.HrbtnApprove" @click="showMsgBoxTwo(data.index)" >รอการอนุมัติ</b-button>
                     </div>
                   </template>
                 </b-table>
@@ -95,13 +99,13 @@ export default {
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
-        { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
+        { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
         { key: 'dept_name', label: 'เเผนก', class: 'text-center',sortable: true },
-        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center' },
-        { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center' },
+        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
+        { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
         { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-        { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center', },
+        { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
@@ -109,13 +113,14 @@ export default {
       isBusy: false,
       totalRows:1,
       currentPage: 1,
-      perPage: 10,
+      perPage: 9,
       pageOptions: [10, 15,20],
       filter: null,
       filterOn: [],
       sortBy: '',
       sortDesc: false,
-      sortDirection: 'asc'
+      sortDirection: 'asc',
+      boxTwo: '',
     }
   },
   computed: {
@@ -128,9 +133,36 @@ export default {
     }
   },
   mounted() {
-    this.getDataAsync()
+    this.getDataAsync();
+    this.getHeaderApprove();
+    
   },
   methods: {
+      showMsgBoxTwo(index) {
+        this.$bvModal.msgBoxConfirm('Please confirm that you want to delete everything.', {
+          title: 'การอนุมัติ',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'อนุมัติ',
+          cancelTitle: 'ไม่อนุมัติ',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        }).then(value => {
+          console.log(value)
+          if (value) {
+            this.items[index].HeaderbtnApprove = true;
+            this.items[index].HrbtnApprove = true;
+            authService.postApproveHead(this.items[index].emp_leave_id).then(response => {
+              
+            });
+            console.log("aaa");
+          } else {
+
+          }
+        })
+      },
       getDataAsync: async function(){
         await authService.getDataHeader({}).then(response => {
           for (var i = 0; i < response.data.length; i++) {
@@ -142,6 +174,26 @@ export default {
         });
         this.totalRows = this.items.length
       },
+      getHeaderApprove: function() {
+      this.isBusy = true;
+      authService.getDataHeader({}).then(response => {
+        console.log(response.data)
+        if (response.data != null && response.data.length > 0) {
+          for (var i = 0; i < response.data.length; i++) {
+            response.data[i].no = i+1;
+            response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+            response.data[i].HeaderbtnApprove = false;
+            response.data[i].HrbtnApprove = false;
+          }
+          console.log(response.data)
+          this.items = response.data;
+          this.totalRows = this.items.length
+          this.isBusy = false;
+        } else {
+          this.isBusy = false;
+        }
+      });
+    },
       info(item, index, button) {
         this.infoModal.title = `Row index: ${index}`
         this.infoModal.content = JSON.stringify(item, null, 2)
@@ -169,4 +221,8 @@ export default {
     top: 8%;
     left: 60%;
   }
+
+  .close:hover {
+  cursor: pointer;
+}
 </style>

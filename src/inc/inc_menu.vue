@@ -9,7 +9,7 @@
       <div slot="title">
         <vs-navbar-title>
           <img style="cursor: pointer;" @click="toUrl('Main')" alt="Vue logo" src="../assets/ABSLogo9.png" width="180" height="60" /> 
-        </vs-navbar-title>   
+        </vs-navbar-title>
       </div>
 
       <vs-navbar-item index="0">
@@ -18,23 +18,23 @@
       <vs-navbar-item index="1">
         <a style="cursor: pointer;" @click="toUrl('EmpLeave')"><font size=3 color="#FEFCFF"> ข้อมูลการลางาน</font></a>
       </vs-navbar-item>
-      <vs-navbar-item index="2" >
+      <!-- <vs-navbar-item index="2" >
         <a style="cursor: pointer;" @click="toUrl('EmpOT')"><font size=3 color="#FEFCFF">(User) ข้อมูลการทำงานนอกเวลา(OT)</font></a>
-      </vs-navbar-item>
-      <vs-navbar-item index="3">
+      </vs-navbar-item> -->
+      <vs-navbar-item index="2">
         <a style="cursor: pointer;" @click="toUrl('HeaderApprove')"><font size=3 color="#FEFCFF">(Header) การอนุมัติลางาน</font></a>
       </vs-navbar-item>
-      <vs-navbar-item index="4">
+      <vs-navbar-item index="3">
         <a style="cursor: pointer;" @click="toUrl('HrLeave')"><font size=3 color="#FEFCFF">(Hr) ข้อมูลการลางานของพนักงาน</font></a>
       </vs-navbar-item>
-      <vs-navbar-item index="5" style="margin-right:10px;">
+      <!-- <vs-navbar-item index="5" style="margin-right:10px;">
         <a style="cursor: pointer;" @click="toUrl('HrOT')"><font size=3 color="#FEFCFF">(Hr) ข้อมูลการทำงานนอกเวลาของพนักงาน</font></a>
-      </vs-navbar-item>
+      </vs-navbar-item> -->
 
       <vs-spacer></vs-spacer>
 
       <div class="dropdown">
-        <div style="cursor: pointer; margin:0px 20px 0px 20px;" class="dropbtn">
+        <div style="cursor: pointer; margin:0px 70px 0px 20px;" class="dropbtn">
           <img src="../assets/user.png" width="40" height="40">
         </div>
         <div class="dropdown-content">
@@ -48,17 +48,18 @@
               <p class="my-4">ตำแหน่ง : {{userIn.position_name}}</p>
               <p class="my-4">E-mail : {{userIn.username}}</p>
               <p class="my-4">เบอร์ติดต่อ : {{userIn.mobile}}</p>
-              <center><b-button v-b-modal.modal-footer-sm>แก้ไขข้อมูล</b-button></center>
+              <!-- <center><b-button v-b-modal.modal-footer-sm>แก้ไขข้อมูล</b-button></center> -->
             </b-modal>
           </a>
+          <a style="color:black;" @click="logout()">ออกจากระบบ</a>
         </div>
       </div>
         <!-- <img style="cursor: pointer; margin:0px 20px 0px 10px;" @click="toUrl('Main')" alt="Vue logo" src="../assets/user.png" width="40" height="40" /> -->
     
-      <vs-button @click="logout()" style="margin-right:25px;" color="danger" type="gradient" > 
+      <!-- <vs-button @click="logout()" style="margin-right:25px;" color="danger" type="gradient" > 
         <font-awesome-icon icon="sign-out-alt" style="margin-right:8px;" />
         ออกจากระบบ 
-      </vs-button>
+      </vs-button> -->
     </vs-navbar>
   </div>
 </template>
@@ -105,8 +106,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .dropbtn {
   background-color: transparent;
 }
@@ -122,6 +121,7 @@ export default {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  left: -25%;
 }
 
 .dropdown-content a {
