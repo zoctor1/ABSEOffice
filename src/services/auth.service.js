@@ -104,3 +104,20 @@ export function getLeaveStat(dataS) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
+export function postApproveHR(approveHr) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/ApproveHR`, {}, { headers: {dataHR : approveHr} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function postApproveHead(approveH) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/ApproveHead`, {}, { headers: {dataHead : approveH} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}

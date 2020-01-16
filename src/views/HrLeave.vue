@@ -16,18 +16,11 @@
                 >
                 </b-form-input>
                 <b-input-group-append>
-                  <b-button 
-                    size="sm" 
-                    class="my-2 my-sm-0" 
-                    type="submit" 
-                    variant="primary" 
-                    :disabled="!filter" 
-                    @click="filter = ''"
-                    >
-                    Clear
-                  </b-button>
-                  <div style="cursor: pointer; margin-left:10px" @click="getHrApprove()">
-                    <img src="../assets/refresh.png" width="33" height="33">
+                  <div class="close" style="cursor: pointer; margin-left:10px" @click="getHrApprove()">
+                    <img src="../assets/refresh.png" id="tooltip-target-1" width="33" height="33">
+                    <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
+                      Refresh
+                    </b-tooltip>
                   </div>
                 </b-input-group-append>
               </b-input-group>
@@ -188,4 +181,8 @@ export default {
     top: 8%;
     left: 60%;
   }
+
+  .close:hover {
+  cursor: pointer;
+}
 </style>

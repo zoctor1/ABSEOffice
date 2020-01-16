@@ -18,18 +18,11 @@
                 >
                 </b-form-input>
                 <b-input-group-append>
-                  <b-button 
-                    size="sm" 
-                    class="my-2 my-sm-0" 
-                    type="submit" 
-                    variant="primary" 
-                    :disabled="!filter" 
-                    @click="filter = ''"
-                  >
-                    Clear
-                  </b-button>
-                  <div style="cursor: pointer; margin-left:10px" @click="getHeaderApprove()">
-                    <img src="../assets/refresh.png" width="33" height="33">
+                  <div class="close" style="cursor: pointer; margin-left:10px" @click="getHeaderApprove()">
+                    <img src="../assets/refresh.png" id="tooltip-target-1" width="33" height="33">
+                    <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
+                      Refresh
+                    </b-tooltip>
                   </div>
                 </b-input-group-append>
               </b-input-group>
@@ -53,6 +46,17 @@
                     <div class="text-center text-danger ">
                       <b-spinner class="align-middle"></b-spinner>
                       <strong>Loading...</strong>
+                    </div>
+                  </template>
+                  <template v-slot:cell(head_approve_date)="data">
+                    <div>
+                      <b-button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.index)" >รอการอนุมัติ</b-button>
+                      <!-- data.items.cancelDate == null &&  -->
+                    </div>
+                  </template>
+                  <template v-slot:cell(hr_approve_date)="data">
+                    <div>
+                      <b-button v-if="!data.item.HrbtnApprove" @click="showMsgBoxTwo(data.index)" >รอการอนุมัติ</b-button>
                     </div>
                   </template>
                 </b-table>
@@ -109,13 +113,14 @@ export default {
       isBusy: false,
       totalRows:1,
       currentPage: 1,
-      perPage: 10,
+      perPage: 9,
       pageOptions: [10, 15,20],
       filter: null,
       filterOn: [],
       sortBy: '',
       sortDesc: false,
-      sortDirection: 'asc'
+      sortDirection: 'asc',
+      boxTwo: '',
     }
   },
   computed: {
@@ -130,8 +135,34 @@ export default {
   mounted() {
     this.getDataAsync();
     this.getHeaderApprove();
+    
   },
   methods: {
+      showMsgBoxTwo(index) {
+        this.$bvModal.msgBoxConfirm('Please confirm that you want to delete everything.', {
+          title: 'การอนุมัติ',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'อนุมัติ',
+          cancelTitle: 'ไม่อนุมัติ',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        }).then(value => {
+          console.log(value)
+          if (value) {
+            this.items[index].HeaderbtnApprove = true;
+            this.items[index].HrbtnApprove = true;
+            authService.postApproveHead(this.items[index].emp_leave_id).then(response => {
+              
+            });
+            console.log("aaa");
+          } else {
+
+          }
+        })
+      },
       getDataAsync: async function(){
         await authService.getDataHeader({}).then(response => {
           console.log(response.data)
@@ -152,6 +183,8 @@ export default {
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;
             response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+            response.data[i].HeaderbtnApprove = false;
+            response.data[i].HrbtnApprove = false;
           }
           console.log(response.data)
           this.items = response.data;
@@ -189,4 +222,8 @@ export default {
     top: 8%;
     left: 60%;
   }
+
+  .close:hover {
+  cursor: pointer;
+}
 </style>
