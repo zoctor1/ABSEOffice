@@ -10,24 +10,24 @@
               </div>
           </div>
           <b-nav-form >
-              <b-input-group size="sm">
-                <b-form-input
-                  size="sm" 
-                  class="mr-sm-2"
-                  v-model="filter"
-                  type="search"
-                  id="filterInput"
-                  placeholder="ค้นหา.."
-                  autocomplete = on
-                >
-                </b-form-input>
-              </b-input-group>
-              <div class="close" style="cursor: pointer; margin-left:10px" @click="getDataAsync()">
-                <img src="../assets/refresh.png" id="tooltip-target-1"  width="33" height="33">
-                <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
-                  Refresh
-                </b-tooltip>
-              </div>
+            <b-input-group size="sm">
+              <b-form-input
+                size="sm" 
+                class="mr-sm-2"
+                v-model="filter"
+                type="search"
+                id="filterInput"
+                placeholder="ค้นหา.."
+                autocomplete = on
+              >
+              </b-form-input>
+            </b-input-group>
+            <div class="close" style="cursor: pointer; margin-left:10px" @click="getDataAsync()">
+              <img src="../assets/refresh.png" id="tooltip-target-1"  width="33" height="33">
+              <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
+                Refresh
+              </b-tooltip>
+            </div>
           </b-nav-form>
           <table  width=100% style="margin-top:10px; border: 1px solid black;">
             <div >
@@ -56,22 +56,22 @@
         </b-col>
       </div>
     </center>
-        <div>
-          <b-col lg="9" sm="7" xs="5" class="my-1" id="parent2"> 
-              <b-row class="my-1">
-                  <b-col sm="8">
-                      <b-pagination
-                        v-model="currentPage"
-                        :total-rows="totalRows"
-                        :per-page="perPage"
-                        align="fill"
-                        size="md"
-                        class="my-0"
-                      ></b-pagination>
-                  </b-col>
-              </b-row>
-          </b-col>
-        </div>
+      <div>
+        <b-col lg="9" sm="7" xs="5" class="my-1" id="parent2"> 
+          <b-row class="my-1">
+            <b-col style="margin-left:auto" sm="7">
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="totalRows"
+                :per-page="perPage"
+                align="fill"
+                size="sm"
+                class="my-0"
+              ></b-pagination>
+            </b-col>
+          </b-row>
+        </b-col>
+      </div>
   </div>
 </template>
 
@@ -88,45 +88,45 @@ export default {
   props: {},
   data() {
     return {
-          items: [],
-          fields: [
-            { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
-            { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
-            { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
-            { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-            { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-            { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
-            { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
-            { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-            { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
-          ],
-          isBusy: false,
-          options1:[],
-          totalRows:1,
-          currentPage: 1,
-          perPage: 10,
-          pageOptions: [10, 15],
-          filter: null,
-          filterOn: [],
-          sortBy: '',
-          sortDesc: false,
-          sortDirection: 'asc',
-          name: " ",
-          val1: " ",
-          val2: " "
-        }
+      items: [],
+      fields: [
+        { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
+        { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
+        { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
+        { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
+        { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+        { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+        { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
+      ],
+      isBusy: false,
+      options1:[],
+      totalRows:1,
+      currentPage: 1,
+      perPage: 10,
+      pageOptions: [10, 15],
+      filter: null,
+      filterOn: [],
+      sortBy: '',
+      sortDesc: false,
+      sortDirection: 'asc',
+      name: " ",
+      val1: " ",
+      val2: " "
+    }
   },
   computed: {
-      sortOptions() {
-        return this.fields
-          .filter(f => f.sortable)
-          .map(f => {
-            return { text: f.label, value: f.key }
-          })
-      },
-      state() {
-        return this.name.length >= 4 ? true : false
-      }
+    sortOptions() {
+      return this.fields
+        .filter(f => f.sortable)
+        .map(f => {
+          return { text: f.label, value: f.key }
+        })
+    },
+    state() {
+      return this.name.length >= 4 ? true : false
+    }
   },
   mounted() {
     this.getDataAsync();
@@ -178,11 +178,10 @@ export default {
   #parent2 {
     position: Sticky ;
     top: 8%;
-    left: 60%;
+    right: auto;
   }
 
-.close:hover {
-  cursor: pointer;
-}
-
+  .close:hover {
+    cursor: pointer;
+  }
 </style>
