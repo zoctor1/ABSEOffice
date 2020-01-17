@@ -51,7 +51,7 @@
                   </template>
                   <template v-slot:cell(head_approve_date)="data">
                     <div>
-                      <b-button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.index)" >รอการอนุมัติ</b-button>
+                      <b-button class="btn-secondary" v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.index)" >รอการอนุมัติ</b-button>
                       <!-- data.items.cancelDate == null &&  -->
                     </div>
                   </template>
@@ -114,7 +114,7 @@ export default {
       isBusy: false,
       totalRows:1,
       currentPage: 1,
-      perPage: 9,
+      perPage: 10,
       pageOptions: [10, 15,20],
       filter: null,
       filterOn: [],
@@ -215,7 +215,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
   #parent2 {
     position: Sticky;
     top: 8%;
@@ -225,4 +225,8 @@ export default {
   .close:hover {
   cursor: pointer;
 }
+
+  #HeaderAppve .btn-secondary {
+    font-size: 12px;
+  }
 </style>

@@ -104,7 +104,7 @@ export default {
           options1:[],
           totalRows:1,
           currentPage: 1,
-          perPage: 9,
+          perPage: 10,
           pageOptions: [10, 15],
           filter: null,
           filterOn: [],

@@ -113,7 +113,7 @@ export default {
       isBusy: false,
       totalRows:1,
       currentPage: 1,
-      perPage: 9,
+      perPage: 10,
       pageOptions: [10,15],
       filter: null,
       filterOn: [],
@@ -214,7 +214,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
   #parent2 {
     position: Sticky;
     top: 8%;
@@ -224,4 +224,8 @@ export default {
   .close:hover {
   cursor: pointer;
 }
+
+#HrLeave .btn-secondary {
+    font-size: 12px;
+  }
 </style>
