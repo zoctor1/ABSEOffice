@@ -114,6 +114,7 @@ export function postApproveHR(approveHr) {
 }
 
 export function postApproveHead(approveH) {
+    console.log(approveH);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/ApproveHead`, {}, { headers: {dataHead : approveH} }).then(
             response => {

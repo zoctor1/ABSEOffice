@@ -155,9 +155,16 @@ export default {
           if (value) {
             this.items[index].HeaderbtnApprove = true;
             this.items[index].HrbtnApprove = true;
-            authService.postApproveHead(this.items[index].emp_leave_id).then(response => {
-            });
-            console.log("aaa");
+            authService.postApproveHead(this.items[index].emp_leave_id)
+              .then(response => {
+            //   if (response.data != null){
+
+            //   }
+            //   else {
+
+            //   }
+            console.log(response.data);
+             });
           } else {
 
           }
