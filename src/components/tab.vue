@@ -41,7 +41,7 @@
             <b-td><center>{{ Math.abs(i.leave_limit - i.dayOff) }}</center></b-td>
           </b-tr>
         </b-tbody>
-          <b-thead  class="thead-light" head-variant="danger">
+          <b-thead class="thead-light" head-variant="danger">
             <b-tr v-if="responseData">
               <b-th><b>รวมทั้งหมด : </b></b-th>
               <b-th><center><b>{{ sumLimits(responseData) }}</b></center></b-th>
