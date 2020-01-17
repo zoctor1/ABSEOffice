@@ -27,7 +27,7 @@
               <b-col>
                 <div class="form-group" :class="{ 'form-group--error': $v.form.valDate1.$error }">
                   <p>ขอลาในวันที่ :</p>
-                  <datetime  v-model.trim="$v.form.valDate1.$model" format="DD/MM/YYYY H:i" style="width:250px;height:37px;cursor: pointer;" ></datetime>
+                  <datetime v-if="popupLeave" v-model.trim="$v.form.valDate1.$model" format="DD/MM/YYYY H:i" style="width:250px;height:37px;cursor: pointer;" ></datetime>
                   <div class="error" v-if="!$v.form.valDate1.required"><font color="red">*จำเป็น</font></div>
                   <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                 </div>
@@ -35,7 +35,7 @@
               <b-col>
                 <div style="margin-bottom:2px" class="form-group" :class="{ 'form-group--error': $v.form.valDate2.$error }">
                   <p>ถึงวันที่(กรณีลามากกว่า 1 วัน) :</p>
-                  <datetime  v-model.trim="$v.form.valDate2.$model" format="DD/MM/YYYY H:i" style="width:250px;height:37px;cursor: pointer;" ></datetime>
+                  <datetime v-if="popupLeave" v-model.trim="$v.form.valDate2.$model" format="DD/MM/YYYY H:i" style="width:250px;height:37px;cursor: pointer;" ></datetime>
                   <div class="error" v-if="!$v.form.valDate2.required"><font color="red">*จำเป็น</font></div>
                   <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                 </div>
@@ -125,7 +125,7 @@ export default {
   components: {
     datetime,
     Swal,
-    Loading
+    Loading,
   },
   props: {},
   data() {

@@ -46,6 +46,17 @@
                       <strong>Loading...</strong>
                     </div>
                   </template>
+                  <template v-slot:cell(head_approve_date)="data">
+                    <div>
+                      <b-button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.index)" >รอการอนุมัติ</b-button>
+                      <!-- data.items.cancelDate == null &&  -->
+                    </div>
+                  </template>
+                  <template v-slot:cell(hr_approve_date)="data">
+                    <div>
+                      <b-button v-if="!data.item.HrbtnApprove" @click="showMsgBoxTwo(data.index)" >รอการอนุมัติ</b-button>
+                    </div>
+                  </template>
                 </b-table>
                   <!-- :busy="isBusy" is reload variable  -->
               </div>
@@ -108,7 +119,8 @@ export default {
       filterOn: [],
       sortBy: '',
       sortDesc: false,
-      sortDirection: 'asc'
+      sortDirection: 'asc',
+      boxTwo: '',
     }
   },
   computed: {
@@ -125,6 +137,30 @@ export default {
     this.getHrApprove();
   },
   methods: {
+    showMsgBoxTwo(index) {
+        this.$bvModal.msgBoxConfirm('Please confirm that you want to delete everything.', {
+          title: 'การอนุมัติ',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'อนุมัติ',
+          cancelTitle: 'ไม่อนุมัติ',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        }).then(value => {
+          console.log(value)
+          if (value) {
+            this.items[index].HeaderbtnApprove = true;
+            this.items[index].HrbtnApprove = true;
+            authService.postApproveHr(this.items[index].emp_leave_id).then(response => {
+            });
+            console.log("aaa");
+          } else {
+
+          }
+        })
+      },
     getDataAsync: async function() {
       await authService.getDataHR({}).then(response => {
         console.log(response.data)
@@ -145,6 +181,8 @@ export default {
         for (var i = 0; i < response.data.length; i++) {
           response.data[i].no = i+1;
           response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+          response.data[i].HeaderbtnApprove = false;
+          response.data[i].HrbtnApprove = false;
         }
         console.log(response.data)
           this.items = response.data;
@@ -176,7 +214,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
   #parent2 {
     position: Sticky;
     top: 8%;
@@ -186,4 +224,8 @@ export default {
   .close:hover {
   cursor: pointer;
 }
+
+#HrLeave .btn-secondary {
+    font-size: 12px;
+  }
 </style>

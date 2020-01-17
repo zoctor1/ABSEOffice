@@ -40,4 +40,8 @@ html, body {
 #calendarMain label[for="locale"] {
   display: none;
 }
+
+.btn-secondary {
+  font-size: 12px;
+}
 /* ========= bootstrap ========= */
