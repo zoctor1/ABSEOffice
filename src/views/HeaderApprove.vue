@@ -155,7 +155,6 @@ export default {
             this.items[index].HeaderbtnApprove = true;
             this.items[index].HrbtnApprove = true;
             authService.postApproveHead(this.items[index].emp_leave_id).then(response => {
-              
             });
             console.log("aaa");
           } else {

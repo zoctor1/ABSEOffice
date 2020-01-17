@@ -1,8 +1,8 @@
 <template>
-  <div style="background-color:#f8f8f8">
+  <div style="background-color:#f8f8f8; margin-left:5px; ">
     <b-col sm="12">
       <div style="position: relative;">
-        <b-card style="margin-top:20px;">
+        <b-card style="margin-top:20px;" >
           <h3>{{userIn.first_name}} {{userIn.last_name}}</h3>
           <h4 style="margin-bottom:10px">เเผนก : {{userIn.dept_name}}</h4>
           <h4 style="margin-bottom:10px">ตำแหน่ง : {{userIn.position_name}} </h4>
@@ -43,10 +43,10 @@
         </b-tbody>
           <b-thead  class="thead-light" head-variant="danger">
             <b-tr v-if="responseData">
-              <b-th>รวมทั้งหมด: </b-th>
-              <b-td><center>{{ sumLimits(responseData) }}</center></b-td>
-              <b-td><center></center>{{ sumLeave(responseData) }}</b-td>
-              <b-td><center>{{ sumRemain(responseData) }}</center></b-td>
+              <b-th><b>รวมทั้งหมด : </b></b-th>
+              <b-th><center><b>{{ sumLimits(responseData) }}</b></center></b-th>
+              <b-th><center><b>{{ sumLeave(responseData) }}</b></center></b-th>
+              <b-th><center><b>{{ sumRemain(responseData) }}</b></center></b-th>
             </b-tr>
           </b-thead>
       </b-table-simple>
