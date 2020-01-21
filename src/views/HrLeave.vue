@@ -98,16 +98,16 @@
     <div>
       <b-col lg="9" sm="7" xs="5" class="my-1" id="parent2">
         <b-row class="my-1">
-          <b-col  sm="8">
-              <b-pagination
-                v-model="currentPage"
-                :total-rows="totalRows"
-                :per-page="perPage"
-                align="fill"
-                size="md"
-                class="my-0"
-              >
-              </b-pagination>
+          <b-col style="margin-left:auto" sm="7">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              align="fill"
+              size="sm"
+              class="my-0"
+            >
+            </b-pagination>
           </b-col>
         </b-row>
       </b-col>
