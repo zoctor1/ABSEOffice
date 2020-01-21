@@ -184,10 +184,12 @@ export default {
             // this.items[index].HrbtnApprove = true;
             authService.postApproveHead(id).then(response => {
               console.log(response.data);
+              this.getHeaderApprove();
             });
           } else {
             authService.notApproveHead(id).then(response => {
               console.log(response.data);
+              this.getHeaderApprove();
             });
           }
         })
