@@ -3,9 +3,7 @@
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
-          <h2 style="text-align: left;">
-            คำขออนุมัติการลางาน
-          </h2>
+          <h2 style="text-align: left;">คำขออนุมัติการลางาน</h2>
             <b-nav-form >
               <b-input-group size="sm">
                 <b-form-input
@@ -46,19 +44,50 @@
                   <template v-slot:table-busy>
                     <div class="text-center text-danger ">
                       <b-spinner class="align-middle"></b-spinner>
-                      <strong>Loading...</strong>
+                      <strong> Loading...</strong>
                     </div>
                   </template>
+
+                   <template v-slot:cell(hr_approve_date)="data">
+                    <div v-if="data.item.cancel_date != null">
+                      <h7>ไม่อนุมัติ</h7>
+                    </div>
+                    <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date != null">
+                      <h7>{{data.item.hr_approve_date}}</h7>
+                    </div>
+                    <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date == null">
+                      <h7>รอการอนุมัติ</h7>
+                    </div>
+                  </template>
+
                   <template v-slot:cell(head_approve_date)="data">
-                    <div>
-                      <b-button class="btn-secondary" v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.index)" >รอการอนุมัติ</b-button>
-                      <!-- data.items.cancelDate == null &&  -->
+                    <div v-if="data.item.cancel_date != null">
+                      <h7>ไม่อนุมัติ</h7>
+                    </div>
+                    <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date != null">
+                      <h7>{{data.item.head_approve_date}}</h7>
+                    </div>
+                    <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date == null">
+                      <b-button class="btn-secondary" v-if="!data.item.HrbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)">รอการอนุมัติ</b-button>
                     </div>
                   </template>
-                  <template v-slot:cell(hr_approve_date)="data">
-                    <div>
-                      <b-button v-if="!data.item.HrbtnApprove" @click="showMsgBoxTwo(data.index)" >รอการอนุมัติ</b-button>
-                    </div>
+
+                  <template v-slot:cell(status)="data">
+                      <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_date == null">
+                        <h7>ผ่าน</h7>
+                      </div>
+                      <div v-else-if="data.item.cancel_date != null">
+                        <h7>ไม่ผ่าน</h7>
+                      </div>
+                      <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null">
+                        <h7>รอการอนุมัติจาก Head เเละ Hr</h7>
+                      </div>
+                      <div v-else-if="data.item.head_approve_date == null && data.item.cancel_date == null">
+                        <h7>รอการอนุมัติจาก Head</h7>
+                      </div>
+                      <div v-else-if="data.item.hr_approve_date == null && data.item.cancel_date == null">
+                        <h7>รอการอนุมัติจาก Hr</h7>
+                      </div>
                   </template>
                 </b-table>
               </div>
@@ -134,13 +163,11 @@ export default {
     }
   },
   mounted() {
-    this.getDataAsync();
     this.getHeaderApprove();
-    
   },
   methods: {
-      showMsgBoxTwo(index) {
-        this.$bvModal.msgBoxConfirm('Please confirm that you want to delete everything.', {
+      showMsgBoxTwo(id) {
+        this.$bvModal.msgBoxConfirm('คุณต้องการอนุมัติการลานี้ใช่หรือไม่?', {
           title: 'การอนุมัติ',
           size: 'sm',
           buttonSize: 'sm',
@@ -153,33 +180,17 @@ export default {
         }).then(value => {
           console.log(value)
           if (value) {
-            this.items[index].HeaderbtnApprove = true;
-            this.items[index].HrbtnApprove = true;
-            authService.postApproveHead(this.items[index].emp_leave_id)
-              .then(response => {
-            //   if (response.data != null){
-
-            //   }
-            //   else {
-
-            //   }
-            console.log(response.data);
-             });
+            // this.items[index].HeaderbtnApprove = true;
+            // this.items[index].HrbtnApprove = true;
+            authService.postApproveHead(id).then(response => {
+              console.log(response.data);
+            });
           } else {
-
+            authService.notApproveHead(id).then(response => {
+              console.log(response.data);
+            });
           }
         })
-      },
-      getDataAsync: async function(){
-        await authService.getDataHeader({}).then(response => {
-          for (var i = 0; i < response.data.length; i++) {
-            response.data[i].no = i+1;
-            response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-          }
-          console.log(response.data)
-          this.items = response.data;
-        });
-        this.totalRows = this.items.length
       },
       getHeaderApprove: function() {
       this.isBusy = true;

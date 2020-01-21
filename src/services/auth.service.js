@@ -104,7 +104,8 @@ export function getLeaveStat(dataS) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function postApproveHR(approveHr) {
+export function postApproveHr(approveHr) {
+    console.log(approveHr);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/ApproveHR`, {}, { headers: {dataHR : approveHr} }).then(
             response => {
@@ -117,6 +118,26 @@ export function postApproveHead(approveH) {
     console.log(approveH);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/ApproveHead`, {}, { headers: {dataHead : approveH} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function notApproveHead(notApproveH) {
+    console.log(notApproveH);
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/NotApproveHead`, {}, { headers: {cancelHead : notApproveH} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function notApproveHR(notApproveHr) {
+    console.log(notApproveHr);
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/NotApproveHR`, {}, { headers: {cancelHR : notApproveHr} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })

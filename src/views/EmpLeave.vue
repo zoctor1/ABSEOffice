@@ -50,6 +50,48 @@
                   <strong>Loading...</strong>
                 </div>
               </template>
+
+              <template v-slot:cell(hr_approve_date)="data">
+                <div v-if="data.item.cancel_date != null">
+                  <h7>ไม่อนุมัติ</h7>
+                </div>
+                <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date != null">
+                  <h7>{{data.item.hr_approve_date}}</h7>
+                </div>
+                <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date == null">
+                  <h7>รอการอนุมัติ</h7>
+                </div>
+              </template>
+
+              <template v-slot:cell(head_approve_date)="data">
+                <div v-if="data.item.cancel_date != null">
+                  <h7>ไม่อนุมัติ</h7>
+                </div>
+                <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date != null">
+                  <h7>{{data.item.head_approve_date}}</h7>
+                </div>
+                <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date == null">
+                  <h7>รอการอนุมัติ</h7>
+                </div>
+              </template>
+
+              <template v-slot:cell(status)="data">
+                <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_date == null">
+                  <h7>ผ่าน</h7>
+                </div>
+                <div v-else-if="data.item.cancel_date != null">
+                  <h7>ไม่ผ่าน</h7>
+                </div>
+                <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null">
+                  <h7>รอการอนุมัติจาก Head เเละ Hr</h7>
+                </div>
+                <div v-else-if="data.item.head_approve_date == null && data.item.cancel_date == null">
+                  <h7>รอการอนุมัติจาก Head</h7>
+                </div>
+                <div v-else-if="data.item.hr_approve_date == null && data.item.cancel_date == null">
+                  <h7>รอการอนุมัติจาก Hr</h7>
+                </div>
+              </template>
               </b-table>
             </div>
           </table>
