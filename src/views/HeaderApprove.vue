@@ -53,9 +53,6 @@
                   <template v-slot:empty>
                     <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
                   </template>
-                  <template v-slot:empty>
-                    <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
-                  </template>
                   <template v-slot:cell(head_approve_date)="data">
                     <div>
                       <b-button class="btn-secondary" v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.index)" >รอการอนุมัติ</b-button>
