@@ -39,12 +39,16 @@
                   :sort-desc.sync="sortDesc"
                   :sort-direction="sortDirection"
                   @filtered="onFiltered"
+                  show-empty
                 > 
                   <template v-slot:table-busy>
                     <div class="text-center text-danger ">
                       <b-spinner class="align-middle"></b-spinner>
                       <strong>Loading...</strong>
                     </div>
+                  </template>
+                  <template v-slot:empty>
+                    <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
                   </template>
                   <template v-slot:cell(head_approve_date)="data">
                     <div>
@@ -189,9 +193,12 @@ export default {
           this.totalRows = this.items.length
           this.isBusy = false;
       } else {
-          this.isBusy = false;
+            console.log("else");
+            setTimeout(() => {
+              this.isBusy = false}, 3500);
+              console.log("isbusy");
         }
-        });
+      });
     },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`

@@ -42,6 +42,7 @@
                 :sort-desc.sync="sortDesc"
                 :sort-direction="sortDirection"
                 @filtered="onFiltered" 
+                show-empty
               >
               <!-- :busy="isBusy" is reload variable  -->
               <template v-slot:table-busy>
@@ -49,6 +50,9 @@
                   <b-spinner class="align-middle"></b-spinner>
                   <strong>Loading...</strong>
                 </div>
+              </template>
+              <template v-slot:empty>
+                <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
               </template>
               </b-table>
             </div>
@@ -136,11 +140,21 @@ export default {
       this.isBusy = true;
         var user = JSON.parse(localStorage.getItem("user"));
         await authService.getUserLeave(user.uuid).then(response => {
-          for (var i = 0; i < response.data.length; i++) {
-            response.data[i].no = i+1;
-          }
-          this.items = response.data;
-          this.isBusy = false;
+          console.log(response.data)
+          if (response.data.length > 0) {
+            for (var i = 0; i < response.data.length; i++) {
+              response.data[i].no = i+1;
+            }
+              this.items = response.data;
+              this.isBusy = false;
+              console.log("check")
+          } else {
+            console.log("else");
+            setTimeout(() => {
+              this.isBusy = false}, 5000);
+              console.log("isbusy");
+              // alert("aaaa")
+            }
         });
         this.totalRows = this.items.length
     },
