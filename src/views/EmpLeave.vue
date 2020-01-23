@@ -53,7 +53,7 @@
               </template>
               <template v-slot:empty>
                 <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
-
+              </template>
               <template v-slot:cell(hr_approve_date)="data">
                 <div v-if="data.item.cancel_date != null">
                   <h7>ไม่อนุมัติ</h7>
