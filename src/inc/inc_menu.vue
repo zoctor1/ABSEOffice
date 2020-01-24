@@ -120,6 +120,11 @@ export default {
 </script>
 
 <style scoped>
+
+.myNavbar{
+  width: auto
+}
+
 .dropbtn {
   background-color: transparent;
 }

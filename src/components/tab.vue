@@ -1,23 +1,20 @@
 <template>
   <div style="background-color:#f8f8f8; margin-left:5px; ">
-    <b-col sm="12">
+    <b-col>
       <div style="position: relative;">
         <b-card style="margin-top:20px;" >
           <center>
           <h3>{{userIn.first_name}} {{userIn.last_name}}</h3>
           <h4 style="margin-bottom:10px">เเผนก : {{userIn.dept_name}}</h4>
           <h4 style="margin-bottom:10px">ตำแหน่ง : {{userIn.position_name}} </h4>
-          </center>
-          <div class="center">
             <center>
-              <div style="margin: 60px 150px 0px 0px">
+              <div style="margin: 30px 130px 0px -20px">
                 <popupLeave />
               </div>
-              <div style="margin:-44px 0px 0px 150px">
+              <div style="margin:-44px 0px 0px 130px">
                 <popupOT />
               </div>
             </center>
-          </div>
         </b-card>
       </div>  
       <b-table-simple hover small caption-top responsive style="border :1px solid red; margin-top:10px; ">
@@ -37,6 +34,7 @@
           </b-thead>
         <b-tbody>
           <b-tr v-for="i in responseData">
+            <!-- v-if="i.dayOff != null in responseData" -->
             <b-th>{{ i.leave_reason_name }}</b-th>
             <b-td><center>{{ i.leave_limit }}</center></b-td>
             <b-td><center>{{ i.dayOff }}</center></b-td>
@@ -175,5 +173,12 @@ export default {
 
   .media {
     max-width: 99%
+  }
+
+  @media (max-width: 550px) {
+        .vs-component vs-button vs-button-primary vs-button-filled {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
   }
 </style>

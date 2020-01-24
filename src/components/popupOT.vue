@@ -10,7 +10,7 @@
       </vs-button>
     </div>
 
-      <vs-popup id="sizePopupOT" classContent="popupOT-example"  title="กรอกรายละเอียดการทำงานนอกเวลา" :active.sync="popupOT">
+      <vs-popup class="popupContent" id="sizePopupOT" classContent="popupOT-example"  title="กรอกรายละเอียดการทำงานนอกเวลา" :active.sync="popupOT">
         <!-- <center><h4>{{userIn.first_name}} {{userIn.last_name}}</h4></center>
         <center><h5>แผนก : {{userIn.dept_name}}</h5></center> -->
           <div>
@@ -163,6 +163,12 @@ export default {
 </script>
 
 <style>
+@media (max-width: 500px) {
+  .popupContent{
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+}
   #sizePopupOT .con-vs-popup .vs-popup {
     width: 35%;
     height: 83%;

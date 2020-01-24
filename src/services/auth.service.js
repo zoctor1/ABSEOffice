@@ -143,3 +143,14 @@ export function notApproveHR(notApproveHr) {
             })
     }).catch(error => reject(new ErrorWrapper(error)))
 }
+
+export function getEvent(eventC) {
+    console.log("//////////////////");
+    console.log(eventC);
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/CalendarEvent`, {}, { headers: {event : eventC} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
