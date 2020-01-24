@@ -74,11 +74,11 @@
         display: none;
     }
     
-    /* #calendarMain .modal-body .event-color {
+     /* #calendarMain .modal-body .event-color {
         display: none;
     }
     #calendarMain .badge-success { 
         display: none;
-    }
+    } */
     
 </style>

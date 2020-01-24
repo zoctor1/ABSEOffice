@@ -78,7 +78,6 @@ export function insertData(obj) {
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/addDataLeave`, JSON.stringify(obj), {}).then(
             response => {
-                // console.log(obj)
                 return resolve(new ResponseWrapper(response, response.data))
             })
     }).catch(error => reject(new ErrorWrapper(error)))
