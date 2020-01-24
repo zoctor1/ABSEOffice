@@ -15,6 +15,7 @@
                 <popupOT />
               </div>
             </center>
+          </center>
         </b-card>
       </div>  
       <b-table-simple hover small caption-top responsive style="border :1px solid red; margin-top:10px; ">

@@ -59,6 +59,7 @@
                 <p>ขอลางานในวันที่ :</p>
                 <div class="form-group" :class="{ 'form-group--error': $v.form.valDate1.$error }">
                   <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" ></datetime>
+                  
                   <div class="error" v-if="!$v.form.valDate1.required"><font color="red">*จำเป็น</font></div>
                   <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                 </div>
@@ -81,7 +82,7 @@
               </b-col>
             </b-row>
           </div>
-          <div>
+          <div style="margin-top:-10px">
             <b-row>
               <b-col>
                 <p>ลางานถึงวันที่ :</p>
@@ -103,7 +104,6 @@
                   :no-header="true"
                   label="เลือกเวลา"
                   :no-button="false"
-                  :no-shortcuts	="true"
                 />
               </b-col>
               <b-col>
@@ -140,7 +140,7 @@
         </div>
             <center>
               <vs-button
-                style="margin-bottom:25px; position: static;"
+                style="margin-bottom:25px; margin-top:25px; position: static;"
                 @click="insertData()"
                 color="primary"
                 type="filled"
@@ -163,7 +163,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 import { Datetime } from 'vue-datetime' // npm install --save luxon vue-datetime weekstart
 import 'vue-datetime/dist/vue-datetime.css'
 import { Settings } from 'luxon'
-import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
+import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'; //npm i --save vue-ctk-date-time-picker
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 
 Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
@@ -182,8 +182,8 @@ export default {
       options: [
         { text: 'ลาครึ่งเช้า', value: 1 },
         { text: 'ลาครึ่งบ่าย', value: 2 },
-        { text: 'ลาเต็มวัน', value: 3 },
-        { text: 'อื่นๆ', value: 4 }
+        { text: 'ลาเต็มวัน ', value: 3 },
+        { text: 'อื่น ๆ', value: 4 }
       ],
       options1: [
         { text: "--กรุณาเลือกสาเหตุการลา--", value: null, disabled: true},
