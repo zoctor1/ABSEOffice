@@ -2,7 +2,7 @@ export function toPage(page) {
     this.$router.push("/" + page);
 }
 
-export function setDateToServer(d) {
+export function setDateToServer(d, flag) {
     if (d == undefined || d == null || d.trim() == "") {
         return null;
     } else {
@@ -10,7 +10,10 @@ export function setDateToServer(d) {
         // var dateTxt = d.split(" ");
         // var setDate = dateTxt[0].split("/");
         // return (setDate[2] + "-" + setDate[1] + "-" + setDate[0] + " " + dateTxt[1] + ":00");
-
-        return dd.getFullYear() + "-" + (dd.getMonth() + 1 < "10" ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1) + "-" + (dd.getDate() < "10" ? "0" + dd.getDate() : dd.getDate()) + " " + (dd.getHours() < "10" ? "0" + dd.getHours() : dd.getHours()) + ":" + (dd.getMinutes() < "10" ? "0" + dd.getMinutes() : dd.getMinutes()) + ":" + (dd.getSeconds() < "10" ? "0" + dd.getSeconds() : dd.getSeconds());
+        if (flag == "TZ") {
+            return dd.getFullYear() + "-" + (dd.getMonth() + 1 < "10" ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1) + "-" + (dd.getDate() < "10" ? "0" + dd.getDate() : dd.getDate()) + "T" + (dd.getHours() < "10" ? "0" + dd.getHours() : dd.getHours()) + ":" + (dd.getMinutes() < "10" ? "0" + dd.getMinutes() : dd.getMinutes()) + ":" + (dd.getSeconds() < "10" ? "0" + dd.getSeconds() : dd.getSeconds() + ".000Z");
+        } else { 
+            return dd.getFullYear() + "-" + (dd.getMonth() + 1 < "10" ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1) + "-" + (dd.getDate() < "10" ? "0" + dd.getDate() : dd.getDate()) + " " + (dd.getHours() < "10" ? "0" + dd.getHours() : dd.getHours()) + ":" + (dd.getMinutes() < "10" ? "0" + dd.getMinutes() : dd.getMinutes()) + ":" + (dd.getSeconds() < "10" ? "0" + dd.getSeconds() : dd.getSeconds());
+        }
     }
 }

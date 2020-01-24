@@ -53,12 +53,16 @@
     #calendarMain .week-number {
         display: none;
     }
-    #calendarMain .modal-content { 
-        margin-top: 30%;
-    }
-    #calendarMain .modal-header .close { 
+    #calendarMain .badge-success { 
         display: none;
     }
+    #calendarMain .event-title { 
+        display: none;
+    }
+    #calendarMain .card-inverse  { 
+        display: none;
+    }
+    
     /* #calendarMain .modal-body .event-color {
         display: none;
     } */
