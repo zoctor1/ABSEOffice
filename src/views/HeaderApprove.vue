@@ -3,7 +3,9 @@
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
-          <h2 style="text-align: left;">คำขออนุมัติการลางาน</h2>
+          <h2 style="text-align: left;">
+            คำขออนุมัติการลางาน
+          </h2>
             <b-nav-form >
               <b-input-group size="sm">
                 <b-form-input
@@ -39,13 +41,13 @@
                   :sort-desc.sync="sortDesc"
                   :sort-direction="sortDirection"
                   @filtered="onFiltered"
-                  
+                  show-empty
                 > 
                   <!-- :busy="isBusy" is reload variable  -->
                   <template v-slot:table-busy>
                     <div class="text-center text-danger ">
                       <b-spinner class="align-middle"></b-spinner>
-                      <strong> Loading...</strong>
+                      <strong>Loading...</strong>
                     </div>
                   </template>
 
@@ -60,7 +62,6 @@
                       <h6>รอการอนุมัติ</h6>
                     </div>
                   </template>
-
                   <template v-slot:cell(head_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
                       <h6>ไม่อนุมัติ</h6>
@@ -170,11 +171,13 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   mounted() {
+    this.getDataAsync();
     this.getHeaderApprove();
+    
   },
   methods: {
-      showMsgBoxTwo(id) {
-        this.$bvModal.msgBoxConfirm('คุณต้องการอนุมัติการลานี้ใช่หรือไม่?', {
+      showMsgBoxTwo(index) {
+        this.$bvModal.msgBoxConfirm('Please confirm that you want to delete everything.', {
           title: 'การอนุมัติ',
           size: 'sm',
           buttonSize: 'sm',
@@ -192,12 +195,20 @@ export default {
               this.getHeaderApprove();
             });
           } else {
-            authService.notApproveHead(id).then(response => {
-              console.log(response.data);
-              this.getHeaderApprove();
-            });
+
           }
         })
+      },
+      getDataAsync: async function(){
+        await authService.getDataHeader({}).then(response => {
+          for (var i = 0; i < response.data.length; i++) {
+            response.data[i].no = i+1;
+            response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+          }
+          console.log(response.data)
+          this.items = response.data;
+        });
+        this.totalRows = this.items.length
       },
       getHeaderApprove: function() {
       this.isBusy = true;
@@ -215,8 +226,11 @@ export default {
           this.totalRows = this.items.length
           this.isBusy = false;
         } else {
-          this.isBusy = false;
-        }
+            console.log("else");
+            setTimeout(() => {
+              this.isBusy = false}, 3500);
+              console.log("isbusy");
+          }
       });
     },
     handleResize: function() {
