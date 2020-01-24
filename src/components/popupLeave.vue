@@ -1,7 +1,7 @@
 <template>
   <div id="popupLeave">
     <div>
-      <b-col sm="12">
+      <b-col lg="12" sm="12" xs="12">
         <div>
           <vs-button
             @click="defaultValue()"
@@ -14,6 +14,7 @@
       </b-col>
     </div>
     <vs-popup 
+      class="popupContent"
       id="sizePopupLeave" 
       classContent="popupLeave-example"  
       title="กรอกรายละเอียดประวัติการลา" 
@@ -266,6 +267,23 @@ export default {
 </script>
 
 <style>
+
+@media (max-width: 500px) {
+  .popupLeave-example{
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+  }
+}
+
+@media (max-width: 500px) {
+  .popupContent{
+    margin-right: 10px;
+    margin-left: 10px;
+    text-align: center;
+  }
+}
+
   input[type="date"]::-webkit-inner-spin-button {
     display: none;
     -webkit-appearance: none;

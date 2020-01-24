@@ -39,6 +39,7 @@
                   :sort-desc.sync="sortDesc"
                   :sort-direction="sortDirection"
                   @filtered="onFiltered"
+                  
                 > 
                   <!-- :busy="isBusy" is reload variable  -->
                   <template v-slot:table-busy>
@@ -50,22 +51,22 @@
 
                    <template v-slot:cell(hr_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
-                      <h7>ไม่อนุมัติ</h7>
+                      <h6>ไม่อนุมัติ</h6>
                     </div>
                     <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date != null">
-                      <h7>{{data.item.hr_approve_date}}</h7>
+                      <h6>{{data.item.hr_approve_date}}</h6>
                     </div>
                     <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date == null">
-                      <h7>รอการอนุมัติ</h7>
+                      <h6>รอการอนุมัติ</h6>
                     </div>
                   </template>
 
                   <template v-slot:cell(head_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
-                      <h7>ไม่อนุมัติ</h7>
+                      <h6>ไม่อนุมัติ</h6>
                     </div>
                     <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date != null">
-                      <h7>{{data.item.head_approve_date}}</h7>
+                      <h6>{{data.item.head_approve_date}}</h6>
                     </div>
                     <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date == null">
                       <b-button class="btn-secondary" v-if="!data.item.HrbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)">รอการอนุมัติ</b-button>
@@ -74,19 +75,19 @@
 
                   <template v-slot:cell(status)="data">
                       <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_date == null">
-                        <h7>ผ่าน</h7>
+                        <h6>ผ่าน</h6>
                       </div>
                       <div v-else-if="data.item.cancel_date != null">
-                        <h7>ไม่ผ่าน</h7>
+                        <h6>ไม่ผ่าน</h6>
                       </div>
                       <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null">
-                        <h7>รอการอนุมัติจาก Head เเละ Hr</h7>
+                        <h6>รอการอนุมัติจาก Head เเละ Hr</h6>
                       </div>
                       <div v-else-if="data.item.head_approve_date == null && data.item.cancel_date == null">
-                        <h7>รอการอนุมัติจาก Head</h7>
+                        <h6>รอการอนุมัติจาก Head</h6>
                       </div>
                       <div v-else-if="data.item.hr_approve_date == null && data.item.cancel_date == null">
-                        <h7>รอการอนุมัติจาก Hr</h7>
+                        <h6>รอการอนุมัติจาก Hr</h6>
                       </div>
                   </template>
                 </b-table>
@@ -162,6 +163,12 @@ export default {
         })
     }
   },
+  created(){
+    window.addEventListener("resize", this.handleResize);
+  },
+  destroyed(){
+    window.removeEventListener('resize', this.handleResize);
+  },
   mounted() {
     this.getHeaderApprove();
   },
@@ -180,8 +187,6 @@ export default {
         }).then(value => {
           console.log(value)
           if (value) {
-            // this.items[index].HeaderbtnApprove = true;
-            // this.items[index].HrbtnApprove = true;
             authService.postApproveHead(id).then(response => {
               console.log(response.data);
               this.getHeaderApprove();
@@ -214,6 +219,36 @@ export default {
         }
       });
     },
+    handleResize: function() {
+      window.width = window.innerWidth;
+      window.height = window.innerHeight;
+      if(window.width <= 750){
+        this.fields = [
+          { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+          { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
+          { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
+          { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+        ]
+      }
+      else{
+        this.fields = [
+          { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+          { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
+          { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
+          { key: 'dept_name', label: 'เเผนก', class: 'text-center',sortable: true },
+          { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
+          { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
+          { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
+          { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+          { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+          { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
+        ]
+      }
+    },
       info(item, index, button) {
         this.infoModal.title = `Row index: ${index}`
         this.infoModal.content = JSON.stringify(item, null, 2)
@@ -236,17 +271,18 @@ export default {
 </script>
 
 <style>
-  #parent2 {
-    position: Sticky;
-    top: 8%;
-    left: 60%;
-  }
 
-  .close:hover {
+#parent2 {
+  position: Sticky;
+  top: 8%;
+  left: 60%;
+}
+
+.close:hover {
   cursor: pointer;
 }
 
-  #HeaderAppve .btn-secondary {
-    font-size: 12px;
-  }
+#HeaderAppve .btn-secondary {
+  font-size: 12px;
+}
 </style>

@@ -21,18 +21,20 @@
                 autocomplete = on
               >
               </b-form-input>
-            </b-input-group>
-            <div class="close" style="cursor: pointer; margin-left:10px" @click="getDataAsync()">
+            <b-input-group-append>
+            <div class="close" style="cursor: pointer; margin-left:10px; margin-right:70px" @click="getDataAsync()">
               <img src="../assets/refresh.png" id="tooltip-target-1"  width="33" height="33">
               <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
                 Refresh
               </b-tooltip>
             </div>
+            </b-input-group-append>
+            </b-input-group>
           </b-nav-form>
           <table  width=100% style="margin-top:10px; border: 1px solid black;">
             <div >
               <b-table
-                :busy="isBusy" 
+                :busy="isBusy"
                 striped hover :items="items"
                 :fields="fields"
                 :filter="filter"
@@ -41,55 +43,55 @@
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :sort-direction="sortDirection"
-                @filtered="onFiltered" 
+                @filtered="onFiltered"
               >
               <!-- :busy="isBusy" is reload variable  -->
               <template v-slot:table-busy>
                 <div class="text-center text-danger ">
                   <b-spinner class="align-middle"></b-spinner>
-                  <strong>Loading...</strong>
+                  <strong> Loading...</strong>
                 </div>
               </template>
 
               <template v-slot:cell(hr_approve_date)="data">
                 <div v-if="data.item.cancel_date != null">
-                  <h7>ไม่อนุมัติ</h7>
+                  <h6>ไม่อนุมัติ</h6>
                 </div>
                 <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date != null">
-                  <h7>{{data.item.hr_approve_date}}</h7>
+                  <h6>{{data.item.hr_approve_date}}</h6>
                 </div>
                 <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date == null">
-                  <h7>รอการอนุมัติ</h7>
+                  <h6>รอการอนุมัติ</h6>
                 </div>
               </template>
 
               <template v-slot:cell(head_approve_date)="data">
                 <div v-if="data.item.cancel_date != null">
-                  <h7>ไม่อนุมัติ</h7>
+                  <h6>ไม่อนุมัติ</h6>
                 </div>
                 <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date != null">
-                  <h7>{{data.item.head_approve_date}}</h7>
+                  <h6>{{data.item.head_approve_date}}</h6>
                 </div>
                 <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date == null">
-                  <h7>รอการอนุมัติ</h7>
+                  <h6>รอการอนุมัติ</h6>
                 </div>
               </template>
 
               <template v-slot:cell(status)="data">
                 <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_date == null">
-                  <h7>ผ่าน</h7>
+                  <h6>ผ่าน</h6>
                 </div>
                 <div v-else-if="data.item.cancel_date != null">
-                  <h7>ไม่ผ่าน</h7>
+                  <h6>ไม่ผ่าน</h6>
                 </div>
                 <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null">
-                  <h7>รอการอนุมัติจาก Head เเละ Hr</h7>
+                  <h6>รอการอนุมัติจาก Head เเละ Hr</h6>
                 </div>
                 <div v-else-if="data.item.head_approve_date == null && data.item.cancel_date == null">
-                  <h7>รอการอนุมัติจาก Head</h7>
+                  <h6>รอการอนุมัติจาก Head</h6>
                 </div>
                 <div v-else-if="data.item.hr_approve_date == null && data.item.cancel_date == null">
-                  <h7>รอการอนุมัติจาก Hr</h7>
+                  <h6>รอการอนุมัติจาก Hr</h6>
                 </div>
               </template>
               </b-table>
@@ -143,7 +145,7 @@ export default {
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
       ],
       isBusy: false,
-      options1:[],
+      // options1:[],
       totalRows:1,
       currentPage: 1,
       perPage: 10,
@@ -153,9 +155,10 @@ export default {
       sortBy: '',
       sortDesc: false,
       sortDirection: 'asc',
-      name: " ",
-      val1: " ",
-      val2: " "
+      boxtwo: ''
+      // name: " ",
+      // val1: " ",
+      // val2: " "
     }
   },
   computed: {
@@ -169,6 +172,12 @@ export default {
     state() {
       return this.name.length >= 4 ? true : false
     }
+  },
+  created(){
+    window.addEventListener("resize", this.handleResize);
+  },
+  destroyed(){
+    window.removeEventListener('resize', this.handleResize);
   },
   mounted() {
     this.getDataAsync();
@@ -185,6 +194,32 @@ export default {
           this.isBusy = false;
         });
         this.totalRows = this.items.length
+    },
+    handleResize: function() {
+      window.width = window.innerWidth;
+      window.height = window.innerHeight;
+      if(window.width <= 750){
+        this.fields = [
+          { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+          { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
+          { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
+        ]
+      }
+      else{
+        this.fields = [
+          { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+          { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
+          { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
+          { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
+          { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+          { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+          { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
+        ]
+      }
     },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`
@@ -208,6 +243,7 @@ export default {
 </script>
 
 <style scoped>
+
   input[type="date"]::-webkit-inner-spin-button {
       display: none;
       -webkit-appearance: none;
