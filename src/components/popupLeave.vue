@@ -233,11 +233,10 @@ export default {
     this.$v.form.valDate1.$model = mainJs.setDateToServer(new Date().toString());
   }, 
   mounted() {
+    // console.log(mainJs.setDateToServer(new Date().toString()));
     this.currentDate = mainJs.setDateToServer(new Date().toString(), "TZ");
-
     this.userIn = JSON.parse(localStorage.getItem("user"));
     Settings.defaultLocale = 'th'
-
   },
   methods: {
     validateRang(obj) {
@@ -262,6 +261,8 @@ export default {
       this.$v.form.selectTimeFrom.$model = "";
       this.$v.form.valDate1.$model = "";
       this.$v.form.valDate2.$model = "";
+      this.selectTimeStart="",
+      this.selectTimeStart2=""
       this.flagRangDate = false;
       // this.options = [{options1}];
       // this.options1 = [{options1}];
@@ -280,25 +281,25 @@ export default {
       var user = JSON.parse(localStorage.getItem("user"));
       var obj = {};
       obj["emp_id"] = user.uuid;
-      obj["leave_date"] = mainJs.setDateToServer(new Date().toLocaleString());
+      obj["leave_date"] = mainJs.setDateToServer(new Date().toString());
       obj["leave_reason_id"] = this.selected1;
       obj["leave_type_id"] = this.selected;
-      obj["leave_start_time"] = mainJs.setDateToServer(
+      obj["leave_start_date"] = mainJs.setDateToServer(
         this.$v.form.valDate1.$model
       );
-      obj["leave_stop_time"] = mainJs.setDateToServer(
+      obj["leave_stop_date"] = mainJs.setDateToServer(
         this.$v.form.valDate2.$model
       );
-
+      obj["leave_start_time"] = this.selectTimeStart;
+      obj["leave_stop_time"] = this.selectTimeStart2;
       // obj["leave_stop_time"] = mainJs.setDateToServer(
       //   this.$v.form.valDate2.$model
       // );
       obj["leave_remark"] = this.$v.form.description.$model;
-      console.log(obj);
       if (this.validation(obj)) {
-        console.log("if")
+        console.log(obj)
         authService.insertData(obj).then(response => {
-          
+
           if (response.data) {
             this.Loading = false;
             this.popupLeave = false;

@@ -139,8 +139,8 @@ export default {
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
         { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-        { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-        { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+        { key: 'dateTime_start', label: 'วันที่ลา', class: 'text-center',sortable: true },
+        { key: 'dateTime_stop', label: 'ลาถึงวันที่', class: 'text-center' },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
@@ -211,6 +211,8 @@ export default {
         for (var i = 0; i < response.data.length; i++) {
           response.data[i].no = i+1;
           response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+          response.data[i].dateTime_start = response.data[i].leave_start_date + " " + response.data[i].leave_start_time;
+          response.data[i].dateTime_stop = response.data[i].leave_stop_date + " " + response.data[i].leave_stop_time;
           response.data[i].HeaderbtnApprove = false;
           response.data[i].HrbtnApprove = false;
         }
