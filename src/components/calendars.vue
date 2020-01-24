@@ -33,16 +33,21 @@
                 await authService.getEvent(user.uuid).then(response => {
                     console.log(response.data);
                     response.data.forEach( function(obj, i) {
-                        startDate = new Date(obj.leave_start_time);
-                        stopDate = new Date(obj.leave_stop_time);
-                        for (var d = startDate; d <= stopDate; d.setDate(d.getDate() + 1)) {
-                            dataTemp.push({
-                                id: count,
-                                title : obj.leave_reason_name,
-                                description: obj.leave_remark,
-                                color: 'card-info card-inverse',
-                                date: new Date(d)
-                            });
+                        if(obj.head_approve_date != null && obj.hr_approve_date != null && obj.cancel_date == null){
+                            startDate = new Date(obj.leave_start_time);
+                            stopDate = new Date(obj.leave_stop_time);
+                            for (var d = startDate; d <= stopDate; d.setDate(d.getDate() + 1)) {
+                                dataTemp.push({
+                                    id: count,
+                                    title : obj.leave_reason_name,
+                                    description: obj.leave_remark,
+                                    color: 'card-info card-inverse',
+                                    date: new Date(d)
+                                });
+                            }
+                        }
+                        else{
+                            console.log("not approve")
                         }
                     });
                 }); 

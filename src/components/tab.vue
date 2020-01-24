@@ -28,9 +28,9 @@
             </b-tr>
             <b-tr >
               <b-th>ประเภท</b-th>
-              <b-th>สิทธิ</b-th>
-              <b-th>ใช้ไป</b-th>
-              <b-th>คงเหลือ</b-th>
+              <b-th><center>สิทธิ</center></b-th>
+              <b-th><center>ใช้ไป</center></b-th>
+              <b-th><center>คงเหลือ</center></b-th>
             </b-tr>
           </b-thead>
         <b-tbody>
@@ -115,12 +115,17 @@ export default {
       sumLimits: function (responseData) {
   	    return responseData.reduce((acc, val) => {
 	  		  return acc + parseInt(val.leave_limit);
-			  }, 0);    
+        }, 0);  
       },
       sumLeave: function (responseData) {
-  	    return responseData.reduce((acc, val) => {
-	  		  return acc + parseInt(val.dayOff);
-			  }, 0);
+        // if(responseData.head_approve_date != null && responseData.hr_approve_date != null && responseData.cancel_date == null){
+  	      return responseData.reduce((acc, val) => {
+	  		    return acc + parseInt(val.dayOff);
+          }, 0);
+        // }
+        // else{
+        //   console.log("0")
+        // }  
       },
       sumRemain: function (responseData) {
   	    return responseData.reduce((acc, val) => {
