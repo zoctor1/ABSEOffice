@@ -32,7 +32,7 @@
                 v-model="selected1"
                 :options="options1"
                 class="mt-3"
-                style="width:235px;height:37px; margin-bottom:8px; cursor: pointer;"
+                style="width:235px;height:37px; cursor: pointer;"
               >
               </b-form-select> 
               <div v-if="selected1 == 2" class="mt-3">
@@ -58,18 +58,53 @@
               <b-col>
                 <p>ขอลางานในวันที่ :</p>
                 <div class="form-group" :class="{ 'form-group--error': $v.form.valDate1.$error }">
-                  <datetime v-if="popupLeave" type="datetime" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy HH:mm"></datetime>
+                  <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" ></datetime>
                   <div class="error" v-if="!$v.form.valDate1.required"><font color="red">*จำเป็น</font></div>
                   <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                 </div>
               </b-col>
               <b-col>
+                <p>เวลาที่เริ่มลา</p>
+                <VueCtkDateTimePicker
+                  v-model="selectTimeStart"
+                  format="H:mm"
+                  formatted="H:mm "
+                  :only-time="true"
+                  :no-keyboard="true"
+                  :no-label="true"
+                  :no-header="true"
+                  label="เลือกเวลา"
+                  :no-button="false"
+                />
+              </b-col>
+              <b-col>
+              </b-col>
+            </b-row>
+          </div>
+          <div>
+            <b-row>
+              <b-col>
                 <p>ลางานถึงวันที่ :</p>
                 <div class="form-group" :class="{ 'form-group--error': $v.form.valDate2.$error }">
-                  <datetime v-if="popupLeave" type="datetime" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy HH:mm"></datetime>
+                  <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="currentDate" ></datetime>
                   <div class="error" v-if="!$v.form.valDate2.required"><font color="red">*จำเป็น</font></div>
                   <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                 </div>
+              </b-col>
+              <b-col>
+                <p>เวลาสิ้นสุดการลา</p>
+                <VueCtkDateTimePicker
+                  v-model="selectTimeStart2"
+                  format="H:mm"
+                  formatted="H:mm "
+                  :only-time="true"
+                  :no-keyboard="true"
+                  :no-label="true"
+                  :no-header="true"
+                  label="เลือกเวลา"
+                  :no-button="false"
+                  :no-shortcuts	="true"
+                />
               </b-col>
               <b-col>
               </b-col>
@@ -127,8 +162,13 @@ import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import { Datetime } from 'vue-datetime' // npm install --save luxon vue-datetime weekstart
 import 'vue-datetime/dist/vue-datetime.css'
+import { Settings } from 'luxon'
+import VueCtkDateTimePicker from 'vue-ctk-date-time-picker';
+import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 
+Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 Vue.use(Datetime)
+
 export default {
   name: "popupLeave",
   components: {
@@ -142,7 +182,8 @@ export default {
       options: [
         { text: 'ลาครึ่งเช้า', value: 1 },
         { text: 'ลาครึ่งบ่าย', value: 2 },
-        { text: 'ลาเต็มวัน', value: 3 }
+        { text: 'ลาเต็มวัน', value: 3 },
+        { text: 'อื่นๆ', value: 4 }
       ],
       options1: [
         { text: "--กรุณาเลือกสาเหตุการลา--", value: null, disabled: true},
@@ -163,6 +204,8 @@ export default {
         'date',
       ],
       selected: 3,
+      selectTimeStart: "",
+      selectTimeStart2: "",
       flagSave: 0,
       textError: "*กรุณากรอกข้อมูลให้ครบถ้วน",
       textSuccess: "บันทึกข้อมูลสำเร็จ",
@@ -183,11 +226,19 @@ export default {
       date: null,
       flagRangDate: false,
       validateRangDate: {},
+      currentDate: ""
     }
   },
   computed: {},
+  beforeMount() {
+    this.$v.form.valDate1.$model = mainJs.setDateToServer(new Date().toString());
+  }, 
   mounted() {
+    this.currentDate = mainJs.setDateToServer(new Date().toString(), "TZ");
+
     this.userIn = JSON.parse(localStorage.getItem("user"));
+    Settings.defaultLocale = 'th'
+
   },
   methods: {
     validateRang(obj) {
@@ -345,8 +396,18 @@ export default {
     z-index: 2;
   }
 
-  #sizePopupLeave  #tj-datetime-input {
-    width: 200px !important;
+  #sizePopupLeave  .field-input {
+    width: 130px !important;
     height: 37px !important;
+  }
+  #sizePopupLeave .vdatetime-input {
+    width: 235px !important;
+    height: 40px !important;
+  }
+  #sizePopupLeave .fs-16 {
+    display: none;
+  }
+  #sizePopupLeave .before {
+    display: none;
   }
 </style>

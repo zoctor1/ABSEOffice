@@ -6,7 +6,7 @@
         <img style="margin-top: -15px;" alt="Vue logo" src="../assets/ABSLogo10.png" width="181" height="75" />
 
         <b-card v-if="flagShow == 1" bg-variant="light" tag="article" style="max-width: 22rem; margin-top: 80px;" class="mb-2">
-          <p style="font-size:150%; margin:12px 0px 12px"> sign in </p>
+          <p style="font-size:150%; margin:12px 0px 12px"> ล็อคอินเข้าสู่ระบบ </p>
             <b-col sm="12">
               <p align="left">Email:</p>
               <b-form-input type="text" placeholder="กรุณากรอกอีเมล" v-model="email" @keypress="onEvtEnter"></b-form-input>
@@ -16,13 +16,13 @@
               <b-form-input  style="margin-bottom:12px" type="password" placeholder="กรุณากรอกรหัสผ่าน" v-model="pass" @keypress="onEvtEnter"></b-form-input>
             </b-col>
             <b-col sm="12">
-                <b-link @click="flagShow = 2">Forgot your password?</b-link>
               <center>
                 <b-button style="margin:12px 0px 12px 0px" variant="primary" @click="loginUser()">
                   Login
                 </b-button>
                 <br>
               </center>
+                <b-link @click="flagShow = 2">ลืมรหัสผ่าน?</b-link>
             </b-col> 
         </b-card>
         <div v-else-if="flagShow == 2" >

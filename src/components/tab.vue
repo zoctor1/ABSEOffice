@@ -3,6 +3,7 @@
     <b-col>
       <div style="position: relative;">
         <b-card style="margin-top:20px;" >
+          <center>
           <h3>{{userIn.first_name}} {{userIn.last_name}}</h3>
           <h4 style="margin-bottom:10px">เเผนก : {{userIn.dept_name}}</h4>
           <h4 style="margin-bottom:10px">ตำแหน่ง : {{userIn.position_name}} </h4>
@@ -37,7 +38,7 @@
             <b-th>{{ i.leave_reason_name }}</b-th>
             <b-td><center>{{ i.leave_limit }}</center></b-td>
             <b-td><center>{{ i.dayOff }}</center></b-td>
-            <b-td><center>{{ i.leave_limit - i.dayOff }}</center></b-td>
+            <b-td><center>{{ (i.leave_limit - i.dayOff) }}</center></b-td>
           </b-tr>
         </b-tbody>
           <b-thead class="thead-light" head-variant="danger">

@@ -61,19 +61,20 @@
 </script>
 
 <style>
-
-    #calendarMain .modal-content { 
-        margin-top: 30%;
-    }
-
-    #calendarMain .modal-header .close { 
+    #calendarMain .week-number {
         display: none;
     }
-    .card-info {
-        background: #00FFFF;
+    #calendarMain .badge-success { 
+        display: none;
     }
-
-    #calendarMain .week-number {
+    #calendarMain .event-title { 
+        display: none;
+    }
+    #calendarMain .card-inverse  { 
+        display: none;
+    }
+    
+    /* #calendarMain .modal-body .event-color {
         display: none;
     }
     #calendarMain .badge-success { 
