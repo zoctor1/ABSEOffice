@@ -58,8 +58,7 @@
               <b-col>
                 <p>ขอลางานในวันที่ :</p>
                 <div class="form-group" :class="{ 'form-group--error': $v.form.valDate1.$error }">
-                  <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" ></datetime>
-                  
+                  <datetime v-if="popupLeave" id="tooltip-target-1" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" ></datetime>
                   <div class="error" v-if="!$v.form.valDate1.required"><font color="red">*จำเป็น</font></div>
                   <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                 </div>
@@ -68,8 +67,8 @@
                 <p>เวลาที่เริ่มลา</p>
                 <VueCtkDateTimePicker
                   v-model="selectTimeStart"
-                  format="H:mm"
-                  formatted="H:mm "
+                  format="H:mm:ss"
+                  formatted="H:mm"
                   :only-time="true"
                   :no-keyboard="true"
                   :no-label="true"
@@ -96,7 +95,7 @@
                 <p>เวลาสิ้นสุดการลา</p>
                 <VueCtkDateTimePicker
                   v-model="selectTimeStart2"
-                  format="H:mm"
+                  format="H:mm:ss"
                   formatted="H:mm "
                   :only-time="true"
                   :no-keyboard="true"
@@ -140,7 +139,7 @@
         </div>
             <center>
               <vs-button
-                style="margin-bottom:25px; margin-top:25px; position: static;"
+                style="margin-bottom:25px; position: static;"
                 @click="insertData()"
                 color="primary"
                 type="filled"
@@ -299,6 +298,7 @@ export default {
       if (this.validation(obj)) {
         console.log("if")
         authService.insertData(obj).then(response => {
+          
           if (response.data) {
             this.Loading = false;
             this.popupLeave = false;
