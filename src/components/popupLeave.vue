@@ -26,7 +26,7 @@
       <div class="con-select-example" style="margin-top:15px">
         <b-row>
           <b-col>
-            <p style="margin-bottom:-15px">เหตุผลการลา :</p>
+            <p style="margin-bottom:-15px">ประเภทการลา :</p>
               <b-form-select
                 label="เหตุผลการลา"
                 v-model="selected1"
@@ -43,7 +43,7 @@
               </div>
           </b-col>
           <b-col>
-            <p>ประเภทการลา</p>
+            <p>เวลา</p>
               <b-form-radio-group
                 v-model="selected"
                 :options="options"
@@ -256,6 +256,7 @@ export default {
       return value == undefined || value == null || (value + "").trim() == "";
     },
     defaultValue() {
+      this.isLoading = false;
       this.popupLeave = true;
       this.flagSave = 0;
       this.$v.form.description.$model = "";
@@ -281,18 +282,21 @@ export default {
       this.isLoading = true;
       var user = JSON.parse(localStorage.getItem("user"));
       var obj = {};
+
+console.log(this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart);
+
       obj["emp_id"] = user.uuid;
       obj["leave_date"] = mainJs.setDateToServer(new Date().toString());
       obj["leave_reason_id"] = this.selected1;
       obj["leave_type_id"] = this.selected;
       obj["leave_start_date"] = mainJs.setDateToServer(
-        this.$v.form.valDate1.$model
+        this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
       );
       obj["leave_stop_date"] = mainJs.setDateToServer(
-        this.$v.form.valDate2.$model
+        this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStart2
       );
-      obj["leave_start_time"] = this.selectTimeStart;
-      obj["leave_stop_time"] = this.selectTimeStart2;
+      // obj["leave_start_time"] = this.selectTimeStart;
+      // obj["leave_stop_time"] = this.selectTimeStart2;
       // obj["leave_stop_time"] = mainJs.setDateToServer(
       //   this.$v.form.valDate2.$model
       // );
@@ -311,11 +315,11 @@ export default {
         });
       } else {
         setTimeout(() => {
-              this.isLoading = false;
-              this.flagSave = 1;},250);
-          // this.isLoading = false;
+          this.isLoading = false;
+          this.flagSave = 1;},250);
           console.log("else")
         }
+         this.isLoading = false;
     }
   },
   watch: {},

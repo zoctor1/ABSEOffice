@@ -32,16 +32,17 @@
                 var stopDate = new Date();
                 await authService.getEvent(user.uuid).then(response => {
                     console.log(response.data);
-                    response.data.forEach( function(obj, i) {
+                    response.data.forEach( function(obj) {
                         if(obj.head_approve_date != null && obj.hr_approve_date != null && obj.cancel_date == null){
-                            startDate = new Date(obj.leave_start_time);
-                            stopDate = new Date(obj.leave_stop_time);
+                            startDate = new Date(obj.leave_start_date);
+                            stopDate = new Date(obj.leave_stop_date);
                             for (var d = startDate; d <= stopDate; d.setDate(d.getDate() + 1)) {
+                                count++;
                                 dataTemp.push({
                                     id: count,
                                     title : obj.leave_reason_name,
                                     description: obj.leave_remark,
-                                    color: 'card-info card-inverse',
+                                    color: 'card-danger card-inverse',
                                     date: new Date(d)
                                 });
                             }
@@ -51,7 +52,9 @@
                         }
                     });
                 }); 
+                
                 me.events = dataTemp;
+                console.log(me.events)
             }
         },
         mounted() {
@@ -61,7 +64,10 @@
 </script>
 
 <style>
-    #calendarMain .week-number {
+    #calendarMain .badge-success {
+        display: none;    
+    }
+    /* #calendarMain .week-number {
         display: none;
     }
     #calendarMain .badge-success { 
@@ -72,7 +78,7 @@
     }
     #calendarMain .card-inverse  { 
         display: none;
-    }
+    } */
     
      /* #calendarMain .modal-body .event-color {
         display: none;

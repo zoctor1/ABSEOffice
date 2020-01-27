@@ -100,13 +100,13 @@
     <div>
       <b-col lg="9" sm="7" xs="5" class="my-1" id="parent2">
         <b-row class="my-1">
-          <b-col style="margin-left:auto" sm="7">
+          <b-col style="margin-left:auto" md="5">
             <b-pagination
               v-model="currentPage"
               :total-rows="totalRows"
               :per-page="perPage"
               align="fill"
-              size="sm"
+              size="md"
               class="my-0"
             >
             </b-pagination>
@@ -136,8 +136,8 @@ export default {
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
         { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-        { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-        { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+        { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
+        { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
@@ -171,13 +171,12 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   mounted() {
-    this.getDataAsync();
     this.getHeaderApprove();
     
   },
   methods: {
-      showMsgBoxTwo(index) {
-        this.$bvModal.msgBoxConfirm('Please confirm that you want to delete everything.', {
+      showMsgBoxTwo(id) {
+        this.$bvModal.msgBoxConfirm('คุณต้องการอนุมัติการลานี้ใช่หรือไม่?', {
           title: 'การอนุมัติ',
           size: 'sm',
           buttonSize: 'sm',
@@ -189,26 +188,18 @@ export default {
           centered: true
         }).then(value => {
           console.log(value)
-          if (value) {
+          if (value == true) {
             authService.postApproveHead(id).then(response => {
               console.log(response.data);
               this.getHeaderApprove();
             });
           } else {
-
+            authService.notApproveHead(id).then(response => {
+              console.log(response.data);
+              this.getHeaderApprove();
+            });
           }
         })
-      },
-      getDataAsync: async function(){
-        await authService.getDataHeader({}).then(response => {
-          for (var i = 0; i < response.data.length; i++) {
-            response.data[i].no = i+1;
-            response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-          }
-          console.log(response.data)
-          this.items = response.data;
-        });
-        this.totalRows = this.items.length
       },
       getHeaderApprove: function() {
       this.isBusy = true;
@@ -241,8 +232,8 @@ export default {
           { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
           { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
           { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
-          { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-          { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
           { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         ]
       }
@@ -255,8 +246,8 @@ export default {
           { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
           { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
           { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-          { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-          { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
           { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
           { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
           { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
