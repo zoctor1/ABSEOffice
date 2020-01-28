@@ -112,7 +112,7 @@
                 :total-rows="totalRows"
                 :per-page="perPage"
                 align="fill"
-                size="sm"
+                size="md"
                 class="my-0"
               ></b-pagination>
             </b-col>
@@ -141,8 +141,8 @@ export default {
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
         { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-        { key: 'dateTime_start', label: 'วันที่ลา', class: 'text-center',sortable: true },
-        { key: 'dateTime_stop', label: 'ลาถึงวันที่', class: 'text-center' },
+        { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
+        { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
@@ -217,8 +217,8 @@ export default {
         this.fields = [
           { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
           { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
-          { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-          { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
           { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
         ]
       }
@@ -228,8 +228,8 @@ export default {
           { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
           { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
           { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-          { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-          { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
           { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
           { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
           { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }

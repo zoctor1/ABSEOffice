@@ -109,7 +109,7 @@
               :total-rows="totalRows"
               :per-page="perPage"
               align="fill"
-              size="sm"
+              size="md"
               class="my-0"
             >
             </b-pagination>
@@ -139,8 +139,8 @@ export default {
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
         { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-        { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-        { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+        { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
+        { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center',sortable: true },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
@@ -154,8 +154,7 @@ export default {
       filterOn: [],
       sortBy: '',
       sortDesc: false,
-      sortDirection: 'asc',
-      boxTwo: '',
+      sortDirection: 'asc'
     }
   },
   computed: {
@@ -174,7 +173,6 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   mounted() {
-    this.getDataAsync();
     this.getHeaderApprove();
     
   },
@@ -193,26 +191,18 @@ export default {
           centered: true
         }).then(value => {
           console.log(value)
-          if (value) {
+          if (value == true) {
             authService.postApproveHead(id).then(response => {
               console.log(response.data);
               this.getHeaderApprove();
             });
           } else {
-
+            authService.notApproveHead(id).then(response => {
+              console.log(response.data);
+              this.getHeaderApprove();
+            });
           }
         })
-      },
-      getDataAsync: async function(){
-        await authService.getDataHeader({}).then(response => {
-          for (var i = 0; i < response.data.length; i++) {
-            response.data[i].no = i+1;
-            response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-          }
-          console.log(response.data)
-          this.items = response.data;
-        });
-        this.totalRows = this.items.length
       },
       getHeaderApprove: function() {
       this.isBusy = true;
@@ -247,8 +237,8 @@ export default {
           { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
           { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
           { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
-          { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-          { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center',sortable: true },
           { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         ]
       }
@@ -261,8 +251,8 @@ export default {
           { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
           { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
           { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-          { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-          { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center',sortable: true },
           { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
           { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
           { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },

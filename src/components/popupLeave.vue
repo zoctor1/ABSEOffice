@@ -212,7 +212,7 @@ export default {
       ],
       selected: 3,
       selectTimeStart: "",
-      selectTimeStart2: "",
+      selectTimeStop: "",
       flagSave: 0,
       textError: "*กรุณากรอกข้อมูลให้ครบถ้วน",
       textSuccess: "บันทึกข้อมูลสำเร็จ",
@@ -241,7 +241,6 @@ export default {
     this.$v.form.valDate1.$model = mainJs.setDateToServer(new Date().toString());
   }, 
   mounted() {
-    // console.log(mainJs.setDateToServer(new Date().toString()));
     this.currentDate = mainJs.setDateToServer(new Date().toString(), "TZ");
     this.userIn = JSON.parse(localStorage.getItem("user"));
     Settings.defaultLocale = 'th'
@@ -290,7 +289,7 @@ export default {
       this.$v.form.valDate1.$model = "";
       this.$v.form.valDate2.$model = "";
       this.selectTimeStart="",
-      this.selectTimeStart2=""
+      this.selectTimeStop=""
       this.flagRangDate = false;
       this.selected1= null;
       this.selected = 3;
@@ -341,9 +340,8 @@ export default {
         });
       } else {
         setTimeout(() => {
-              this.isLoading = false;
-              this.flagSave = 1;},250);
-          // this.isLoading = false;
+          this.isLoading = false;
+          this.flagSave = 1;},250);
           console.log("else")
         }
       
