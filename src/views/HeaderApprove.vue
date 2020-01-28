@@ -137,7 +137,7 @@ export default {
         { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
         { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
-        { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
+        { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center',sortable: true },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
@@ -151,8 +151,7 @@ export default {
       filterOn: [],
       sortBy: '',
       sortDesc: false,
-      sortDirection: 'asc',
-      boxTwo: '',
+      sortDirection: 'asc'
     }
   },
   computed: {
@@ -233,7 +232,7 @@ export default {
           { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
           { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
           { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
-          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center',sortable: true },
           { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         ]
       }
@@ -247,7 +246,7 @@ export default {
           { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
           { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
           { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
-          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center',sortable: true },
           { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
           { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
           { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },

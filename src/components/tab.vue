@@ -33,19 +33,18 @@
           </b-thead>
         <b-tbody>
           <b-tr v-for="i in responseData">
-            <!-- v-if="i.dayOff != null in responseData" -->
             <b-th>{{ i.leave_reason_name }}</b-th>
-            <b-td><center>{{ i.leave_limit }}</center></b-td>
-            <b-td><center>{{ i.dayOff }}</center></b-td>
-            <b-td><center>{{ (i.leave_limit - i.dayOff) }}</center></b-td>
+            <b-td><center>{{ i.leave_limit + ' วัน  0 ชม.' }}</center></b-td>
+            <b-td><center>{{ i.dd +' วัน '+ i.hh +' ชม. '}}</center></b-td>
+            <b-td><center>{{ (i.leave_limit - i.dd) +' วัน '+ (24 - i.hh) +' ชม. '}}</center></b-td>
           </b-tr>
         </b-tbody>
           <b-thead class="thead-light" head-variant="danger">
             <b-tr v-if="responseData">
               <b-th><b>รวมทั้งหมด : </b></b-th>
-              <b-th><center><b>{{ sumLimits(responseData) }}</b></center></b-th>
-              <b-th><center><b>{{ sumLeave(responseData) }}</b></center></b-th>
-              <b-th><center><b>{{ sumRemain(responseData) }}</b></center></b-th>
+              <b-th><center><b>{{ sumLimits(responseData) + ' วัน  0 ชม.'}}</b></center></b-th>
+              <b-th><center><b>{{ sumLeave1(responseData) + ' วัน ' + sumLeave2(responseData) + ' ชม.'}}</b></center></b-th>
+              <b-th><center><b>{{ sumRemain1(responseData) + ' วัน ' + sumRemain2(responseData) + ' ชม. '}}</b></center></b-th>
             </b-tr>
           </b-thead>
       </b-table-simple>
@@ -115,22 +114,45 @@ export default {
 	  		  return acc + parseInt(val.leave_limit);
         }, 0);  
       },
-      sumLeave: function (responseData) {
-        // if(responseData.head_approve_date != null && responseData.hr_approve_date != null && responseData.cancel_date == null){
+      sumLeave1: function (responseData) {
   	      return responseData.reduce((acc, val) => {
-	  		    return acc + parseInt(val.dayOff);
+            var result1 = acc + parseInt(val.dd);
+	  		    return result1;
           }, 0);
-        // }
-        // else{
-        //   console.log("0")
-        // }  
       },
-      sumRemain: function (responseData) {
+      sumLeave2: function (responseData) {
+  	      return responseData.reduce((acc, val) => {
+            var result2 = acc + parseInt(val.hh); 
+	  		    return result2;
+          }, 0);
+      },
+      // sumLeave3: function (responseData) {
+  	  //     return responseData.reduce((acc, val) => {
+      //       var result3 = acc + parseInt(val.mm);
+	  	// 	    return result3;
+      //     }, 0);
+      // },
+      sumRemain1: function (responseData) {
   	    return responseData.reduce((acc, val) => {
-          var remain = Math.abs(val.leave_limit - val.dayOff);
-	  		  return acc + parseInt(remain);
+          var sum1 = val.leave_limit - val.dd;
+          var remain1 = acc + parseInt(sum1);
+	  		  return remain1;
 			  }, 0);
       },
+      sumRemain2: function (responseData) {
+  	    return responseData.reduce((acc, val) => {
+          var sum2 = 0 - val.hh;
+          var remain2 = acc + parseInt(sum2);
+	  		  return remain2;
+			  }, 0);
+      },
+      // sumRemain3: function (responseData) {
+  	  //   return responseData.reduce((acc, val) => {
+      //     var sum3 = 0 - val.mm;
+      //     var remain3 = acc + parseInt(sum3);
+	  	// 	  return remain3;
+			//   }, 0);
+      // },
       showStat:function(){
         var user = JSON.parse(localStorage.getItem("user"));
         authService.getLeaveStat(user.uuid).then(response => {

@@ -43,7 +43,7 @@
               </div>
           </b-col>
           <b-col>
-            <p>เวลา</p>
+            <p>เวลา :</p>
               <b-form-radio-group
                 v-model="selected"
                 :options="options"
@@ -65,7 +65,7 @@
                 </div>
               </b-col>
               <b-col>
-                <p>เวลาที่เริ่มลา</p>
+                <p>เวลาที่เริ่มลา :</p>
                 <VueCtkDateTimePicker
                   v-model="selectTimeStart"
                   format="H:mm:ss"
@@ -93,9 +93,9 @@
                 </div>
               </b-col>
               <b-col>
-                <p>เวลาสิ้นสุดการลา</p>
+                <p>เวลาสิ้นสุดการลา :</p>
                 <VueCtkDateTimePicker
-                  v-model="selectTimeStart2"
+                  v-model="selectTimeStop"
                   format="H:mm:ss"
                   formatted="H:mm "
                   :only-time="true"
@@ -111,7 +111,7 @@
             </b-row>
           </div>
           <div class="form-group" :class="{ 'form-group--error': $v.form.description.$error }">
-            <p>รายละเอียดการลา</p>
+            <p>รายละเอียดการลา :</p>
             <b-form-textarea
               style="width:340px;height:80px; padding:1px"
               v-model.trim="$v.form.description.$model"
@@ -205,7 +205,7 @@ export default {
       ],
       selected: 3,
       selectTimeStart: "",
-      selectTimeStart2: "",
+      selectTimeStop: "",
       flagSave: 0,
       textError: "*กรุณากรอกข้อมูลให้ครบถ้วน",
       textSuccess: "บันทึกข้อมูลสำเร็จ",
@@ -234,12 +234,26 @@ export default {
     this.$v.form.valDate1.$model = mainJs.setDateToServer(new Date().toString());
   }, 
   mounted() {
-    // console.log(mainJs.setDateToServer(new Date().toString()));
     this.currentDate = mainJs.setDateToServer(new Date().toString(), "TZ");
     this.userIn = JSON.parse(localStorage.getItem("user"));
     Settings.defaultLocale = 'th'
+    // this.checkTypeTime();
   },
   methods: {
+    // checkTypeTime(){
+    //   if(options[value] == 1){
+    //     console.log("sfhgdsfhnd")
+    //   }
+    //   else if(options[value] == 2){
+    //     console.log("htndfgjndfgn")
+    //   }
+    //   else if(options[value] == 3){
+
+    //   }
+    //   else if(options[value] == 4){
+
+    //   }
+    // },
     validateRang(obj) {
       if (obj.start != undefined && obj.start != null && obj.end != undefined && obj.end != null) {
         this.flagRangDate = true;
@@ -264,7 +278,7 @@ export default {
       this.$v.form.valDate1.$model = "";
       this.$v.form.valDate2.$model = "";
       this.selectTimeStart="",
-      this.selectTimeStart2=""
+      this.selectTimeStop=""
       this.flagRangDate = false;
       // this.options = [{options1}];
       // this.options1 = [{options1}];
@@ -282,9 +296,6 @@ export default {
       this.isLoading = true;
       var user = JSON.parse(localStorage.getItem("user"));
       var obj = {};
-
-console.log(this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart);
-
       obj["emp_id"] = user.uuid;
       obj["leave_date"] = mainJs.setDateToServer(new Date().toString());
       obj["leave_reason_id"] = this.selected1;
@@ -293,7 +304,7 @@ console.log(this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeSt
         this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
       );
       obj["leave_stop_date"] = mainJs.setDateToServer(
-        this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStart2
+        this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
       );
       // obj["leave_start_time"] = this.selectTimeStart;
       // obj["leave_stop_time"] = this.selectTimeStart2;

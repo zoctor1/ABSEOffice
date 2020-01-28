@@ -52,9 +52,7 @@
                         }
                     });
                 }); 
-                
                 me.events = dataTemp;
-                console.log(me.events)
             }
         },
         mounted() {
@@ -66,6 +64,23 @@
 <style>
     #calendarMain .badge-success {
         display: none;    
+    }
+
+    #calendarMain .title {
+        text-align: right;
+        font-weight:normal;
+    }
+
+    #calendarMain .card-header {
+        font-weight:bold;
+    }
+
+    #calendarMain .modal-title {
+        text-align: left;
+    }
+
+    #calendarMain .close {
+        display: none;
     }
     /* #calendarMain .week-number {
         display: none;
