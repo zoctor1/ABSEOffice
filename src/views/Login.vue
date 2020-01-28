@@ -18,7 +18,7 @@
             <b-col sm="12">
               <center>
                 <b-button style="margin:12px 0px 12px 0px" variant="primary" @click="loginUser()">
-                  Login
+                  เข้าสู่ระบบ
                 </b-button>
                 <br>
               </center>
@@ -31,13 +31,13 @@
             style="max-width: 22rem; margin-top: 80px;"
             class="mb-2"
           >
-          <p style="font-size:150%; margin-bottom:15px"> เราต้องตรวจสอบข้อมูลประจำตัวของคุณ </p>
+          <p style="font-size:150%; margin-bottom:10px"> เราต้องตรวจสอบข้อมูลประจำตัวของคุณ </p>
             <b-col sm="12">
-              <p align="left">กรอกอีเมลเพื่อรับรหัสในการเข้าสู่ระบบการเปลี่ยนรหัสต่อไป </p><b-form-input type="Username" placeholder="กรอก Email"></b-form-input>
+              <p align="left" style="margin-bottom:10px">กรอกอีเมลเพื่อรับรหัสในการเข้าสู่ระบบการเปลี่ยนรหัสต่อไป </p><b-form-input type="Username" placeholder="กรอก Email"></b-form-input>
             </b-col>
             <b-col sm="12">
-              <center><b-button style="margin-top: 10px" @click="flagShow = 1" variant="outline-primary">ตกลง</b-button></center>
-                <b-link @click="flagShow = 1">Return to sign in</b-link>
+              <center><b-button style="margin: 15px 0px 10px 0px" @click="flagShow = 1" variant="outline-primary">ตกลง</b-button></center>
+                <b-link @click="flagShow = 1">ย้อนกลับ</b-link>
             </b-col>
           </b-card>
         </div>

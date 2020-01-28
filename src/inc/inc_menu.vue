@@ -32,16 +32,17 @@
     </vs-navbar-item> -->
 
     <vs-spacer></vs-spacer>
+    <p class="my-4" style="margin: 0px 10px 0px 10px; border-left: 2px solid rgb(255, 255, 255); cursor:default;"><b> &nbsp; &nbsp;{{userIn.first_name}} {{userIn.last_name}} : {{userIn.dept_name}}</b></p>
 
     <div class="dropdown">
-      <div style="cursor: pointer; margin:0px 70px 0px 20px;" class="dropbtn">
+      <div style="cursor: pointer; margin:0px 50px 0px 20px;" class="dropbtn">
         <img src="../assets/user.png" width="40" height="40">
       </div>
       <div class="dropdown-content">
         <a href="#" v-b-modal.modal-center>ข้อมูลส่วนตัว
-          <b-modal id="modal-center" :hide-footer="true" centered >
-            <template v-slot:modal-header="{  }">
-              <label style="font-size: 18px;" ><img src="../assets/user.png" style="margin-right:7px; width: 30px; height: 30px;"  class="userIcon">ข้อมูลส่วนตัว</label>
+          <b-modal title="ข้อมูลส่วนตัว" id="modal-center" :hide-footer="true" centered >
+            <template>
+              <label style="font-size: 18px;" ><img src="../assets/user.png" style="margin-right:7px; width: 30px; height: 30px;"  class="userIcon"></label>
             </template>
             <p class="my-4">ชื่อ : {{userIn.first_name}} {{userIn.last_name}}</p>
             <p class="my-4">แผนก : {{userIn.dept_name}}</p>
@@ -56,6 +57,7 @@
         </a>
       </div>
     </div>
+       
       <!-- <img style="cursor: pointer; margin:0px 20px 0px 10px;" @click="toUrl('Main')" alt="Vue logo" src="../assets/user.png" width="40" height="40" /> -->
   
     <!-- <vs-button @click="logout()" style="margin-right:25px;" color="danger" type="gradient" > 
@@ -120,9 +122,9 @@ export default {
 </script>
 
 <style scoped>
-
 .myNavbar{
-  width: auto
+  width: auto;
+  color: rgb(255, 255, 255);
 }
 
 .dropbtn {
@@ -140,7 +142,7 @@ export default {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
-  left: -25%;
+  left: -60%;
 }
 
 .dropdown-content a {

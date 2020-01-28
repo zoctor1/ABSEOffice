@@ -13,26 +13,34 @@
         </div>
       </b-col>
     </div>
-    <vs-popup
+
+    <modal name="hello-world"
+      id="sizePopupLeave"
+      height="auto"
+      :clickToClose="false"
+    >
+    <!-- <vs-popup
       id="sizePopupLeave"
       classContent="popupLeave-example"
       title="กรอกรายละเอียดประวัติการลา"
       :active.sync="popupLeave"
-    >
-      <center><h4>{{userIn.first_name}} {{userIn.last_name}}</h4></center>
-      <center><h5>แผนก : {{userIn.dept_name}}</h5></center>
-      <center><h5>ตำแหน่ง : {{userIn.position_name}}</h5></center>
+    > -->
+      <p style="background-color: #f1f1f1; font-size: 22px; margin-bottom:10px; font-weight:bold; padding: 10px; cursor:default;">กรอกรายละเอียดประวัติการลา <button type="button" aria-label="Close" class="close" @click="hide()" ><img src="../assets/Close-icon.png" width="33" height="33" /></button></p>
+      <center><h4 style="cursor:default;">{{userIn.first_name}} {{userIn.last_name}}</h4></center>
+      <center><h5 style="cursor:default;">แผนก : {{userIn.dept_name}}</h5></center>
+      <center><h5 style="cursor:default;">ตำแหน่ง : {{userIn.position_name}}</h5></center>
 
       <div class="con-select-example" style="margin-top:15px">
         <b-row>
           <b-col>
-            <p style="margin-bottom:-15px">เหตุผลการลา :</p>
+            <p style="margin-bottom:-15px; cursor:default;"><b>ประเภทการลา :</b></p>
               <b-form-select
                 label="เหตุผลการลา"
                 v-model="selected1"
                 :options="options1"
+                @change="changeSelectType()"
                 class="mt-3"
-                style="width:235px;height:37px; cursor: pointer;"
+                style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
               >
               </b-form-select> 
               <div v-if="selected1 == 2" class="mt-3">
@@ -43,74 +51,73 @@
               </div>
           </b-col>
           <b-col>
-            <p>ประเภทการลา</p>
+            <p style="cursor:default;"><b>เวลา :</b></p>
               <b-form-radio-group
                 v-model="selected"
                 :options="options"
               >
-              </b-form-radio-group>    
-          </b-col>        
+              </b-form-radio-group> 
+          </b-col>
         </b-row>
       </div>
         <div>
           <div style="margin-top:10px">
             <b-row>
               <b-col>
-                <p>ขอลางานในวันที่ :</p>
+                <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
                 <div class="form-group" :class="{ 'form-group--error': $v.form.valDate1.$error }">
-                  <datetime v-if="popupLeave" id="tooltip-target-1" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" ></datetime>
-                  <div class="error" v-if="!$v.form.valDate1.required"><font color="red">*จำเป็น</font></div>
+                  <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
+                  <div class="error" v-if="!$v.form.valDate1.required"><font color="red">จำเป็น*</font></div>
                   <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                 </div>
               </b-col>
               <b-col>
-                <p>เวลาที่เริ่มลา</p>
-                <VueCtkDateTimePicker
-                  v-model="selectTimeStart"
-                  format="H:mm:ss"
-                  formatted="H:mm"
-                  :only-time="true"
-                  :no-keyboard="true"
-                  :no-label="true"
-                  :no-header="true"
-                  label="เลือกเวลา"
-                  :no-button="false"
-                />
+                <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
+                <div class="form-group" :class="{ 'form-group--error': $v.form.valDate2.$error }">
+                  <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="currentDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
+                  <div class="error" v-if="!$v.form.valDate2.required"><font color="red">จำเป็น*</font></div>
+                  <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
+                </div>
               </b-col>
-              <b-col>
-              </b-col>
+              
             </b-row>
           </div>
           <div style="margin-top:-10px">
             <b-row>
               <b-col>
-                <p>ลางานถึงวันที่ :</p>
-                <div class="form-group" :class="{ 'form-group--error': $v.form.valDate2.$error }">
-                  <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="currentDate" ></datetime>
-                  <div class="error" v-if="!$v.form.valDate2.required"><font color="red">*จำเป็น</font></div>
-                  <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
+                <div v-if="selected != 3 && selected != 2 && selected != 1">
+                  <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
+                  <VueCtkDateTimePicker
+                    v-model="selectTimeStart"
+                    format="H:mm:ss"
+                    formatted="H:mm "
+                    :only-time="true"
+                    :no-keyboard="true"
+                    :no-label="true"
+                    :no-header="true"
+                    label="เลือกเวลา"
+                  />
                 </div>
               </b-col>
               <b-col>
-                <p>เวลาสิ้นสุดการลา</p>
-                <VueCtkDateTimePicker
-                  v-model="selectTimeStart2"
-                  format="H:mm:ss"
-                  formatted="H:mm "
-                  :only-time="true"
-                  :no-keyboard="true"
-                  :no-label="true"
-                  :no-header="true"
-                  label="เลือกเวลา"
-                  :no-button="false"
-                />
-              </b-col>
-              <b-col>
+                <div v-if="selected != 3 && selected != 2 && selected != 1">
+                  <p style="cursor:default;"><b>เวลาสิ้นสุดการลา :</b></p>
+                  <VueCtkDateTimePicker
+                    v-model="selectTimeStart2"
+                    format="H:mm:ss"
+                    formatted="H:mm "
+                    :only-time="true"
+                    :no-keyboard="true"
+                    :no-label="true"
+                    :no-header="true"
+                    label="เลือกเวลา"
+                  />
+                </div>
               </b-col>
             </b-row>
           </div>
-          <div class="form-group" :class="{ 'form-group--error': $v.form.description.$error }">
-            <p>รายละเอียดการลา</p>
+          <div class="form-group" :class="{ 'form-group--error': $v.form.description.$error }" style="margin-top:10px">
+            <p style="cursor:default;"><b>รายละเอียดการลา :</b></p>
             <b-form-textarea
               style="width:340px;height:80px; padding:1px"
               v-model.trim="$v.form.description.$model"
@@ -119,7 +126,7 @@
               no-resize
               >
             </b-form-textarea>
-            <div class="error" v-if="!$v.form.description.required"><font color="red">*จำเป็น</font></div>
+            <div class="error" v-if="!$v.form.description.required"><font color="red">จำเป็น*</font></div>
             <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
           </div>
         </div>
@@ -137,17 +144,17 @@
             </center>
           </b-col>
         </div>
-            <center>
-              <vs-button
-                style="margin-bottom:25px; position: static;"
-                @click="insertData()"
-                color="primary"
-                type="filled"
-              >
-                บันทึก
-              </vs-button>
-            </center>
-    </vs-popup>
+          <center>
+            <vs-button
+              style="margin-bottom:25px; position: static;"
+              @click="insertData()"
+              color="primary"
+              type="filled"
+            >
+              บันทึก
+            </vs-button>
+          </center>
+    </modal>
   </div>
 </template>
 
@@ -164,7 +171,9 @@ import 'vue-datetime/dist/vue-datetime.css'
 import { Settings } from 'luxon'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'; //npm i --save vue-ctk-date-time-picker
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
-
+import VModal from 'vue-js-modal'
+ 
+Vue.use(VModal)
 Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 Vue.use(Datetime)
 
@@ -193,7 +202,6 @@ export default {
         { text: "ลาบวช",value: 5 },
         { text: "ลาไม่รับค่าจ้าง",value: 6 }
       ],
-      selected1: null,
       description:'',
       selected2: null,
       value1:'',
@@ -237,8 +245,23 @@ export default {
     this.currentDate = mainJs.setDateToServer(new Date().toString(), "TZ");
     this.userIn = JSON.parse(localStorage.getItem("user"));
     Settings.defaultLocale = 'th'
+    
   },
   methods: {
+    changeSelectType() {
+      if (this.selected1 == 2 || this.selected1 == 3) {
+        var cDate = new Date().setDate(new Date().getDate() + 3);
+        this.currentDate = mainJs.setDateToServer(new Date(cDate).toString(), "TZ");
+      } else {
+        this.currentDate = mainJs.setDateToServer(new Date().toString(), "TZ");
+      }
+    },
+    show () {
+      this.$modal.show('hello-world');
+    },
+    hide () {
+      this.$modal.hide('hello-world');
+    },
     validateRang(obj) {
       if (obj.start != undefined && obj.start != null && obj.end != undefined && obj.end != null) {
         this.flagRangDate = true;
@@ -255,6 +278,11 @@ export default {
       return value == undefined || value == null || (value + "").trim() == "";
     },
     defaultValue() {
+
+      this.$modal.show('hello-world');
+      this.selectTimeStart = "";
+      this.selectTimeStart2 = "";
+      this.isLoading = false;
       this.popupLeave = true;
       this.flagSave = 0;
       this.$v.form.description.$model = "";
@@ -264,6 +292,8 @@ export default {
       this.selectTimeStart="",
       this.selectTimeStart2=""
       this.flagRangDate = false;
+      this.selected1= null;
+      this.selected = 3;
       // this.options = [{options1}];
       // this.options1 = [{options1}];
     },
@@ -276,7 +306,7 @@ export default {
       }
       return true;
     },
-    insertData: function() {
+    insertData: async function() {
       this.isLoading = true;
       var user = JSON.parse(localStorage.getItem("user"));
       var obj = {};
@@ -285,21 +315,21 @@ export default {
       obj["leave_reason_id"] = this.selected1;
       obj["leave_type_id"] = this.selected;
       obj["leave_start_date"] = mainJs.setDateToServer(
-        this.$v.form.valDate1.$model
+        this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
       );
       obj["leave_stop_date"] = mainJs.setDateToServer(
-        this.$v.form.valDate2.$model
+        this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
       );
-      obj["leave_start_time"] = this.selectTimeStart;
-      obj["leave_stop_time"] = this.selectTimeStart2;
+      // obj["leave_start_time"] = this.selectTimeStart;
+      // obj["leave_stop_time"] = this.selectTimeStart2;
       // obj["leave_stop_time"] = mainJs.setDateToServer(
       //   this.$v.form.valDate2.$model
       // );
       obj["leave_remark"] = this.$v.form.description.$model;
       if (this.validation(obj)) {
         console.log(obj)
-        authService.insertData(obj).then(response => {
-
+        await authService.insertData(obj).then(response => {
+        console.log(obj)
           if (response.data) {
             this.Loading = false;
             this.popupLeave = false;
@@ -316,6 +346,9 @@ export default {
           // this.isLoading = false;
           console.log("else")
         }
+      
+      this.Loading = false;
+      
     }
   },
   watch: {},
@@ -351,23 +384,20 @@ export default {
 </script>
 
 <style>
-
-@media (max-width: 500px) {
-  .popupLeave-example{
-    position: fixed;
-    bottom: 0px;
-    right: 0px;
+  @media (max-width: 500px) {
+    .popupLeave-example{
+      position: fixed;
+      bottom: 0px;
+      right: 0px;
+    }
   }
-}
-
-@media (max-width: 500px) {
-  .popupContent{
-    margin-right: 10px;
-    margin-left: 10px;
-    text-align: center;
+  @media (max-width: 500px) {
+    .popupContent{
+      margin-right: 10px;
+      margin-left: 10px;
+      text-align: center;
+    }
   }
-}
-
   input[type="date"]::-webkit-inner-spin-button {
     display: none;
     -webkit-appearance: none;
@@ -396,7 +426,6 @@ export default {
     position: absolute;
     z-index: 2;
   }
-
   #sizePopupLeave  .field-input {
     width: 130px !important;
     height: 37px !important;
@@ -411,4 +440,42 @@ export default {
   #sizePopupLeave .before {
     display: none;
   }
+  #sizePopupLeave .vdatetime-input {
+    border: none;
+  }
+  #sizePopupLeave .field-input {
+    padding: none;
+  }
+  #sizePopupLeave .custom-select {
+    border: none;
+  }
+  #sizePopupLeave .v--modal-box {
+    padding: 20px;
+  }
+  /* .close {
+  position: absolute;
+  right: 32px;
+  top: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+}
+ .close:hover {
+  opacity: 1;
+}
+ .close:before, .close:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 33px;
+  width: 2px;
+  background-color: #333;
+}
+ .close:before {
+  transform: rotate(45deg);
+}
+ .close:after {
+  transform: rotate(-45deg);
+} */
+
 </style>

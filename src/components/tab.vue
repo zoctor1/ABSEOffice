@@ -3,9 +3,10 @@
     <b-col>
       <div style="position: relative;">
         <b-card style="margin-top:20px;" >
-          <h3>{{userIn.first_name}} {{userIn.last_name}}</h3>
-          <h4 style="margin-bottom:10px">เเผนก : {{userIn.dept_name}}</h4>
-          <h4 style="margin-bottom:10px">ตำแหน่ง : {{userIn.position_name}} </h4>
+          <center>
+          <h3 style=" font-weight: bold; cursor: default;">{{userIn.first_name}} {{userIn.last_name}}</h3>
+          <h4 style="margin-bottom:10px; cursor: default;">เเผนก : {{userIn.dept_name}}</h4>
+          <h4 style="margin-bottom:10px; cursor: default;">ตำแหน่ง : {{userIn.position_name}} </h4>
             <center>
               <div style="margin: 30px 130px 0px -20px">
                 <popupLeave />
@@ -17,7 +18,7 @@
           </center>
         </b-card>
       </div>  
-      <b-table-simple hover small caption-top responsive style="border :1px solid red; margin-top:10px; ">
+      <b-table-simple hover small caption-top responsive style="border :1px solid black; margin-top:10px; cursor: default;">
           <b-thead class="thead-dark" head-variant="danger">
             <b-tr >
               <b-th><font size="3" color="#f2f2f2">ตารางสรุปการลาทั้งหมด</font></b-th>

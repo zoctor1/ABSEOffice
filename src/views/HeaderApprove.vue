@@ -47,8 +47,11 @@
                   <template v-slot:table-busy>
                     <div class="text-center text-danger ">
                       <b-spinner class="align-middle"></b-spinner>
-                      <strong>Loading...</strong>
+                      <strong> Loading...</strong>
                     </div>
+                  </template>
+                  <template v-slot:empty>
+                    <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
                   </template>
 
                    <template v-slot:cell(hr_approve_date)="data">
@@ -100,7 +103,7 @@
     <div>
       <b-col lg="9" sm="7" xs="5" class="my-1" id="parent2">
         <b-row class="my-1">
-          <b-col style="margin-left:auto" sm="7">
+          <b-col style="margin-left:auto" sm="4">
             <b-pagination
               v-model="currentPage"
               :total-rows="totalRows"
@@ -134,7 +137,7 @@ export default {
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
         { key: 'dept_name', label: 'เเผนก', class: 'text-center',sortable: true },
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
-        { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
+        { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
         { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
         { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
@@ -177,7 +180,8 @@ export default {
   },
   methods: {
       showMsgBoxTwo(index) {
-        this.$bvModal.msgBoxConfirm('Please confirm that you want to delete everything.', {
+        this.$bvModal.msgBoxConfirm('คุณต้องการอนุมัติการลานี้ใช่หรือไม่?', {
+          headerClass: 'header-1',
           title: 'การอนุมัติ',
           size: 'sm',
           buttonSize: 'sm',
@@ -218,6 +222,8 @@ export default {
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;
             response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+            response.data[i].dateTime_start = response.data[i].leave_start_date + " " + response.data[i].leave_start_time;
+            response.data[i].dateTime_stop = response.data[i].leave_stop_date + " " + response.data[i].leave_stop_time;
             response.data[i].HeaderbtnApprove = false;
             response.data[i].HrbtnApprove = false;
           }
@@ -228,7 +234,7 @@ export default {
         } else {
             console.log("else");
             setTimeout(() => {
-              this.isBusy = false}, 3500);
+              this.isBusy = false}, 1200);
               console.log("isbusy");
           }
       });
@@ -285,18 +291,18 @@ export default {
 </script>
 
 <style>
-
-#parent2 {
-  position: Sticky;
-  top: 8%;
-  left: 60%;
-}
-
-.close:hover {
-  cursor: pointer;
-}
-
-#HeaderAppve .btn-secondary {
-  font-size: 12px;
-}
+  #parent2 {
+    position: Sticky;
+    top: 8%;
+    left: 60%;
+  }
+  .close:hover {
+    cursor: pointer;
+  }
+  #HeaderAppve .btn-secondary {
+    font-size: 12px;
+  }
+  .header-1 .modal-title {
+    font-weight: bold !important;
+  }
 </style>

@@ -106,7 +106,7 @@
       <div>
         <b-col lg="9" sm="7" xs="5" class="my-1" id="parent2"> 
           <b-row class="my-1">
-            <b-col style="margin-left:auto" sm="7">
+            <b-col style="margin-left:auto" sm="4">
               <b-pagination
                 v-model="currentPage"
                 :total-rows="totalRows"
@@ -139,10 +139,10 @@ export default {
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
-        { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
+        { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-        { key: 'leave_start_time', label: 'วันที่ลา', class: 'text-center',sortable: true },
-        { key: 'leave_stop_time', label: 'ลาถึงวันที่', class: 'text-center' },
+        { key: 'dateTime_start', label: 'วันที่ลา', class: 'text-center',sortable: true },
+        { key: 'dateTime_stop', label: 'ลาถึงวันที่', class: 'text-center' },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
@@ -194,6 +194,8 @@ export default {
           if (response.data.length > 0) {
             for (var i = 0; i < response.data.length; i++) {
               response.data[i].no = i+1;
+              response.data[i].dateTime_start = response.data[i].leave_start_date + " " + response.data[i].leave_start_time;
+              response.data[i].dateTime_stop = response.data[i].leave_stop_date + " " + response.data[i].leave_stop_time;
             }
               this.items = response.data;
               this.isBusy = false;
@@ -201,7 +203,7 @@ export default {
           } else {
             console.log("else");
             setTimeout(() => {
-              this.isBusy = false}, 5000);
+              this.isBusy = false}, 1200);
               console.log("isbusy");
               // alert("aaaa")
             }
