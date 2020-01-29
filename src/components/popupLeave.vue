@@ -130,6 +130,15 @@
             <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
           </div>
         </div>
+
+        <template>
+          <div v-if="selected1 == 1">
+            <p style="cursor:default;"><b>แนบใบรับรองแพทย์ :</b></p>
+            <b-form-file v-model="file" ref="file-input" class="mb-2"></b-form-file>
+            <b-button v-if="file != null" @click="file = null">ลบไฟล์</b-button>
+          </div>
+        </template>
+
         <loading
           :active.sync="isLoading"
           :is-full-page="fullPage"
@@ -203,6 +212,7 @@ export default {
         { text: "ลาไม่รับค่าจ้าง",value: 6 }
       ],
       description:'',
+      selected1: "",
       selected2: null,
       value1:'',
       value2:'',
@@ -233,7 +243,8 @@ export default {
       date: null,
       flagRangDate: false,
       validateRangDate: {},
-      currentDate: ""
+      currentDate: "",
+      file: null
     }
   },
   computed: {},
@@ -309,6 +320,11 @@ export default {
       this.isLoading = true;
       var user = JSON.parse(localStorage.getItem("user"));
       var obj = {};
+      var fileData = new FormData();
+      fileData.append("image_leave", this.file);
+      authService.addImage(fileData).then(response => {
+        console.log(formData);
+      });
       obj["emp_id"] = user.uuid;
       obj["leave_date"] = mainJs.setDateToServer(new Date().toString());
       obj["leave_reason_id"] = this.selected1;
@@ -319,11 +335,6 @@ export default {
       obj["leave_stop_date"] = mainJs.setDateToServer(
         this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
       );
-      // obj["leave_start_time"] = this.selectTimeStart;
-      // obj["leave_stop_time"] = this.selectTimeStart2;
-      // obj["leave_stop_time"] = mainJs.setDateToServer(
-      //   this.$v.form.valDate2.$model
-      // );
       obj["leave_remark"] = this.$v.form.description.$model;
       if (this.validation(obj)) {
         console.log(obj)
@@ -344,9 +355,7 @@ export default {
           this.flagSave = 1;},250);
           console.log("else")
         }
-      
       this.Loading = false;
-      
     }
   },
   watch: {},

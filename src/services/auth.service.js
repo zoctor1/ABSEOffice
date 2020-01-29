@@ -83,6 +83,16 @@ export function insertData(obj) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
+export function addImage(formData) {
+    console.log(formData)
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/addImage`, formData, {headers: {"Content-Type": "multipart/form-data"}}).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
 export function getUserLeave(userId) {
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/UserLeave`, {}, { headers: {dataUser: userId} }).then(

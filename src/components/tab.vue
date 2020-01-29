@@ -3,7 +3,6 @@
     <b-col>
       <div style="position: relative;">
         <b-card style="margin-top:20px;" >
-          <center>
           <h3 style=" font-weight: bold; cursor: default;">{{userIn.first_name}} {{userIn.last_name}}</h3>
           <h4 style="margin-bottom:10px; cursor: default;">เเผนก : {{userIn.dept_name}}</h4>
           <h4 style="margin-bottom:10px; cursor: default;">ตำแหน่ง : {{userIn.position_name}} </h4>
