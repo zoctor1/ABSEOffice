@@ -103,20 +103,37 @@
     <div>
       <b-col lg="9" sm="7" xs="5" class="my-1" id="parent2">
         <b-row class="my-1">
+          <b-col style="margin-left:auto" sm="8">
+            <b-form-group
+              label="จำนวนที่แสดงบนตาราง"
+              label-cols-sm="11"
+              label-align-sm="right"
+              label-size="sm"
+              label-for="perPageSelect"
+              class="mb-0"
+            >
+              <b-form-select
+                v-model="perPage"
+                id="perPageSelect"
+                size="sm"
+                :options="pageOptions"
+              ></b-form-select>
+            </b-form-group>
+          </b-col>
           <b-col style="margin-left:auto" sm="4">
             <b-pagination
               v-model="currentPage"
               :total-rows="totalRows"
               :per-page="perPage"
               align="fill"
-              size="md"
+              size="sm"
               class="my-0"
-            >
-            </b-pagination>
+            ></b-pagination>
           </b-col>
         </b-row>
       </b-col>
     </div>
+    <br>
   </div>
 </template>
 
@@ -149,7 +166,7 @@ export default {
       totalRows:1,
       currentPage: 1,
       perPage: 10,
-      pageOptions: [10, 15,20],
+      pageOptions: [10, 20, 30],
       filter: null,
       filterOn: [],
       sortBy: '',

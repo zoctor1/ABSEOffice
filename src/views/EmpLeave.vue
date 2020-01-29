@@ -1,12 +1,27 @@
 <template>
   <div id="EmpLeave" lg="12" sm="12" xs="12">
+    <popupLeave v-bind:showPop="showPop" />
+    
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
           <div style="position: relative;">
             <h2 align="left">ข้อมูลการลา</h2>
               <div style="position: absolute; top: 50%; right: 0; transform: translate(0, -40%);">
-                <popupLeave />
+                <!-- <popupLeave /> -->
+                <div>
+                  <b-col lg="12" sm="12" xs="12">
+                    <div>
+                      <vs-button
+                        @click="showPopup()"
+                        color="primary"
+                        type="filled"
+                      >
+                        <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
+                      </vs-button>
+                    </div>
+                  </b-col>
+                </div>
               </div>
           </div>
           <b-nav-form >
@@ -104,21 +119,39 @@
       </div>
     </center>
       <div>
-        <b-col lg="9" sm="7" xs="5" class="my-1" id="parent2"> 
+        <b-col lg="9" sm="7" xs="5" class="my-1" id="parent2">
           <b-row class="my-1">
+            <b-col style="margin-left:auto" sm="8">
+              <b-form-group
+                label="จำนวนที่แสดงบนตาราง"
+                label-cols-sm="11"
+                label-align-sm="right"
+                label-size="sm"
+                label-for="perPageSelect"
+                class="mb-0"
+              >
+                <b-form-select
+                  v-model="perPage"
+                  id="perPageSelect"
+                  size="sm"
+                  :options="pageOptions"
+                ></b-form-select>
+              </b-form-group>
+            </b-col>
             <b-col style="margin-left:auto" sm="4">
               <b-pagination
                 v-model="currentPage"
                 :total-rows="totalRows"
                 :per-page="perPage"
                 align="fill"
-                size="md"
+                size="sm"
                 class="my-0"
               ></b-pagination>
             </b-col>
           </b-row>
         </b-col>
       </div>
+      <br>
   </div>
 </template>
 
@@ -152,13 +185,14 @@ export default {
       totalRows:1,
       currentPage: 1,
       perPage: 10,
-      pageOptions: [10, 15],
+      pageOptions: [10, 20, 30],
       filter: null,
       filterOn: [],
       sortBy: '',
       sortDesc: false,
       sortDirection: 'asc',
-      boxtwo: ''
+      boxtwo: '',
+      showPop:false
       // name: " ",
       // val1: " ",
       // val2: " "
@@ -186,6 +220,13 @@ export default {
     this.getDataAsync();
   },
   methods: {
+    showPopup: function() {
+        var ths = this;
+        ths.showPop = true;
+        setTimeout(function() {
+          ths.showPop = false;
+        }, 1000);
+      },
     getDataAsync: async function(){
       this.isBusy = true;
         var user = JSON.parse(localStorage.getItem("user"));

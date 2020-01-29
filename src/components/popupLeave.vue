@@ -1,6 +1,6 @@
 <template>
   <div id="popupLeave">
-    <div>
+    <!-- <div>
       <b-col lg="12" sm="12" xs="12">
         <div>
           <vs-button
@@ -12,12 +12,13 @@
           </vs-button>
         </div>
       </b-col>
-    </div>
+    </div> -->
 
     <modal name="hello-world"
       id="sizePopupLeave"
       height="auto"
       :clickToClose="false"
+      :active.sync="popupLeave"
     >
     <!-- <vs-popup
       id="sizePopupLeave"
@@ -74,9 +75,9 @@
               <b-col>
                 <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
                 <div class="form-group" :class="{ 'form-group--error': $v.form.valDate2.$error }">
-                  <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="currentDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
+                  <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="$v.form.valDate1.$model !='' ? $v.form.valDate1.$model : currentDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
                   <div class="error" v-if="!$v.form.valDate2.required"><font color="red">จำเป็น*</font></div>
-                  <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
+                  <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div> 
                 </div>
               </b-col>
               
@@ -103,7 +104,7 @@
                 <div v-if="selected != 3 && selected != 2 && selected != 1">
                   <p style="cursor:default;"><b>เวลาสิ้นสุดการลา :</b></p>
                   <VueCtkDateTimePicker
-                    v-model="selectTimeStart2"
+                    v-model="selectTimeStop"
                     format="H:mm:ss"
                     formatted="H:mm "
                     :only-time="true"
@@ -130,6 +131,14 @@
             <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
           </div>
         </div>
+        
+        <template>
+          <div v-if="selected1 == 1">
+            <p style="cursor:default;"><b>แนบใบรับรองแพทย์ :</b></p>
+            <b-form-file v-model="file" ref="file-input" class="mb-2"></b-form-file>
+            <b-button v-if="file != null" @click="file = null">ลบไฟล์</b-button>
+          </div>
+        </template>
         <loading
           :active.sync="isLoading"
           :is-full-page="fullPage"
@@ -184,7 +193,7 @@ export default {
     Loading,
     datetime: Datetime
   },
-  props: {},
+  props: ["showPop"],
   data() {
     return {
       options: [
@@ -203,9 +212,6 @@ export default {
         { text: "ลาไม่รับค่าจ้าง",value: 6 }
       ],
       description:'',
-      selected2: null,
-      value1:'',
-      value2:'',
       popupLeave:false,
       types: [
         'date',
@@ -215,7 +221,6 @@ export default {
       selectTimeStop: "",
       flagSave: 0,
       textError: "*กรุณากรอกข้อมูลให้ครบถ้วน",
-      textSuccess: "บันทึกข้อมูลสำเร็จ",
       textValue2: "**ลากิจ : ควรลางานล่วงหน้าอย่างน้อย 3 วัน",
       textValue3: "**ลาพักร้อน : ควรลางานล่วงหน้าอย่างน้อย 3 วัน",
       form: {
@@ -229,11 +234,11 @@ export default {
       userIn:{},
       isLoading: false,
       fullPage: true,
-      range: {},
       date: null,
       flagRangDate: false,
       validateRangDate: {},
-      currentDate: ""
+      currentDate: "",
+      file: null
     }
   },
   computed: {},
@@ -270,17 +275,11 @@ export default {
         this.validateRangDate.end;
       }
     },
-    onCancel() {
-      console.log('User cancelled the loader.')
-    },
     chkIsEmpty: function(value) {
       return value == undefined || value == null || (value + "").trim() == "";
     },
     defaultValue() {
-
       this.$modal.show('hello-world');
-      this.selectTimeStart = "";
-      this.selectTimeStart2 = "";
       this.isLoading = false;
       this.popupLeave = true;
       this.flagSave = 0;
@@ -331,7 +330,7 @@ export default {
         console.log(obj)
           if (response.data) {
             this.Loading = false;
-            this.popupLeave = false;
+            this.$modal.hide('hello-world');
           } else {
             setTimeout(() => {
               this.isLoading = false}, 500);
@@ -344,12 +343,16 @@ export default {
           this.flagSave = 1;},250);
           console.log("else")
         }
-      
-      this.Loading = false;
-      
+      this.$modal.hide('hello-world');
     }
   },
-  watch: {},
+  watch: {
+    showPop() {
+      if (this.showPop) {
+        this.defaultValue();
+      }
+    }
+  },
   validations: {
     form: {
       description: {
