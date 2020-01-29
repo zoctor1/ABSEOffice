@@ -65,23 +65,25 @@
     #calendarMain .badge-success {
         display: none;    
     }
-
     #calendarMain .title {
         text-align: right;
-        font-weight:normal;
     }
-
     #calendarMain .card-header {
-        font-weight:bold;
+        font-weight: bold;
     }
-
     #calendarMain .modal-title {
         text-align: left;
     }
-
     #calendarMain .close {
         display: none;
     }
+    #calendarMain .card-header h2{
+        font-weight: bold !important;
+    }
+    
+    /* #calendarMain .title{
+        font-weight: bold !important;
+    } */
     /* #calendarMain .week-number {
         display: none;
     }
@@ -94,17 +96,15 @@
     #calendarMain .card-inverse  { 
         display: none;
     }
-    #calendarMain .title {
-        margin-left: 50%
-    }
-    #calendarMain .card-header h2{
-        font-weight: bold !important;
-    }
      /* #calendarMain .modal-body .event-color {
         display: none;
     }
     #calendarMain .badge-success { 
         display: none;
     } */
+    /* #calendarMain .title {
+        margin-left: 50%
+    } */
+    
     
 </style>

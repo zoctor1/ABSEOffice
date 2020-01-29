@@ -74,7 +74,7 @@ export function loginUser(user,pass) {
 }
 
 export function insertData(obj) {
-    console.log(obj)
+    console.log("insertData")
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/addDataLeave`, JSON.stringify(obj), {}).then(
             response => {
