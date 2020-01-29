@@ -49,7 +49,7 @@
                   :sort-desc.sync="sortDesc"
                   :sort-direction="sortDirection"
                   @filtered="onFiltered"
-                > 
+                >
                   <template v-slot:table-busy>
                     <div class="text-center text-danger ">
                       <b-spinner class="align-middle"></b-spinner>

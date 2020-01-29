@@ -25,6 +25,7 @@
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
+    "sweetalert2": "^9.5.4",
     "v-calendar": "^1.0.0-beta.23",
     "vue": "^2.6.11",
     "vue-airbnb-style-datepicker": "^2.7.1",

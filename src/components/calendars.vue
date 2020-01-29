@@ -93,8 +93,13 @@
     }
     #calendarMain .card-inverse  { 
         display: none;
-    } */
-    
+    }
+    #calendarMain .title {
+        margin-left: 50%
+    }
+    #calendarMain .card-header h2{
+        font-weight: bold !important;
+    }
      /* #calendarMain .modal-body .event-color {
         display: none;
     }

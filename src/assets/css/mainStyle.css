@@ -4,7 +4,7 @@
 }
 
 * {
-  font-family: Kanit, Arial, Helvetica, sans-serif;
+  font-family: Kanit, Arial, Helvetica, sans-serif !important;
   font-size: 16px;
 }
 
