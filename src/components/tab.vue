@@ -33,10 +33,14 @@
           </b-thead>
         <b-tbody>
           <b-tr v-for="i in responseData">
+            <!-- v-if="i.dayOff != null in responseData" -->
             <b-th>{{ i.leave_reason_name }}</b-th>
             <b-td><center>{{ i.leave_limit + ' วัน  0 ชม.' }}</center></b-td>
-            <b-td><center>{{ i.dd +' วัน '+ i.hh +' ชม. '}}</center></b-td>
-            <b-td><center>{{ (i.leave_limit - i.dd) +' วัน '+ (24 - i.hh) +' ชม. '}}</center></b-td>
+            <b-td v-if="i.dd == null && i.hh == null"><center>{{ 0 +' วัน '+ 0 +' ชม. '}}</center></b-td>
+            <b-td v-else><center>{{ i.dd +' วัน '+ i.hh +' ชม. '}}</center></b-td>
+            <b-td v-if="i.hh == 0"><center>{{ (i.leave_limit - i.dd) +' วัน '+ 0 +' ชม. '}}</center></b-td>
+            <b-td v-else-if="i.dd == null && i.hh == null"><center>{{ (i.leave_limit - i.dd) +' วัน '+ 0 +' ชม. '}}</center></b-td>
+            <b-td v-else-if="i.hh != 0"><center>{{ (i.leave_limit - i.dd - 1) +' วัน '+ (9 - i.hh) +' ชม. '}}</center></b-td>
           </b-tr>
         </b-tbody>
           <b-thead class="thead-light" head-variant="danger">
@@ -44,7 +48,8 @@
               <b-th><b>รวมทั้งหมด : </b></b-th>
               <b-th><center><b>{{ sumLimits(responseData) + ' วัน  0 ชม.'}}</b></center></b-th>
               <b-th><center><b>{{ sumLeave1(responseData) + ' วัน ' + sumLeave2(responseData) + ' ชม.'}}</b></center></b-th>
-              <b-th><center><b>{{ sumRemain1(responseData) + ' วัน ' + sumRemain2(responseData) + ' ชม. '}}</b></center></b-th>
+              <b-th v-if="sumLeave2(responseData) > 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData) - 1) + ' วัน ' + (24 - sumLeave2(responseData)) + ' ชม. '}}</b></center></b-th>
+              <b-th v-if="sumLeave2(responseData) == 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData)) + ' วัน 0 ชม. '}}</b></center></b-th>
             </b-tr>
           </b-thead>
       </b-table-simple>
@@ -116,14 +121,24 @@ export default {
       },
       sumLeave1: function (responseData) {
   	      return responseData.reduce((acc, val) => {
-            var result1 = acc + parseInt(val.dd);
-	  		    return result1;
+            if(val.dd != null){
+              var result1 = acc + parseInt(val.dd);
+              return result1;
+            }
+            else {
+              return acc;
+            }
           }, 0);
       },
       sumLeave2: function (responseData) {
   	      return responseData.reduce((acc, val) => {
-            var result2 = acc + parseInt(val.hh); 
-	  		    return result2;
+            if(val.hh != null){
+              var result2 = acc + parseInt(val.hh); 
+	  		      return result2;
+            }
+            else{
+              return acc;
+            }
           }, 0);
       },
       // sumLeave3: function (responseData) {
@@ -134,16 +149,31 @@ export default {
       // },
       sumRemain1: function (responseData) {
   	    return responseData.reduce((acc, val) => {
-          var sum1 = val.leave_limit - val.dd;
-          var remain1 = acc + parseInt(sum1);
-	  		  return remain1;
+          if(val.dd == 0){
+            var sum1 = val.leave_limit - val.dd;
+            var remain1 = acc + parseInt(sum1);
+            return remain1; 
+          }
+          else if(val.dd == null && val.hh == null){
+            var sum2 = val.leave_limit - val.dd;
+            var remain2 = acc + parseInt(sum2);
+            return remain2; 
+          }
+          else if(val.hh != 0){
+            var sum3 = (val.leave_limit - val.dd) - 1;
+            var remain3 = acc + parseInt(sum3);
+            return remain3;
+          }
 			  }, 0);
       },
       sumRemain2: function (responseData) {
   	    return responseData.reduce((acc, val) => {
-          var sum2 = 0 - val.hh;
-          var remain2 = acc + parseInt(sum2);
-	  		  return remain2;
+          if(val.hh == 0){
+
+          }
+          var sum2 = 9 - val.hh;
+          var remain2 = Math.abs(acc - parseInt(sum2));
+          return remain2;
 			  }, 0);
       },
       // sumRemain3: function (responseData) {
