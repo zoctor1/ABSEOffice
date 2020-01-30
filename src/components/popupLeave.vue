@@ -311,11 +311,6 @@ export default {
       this.isLoading = true;
       var user = JSON.parse(localStorage.getItem("user"));
       var obj = {};
-      var fileData = new FormData();
-      fileData.append("image_leave", this.file);
-      authService.addImage(fileData).then(response => {
-        console.log(formData);
-      });
       obj["emp_id"] = user.uuid;
       obj["leave_date"] = mainJs.setDateToServer(new Date().toString());
       obj["leave_reason_id"] = this.selected1;
@@ -328,12 +323,18 @@ export default {
       );
       obj["leave_remark"] = this.$v.form.description.$model;
       if (this.validation(obj)) {
-        console.log(obj)
         await authService.insertData(obj).then(response => {
-        console.log(obj)
-          if (response.data) {
+          console.log(response.data);
+          if (response.data > 0) {
             this.Loading = false;
             this.$modal.hide('hello-world');
+            this.leaveID = response.data;
+            var fileData = new FormData();
+            fileData.append("image_leave", this.file);
+            fileData.append("leave_emp_id", this.leaveID)
+            authService.addImage(fileData).then(response => {
+              console.log(response.data);
+            });
           } else {
             setTimeout(() => {
               this.isLoading = false}, 500);
@@ -346,7 +347,6 @@ export default {
           this.flagSave = 1;},250);
           console.log("else")
         }
-      this.$modal.hide('hello-world');
     }
   },
   watch: {

@@ -1,0 +1,65 @@
+SELECT
+ lr.leave_reason_id,
+ lr.leave_reason_name,
+ lr.leave_limit,
+ IFNULL((((SUM(dayOff) / 60) / 60) / 24), 0 ) AS dayOff
+FROM
+ leave_reason lr
+ LEFT JOIN (
+ SELECT
+  emp_id,
+ IF
+  (
+   TIME_TO_SEC(
+   TIMEDIFF( leave_stop_time, leave_start_time )) = NULL,
+   0,
+   TIME_TO_SEC(
+   TIMEDIFF( leave_stop_time, leave_start_time ))) AS dayOff,
+  leave_reason_id
+ FROM
+  employee_leave 
+ WHERE
+  emp_id = 1 
+ ) lv ON lr.leave_reason_id = lv.leave_reason_id
+GROUP BY
+ lr.leave_reason_id
+
+
+
+
+SELECT t.emp_id, (((SUM(t.dayOff) / 60) / 60) / 24) AS dayOff, t.leave_reason_id, lr.leave_reason_name, lr.leave_limit 
+FROM( 
+   Select emp_id, 
+	IF(TIME_TO_SEC(TIMEDIFF(leave_stop_time, leave_start_time)) = NULL, 0, TIME_TO_SEC(TIMEDIFF(leave_stop_time, leave_start_time))) AS dayOff, 
+	leave_reason_id 
+From employee_leave WHERE emp_id = 1 ) t, leave_reason AS lr Where t.leave_reason_id = lr.leave_reason_id GROUP BY leave_reason_id
+
+
+SELECT
+ lr.leave_reason_id,
+ lr.leave_reason_name,
+ lr.leave_limit,
+ SUM(dayOff) AS total,
+ ((((SUM(dayOff) / 60) / 60) / 24) % 60) AS dd,
+ (((SUM(dayOff) / 60) / 60) % 24) AS hh,
+ ((SUM(dayOff) / 60) % 60) AS mm
+FROM
+ leave_reason lr
+ LEFT JOIN (
+ SELECT
+  emp_id,
+ IF
+  (
+   TIME_TO_SEC(
+   TIMEDIFF( leave_stop_date, leave_start_date)) = NULL,
+   0,
+   TIME_TO_SEC(
+   TIMEDIFF( leave_stop_date, leave_start_date))) AS dayOff,
+  leave_reason_id
+ FROM
+  employee_leave 
+ WHERE
+  emp_id = 1 
+ ) lv ON lr.leave_reason_id = lv.leave_reason_id
+GROUP BY
+ lr.leave_reason_id

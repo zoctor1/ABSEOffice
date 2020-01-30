@@ -191,10 +191,9 @@ export default {
   },
   mounted() {
     this.getHeaderApprove();
-    
   },
   methods: {
-      showMsgBoxTwo(index) {
+      showMsgBoxTwo(id) {
         this.$bvModal.msgBoxConfirm('คุณต้องการอนุมัติการลานี้ใช่หรือไม่?', {
           headerClass: 'header-1',
           title: 'การอนุมัติ',
@@ -229,12 +228,9 @@ export default {
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;
             response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-            response.data[i].dateTime_start = response.data[i].leave_start_date + " " + response.data[i].leave_start_time;
-            response.data[i].dateTime_stop = response.data[i].leave_stop_date + " " + response.data[i].leave_stop_time;
             response.data[i].HeaderbtnApprove = false;
             response.data[i].HrbtnApprove = false;
           }
-          console.log(response.data)
           this.items = response.data;
           this.totalRows = this.items.length
           this.isBusy = false;

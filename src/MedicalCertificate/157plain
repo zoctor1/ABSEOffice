@@ -1,0 +1,7 @@
+SELECT el.emp_id, ei.first_name, ei.last_name, el.leave_reason_id, lr.leave_reason_name, el.leave_remark,
+el.leave_start_time, el.leave_stop_time, el.head_approve_date, el.hr_approve_date, el.leave_type_id, lt.leave_type_name
+FROM employee_leave el,employee_info ei,leave_reason lr,leave_type lt
+WHERE el.emp_id = ei.emp_id AND el.leave_reason_id = lr.leave_reason_id AND el.leave_type_id = lt.leave_type_id
+
+
+SELECT ei.emp_id, ei.first_name, ei.last_name, dp.position_id, dp.position_name, lt.leave_type_id, lt.leave_type_name, lr.leave_reason_id, lr.leave_reason_name, el.leave_start_time, el.leave_stop_time, ei.mobile, dm.dept_id, dm.dept_name FROM employee_info ei, department_position dp, employee_leave el, leave_reason lr, leave_type lt, department dm WHERE ei.emp_id = el.emp_id AND ei.position_id = dp.position_id AND el.leave_type_id = lt.leave_type_id AND el.leave_reason_id = lr.leave_reason_id AND dm.dept_id = ei.dept_id
