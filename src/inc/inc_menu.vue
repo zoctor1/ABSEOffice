@@ -39,7 +39,10 @@
         <img src="../assets/user.png" width="40" height="40">
       </div>
       <div class="dropdown-content">
-        <a href="#" v-b-modal.modal-center>ข้อมูลส่วนตัว
+        <a @click="show()" style="cursor: default; color: black;"> 
+          ข้อมูลส่วนตัว
+        </a>
+        <!-- <a href="#" v-b-modal.modal-center>ข้อมูลส่วนตัว
           <b-modal title="ข้อมูลส่วนตัว" id="modal-center" :hide-footer="true" centered >
             <template>
               <label style="font-size: 18px;" ><img src="../assets/user.png" style="margin-right:7px; width: 30px; height: 30px;"  class="userIcon"></label>
@@ -49,10 +52,9 @@
             <p class="my-4">ตำแหน่ง : {{userIn.position_name}}</p>
             <p class="my-4">E-mail : {{userIn.username}}</p>
             <p class="my-4">เบอร์ติดต่อ : {{userIn.mobile}}</p>
-            <!-- <center><b-button v-b-modal.modal-footer-sm>แก้ไขข้อมูล</b-button></center> -->
           </b-modal>
-        </a>
-        <a style="color:black; cursor: pointer;" @click="logout()">
+        </a> -->
+        <a style="color: black; cursor: pointer;" @click="logout()">
           ออกจากระบบ
         </a>
       </div>
@@ -65,17 +67,40 @@
       ออกจากระบบ 
     </vs-button> -->
     </vs-navbar>
+     <modal 
+        name="modalShowData" 
+        :clickToClose="false"
+        height="auto"
+        width="520px"
+      >
+      <p style="background-color: #f1f1f1; font-size: 22px; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
+        ข้อมูลส่วนตัว 
+        <button type="button" aria-label="Close" class="close" @click="hide()" >
+          <img src="../assets/Close-icon.png" width="33" height="33" />
+        </button>
+      </p>
+      <div style="padding: 0px 20px 20px 25px">
+        <p style="font-size: 18px;" class="my-4">ชื่อ : {{userIn.first_name}} {{userIn.last_name}}</p>
+        <p style="font-size: 18px;" class="my-4">แผนก : {{userIn.dept_name}}</p>
+        <p style="font-size: 18px;" class="my-4">ตำแหน่ง : {{userIn.position_name}}</p>
+        <p style="font-size: 18px;" class="my-4">E-mail : {{userIn.username}}</p>
+        <p style="font-size: 18px;" class="my-4">เบอร์โทรติดต่อ : {{userIn.mobile}}</p>
+      </div>
+    </modal>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import 'vuesax/dist/vuesax.css'
 import * as mJS from "../assets/js/mainJS"
 import * as authService from '@/services/auth.service';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faSignOutAlt, faBell } from "@fortawesome/free-solid-svg-icons";
-
+import VModal from 'vue-js-modal'
+ 
+Vue.use(VModal)
 library.add(faSignOutAlt, faBell);
 
 export default {
@@ -90,7 +115,9 @@ export default {
       colorx:'#ff6173',
       indexActive: 0,
       colorxx:'#c72a75',
-      colorx2:'#5252e8'
+      colorx2:'#5252e8',
+      hhhh:false
+      // showDataPop:false
     };
   },
   computed: {},
@@ -109,6 +136,12 @@ export default {
     this.userIn = JSON.parse(localStorage.getItem("user"));
   },
   methods: {
+    show () {
+      this.$modal.show('modalShowData');
+    },
+    hide () {
+      this.$modal.hide('modalShowData');
+    },
     toUrl: function(url) {
       this.$router.push("/" + url);
     },
@@ -117,46 +150,40 @@ export default {
       localStorage.removeItem("user");
     }
   },
-  watch: {}
+  watch: {},
 };
 </script>
 
 <style scoped>
-.myNavbar{
-  width: auto;
-  color: rgb(255, 255, 255);
-}
-
-.dropbtn {
-  background-color: transparent;
-}
-
-.dropdown {
-  position: relative;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  left: -60%;
-}
-
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown-content a:hover {
-  background-color: #f1f1f1
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
+  .myNavbar{
+    width: auto;
+    color: rgb(255, 255, 255);
+  }
+  .dropbtn {
+    background-color: transparent;
+  }
+  .dropdown {
+    position: relative;
+  }
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    left: -60%;
+  }
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  .dropdown-content a:hover {
+    background-color: #f1f1f1
+  }
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
 </style>

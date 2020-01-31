@@ -20,149 +20,174 @@
       :clickToClose="false"
       :active.sync="popupLeave"
     >
-    <!-- <vs-popup
-      id="sizePopupLeave"
-      classContent="popupLeave-example"
-      title="กรอกรายละเอียดประวัติการลา"
-      :active.sync="popupLeave"
-    > -->
-      <p style="background-color: #f1f1f1; font-size: 22px; margin-bottom:10px; font-weight:bold; padding: 10px; cursor:default;">กรอกรายละเอียดประวัติการลา <button type="button" aria-label="Close" class="close" @click="hide()" ><img src="../assets/Close-icon.png" width="33" height="33" /></button></p>
-      <center><h4 style="cursor:default;">{{userIn.first_name}} {{userIn.last_name}}</h4></center>
-      <center><h5 style="cursor:default;">แผนก : {{userIn.dept_name}}</h5></center>
-      <center><h5 style="cursor:default;">ตำแหน่ง : {{userIn.position_name}}</h5></center>
+      <p style="background-color: #f1f1f1; font-size: 22px; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
+        กรอกรายละเอียดประวัติการลา 
+        <button type="button" aria-label="Close" class="close" @click="hide()" >
+          <img src="../assets/Close-icon.png" width="33" height="33" />
+        </button>
+      </p>
+        <div style="padding: 0px 25px 10px 20px">
+        <center><h4 style="cursor:default;">{{userIn.first_name}} {{userIn.last_name}}</h4></center>
+        <center><h5 style="cursor:default;">แผนก : {{userIn.dept_name}}</h5></center>
+        <center><h5 style="cursor:default;">ตำแหน่ง : {{userIn.position_name}}</h5></center>
 
-      <div class="con-select-example" style="margin-top:15px">
-        <b-row>
-          <b-col>
-            <p style="margin-bottom:-15px; cursor:default;"><b>ประเภทการลา :</b></p>
-              <b-form-select
-                label="เหตุผลการลา"
-                v-model="selected1"
-                :options="options1"
-                @change="changeSelectType()"
-                class="mt-3"
-                style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-              >
-              </b-form-select> 
-              <div v-if="selected1 == 2" class="mt-3">
-                 <font color="red">{{ textValue2 }}</font>
-              </div>
-              <div v-else-if="selected1 == 3" class="mt-3">
-                <font color="red">{{ textValue3 }}</font>
-              </div>
-          </b-col>
-          <b-col>
-            <p style="cursor:default;"><b>เวลา :</b></p>
-              <b-form-radio-group
-                v-model="selected"
-                :options="options"
-              >
-              </b-form-radio-group> 
-          </b-col>
-        </b-row>
-      </div>
-        <div>
-          <div style="margin-top:10px">
-            <b-row>
-              <b-col>
-                <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
-                <div class="form-group" :class="{ 'form-group--error': $v.form.valDate1.$error }">
-                  <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
-                  <div class="error" v-if="!$v.form.valDate1.required"><font color="red">จำเป็น*</font></div>
-                  <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
+        <div class="con-select-example" style="margin-top:15px">
+          <b-row>
+            <b-col>
+              <p style="margin-bottom:-15px; cursor:default;"><b>ประเภทการลา :</b></p>
+                <b-form-select
+                  label="เหตุผลการลา"
+                  v-model="selectType"
+                  :options="options1"
+                  @change="changeSelectType()"
+                  class="mt-3"
+                  style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                >
+                </b-form-select> 
+                <div v-if="selectType == 2" class="mt-3">
+                  <font color="red">{{ textValue2 }}</font>
                 </div>
-              </b-col>
-              <b-col>
-                <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
-                <div class="form-group" :class="{ 'form-group--error': $v.form.valDate2.$error }">
-                  <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="$v.form.valDate1.$model !='' ? $v.form.valDate1.$model : currentDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
-                  <div class="error" v-if="!$v.form.valDate2.required"><font color="red">จำเป็น*</font></div>
-                  <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div> 
+                <div v-else-if="selectType == 3" class="mt-3">
+                  <font color="red">{{ textValue3 }}</font>
                 </div>
-              </b-col>
-              
-            </b-row>
-          </div>
-          <div style="margin-top:-10px">
-            <b-row>
-              <b-col>
-                <div v-if="selected != 3 && selected != 2 && selected != 1">
-                  <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
-                  <VueCtkDateTimePicker
-                    v-model="selectTimeStart"
-                    format="H:mm:ss"
-                    formatted="H:mm "
-                    :only-time="true"
-                    :no-keyboard="true"
-                    :no-label="true"
-                    :no-header="true"
-                    label="เลือกเวลา"
-                  />
-                </div>
-              </b-col>
-              <b-col>
-                <div v-if="selected != 3 && selected != 2 && selected != 1">
-                  <p style="cursor:default;"><b>เวลาสิ้นสุดการลา :</b></p>
-                  <VueCtkDateTimePicker
-                    v-model="selectTimeStop"
-                    format="H:mm:ss"
-                    formatted="H:mm "
-                    :only-time="true"
-                    :no-keyboard="true"
-                    :no-label="true"
-                    :no-header="true"
-                    label="เลือกเวลา"
-                  />
-                </div>
-              </b-col>
-            </b-row>
-          </div>
-          <div class="form-group" :class="{ 'form-group--error': $v.form.description.$error }" style="margin-top:10px">
-            <p style="cursor:default;"><b>รายละเอียดการลา :</b></p>
-            <b-form-textarea
-              style="width:340px;height:80px; padding:1px"
-              v-model.trim="$v.form.description.$model"
-              placeholder="กรอกข้อมูลรายละเอียดการลา"
-              rows="4"
-              no-resize
-              >
-            </b-form-textarea>
-            <div class="error" v-if="!$v.form.description.required"><font color="red">จำเป็น*</font></div>
-            <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
-          </div>
+            </b-col>
+            <b-col>
+              <p style="cursor:default;"><b>เวลา :</b></p>
+                <b-form-radio-group
+                  v-model="selected"
+                  :options="options"
+                >
+                </b-form-radio-group> 
+            </b-col>
+          </b-row>
         </div>
-        
-        <template>
-          <div v-if="selected1 == 1">
-            <p style="cursor:default;"><b>แนบใบรับรองแพทย์ :</b></p>
-            <b-form-file v-model="file" ref="file-input" class="mb-2"></b-form-file>
-            <b-button v-if="file != null" @click="file = null">ลบไฟล์</b-button>
+          <div>
+            <div style="margin-top:10px">
+              <b-row>
+                <b-col>
+                  <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
+                  <div class="form-group" :class="{ 'form-group--error': $v.form.valDate1.$error }">
+                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
+                    <div class="error" v-if="!$v.form.valDate1.required"><font color="red">จำเป็น*</font></div>
+                    <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
+                  </div>
+                </b-col>
+                <b-col>
+                  <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
+                  <div class="form-group" :class="{ 'form-group--error': $v.form.valDate2.$error }">
+                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="$v.form.valDate1.$model !='' ? $v.form.valDate1.$model : currentDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
+                    <div class="error" v-if="!$v.form.valDate2.required"><font color="red">จำเป็น*</font></div>
+                    <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div> 
+                  </div>
+                </b-col>
+                
+              </b-row>
+            </div>
+            <div style="margin-top:-10px">
+              <b-row>
+                <b-col>
+                  <div v-if="selected != 3 && selected != 2 && selected != 1">
+                    <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
+                    <VueCtkDateTimePicker
+                      v-model="selectTimeStart"
+                      format="H:mm:ss"
+                      formatted="H:mm:00"
+                      :only-time="true"
+                      :no-keyboard="true"
+                      :no-label="true"
+                      :no-header="true"
+                      label="เลือกเวลา"
+                    />
+                  </div>
+                  <div v-if="selected != 2 && selected != 3 && selected != 4">
+                    <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
+                    <p style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px; cursor:default; width: 130px; height: 42px; padding: 7px 6px 6px 14px">{{ timeAM9 }}</p>
+                  </div>
+                  <div v-if="selected != 1 && selected != 3 && selected != 4">
+                    <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
+                    <p style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px; cursor:default; width: 130px; height: 42px; padding: 7px 6px 6px 14px">{{ timePM13 }}</p>
+                  </div>
+                  <div v-if="selected != 1 && selected != 2 && selected != 4">
+                    <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
+                    <p style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px; cursor:default; width: 130px; height: 42px; padding: 7px 6px 6px 14px">{{ timeFull9 }}</p>
+                  </div>
+                </b-col>
+                <b-col>
+                  <div v-if="selected != 3 && selected != 2 && selected != 1">
+                    <p style="cursor:default;"><b>เวลาสิ้นสุดการลา :</b></p>
+                    <VueCtkDateTimePicker
+                      v-model="selectTimeStop"
+                      format="H:mm:ss"
+                      formatted="H:mm:00 "
+                      :only-time="true"
+                      :no-keyboard="true"
+                      :no-label="true"
+                      :no-header="true"
+                      label="เลือกเวลา"
+                    />
+                  </div>
+                  <div v-if="selected != 2 && selected != 3 && selected != 4">
+                    <p style="cursor:default;"><b>เวลาสิ้นสุดการลา :</b></p>
+                    <p style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px; cursor:default; width: 130px; height: 42px; padding: 7px 6px 6px 14px">{{ timeAM12 }}</p>
+                  </div>
+                  <div v-if="selected != 1 && selected != 3 && selected != 4">
+                    <p style="cursor:default;"><b>เวลาสิ้นสุดการลา :</b></p>
+                    <p style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px; cursor:default; width: 130px; height: 42px; padding: 7px 6px 6px 14px">{{ timePM18 }}</p>
+                  </div>
+                  <div v-if="selected != 1 && selected != 2 && selected != 4">
+                    <p style="cursor:default;"><b>เวลาสิ้นสุดการลา :</b></p>
+                    <p style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px; cursor:default; width: 130px; height: 42px; padding: 7px 6px 6px 14px">{{ timeFull18 }}</p>
+                  </div>
+                </b-col>
+              </b-row>
+            </div>
+            <div class="form-group" :class="{ 'form-group--error': $v.form.description.$error }" style="margin-top:10px">
+              <p style="cursor:default;"><b>รายละเอียดการลา :</b></p>
+              <b-form-textarea
+                style="width:340px;height:80px; padding:1px"
+                v-model.trim="$v.form.description.$model"
+                placeholder="กรอกข้อมูลรายละเอียดการลา"
+                rows="4"
+                no-resize
+                >
+              </b-form-textarea>
+              <div class="error" v-if="!$v.form.description.required"><font color="red">จำเป็น*</font></div>
+              <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
+            </div>
           </div>
-        </template>
-        <loading
-          :active.sync="isLoading"
-          :is-full-page="fullPage"
-        >
-        </loading>
-        <div v-show="flagSave == 1" style="margin-top:25px">
-          <b-col sm="12">
+          
+          <template>
+            <div v-if="selectType == 1">
+              <p style="cursor:default;"><b>แนบใบรับรองแพทย์ :</b></p>
+              <b-form-file v-model="file" ref="file-input" class="mb-2"></b-form-file>
+              <b-button v-if="file != null" @click="file = null">ลบไฟล์</b-button>
+            </div>
+          </template>
+          <loading
+            :active.sync="isLoading"
+            :is-full-page="fullPage"
+          >
+          </loading>
+          <div v-show="flagSave == 1" style="margin-top:25px">
+            <b-col sm="12">
+              <center>
+                <font color="red">
+                {{textError}}
+                </font>
+              </center>
+            </b-col>
+          </div>
             <center>
-              <font color="red">
-              {{textError}}
-              </font>
+              <vs-button
+                style="margin-bottom:25px; position: static;"
+                @click="insertData()"
+                color="primary"
+                type="filled"
+              >
+                บันทึก
+              </vs-button>
             </center>
-          </b-col>
         </div>
-          <center>
-            <vs-button
-              style="margin-bottom:25px; position: static;"
-              @click="insertData()"
-              color="primary"
-              type="filled"
-            >
-              บันทึก
-            </vs-button>
-          </center>
     </modal>
   </div>
 </template>
@@ -181,8 +206,10 @@ import { Settings } from 'luxon'
 import VueCtkDateTimePicker from 'vue-ctk-date-time-picker'; //npm i --save vue-ctk-date-time-picker
 import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 import VModal from 'vue-js-modal'
- 
-Vue.use(VModal)
+import VueSimpleAlert from "vue-simple-alert";
+import 'sweetalert2/dist/sweetalert2.min.css'
+
+Vue.use(VModal,VueSimpleAlert);
 Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 Vue.use(Datetime)
 
@@ -203,7 +230,7 @@ export default {
         { text: 'อื่น ๆ', value: 4 }
       ],
       options1: [
-        { text: "--กรุณาเลือกสาเหตุการลา--", value: null, disabled: true},
+        { text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true},
         { text: "ลาป่วย",value: 1 },
         { text: "ลากิจ",value: 2},
         { text: "ลาพักร้อน",value: 3 },
@@ -216,6 +243,7 @@ export default {
       types: [
         'date',
       ],
+      selectType: "",
       selected: 3,
       selectTimeStart: "",
       selectTimeStop: "",
@@ -238,7 +266,13 @@ export default {
       flagRangDate: false,
       validateRangDate: {},
       currentDate: "",
-      file: null
+      file: null,
+      timeAM9: "9:00:00",
+      timeAM12: "12:00:00",
+      timePM13: "13:00:00",
+      timePM18: "18:00:00",
+      timeFull9: "9:00:00",
+      timeFull18: "18:00:00"
     }
   },
   computed: {},
@@ -249,11 +283,10 @@ export default {
     this.currentDate = mainJs.setDateToServer(new Date().toString(), "TZ");
     this.userIn = JSON.parse(localStorage.getItem("user"));
     Settings.defaultLocale = 'th'
-    
   },
   methods: {
     changeSelectType() {
-      if (this.selected1 == 2 || this.selected1 == 3) {
+      if (this.selectType == 2 || this.selectType == 3) {
         var cDate = new Date().setDate(new Date().getDate() + 3);
         this.currentDate = mainJs.setDateToServer(new Date(cDate).toString(), "TZ");
       } else {
@@ -290,7 +323,7 @@ export default {
       this.selectTimeStart="",
       this.selectTimeStop=""
       this.flagRangDate = false;
-      this.selected1= null;
+      this.selectType= null;
       this.selected = 3;
       // this.options = [{options1}];
       // this.options1 = [{options1}];
@@ -306,11 +339,12 @@ export default {
     },
     insertData: async function() {
       this.isLoading = true;
+      console.log("loading")
       var user = JSON.parse(localStorage.getItem("user"));
       var obj = {};
       obj["emp_id"] = user.uuid;
       obj["leave_date"] = mainJs.setDateToServer(new Date().toString());
-      obj["leave_reason_id"] = this.selected1;
+      obj["leave_reason_id"] = this.selectType;
       obj["leave_type_id"] = this.selected;
       obj["leave_start_date"] = mainJs.setDateToServer(
         this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
@@ -340,10 +374,12 @@ export default {
       } else {
         setTimeout(() => {
           this.isLoading = false;
-          this.flagSave = 1;},250);
+          this.$swal.fire({
+            heightAuto: false,
+            title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
+          })},250);
           console.log("else")
         }
-      this.$modal.hide('hello-world');
     }
   },
   watch: {
@@ -434,13 +470,17 @@ export default {
   #sizePopupLeave .vdatetime-input {
     width: 235px !important;
     height: 40px !important;
+    font-size: 16px !important;
   }
   #sizePopupLeave .fs-16 {
     display: none;
   }
-  #sizePopupLeave .before {
-    display: none;
+   #sizePopupLeave .field-input {
+    font-size: 16px !important;
   }
+  /* #sizePopupLeave .before {
+    display: none;
+  } */
   #sizePopupLeave .vdatetime-input {
     border: none;
   }
@@ -449,9 +489,6 @@ export default {
   }
   #sizePopupLeave .custom-select {
     border: none;
-  }
-  #sizePopupLeave .v--modal-box {
-    padding: 20px;
   }
   /* .close {
   position: absolute;

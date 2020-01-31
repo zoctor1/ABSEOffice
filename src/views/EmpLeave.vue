@@ -13,7 +13,7 @@
                   <b-col lg="12" sm="12" xs="12">
                     <div>
                       <vs-button
-                        @click="showPopup()"
+                        @click="showLeavePopup()"
                         color="primary"
                         type="filled"
                       >
@@ -37,18 +37,47 @@
               >
               </b-form-input>
             <b-input-group-append>
-            <div class="close" style="cursor: pointer; margin-left:10px; margin-right:70px" @click="getDataAsync()">
+            <div class="close" style="cursor: pointer; margin-left:10px; " @click="getDataAsync()">
               <img src="../assets/refresh.png" id="tooltip-target-1"  width="33" height="33">
               <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
                 Refresh
               </b-tooltip>
             </div>
             </b-input-group-append>
+
+
+            <b-col lg="6" class="my-1" >
+              <b-form-group 
+              style="margin-top:-5px"
+                label="Sort"
+                label-cols-sm="3"
+                label-align-sm="right"
+                label-size="sm"
+                label-for="sortBySelect"
+                class="mb-0"
+              >
+                <b-input-group size="sm">
+                  <b-form-select v-model="sortBy" id="sortBySelect" :options="sortOptions" class="w-75">
+                    <template v-slot:first>
+                      <option value="">-- none --</option>
+                    </template>
+                  </b-form-select>
+                  <b-form-select v-model="sortDesc" size="sm" :disabled="!sortBy" class="w-25">
+                    <option :value="false">น้อยที่สุด</option>
+                    <option :value="true">มากที่สุด</option>
+                  </b-form-select>
+                </b-input-group>
+              </b-form-group>
+            </b-col>
+
+
             </b-input-group>
+          <img src="../assets/Details.png" width="33" height="33">
           </b-nav-form>
-          <table  width=100% style="margin-top:10px; border: 1px solid black;">
+          <table width=100% style="margin-top:10px; border: 1px solid black;">
             <div >
               <b-table
+                fixed responsive
                 :busy="isBusy"
                 striped hover :items="items"
                 :fields="fields"
@@ -61,6 +90,7 @@
                 @filtered="onFiltered" 
                 show-empty
               >
+              
               <!-- :busy="isBusy" is reload variable  -->
               <template v-slot:table-busy>
                 <div class="text-center text-danger ">
@@ -68,9 +98,11 @@
                   <strong> Loading...</strong>
                 </div>
               </template>
+
               <template v-slot:empty>
                 <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
               </template>
+
               <template v-slot:cell(hr_approve_date)="data">
                 <div v-if="data.item.cancel_date != null">
                   <h6>ไม่อนุมัติ</h6>
@@ -192,7 +224,7 @@ export default {
       sortDesc: false,
       sortDirection: 'asc',
       boxtwo: '',
-      showPop:false
+      showPop:false,
       // name: " ",
       // val1: " ",
       // val2: " "
@@ -220,7 +252,7 @@ export default {
     this.getDataAsync();
   },
   methods: {
-    showPopup: function() {
+    showLeavePopup: function() {
         var ths = this;
         ths.showPop = true;
         setTimeout(function() {
