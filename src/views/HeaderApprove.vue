@@ -54,6 +54,13 @@
                     <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
                   </template>
 
+
+                  <template v-slot:cell(leave_remark)>
+                    <img src="../assets/Details.png" width="33" height="33">
+
+                  </template>
+
+
                    <template v-slot:cell(hr_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
                       <h6>ไม่อนุมัติ</h6>
@@ -203,7 +210,7 @@ export default {
           okTitle: 'อนุมัติ',
           cancelTitle: 'ไม่อนุมัติ',
           footerClass: 'p-2',
-          hideHeaderClose: false,
+          hideHeaderClose: true,
           centered: true
         }).then(value => {
           console.log(value)
