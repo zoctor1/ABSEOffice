@@ -239,6 +239,10 @@ export default {
         { text: "ลาไม่รับค่าจ้าง",value: 6 }
       ],
       description:'',
+      selected1: "",
+      selected2: null,
+      value1:'',
+      value2:'',
       popupLeave:false,
       types: [
         'date',
@@ -352,19 +356,20 @@ export default {
       obj["leave_stop_date"] = mainJs.setDateToServer(
         this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
       );
-      // obj["leave_start_time"] = this.selectTimeStart;
-      // obj["leave_stop_time"] = this.selectTimeStart2;
-      // obj["leave_stop_time"] = mainJs.setDateToServer(
-      //   this.$v.form.valDate2.$model
-      // );
       obj["leave_remark"] = this.$v.form.description.$model;
       if (this.validation(obj)) {
-        console.log(obj)
         await authService.insertData(obj).then(response => {
-        console.log(obj)
-          if (response.data) {
+          console.log(response.data);
+          if (response.data > 0) {
             this.Loading = false;
             this.$modal.hide('hello-world');
+            this.leaveID = response.data;
+            var fileData = new FormData();
+            fileData.append("image_leave", this.file);
+            fileData.append("leave_emp_id", this.leaveID)
+            authService.addImage(fileData).then(response => {
+              console.log(response.data);
+            });
           } else {
             setTimeout(() => {
               this.isLoading = false}, 500);
