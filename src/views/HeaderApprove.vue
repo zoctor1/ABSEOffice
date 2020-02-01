@@ -26,6 +26,20 @@
                     </b-tooltip>
                   </div>
                 </b-input-group-append>
+                <template>
+                  <div>
+                    <b-form-select 
+                      v-model="selectedFilter" 
+                      :options="selectFilter"
+                    ></b-form-select>
+                  </div>
+                </template>
+                  <div v-if="selectedFilter != 2 && selectedFilter != 3">
+                    <b-form-select 
+                      v-model="optionsLeave" 
+                      :options="optionsLeaveType"
+                    ></b-form-select>
+                  </div>
               </b-input-group>
             </b-nav-form>
             <table width=100% style="border :1px solid black; margin-top:10px; " >
@@ -54,12 +68,10 @@
                     <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
                   </template>
 
-
                   <template v-slot:cell(leave_remark)>
                     <img src="../assets/Details.png" width="33" height="33">
-
+                      
                   </template>
-
 
                    <template v-slot:cell(hr_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
@@ -156,6 +168,20 @@ export default {
   data() {
     return {
       items: [],
+      selectFilter: [
+        { value: null, text: "--กรุณาเลือกประเภทการแสดง--", disabled: true},
+        { value: 1 ,text: "ประเภทการลา"},
+        { value: 2 ,text: "แผนก"},
+        { value: 3 ,text: "สถานะ"}
+      ],
+      optionsLeaveType: [
+        { value: 1 ,text: "ลาป่วย"},
+        { value: 2 ,text: "ลากิจ"},
+        { value: 3 ,text: "ลาพักร้อน"},
+        { value: 4 ,text: "ลาคลอด"},
+        { value: 5 ,text: "ลาบวช"},
+        { value: 6 ,text: "ลาไม่รับค่าจ้าง"}
+      ],
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
@@ -170,6 +196,8 @@ export default {
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
       ],
+      selectedFilter: "",
+      optionsLeave: "",
       isBusy: false,
       totalRows:1,
       currentPage: 1,
@@ -199,6 +227,7 @@ export default {
   },
   mounted() {
     this.getHeaderApprove();
+    
   },
   methods: {
       showMsgBoxTwo(id) {
@@ -265,12 +294,16 @@ export default {
       authService.getDataHeader({}).then(response => {
         console.log(response.data)
         if (response.data != null && response.data.length > 0) {
+          this.selectedFilter = null;
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;
             response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+            response.data[i].dateTime_start = response.data[i].leave_start_date + " " + response.data[i].leave_start_time;
+            response.data[i].dateTime_stop = response.data[i].leave_stop_date + " " + response.data[i].leave_stop_time;
             response.data[i].HeaderbtnApprove = false;
             response.data[i].HrbtnApprove = false;
           }
+          console.log(response.data)
           this.items = response.data;
           this.totalRows = this.items.length
           this.isBusy = false;
