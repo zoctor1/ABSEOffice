@@ -13,26 +13,33 @@
     </div>
 
     <vs-navbar-item index="0">
-      <a style="cursor: pointer;" @click="toUrl('Main'), indexActive = 0"><font size=3 color="#FEFCFF">หน้าเเรก</font></a>
+      <a style="cursor: pointer;" @click="toUrl('Main'), indexActive = 0"><font style="font-size: 20px;" color="#FEFCFF">หน้าเเรก</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="1">
-      <a style="cursor: pointer;" @click="toUrl('EmpLeave'), indexActive = 1"><font size=3 color="#FEFCFF"> ข้อมูลการลางาน</font></a>
+      <a style="cursor: pointer;" @click="toUrl('EmpLeave'), indexActive = 1"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการลางาน</font></a>
     </vs-navbar-item>
     <!-- <vs-navbar-item index="2" >
       <a style="cursor: pointer;" @click="toUrl('EmpOT')"><font size=3 color="#FEFCFF">(User) ข้อมูลการทำงานนอกเวลา(OT)</font></a>
     </vs-navbar-item> -->
     <vs-navbar-item index="2">
-      <a style="cursor: pointer;" @click="toUrl('HeaderApprove'), indexActive = 2"><font size=3 color="#FEFCFF">(Header) การอนุมัติลางาน</font></a>
+      <a style="cursor: pointer;" @click="toUrl('HeaderApprove'), indexActive = 2"><font style="font-size: 20px;" color="#FEFCFF">(Header) การอนุมัติลางาน</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="3">
-      <a style="cursor: pointer;" @click="toUrl('HrLeave'), indexActive = 3"><font size=3 color="#FEFCFF">(Hr) ข้อมูลการลางานของพนักงาน</font></a>
+      <a style="cursor: pointer;" @click="toUrl('HrLeave'), indexActive = 3"><font style="font-size: 20px;" color="#FEFCFF">(Hr) ข้อมูลการลางานของพนักงาน</font></a>
     </vs-navbar-item>
     <!-- <vs-navbar-item index="5" style="margin-right:10px;">
       <a style="cursor: pointer;" @click="toUrl('HrOT')"><font size=3 color="#FEFCFF">(Hr) ข้อมูลการทำงานนอกเวลาของพนักงาน</font></a>
     </vs-navbar-item> -->
 
     <vs-spacer></vs-spacer>
-    <p class="my-4" style="margin: 0px 10px 0px 10px; border-left: 2px solid rgb(255, 255, 255); cursor:default;"><b> &nbsp; &nbsp;{{userIn.first_name}} {{userIn.last_name}} : {{userIn.dept_name}}</b></p>
+    <p class="my-4" style="margin: 0px 30px 0px 10px; border-left: 2px solid rgb(255, 255, 255); cursor:default;">
+      <b-row>
+         <b  style="absolute : relative; right:auto"> &nbsp; &nbsp; &nbsp;{{userIn.first_name}} {{userIn.last_name}}</b>
+      </b-row>
+      <b-row>
+         <b  style="absolute : relative; right:auto"> &nbsp; &nbsp; &nbsp;{{userIn.dept_name}}</b>
+      </b-row>
+    </p>
 
     <div class="dropdown">
       <div style="cursor: pointer; margin:0px 50px 0px 20px;" class="dropbtn">

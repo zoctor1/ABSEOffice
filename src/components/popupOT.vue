@@ -5,6 +5,7 @@
         @click="popupOT=true" 
         color="primary" 
         type="filled" 
+        style="width:144px; height:44px;"
       >
         <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มเวลาทำงาน
       </vs-button>

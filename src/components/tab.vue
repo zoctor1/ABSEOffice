@@ -5,31 +5,42 @@
     <b-col>
       <div style="position: drelative;">
         <b-card style="margin-top:20px;" >
+        <center>
           <h3 style=" font-weight: bold; cursor: default;">{{userIn.first_name}} {{userIn.last_name}}</h3>
           <h4 style="margin-bottom:10px; cursor: default;">เเผนก : {{userIn.dept_name}}</h4>
           <h4 style="margin-bottom:10px; cursor: default;">ตำแหน่ง : {{userIn.position_name}} </h4>
-          </center>
-            <center>
-              <div style="margin: 30px 130px 0px -20px">
-                <!-- <popupLeave /> -->
-                <div>
-                  <b-col lg="12" sm="12" xs="12">
-                    <div>
-                      <vs-button
-                        @click="showPopup()"
-                        color="primary"
-                        type="filled"
-                      >
-                        <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
-                      </vs-button>
-                    </div>
-                  </b-col>
-                </div>
-              </div>
-              <div style="margin:-44px 0px 0px 130px">
-                <popupOT />
-              </div>
-            </center>
+        </center>
+            <!-- <center> -->
+              <b-row>
+                <b-col>
+                  <!-- <div style="margin: 30px 130px 0px -20px"> -->
+                  <div>
+                    <b-col lg="12" sm="12" xs="12">
+                      <div>
+                        <center>
+                        <vs-button
+                          @click="showPopup()"
+                          color="primary"
+                          type="filled"
+                          style="width:114px; height:44px; margin-right:auto;"
+                        >
+                          <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
+                        </vs-button>
+                        </center>
+                      </div>
+                    </b-col>
+                  </div>
+                </b-col>
+                <b-col>
+                  <!-- <div style="margin:-44px 0px 0px 130px"> -->
+                  <div>
+                    <center>
+                    <popupOT />
+                    </center>
+                  </div>
+                </b-col>
+              </b-row>
+            <!-- </center> -->
         </b-card>
       </div>  
       <b-table-simple hover small caption-top responsive style="border :1px solid black; margin-top:10px; cursor: default;">

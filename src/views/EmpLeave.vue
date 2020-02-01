@@ -44,42 +44,15 @@
               </b-tooltip>
             </div>
             </b-input-group-append>
-
-
-            <b-col lg="6" class="my-1" >
-              <b-form-group 
-              style="margin-top:-5px"
-                label="Sort"
-                label-cols-sm="3"
-                label-align-sm="right"
-                label-size="sm"
-                label-for="sortBySelect"
-                class="mb-0"
-              >
-                <b-input-group size="sm">
-                  <b-form-select v-model="sortBy" id="sortBySelect" :options="sortOptions" class="w-75">
-                    <template v-slot:first>
-                      <option value="">-- none --</option>
-                    </template>
-                  </b-form-select>
-                  <b-form-select v-model="sortDesc" size="sm" :disabled="!sortBy" class="w-25">
-                    <option :value="false">น้อยที่สุด</option>
-                    <option :value="true">มากที่สุด</option>
-                  </b-form-select>
-                </b-input-group>
-              </b-form-group>
-            </b-col>
-
-
             </b-input-group>
-          <img src="../assets/Details.png" width="33" height="33">
           </b-nav-form>
           <table width=100% style="margin-top:10px; border: 1px solid black;">
             <div >
               <b-table
                 fixed responsive
                 :busy="isBusy"
-                striped hover :items="items"
+                striped hover 
+                :items="items"
                 :fields="fields"
                 :filter="filter"
                 :current-page="currentPage"
@@ -102,7 +75,7 @@
               <template v-slot:empty>
                 <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
               </template>
-
+              
               <template v-slot:cell(hr_approve_date)="data">
                 <div v-if="data.item.cancel_date != null">
                   <h6>ไม่อนุมัติ</h6>
@@ -110,7 +83,7 @@
                 <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date != null">
                   <h6>{{data.item.hr_approve_date}}</h6>
                 </div>
-                <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date == null">
+                <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date == null && data.item.emp_leave_id != null">
                   <h6>รอการอนุมัติ</h6>
                 </div>
               </template>
@@ -122,7 +95,7 @@
                 <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date != null">
                   <h6>{{data.item.head_approve_date}}</h6>
                 </div>
-                <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date == null">
+                <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date == null && data.item.emp_leave_id != null">
                   <h6>รอการอนุมัติ</h6>
                 </div>
               </template>
@@ -134,13 +107,13 @@
                 <div v-else-if="data.item.cancel_date != null">
                   <h6>ไม่ผ่าน</h6>
                 </div>
-                <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null">
+                <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null && data.item.emp_leave_id != null">
                   <h6>รอการอนุมัติจาก Head เเละ Hr</h6>
                 </div>
-                <div v-else-if="data.item.head_approve_date == null && data.item.cancel_date == null">
+                <div v-else-if="data.item.head_approve_date == null && data.item.cancel_date == null && data.item.emp_leave_id != null">
                   <h6>รอการอนุมัติจาก Head</h6>
                 </div>
-                <div v-else-if="data.item.hr_approve_date == null && data.item.cancel_date == null">
+                <div v-else-if="data.item.hr_approve_date == null && data.item.cancel_date == null && data.item.emp_leave_id != null">
                   <h6>รอการอนุมัติจาก Hr</h6>
                 </div>
               </template>
