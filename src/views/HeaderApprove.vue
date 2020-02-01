@@ -72,6 +72,7 @@
                       <h6>รอการอนุมัติ</h6>
                     </div>
                   </template>
+                  
                   <template v-slot:cell(head_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
                       <h6>ไม่อนุมัติ</h6>
@@ -210,7 +211,7 @@ export default {
           okTitle: 'อนุมัติ',
           cancelTitle: 'ไม่อนุมัติ',
           footerClass: 'p-2',
-          hideHeaderClose: true,
+          hideHeaderClose: false,
           centered: true
         }).then(value => {
           console.log(value)
@@ -219,12 +220,44 @@ export default {
               console.log(response.data);
               this.getHeaderApprove();
             });
-          } else {
+          } else if (value == false) {
             authService.notApproveHead(id).then(response => {
               console.log(response.data);
+              // this.showMsgOk();
               this.getHeaderApprove();
             });
           }
+        })
+      },
+      // showMsgOk() {
+      //   const h = this.$createElement
+      //   const titleVNode = h('div', { domProps: { innerHTML: 'สาเหตุที่ไม่อนุมัติ' } })
+      //   const messageVNode = h('div', { class: ['foobar'] }, [
+      //      h('p', { class: ['text-center'] }, [
+      //        ' Flashy ',
+      //      ]),
+      //      h()
+    //        <b-col sm="10">
+    //   <b-form-textarea
+    //     id="textarea-large"
+    //     size="lg"
+    //     placeholder="Large textarea"
+    //   ></b-form-textarea>
+    // </b-col>
+          // h('p', { class: ['text-center'] }, [h('b-spinner')]),
+          // h('b-img', {
+          //   props: {
+          //     src: 'https://picsum.photos/id/20/250/250',
+          //     thumbnail: true,
+          //     center: true,
+          //     fluid: true, rounded: 'circle'
+          //   }
+          // })
+        ])
+        this.$bvModal.msgBoxOk([messageVNode], {
+          title: [titleVNode],
+          buttonSize: 'sm',
+          centered: true, size: 'sm'
         })
       },
       getHeaderApprove: function() {

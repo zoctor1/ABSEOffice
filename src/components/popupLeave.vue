@@ -73,11 +73,13 @@
                   </div>
                 </b-col>
                 <b-col>
+                  <div v-if="selected != 1 && selected != 2">
                   <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
                   <div class="form-group" :class="{ 'form-group--error': $v.form.valDate2.$error }">
                     <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="$v.form.valDate1.$model !='' ? $v.form.valDate1.$model : currentDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
                     <div class="error" v-if="!$v.form.valDate2.required"><font color="red">จำเป็น*</font></div>
                     <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div> 
+                  </div>
                   </div>
                 </b-col>
                 
@@ -275,6 +277,8 @@ export default {
       timeAM12: "12:00:00",
       timePM13: "13:00:00",
       timePM18: "18:00:00",
+      timeFull9: "9:00:00",
+      timeFull18: "18:00:00",
       sel1: "",
       sel2: ""
     }
@@ -358,8 +362,8 @@ export default {
         this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM18
       }
       else if(this.selected == 3){
-        this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
-        this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
+        this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeFull9
+        this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.timeFull18
       }
       else if(this.selected == 4){
         this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart

@@ -133,20 +133,40 @@ export function postApproveHead(approveH) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function notApproveHead(notApproveH) {
-    console.log(notApproveH);
+// export function notApproveHead(notApproveH) {
+//     console.log(notApproveH);
+//     return new Promise((resolve, reject) => {
+//         axios.post(`${API_URL}/NotApproveHead`, {}, { headers: {cancelHead : notApproveH} }).then(
+//             response => {
+//                 return resolve(new ResponseWrapper(response, response.data))
+//             })
+//     }).catch(error => reject(new ErrorWrapper(error)))
+// }
+
+// export function notApproveHR(notApproveHr) {
+//     console.log(notApproveHr);
+//     return new Promise((resolve, reject) => {
+//         axios.post(`${API_URL}/NotApproveHR`, {}, { headers: {cancelHR : notApproveHr} }).then(
+//             response => {
+//                 return resolve(new ResponseWrapper(response, response.data))
+//             })
+//     }).catch(error => reject(new ErrorWrapper(error)))
+// }
+
+export function notApproveHead(commentHeader, notApproveH) {
+    console.log(commentHeader + notApproveH);
     return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/NotApproveHead`, {}, { headers: {cancelHead : notApproveH} }).then(
+        axios.post(`${API_URL}/NotApproveHead`, {}, { headers: {commentHeader : commentHeader, cancelHead : notApproveH} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function notApproveHR(notApproveHr) {
-    console.log(notApproveHr);
+export function notApproveHR(commentHR, notApproveHr) {
+    console.log(commentHR + notApproveHr);
     return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/NotApproveHR`, {}, { headers: {cancelHR : notApproveHr} }).then(
+        axios.post(`${API_URL}/NotApproveHR`, {}, { headers: {commentHR : commentHR, cancelHR : notApproveHr} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })

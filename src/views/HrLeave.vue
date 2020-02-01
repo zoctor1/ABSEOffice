@@ -211,7 +211,7 @@ export default {
               console.log(response.data);
               this.getHrApprove();
             });
-          } else {
+          } else if (value == false) {
             authService.notApproveHR(id).then(response => {
               console.log(response.data);
               this.getHrApprove();
