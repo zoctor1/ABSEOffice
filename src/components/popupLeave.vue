@@ -275,8 +275,8 @@ export default {
       timeAM12: "12:00:00",
       timePM13: "13:00:00",
       timePM18: "18:00:00",
-      timeFull9: "9:00:00",
-      timeFull18: "18:00:00"
+      sel1: "",
+      sel2: ""
     }
   },
   computed: {},
@@ -307,7 +307,6 @@ export default {
       if (obj.start != undefined && obj.start != null && obj.end != undefined && obj.end != null) {
         this.flagRangDate = true;
         this.validateRangDate = obj;
-
         this.validateRangDate.start;
         this.validateRangDate.end;
       }
@@ -350,12 +349,34 @@ export default {
       obj["leave_date"] = mainJs.setDateToServer(new Date().toString());
       obj["leave_reason_id"] = this.selectType;
       obj["leave_type_id"] = this.selected;
+      if(this.selected == 1){
+        this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeAM9
+        this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeAM12
+      }
+      else if(this.selected == 2){
+        this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM13
+        this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM18
+      }
+      else if(this.selected == 3){
+        this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
+        this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
+      }
+      else if(this.selected == 4){
+        this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
+        this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
+      }
       obj["leave_start_date"] = mainJs.setDateToServer(
-        this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
+         this.sel1
       );
       obj["leave_stop_date"] = mainJs.setDateToServer(
-        this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
+        this.sel2
       );
+      // obj["leave_start_date"] = mainJs.setDateToServer(
+      //   this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
+      // );
+      // obj["leave_stop_date"] = mainJs.setDateToServer(
+      //   this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
+      // );
       obj["leave_remark"] = this.$v.form.description.$model;
       if (this.validation(obj)) {
         await authService.insertData(obj).then(response => {
