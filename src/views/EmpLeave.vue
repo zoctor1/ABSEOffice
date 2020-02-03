@@ -6,25 +6,86 @@
       <div><br>
         <b-col lg="12" sm="12" xs="12">
           <div style="position: relative;">
-            <h2 align="left">ข้อมูลการลา</h2>
+            <h2 align="left" style="font-weight: bold;">ข้อมูลการลา</h2>
               <div style="position: absolute; top: 50%; right: 0; transform: translate(0, -40%);">
-                <!-- <popupLeave /> -->
                 <div>
                   <b-col lg="12" sm="12" xs="12">
                     <div>
-                      <vs-button
-                        @click="showLeavePopup()"
-                        color="primary"
-                        type="filled"
-                      >
-                        <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
-                      </vs-button>
                     </div>
                   </b-col>
                 </div>
               </div>
           </div>
-          <b-nav-form >
+          <div style="text-align:left;">
+            <b-row style="margin-top:10px; width:100%">
+              <b-col>
+                <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
+                <datetime 
+                  type="date" 
+                  v-model="valDateStart" 
+                  format="dd/MM/yyyy" 
+                  :min-datetime="currentDate"
+                  style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                  >
+                </datetime>
+              </b-col>
+              <b-col>
+                <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
+                <datetime 
+                  type="date"
+                  v-model="valDateStop" 
+                  format="dd/MM/yyyy" 
+                  :min-datetime="currentDate" 
+                  style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                  >
+                </datetime>
+              </b-col>
+              <b-col>
+                <p style="cursor:default;"><b>สถานะ :</b></p>
+                <b-form-select
+                  v-model="selectStat"
+                  :options="optionStat"
+                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                >
+                </b-form-select>
+              </b-col>
+           
+              <b-col>
+                <p style="cursor:default;"><b>ประเภทการลา :</b></p>
+                <b-form-select
+                  v-model="selectType"
+                  :options="optionsType"
+                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                >
+                </b-form-select>
+              </b-col>
+              <!-- <b-col>
+                <p style="cursor:default;"><b>แผนก :</b></p>
+                <b-form-select
+                  v-model="selectDep"
+                  :options="optionsDep"
+                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                >
+                </b-form-select>
+              </b-col> -->
+              <b-col style="padding-top:24px">
+                  <b-button 
+                    style="margin-top:-6px"
+                    variant="outline-primary" 
+                    @click="filterData()"> ค้นหา
+                  </b-button>
+                  <vs-button
+                    style="margin-left:20px;"
+                    @click="showLeavePopup()"
+                    color="primary"
+                    type="filled"
+                  >
+                    <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
+                  </vs-button>
+              </b-col>
+             </b-row>
+          </div>
+          <!-- <b-nav-form >
             <b-input-group size="sm">
               <b-form-input
                 size="sm" 
@@ -45,11 +106,11 @@
             </div>
             </b-input-group-append>
             </b-input-group>
-          </b-nav-form>
+          </b-nav-form> -->
           <table width=100% style="margin-top:10px; border: 1px solid black;">
             <div >
               <b-table
-                fixed responsive
+                responsive
                 :busy="isBusy"
                 striped hover 
                 :items="items"
@@ -65,6 +126,9 @@
               >
               
               <!-- :busy="isBusy" is reload variable  -->
+              <template v-slot:head()="data">
+                    <span style="font-size: 18px;">{{ data.label }}</span>
+              </template>
               <template v-slot:table-busy>
                 <div class="text-center text-danger ">
                   <b-spinner class="align-middle"></b-spinner>
@@ -88,6 +152,15 @@
                 </div>
               </template>
               
+              <template v-slot:cell(leave_time)="data">
+                <div v-if="data.item.leave_type_id == 4">
+                    {{ data.item.leave_time }}
+                </div>
+                <div v-else >
+                    {{ data.item.leave_type_name }}
+                </div>
+              </template>
+
               <template v-slot:cell(hr_approve_date)="data">
                 <div v-if="data.item.cancel_date != null">
                   <b-badge variant="danger">ไม่อนุมัติ</b-badge>
@@ -119,13 +192,13 @@
                 <div v-else-if="data.item.cancel_date != null">
                   <b-badge variant="danger">ไม่ผ่าน</b-badge>
                 </div>
-                <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null">
+                <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null && data.item.emp_leave_id != null">
                   <b-badge variant="warning">รอการอนุมัติจาก Head เเละ Hr</b-badge>
                 </div>
-                <div v-else-if="data.item.head_approve_date == null && data.item.cancel_date == null">
+                <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_date == null && data.item.emp_leave_id != null">
                   <b-badge variant="warning">รอการอนุมัติจาก Head</b-badge>
                 </div>
-                <div v-else-if="data.item.hr_approve_date == null && data.item.cancel_date == null">
+                <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_date == null && data.item.emp_leave_id != null">
                   <b-badge variant="warning">รอการอนุมัติจาก Hr</b-badge>
                 </div>
               </template>
@@ -233,21 +306,54 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import * as mJS from "../assets/js/mainJS"
 import * as authService from '@/services/auth.service';
 import popupLeave from "@/components/popupLeave.vue"
+import { Datetime } from 'vue-datetime' // npm install --save luxon vue-datetime weekstart
+import 'vue-datetime/dist/vue-datetime.css'
+import { Settings } from 'luxon'
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css'
+
+Vue.use(Datetime,VueSweetalert2)
 
 export default {
   name: "EmpLeave",
   components: {
-    popupLeave
+    popupLeave,
+    datetime: Datetime
   },
   props: {},
   data() {
     return {
+      tempData: [],
       items: [],
+      optionStat: [
+        { value: null ,text: "--เลือกสถานะ--"},
+        { value: 1 ,text: "ผ่าน"},
+        { value: 2 ,text: "ไม่ผ่าน"},
+        { value: 3 ,text: "รอการอนุมัติจาก Head เเละ Hr" },
+        { value: 4 ,text: "รอการอนุมัติจาก Head"},
+        { value: 5 ,text: "รอการอนุมัติจาก Hr"}
+      ],
+      optionsDep: [
+        { value: null ,text: "--เลือกแผนก--"},
+        { value: 1 ,text: "พัฒนาระบบสารสนเทศ"},
+        { value: 2 ,text: "วิศวกรรม "},
+        { value: 3 ,text: "ทรัพยากรมนุษย์"}
+      ],
+      optionsType: [
+        { value: null ,text: "--เลือกประเภทการลา--"},
+        { value: 1 ,text: "ลาป่วย"},
+        { value: 2 ,text: "ลากิจ"},
+        { value: 3 ,text: "ลาพักร้อน"},
+        { value: 4 ,text: "ลาคลอด"},
+        { value: 5 ,text: "ลาบวช"},
+        { value: 6 ,text: "ลาไม่รับค่าจ้าง"}
+      ],
       fields: [
-        { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+        { key: 'no', label: 'ลำดับ', class: 'text-center setFontsize',sortable: true },
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
         { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
@@ -255,11 +361,11 @@ export default {
         // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-        { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
+        { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
+        { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center' },
       ],
       dataModal:{},
       isBusy: false,
-      // options1:[],
       totalRows:1,
       currentPage: 1,
       perPage: 10,
@@ -269,11 +375,13 @@ export default {
       sortBy: '',
       sortDesc: false,
       sortDirection: 'asc',
-      boxtwo: '',
       showPop:false,
-      // name: " ",
-      // val1: " ",
-      // val2: " "
+      valDateStart: '',
+      valDateStop: '',
+      selectType: '',
+      selectDep:'',
+      selectStat: '',
+      currentDate: ''
     }
   },
   computed: {
@@ -296,8 +404,72 @@ export default {
   },
   mounted() {
     this.getDataAsync();
+    this.selectType = null;
+    this.selectDep = null;
+    this.selectStat = null;
   },
   methods: {
+    filterData() {
+      var ths = this;
+      var allData = this.tempData;
+      if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
+        console.log("Alert")
+          this.$swal.fire({
+            heightAuto: false,
+            icon: 'warning',
+            title: 'เลือกข้อมูลที่จะค้นหา...'
+          })
+      }
+      if (this.valDateStart != null && this.valDateStart != "") {
+        console.log("valDateStart")
+        // allData = allData.filter(function(v) {
+        //   return v.
+        // })
+      }
+      if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
+        console.log("valDateStop")
+      }
+      if (this.selectStat != null && this.selectStat != "") {
+        console.log("selectStat")
+        if (this.selectStat == 1) {
+          allData = allData.filter(function(v) {
+            return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_date == null;
+          });
+        } else if (this.selectStat == 2) {
+          allData = allData.filter(function(v) {
+            return v.cancel_date != null;
+          });
+        } else if (this.selectStat == 3) {
+          allData = allData.filter(function(v) {
+            return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_date == null && v.emp_leave_id != null;
+          });
+        } else if (this.selectStat == 4) {
+          allData = allData.filter(function(v) {
+            return v.head_approve_date == null && v.hr_approve_date != null && v.cancel_date == null && v.emp_leave_id != null;
+          });
+        } else if (this.selectStat == 5) {
+          allData = allData.filter(function(v) {
+            return v.hr_approve_date == null && v.head_approve_date != null && v.cancel_date == null && v.emp_leave_id != null;
+          });
+        }
+      }
+      if(this.selectType != null && this.selectType != "") {
+        console.log("selectType")
+        console.log(this.selectType)
+        allData = allData.filter(function(v) {
+          return v.leave_reason_id == ths.selectType;
+        })
+      }
+      if(this.selectDep != null && this.selectDep != "") {
+        console.log("selectDep")
+        console.log(this.selectDep)
+        allData = allData.filter(function(v) {
+          return v.dept_id == ths.selectDep;
+        })
+      }
+      this.items = allData;
+      this.totalRows = this.items.length
+    },
     showLeavePopup: function() {
         var ths = this;
         ths.showPop = true;
@@ -309,14 +481,19 @@ export default {
       this.isBusy = true;
         var user = JSON.parse(localStorage.getItem("user"));
         await authService.getUserLeave(user.uuid).then(response => {
-          console.log(response.data)
+          console.log(JSON.stringify(response.data))
           if (response.data.length > 0) {
             for (var i = 0; i < response.data.length; i++) {
               response.data[i].no = i+1;
-              response.data[i].dateTime_start = response.data[i].leave_start_date + " " + response.data[i].leave_start_time;
-              response.data[i].dateTime_stop = response.data[i].leave_stop_date + " " + response.data[i].leave_stop_time;
-            }
+              // response.data[i].dateTime_start = response.data[i].leave_start_date;
+              // response.data[i].dateTime_stop = response.data[i].leave_stop_date;
+              response.data[i].leave_time = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[1] : "") + ' - ' + (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[1] : "");
+              response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
+              response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
+            } 
+              console.log(response.data)
               this.items = response.data;
+              this.tempData = response.data;
               this.isBusy = false;
               console.log("check")
           } else {
@@ -343,7 +520,7 @@ export default {
       }
       else{
         this.fields = [
-          { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+          { key: 'no', label: 'ลำดับ', class: 'text-center setFontsize',sortable: true },
           { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
           { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center',sortable: true },
           { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
@@ -351,7 +528,8 @@ export default {
           // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
           { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
           { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-          { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
+          { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
+          { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center' },
         ]
       }
     },
@@ -376,24 +554,27 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style>
   input[type="date"]::-webkit-inner-spin-button {
       display: none;
       -webkit-appearance: none;
   }
-  .popup-example {
-    max-width: 100%;
-    height: 100%;
-  }
-
   #parent2 {
     position: Sticky ;
     top: 8%;
     right: auto;
   }
-
   .close:hover {
     cursor: pointer;
   }
+  #EmpLeave .vdatetime-input {
+    width: 235px !important;
+    height: 40px !important;
+    font-size: 16px !important;
+    border: none;
+  }
+  /* #EmpLeave .vdatetime-input
+      แก้ไขกรอบ  ขอลางานในวันที่ :
+                ลางานถึงวันที่ :
+  */
 </style>
