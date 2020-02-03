@@ -69,7 +69,6 @@
                   </template>
 
                   <template v-slot:cell(leave_remark)="data">
-                    <!-- <div style="cursor: pointer" @click="openDetailData(data.item)"> -->
                     <div style="cursor: pointer" @click="remarkModal = data.item, $bvModal.show('bv-modal-example')">
                       <img src="../assets/Details.png" width="33" height="33">
                     </div>
@@ -176,7 +175,6 @@ export default {
   props: {},
   data() {
     return {
-      remarkModal:{},
       items: [],
       selectFilter: [
         { value: null, text: "--กรุณาเลือกประเภทการแสดง--", disabled: true},
@@ -206,6 +204,7 @@ export default {
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
       ],
+      remarkModal:{},
       selectedFilter: "",
       optionsLeave: "",
       isBusy: false,
@@ -237,7 +236,6 @@ export default {
   },
   mounted() {
     this.getHeaderApprove();
-    
   },
   methods: {
       showMsgBoxTwo(id) {

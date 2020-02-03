@@ -51,6 +51,12 @@
                     <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
                   </template>
 
+                  <template v-slot:cell(leave_remark)="data">
+                    <div style="cursor: pointer" @click="remarkModal = data.item, $bvModal.show('bv-modal-example')">
+                      <img src="../assets/Details.png" width="33" height="33">
+                    </div>
+                  </template>
+
                   <template v-slot:cell(head_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
                       <h6>ไม่อนุมัติ</h6>
@@ -133,6 +139,13 @@
       </b-col>
     </div>
     <br>
+    <b-modal id="bv-modal-example" style="margin-top:50px" :centered="true" hide-footer>
+      <template v-slot:modal-title>รายละเอียดการลา</template>
+      <div class="d-block text-center">
+        <h5>{{remarkModal.leave_remark}}</h5>
+      </div>
+      <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">ปิด</b-button>
+    </b-modal>
   </div>
 </template>
 
@@ -162,6 +175,7 @@ export default {
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
       ],
+      remarkModal:{},
       isBusy: false,
       totalRows:1,
       currentPage: 1,
