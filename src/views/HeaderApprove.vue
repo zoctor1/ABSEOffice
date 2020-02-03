@@ -311,12 +311,12 @@ export default {
         })
     }
   },
-  created(){
-    window.addEventListener("resize", this.handleResize);
-  },
-  destroyed(){
-    window.removeEventListener('resize', this.handleResize);
-  },
+  // created(){
+  //   window.addEventListener("resize", this.handleResize);
+  // },
+  // destroyed(){
+  //   window.removeEventListener('resize', this.handleResize);
+  // },
   mounted() {
     this.getHeaderApprove();
     this.selectType = null;
@@ -536,5 +536,44 @@ export default {
     height: 40px !important;
     font-size: 16px !important;
     border: none;
+  }
+  #HeaderAppve .no {
+    width : 50px !important;
+  }
+  #HeaderAppve .leave_date {
+    width : 140px !important;
+  }
+  #HeaderAppve .full_Name {
+    width : 185px !important;
+  }
+  #HeaderAppve .dept_name {
+    width : 160px !important;
+  }
+  #HeaderAppve .position_name {
+    width : 160px !important;
+  }
+  #HeaderAppve .leave_reason_name {
+    width : 160px !important;
+  }
+  #HeaderAppve .leave_start_date {
+    width : 130px !important;
+  }
+  #HeaderAppve .leave_stop_date {
+    width : 130px !important;
+  }
+  #HeaderAppve .leave_time {
+    width : 150px !important;
+  }
+  #HeaderAppve .head_approve_date {
+    width : 160px !important;
+  }
+  #HeaderAppve .hr_approve_date {
+    width : 160px !important;
+  }
+  #HeaderAppve .status {
+    width : 180px !important;
+  }
+  #HeaderAppve .leave_remark {
+    width : 170px !important;
   }
 </style>

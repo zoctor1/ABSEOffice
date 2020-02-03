@@ -69,19 +69,24 @@
                 </b-form-select>
               </b-col> -->
               <b-col style="padding-top:24px">
-                  <b-button 
-                    style="margin-top:-6px"
-                    variant="outline-primary" 
-                    @click="filterData()"> ค้นหา
-                  </b-button>
-                  <vs-button
-                    style="margin-left:20px;"
-                    @click="showLeavePopup()"
-                    color="primary"
-                    type="filled"
-                  >
-                    <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
-                  </vs-button>
+                <b-button
+                  style="margin-top:-6px"
+                  variant="outline-primary"
+                  @click="filterData()"> ค้นหา
+                </b-button>
+                  <img src="../assets/refresh.png" id="tooltip-target-1" width="33" height="33" @click="getDataAsync()">
+                  <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
+                    Refresh
+                  </b-tooltip>
+                <vs-button
+                  style="margin-left:20px;"
+                  @click="showLeavePopup()"
+                  color="primary"
+                  type="filled"
+                >
+                  <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
+                </vs-button>
+                  
               </b-col>
              </b-row>
           </div>
@@ -98,15 +103,12 @@
               >
               </b-form-input>
             <b-input-group-append>
-            <div class="close" style="cursor: pointer; margin-left:10px; " @click="getDataAsync()">
-              <img src="../assets/refresh.png" id="tooltip-target-1"  width="33" height="33">
-              <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
-                Refresh
-              </b-tooltip>
-            </div>
+          
             </b-input-group-append>
             </b-input-group>
           </b-nav-form> -->
+
+            
           <table width=100% style="margin-top:10px; border: 1px solid black;">
             <div >
               <b-table
@@ -397,12 +399,12 @@ export default {
       return this.name.length >= 4 ? true : false
     }
   },
-  created(){
-    window.addEventListener("resize", this.handleResize);
-  },
-  destroyed(){
-    window.removeEventListener('resize', this.handleResize);
-  },
+  // created(){
+  //   window.addEventListener("resize", this.handleResize);
+  // },
+  // destroyed(){
+  //   window.removeEventListener('resize', this.handleResize);
+  // },
   mounted() {
     this.getDataAsync();
     this.selectType = null;
@@ -578,4 +580,34 @@ export default {
       แก้ไขกรอบ  ขอลางานในวันที่ :
                 ลางานถึงวันที่ :
   */
+  #EmpLeave .no {
+    width : 100px !important;
+  }
+  #EmpLeave .leave_date {
+    width : 185px !important;
+  }
+  #EmpLeave .leave_reason_name {
+    width : 250px !important;
+  }
+  #EmpLeave .leave_start_date {
+    width : 185px !important;
+  }
+  #EmpLeave .leave_stop_date {
+    width : 185px !important;
+  }
+  #EmpLeave .leave_time {
+    width : 200px !important;
+  }
+  #EmpLeave .head_approve_date {
+    width : 200px !important;
+  }
+  #EmpLeave .hr_approve_date {
+    width : 200px !important;
+  }
+  #EmpLeave .status {
+    width : 250px !important;
+  }
+  #EmpLeave .leave_remark {
+    width : 150px !important;
+  }
 </style>

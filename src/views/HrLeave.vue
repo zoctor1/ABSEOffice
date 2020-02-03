@@ -518,4 +518,43 @@ export default {
     font-size: 16px !important;
     border: none;
   }
+    #HrLeave .no {
+    width : 50px !important;
+  }
+  #HrLeave .leave_date {
+    width : 140px !important;
+  }
+  #HrLeave .full_Name {
+    width : 185px !important;
+  }
+  #HrLeave .dept_name {
+    width : 160px !important;
+  }
+  #HrLeave .position_name {
+    width : 160px !important;
+  }
+  #HrLeave .leave_reason_name {
+    width : 160px !important;
+  }
+  #HrLeave .leave_start_date {
+    width : 130px !important;
+  }
+  #HrLeave .leave_stop_date {
+    width : 130px !important;
+  }
+  #HrLeave .leave_time {
+    width : 150px !important;
+  }
+  #HrLeave .head_approve_date {
+    width : 160px !important;
+  }
+  #HrLeave .hr_approve_date {
+    width : 160px !important;
+  }
+  #HrLeave .status {
+    width : 180px !important;
+  }
+  #HrLeave .leave_remark {
+    width : 170px !important;
+  }
 </style>
