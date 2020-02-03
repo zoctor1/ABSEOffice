@@ -107,7 +107,7 @@
                     <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
                   </template>
 
-                  <template v-slot:cell(leave_reason_name)="data">
+                  <template v-slot:cell(time_detail)="data">
                     <div style="cursor: pointer" @click="dataModal = data.item, $bvModal.show('timeModal')">
                       <img src="../assets/Details.png" width="33" height="33">
                     </div>
@@ -271,7 +271,8 @@ export default {
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
         { key: 'dept_name', label: 'เเผนก', class: 'text-center',sortable: true },
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
-        { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center',sortable: true },
+        { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
+        { key: 'time_detail', label: 'รายละเอียดเวลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
         // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
         // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center',sortable: true },
