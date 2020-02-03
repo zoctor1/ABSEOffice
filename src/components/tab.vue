@@ -66,10 +66,10 @@
           <b-thead class="thead-light" head-variant="danger">
             <b-tr v-if="responseData">
               <b-th><b>รวมทั้งหมด : </b></b-th>
-              <b-th><center><b>{{ sumLimits(responseData) + ' /  0 '}}</b></center></b-th>
-              <b-th><center><b>{{ sumLeave1(responseData) + ' / ' + sumLeave2(responseData) + ' '}}</b></center></b-th>
-              <b-th v-if="sumLeave2(responseData) > 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData) - 1) + ' / ' + (24 - sumLeave2(responseData)) + '  '}}</b></center></b-th>
-              <b-th v-if="sumLeave2(responseData) == 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData)) + ' / 0  '}}</b></center></b-th>
+              <b-th><center><b>{{ sumLimits(responseData) + ' วัน  0 ชม.'}}</b></center></b-th>
+              <b-th><center><b>{{ sumLeave1(responseData) + ' วัน ' + sumLeave2(responseData) + ' ชม.'}}</b></center></b-th>
+              <b-th v-if="sumLeave2(responseData) > 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData) - 1) + ' วัน ' + (9 - sumLeave2(responseData)) + ' ชม. '}}</b></center></b-th>
+              <b-th v-if="sumLeave2(responseData) == 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData)) + ' วัน 0 ชม. '}}</b></center></b-th>
             </b-tr>
           </b-thead>
       </b-table-simple>

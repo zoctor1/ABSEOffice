@@ -107,40 +107,42 @@
                     <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
                   </template>
 
-                  <template v-slot:cell(leave_remark)>
-                    <img src="../assets/Details.png" width="33" height="33">
+                  <template v-slot:cell(leave_remark)="data">
+                    <div style="cursor: pointer" @click="remarkModal = data.item, $bvModal.show('bv-modal-example')">
+                      <img src="../assets/Details.png" width="33" height="33">
+                    </div>
                   </template>
 
                    <template v-slot:cell(hr_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
-                      <h6>ไม่อนุมัติ</h6>
+                      <b-badge variant="danger">ไม่อนุมัติ</b-badge>
                     </div>
                     <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date != null">
-                      <h6>{{data.item.hr_approve_date}}</h6>
+                      <b-badge variant="success">{{data.item.hr_approve_date}}</b-badge>
                     </div>
                     <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date == null">
-                      <h6>รอการอนุมัติ</h6>
+                      <b-badge variant="warning">รอการอนุมัติ</b-badge>
                     </div>
                   </template>
-
+                  
                   <template v-slot:cell(head_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
-                      <h6>ไม่อนุมัติ</h6>
+                      <b-badge variant="danger">ไม่อนุมัติ</b-badge>
                     </div>
                     <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date != null">
-                      <h6>{{data.item.head_approve_date}}</h6>
+                      <b-badge variant="success">{{data.item.head_approve_date}}</b-badge>
                     </div>
                     <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date == null">
-                      <b-button class="btn-secondary" v-if="!data.item.HrbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)">รอการอนุมัติ</b-button>
+                      <b-button class="btn-secondary" v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)">รอการอนุมัติ</b-button>
                     </div>
                   </template>
 
                   <template v-slot:cell(status)="data">
                       <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_date == null">
-                        <h6>ผ่าน</h6>
+                        <b-badge variant="success">ผ่าน</b-badge>
                       </div>
                       <div v-else-if="data.item.cancel_date != null">
-                        <h6>ไม่ผ่าน</h6>
+                        <b-badge variant="danger">ไม่ผ่าน</b-badge>
                       </div>
                       <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null && data.item.emp_leave_id != null">
                         <h6>รอการอนุมัติจาก Head เเละ Hr</h6>
@@ -192,6 +194,13 @@
       </b-col>
     </div>
     <br>
+    <b-modal id="bv-modal-example" style="margin-top:50px" :centered="true" hide-footer>
+      <template v-slot:modal-title>รายละเอียดการลา</template>
+      <div class="d-block text-center">
+        <h5>{{remarkModal.leave_remark}}</h5>
+      </div>
+      <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">ปิด</b-button>
+    </b-modal>
   </div>
 </template>
 
@@ -255,6 +264,9 @@ export default {
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
       ],
+      remarkModal:{},
+      selectedFilter: "",
+      optionsLeave: "",
       isBusy: false,
       totalRows:1,
       currentPage: 1,
@@ -377,24 +389,44 @@ export default {
               console.log(response.data);
               this.getHeaderApprove();
             });
-          } else if (value == false){
-            authService.notApproveHead(id).then(response => {
-              console.log(response.data);
+          } else if (value == false) {
+              this.showMsgOk(id);
+          }
+        })
+      },
+      showMsgOk(id) {
+        const h = this.$createElement
+        const titleVNode = h('div', { domProps: { innerHTML: 'สาเหตุที่ไม่อนุมัติ' } })
+        const messageVNode = h('div', { class: ['foobar'] }, [
+           h('b-form-textarea', { class: ['textarea-large'] })
+        ])
+        this.$bvModal.msgBoxConfirm([messageVNode], {
+          title: [titleVNode],
+          buttonSize: 'sm',
+          centered: true, size: 'sm'
+        }).then(value => {
+          if(value == true){
+            console.log(id);
+            console.log(messageVNode.children[0].elm.value);
+            authService.notApproveHead(id, messageVNode.children[0].elm.value).then(response => {
               this.getHeaderApprove();
             });
           }
-        })
+          else if(value == false){
+            console.log("gg")
+          }
+        });
       },
       getHeaderApprove: async function() {
       this.isBusy = true;
       await authService.getDataHeader({}).then(response => {
         console.log(response.data)
         if (response.data != null && response.data.length > 0) {
+          this.selectedFilter = null;
+          this.responseData = response.data;
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;
             response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-            response.data[i].dateTime_start = response.data[i].leave_start_date + " " + response.data[i].leave_start_time;
-            response.data[i].dateTime_stop = response.data[i].leave_stop_date + " " + response.data[i].leave_stop_time;
             response.data[i].HeaderbtnApprove = false;
             response.data[i].HrbtnApprove = false;
             response.data[i].leave_time = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[1] : "") + ' - ' + (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[1] : "");

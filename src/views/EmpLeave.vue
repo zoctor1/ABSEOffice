@@ -140,8 +140,10 @@
                 <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
               </template>
 
-              <template v-slot:cell(leave_remark)>
-                <img src="../assets/Details.png" width="33" height="33">
+              <template v-slot:cell(leave_remark)="data">
+                <div style="cursor: pointer" @click="dataModal = data.item, $bvModal.show('remarkModal')">
+                    <img src="../assets/Details.png" width="33" height="33">
+                </div>
               </template>
               
               <template v-slot:cell(leave_time)="data">
@@ -155,43 +157,43 @@
 
               <template v-slot:cell(hr_approve_date)="data">
                 <div v-if="data.item.cancel_date != null">
-                  <h6>ไม่อนุมัติ</h6>
+                  <b-badge variant="danger">ไม่อนุมัติ</b-badge>
                 </div>
                 <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date != null">
-                  <h6>{{data.item.hr_approve_date}}</h6>
+                  <b-badge variant="success">{{data.item.hr_approve_date}}</b-badge>
                 </div>
                 <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date == null && data.item.emp_leave_id != null">
-                  <h6>รอการอนุมัติ</h6>
+                  <b-badge variant="warning">รอการอนุมัติ</b-badge>
                 </div>
               </template>
 
               <template v-slot:cell(head_approve_date)="data">
                 <div v-if="data.item.cancel_date != null">
-                  <h6>ไม่อนุมัติ</h6>
+                  <b-badge variant="danger">ไม่อนุมัติ</b-badge>
                 </div>
                 <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date != null">
-                  <h6>{{data.item.head_approve_date}}</h6>
+                  <b-badge variant="success">{{data.item.head_approve_date}}</b-badge>
                 </div>
                 <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date == null && data.item.emp_leave_id != null">
-                  <h6>รอการอนุมัติ</h6>
+                  <b-badge variant="warning">รอการอนุมัติ</b-badge>
                 </div>
               </template>
 
               <template v-slot:cell(status)="data">
-                <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_date == null">
-                  <h6>ผ่าน</h6>
+                <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_date == null" >
+                  <b-badge variant="success">ผ่าน</b-badge>
                 </div>
                 <div v-else-if="data.item.cancel_date != null">
-                  <h6>ไม่ผ่าน</h6>
+                  <b-badge variant="danger">ไม่ผ่าน</b-badge>
                 </div>
                 <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null && data.item.emp_leave_id != null">
-                  <h6>รอการอนุมัติจาก Head เเละ Hr</h6>
+                  <b-badge variant="warning">รอการอนุมัติจาก Head เเละ Hr</b-badge>
                 </div>
                 <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_date == null && data.item.emp_leave_id != null">
-                  <h6>รอการอนุมัติจาก Head</h6>
+                  <b-badge variant="warning">รอการอนุมัติจาก Head</b-badge>
                 </div>
                 <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_date == null && data.item.emp_leave_id != null">
-                  <h6>รอการอนุมัติจาก Hr</h6>
+                  <b-badge variant="warning">รอการอนุมัติจาก Hr</b-badge>
                 </div>
               </template>
               </b-table>
@@ -234,6 +236,56 @@
         </b-col>
       </div>
       <br>
+      <b-modal id="remarkModal" :centered="true" hide-footer>
+        <template v-slot:modal-title>รายละเอียดการลา</template>
+          <div class="d-block text-center">
+            <h5>{{dataModal.leave_remark}}</h5>
+          </div>
+        <b-button class="mt-3" block @click="$bvModal.hide('remarkModal')">ปิด</b-button>
+      </b-modal>
+
+      <!-- <b-modal id="success" :centered="true" hide-footer>
+        <template v-slot:modal-title>การอนุมัติ</template>
+          <div class="d-block text-center">
+            <h5>หัวหน้าอนุมัติเเล้ว ({{dataModal.head_approve_date}})</h5>
+            <h5>HR อนุมัติเเล้ว ({{dataModal.hr_approve_date}})</h5>
+          </div>
+        <b-button class="mt-3" block @click="$bvModal.hide('success')">ปิด</b-button>
+      </b-modal>
+
+      <b-modal id="fail" :centered="true" hide-footer>
+        <template v-slot:modal-title>การอนุมัติ</template>
+          <div class="d-block text-center">
+            <h5>ไม่ได้รับการอนุมัติ ({{dataModal.cancel_date}})</h5>
+          </div>
+        <b-button class="mt-3" block @click="$bvModal.hide('fail')">ปิด</b-button>
+      </b-modal>
+
+      <b-modal id="waitingAll" :centered="true" hide-footer>
+        <template v-slot:modal-title>การอนุมัติ</template>
+          <div class="d-block text-center">
+            <h5>รอการอนุมัติจากหัวหน้าเเละ HR</h5>
+          </div>
+        <b-button class="mt-3" block @click="$bvModal.hide('waitingAll')">ปิด</b-button>
+      </b-modal>
+
+      <b-modal id="waitingHead" :centered="true" hide-footer>
+        <template v-slot:modal-title>การอนุมัติ</template>
+          <div class="d-block text-center">
+            <h5>หัวหน้ายังไม่ได้อนุมัติ</h5>
+            <h5>HR อนุมัติเเล้ว ({{dataModal.hr_approve_date}})</h5>
+          </div>
+        <b-button class="mt-3" block @click="$bvModal.hide('waitingHead')">ปิด</b-button>
+      </b-modal>
+
+      <b-modal id="waitingHr" :centered="true" hide-footer>
+        <template v-slot:modal-title>การอนุมัติ</template>
+          <div class="d-block text-center">
+            <h5>หัวหน้าอนุมัติเเล้ว ({{dataModal.head_approve_date}})</h5>
+            <h5>HR ยังไม่ได้อนุมัติ</h5>
+          </div>
+        <b-button class="mt-3" block @click="$bvModal.hide('waitingHr')">ปิด</b-button>
+      </b-modal> -->
   </div>
 </template>
 
@@ -296,6 +348,7 @@ export default {
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center' },
       ],
+      dataModal:{},
       isBusy: false,
       totalRows:1,
       currentPage: 1,
