@@ -79,6 +79,10 @@
                   @filtered="onFiltered"
                   show-empty
                 >
+                  <template v-slot:head()="data">
+                    <span style="font-size: 18px;">{{ data.label }}</span>
+                  </template>
+
                   <template v-slot:table-busy>
                     <div class="text-center text-danger ">
                       <b-spinner class="align-middle"></b-spinner>
@@ -99,14 +103,8 @@
                     <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
                   </template>
 
-                  <template v-slot:cell(leave_reason_name)="data">
-                    <div style="cursor: pointer" @click="dataModal = data.item, $bvModal.show('timeModal')">
-                      <img src="../assets/Details.png" width="33" height="33">
-                    </div>
-                  </template>
-
                   <template v-slot:cell(leave_remark)="data">
-                    <div style="cursor: pointer" @click="dataModal = data.item, $bvModal.show('bv-modal-example')">
+                    <div style="cursor: pointer" @click="dataModal = data.item, show('remarkModal')">
                       <img src="../assets/Details.png" width="33" height="33">
                     </div>
                   </template>
@@ -193,23 +191,26 @@
       </b-col>
     </div>
     <br>
-    <b-modal id="bv-modal-example" style="margin-top:50px" :centered="true" hide-footer>
-      <template v-slot:modal-title>รายละเอียดการลา</template>
-      <div class="d-block text-center">
-        <h5>{{dataModal.leave_remark}}</h5>
+    <modal 
+        name="remarkModal" 
+        :clickToClose="false"
+        height="auto"
+        width="350px"
+      >
+      <p style="background-color: #f1f1f1; font-size: 20px; text-align: center; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
+        รายละเอียดการลา 
+      </p>
+      <div style="padding:15px 15px 15px 20px">
+        <center>
+          <p style="font-size: 18px; text-align: center">ประเภทการลา : {{dataModal.leave_reason_name}}</p>
+          <p style="font-size: 18px; text-align: center">วันที่ลา : {{dataModal.leave_start_date}}</p>
+          <p style="font-size: 18px; text-align: center">ลาถึงวันที่ : {{dataModal.leave_stop_date}}</p>
+          <p style="font-size: 18px; text-align: center">เวลา : {{ dataModal.leave_time }} </p>
+          <p style="font-size: 18px; text-align: center">รายละเอียดการลา : {{ dataModal.leave_remark }} </p>
+        </center>
       </div>
-      <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">ปิด</b-button>
-    </b-modal>
-
-    <b-modal id="timeModal" :centered="true" hide-footer>
-      <template v-slot:modal-title>รายละเอียดเวลา</template>
-        <div class="d-block text-center">
-          <h6>ประเภทการลา : {{dataModal.leave_reason_name}}</h6>
-          <h6>วันที่ลา : {{dataModal.leave_start_date}}</h6>
-          <h6>ลาถึงวันที่ : {{dataModal.leave_stop_date}}</h6>
-        </div>
-      <b-button class="mt-3" block @click="$bvModal.hide('timeModal')">ปิด</b-button>
-    </b-modal>
+      <b-button block variant="secondary" style="font-size: 16px" @click="hide()">ปิด</b-button>
+    </modal>
   </div>
 </template>
 
@@ -221,8 +222,11 @@ import { async } from 'q';
 import { Datetime } from 'vue-datetime' // npm install --save luxon vue-datetime weekstart
 import 'vue-datetime/dist/vue-datetime.css'
 import { Settings } from 'luxon'
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css'
+import VModal from 'vue-js-modal'
 
-Vue.use(Datetime)
+Vue.use(Datetime,VueSweetalert2,VModal)
 
 export default {
   name: "HrLeave",
@@ -263,7 +267,7 @@ export default {
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name',sortable: true },
         { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name',sortable: true },
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name',sortable: true },
-        { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name',sortable: true },
+        // { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name',sortable: true },
         // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
         // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date',sortable: true },
         { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },
@@ -288,7 +292,11 @@ export default {
       selectType: '',
       selectDep:'',
       selectStat: '',
-      currentDate: ''
+      currentDate: '',
+      window : {
+        width: 0,
+        height: 0
+      }
     }
   },
   computed: {
@@ -313,9 +321,16 @@ export default {
     this.selectStat = null;
   },
   methods: {
+    show () {
+      this.$modal.show('remarkModal');
+    },
+    hide () {
+      this.$modal.hide('remarkModal');
+    },
     filterData() {
       var ths = this;
       var allData = this.tempData;
+      console.log(allData)
       if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
         console.log("Alert")
           this.$swal.fire({
@@ -323,53 +338,54 @@ export default {
             icon: 'warning',
             title: 'เลือกข้อมูลที่จะค้นหา...'
           })
-      }
-      if (this.valDateStart != null && this.valDateStart != "") {
-        console.log("valDateStart")
-        // allData = allData.filter(function(v) {
-        //   return v.
-        // })
-      }
-      if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
-        console.log("valDateStop")
-      }
-      if (this.selectStat != null && this.selectStat != "") {
-        console.log("selectStat")
-        if (this.selectStat == 1) {
-          allData = allData.filter(function(v) {
-            return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_date == null;
-          });
-        } else if (this.selectStat == 2) {
-          allData = allData.filter(function(v) {
-            return v.cancel_date != null;
-          });
-        } else if (this.selectStat == 3) {
-          allData = allData.filter(function(v) {
-            return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_date == null && v.emp_leave_id != null;
-          });
-        } else if (this.selectStat == 4) {
-          allData = allData.filter(function(v) {
-            return v.head_approve_date == null && v.hr_approve_date != null && v.cancel_date == null && v.emp_leave_id != null;
-          });
-        } else if (this.selectStat == 5) {
-          allData = allData.filter(function(v) {
-            return v.hr_approve_date == null && v.head_approve_date != null && v.cancel_date == null && v.emp_leave_id != null;
-          });
+      } else {
+          if (this.valDateStart != null && this.valDateStart != "") {
+            console.log("valDateStart")
+            // allData = allData.filter(function(v) {
+            //   return v.
+            // })
+          }
+          if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
+            console.log("valDateStop")
+          }
+          if (this.selectStat != null && this.selectStat != "") {
+            console.log("selectStat")
+            if (this.selectStat == 1) {
+              allData = allData.filter(function(v) {
+                return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_date == null;
+              });
+            } else if (this.selectStat == 2) {
+              allData = allData.filter(function(v) {
+                return v.cancel_date != null;
+              });
+            } else if (this.selectStat == 3) {
+              allData = allData.filter(function(v) {
+                return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_date == null && v.emp_leave_id != null;
+              });
+            } else if (this.selectStat == 4) {
+              allData = allData.filter(function(v) {
+                return v.head_approve_date == null && v.hr_approve_date != null && v.cancel_date == null && v.emp_leave_id != null;
+              });
+            } else if (this.selectStat == 5) {
+              allData = allData.filter(function(v) {
+                return v.hr_approve_date == null && v.head_approve_date != null && v.cancel_date == null && v.emp_leave_id != null;
+              });
+            }
+          }
+          if(this.selectType != null && this.selectType != "") {
+            console.log("selectType")
+            console.log(this.selectType)
+            allData = allData.filter(function(v) {
+              return v.leave_reason_id == ths.selectType;
+            })
+          }
+          if(this.selectDep != null && this.selectDep != "") {
+            console.log("selectDep")
+            console.log(this.selectDep)
+            allData = allData.filter(function(v) {
+              return v.dept_id == ths.selectDep;
+            })
         }
-      }
-      if(this.selectType != null && this.selectType != "") {
-        console.log("selectType")
-        console.log(this.selectType)
-        allData = allData.filter(function(v) {
-          return v.leave_reason_id == ths.selectType;
-        })
-      }
-      if(this.selectDep != null && this.selectDep != "") {
-        console.log("selectDep")
-        console.log(this.selectDep)
-        allData = allData.filter(function(v) {
-          return v.dept_id == ths.selectDep;
-        })
       }
       this.items = allData;
       this.totalRows = this.items.length
@@ -447,9 +463,9 @@ export default {
       this.totalRows = this.items.length
     },
     handleResize: function() {
-      window.width = window.innerWidth;
-      window.height = window.innerHeight;
-      if(window.width <= 750){
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      if(this.window.width <= 750){
         this.fields = [
           { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
           { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
