@@ -10,73 +10,66 @@
           <h4 style="margin-bottom:10px; cursor: default;">เเผนก : {{userIn.dept_name}}</h4>
           <h4 style="margin-bottom:10px; cursor: default;">ตำแหน่ง : {{userIn.position_name}} </h4>
         </center>
-            <!-- <center> -->
-              <b-row>
-                <b-col>
-                  <!-- <div style="margin: 30px 130px 0px -20px"> -->
-                  <div>
-                    <b-col lg="12" sm="12" xs="12">
-                      <div>
-                        <center>
-                        <vs-button
-                          @click="showPopup()"
-                          color="primary"
-                          type="filled"
-                          style="width:114px; height:44px; margin-right:auto;"
-                        >
-                          <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
-                        </vs-button>
-                        </center>
-                      </div>
-                    </b-col>
-                  </div>
-                </b-col>
-                <b-col>
-                  <!-- <div style="margin:-44px 0px 0px 130px"> -->
-                  <div>
-                    <center>
-                    <popupOT />
-                    </center>
-                  </div>
-                </b-col>
-              </b-row>
-            <!-- </center> -->
+          <b-row>
+            <b-col style="margin-top:5px" md="6" sm="6" xs="12">
+              <div>
+                <center>
+                  <vs-button
+                    @click="showPopup()"
+                    color="primary"
+                    type="filled"
+                    style="width:114px; height:44px; margin-right:auto;"
+                  >
+                    <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
+                  </vs-button>
+                </center>
+              </div>
+            </b-col>
+            <b-col style="margin-top:5px" md="6" sm="6" xs="12">
+              <div>
+                <center>
+                  <popupOT /> 
+                </center>
+              </div>
+            </b-col>
+          </b-row>
         </b-card>
       </div>  
+      
       <b-table-simple hover small caption-top responsive style="border :1px solid black; margin-top:10px; cursor: default;">
-          <b-thead class="thead-dark" head-variant="danger">
-            <b-tr >
-              <b-th><font size="3" color="#f2f2f2">ตารางสรุปการลาทั้งหมด</font></b-th>
-              <b-th></b-th>
-              <b-th></b-th>
-              <b-th></b-th>
-            </b-tr>
-            <b-tr >
-              <b-th>ประเภท</b-th>
-              <b-th><center>สิทธิ</center></b-th>
-              <b-th><center>ใช้ไป</center></b-th>
-              <b-th><center>คงเหลือ</center></b-th>
-            </b-tr>
-          </b-thead>
+        <b-thead class="thead-dark" head-variant="danger">
+          <b-tr >
+            <b-th><font size="3" color="#f2f2f2">ตารางสรุปการลาทั้งหมด</font></b-th>
+            <b-th></b-th>
+            <b-th></b-th>
+            <b-th></b-th>
+          </b-tr>
+          <b-tr >
+            <b-th>ประเภท</b-th>
+            <b-th><center>สิทธิ<br>(วัน/ชั่วโมง)</center></b-th>
+            <b-th><center>ใช้ไป<br>(วัน/ชั่วโมง)</center></b-th>
+            <b-th><center>คงเหลือ<br>(วัน/ชั่วโมง)</center></b-th>
+          </b-tr>
+        </b-thead>
         <b-tbody>
-          <b-tr v-for="i in responseData">
+          <b-tr v-for="i in responseData" :key="i">
             <!-- v-if="i.dayOff != null in responseData" -->
             <b-th>{{ i.leave_reason_name }}</b-th>
-            <b-td><center>{{ i.leave_limit + ' วัน  0 ชม.' }}</center></b-td>
-            <b-td v-if="i.dd == null && i.hh == null"><center>{{ 0 +' วัน '+ 0 +' ชม. '}}</center></b-td>
-            <b-td v-else><center>{{ i.dd +' วัน '+ i.hh +' ชม. '}}</center></b-td>
-            <b-td v-if="i.hh == 0"><center>{{ (i.leave_limit - i.dd) +' วัน '+ 0 +' ชม. '}}</center></b-td>
-            <b-td v-else-if="i.dd == null && i.hh == null"><center>{{ (i.leave_limit - i.dd) +' วัน '+ 0 +' ชม. '}}</center></b-td>
-            <b-td v-else-if="i.hh != 0"><center>{{ (i.leave_limit - i.dd - 1) +' วัน '+ (9 - i.hh) +' ชม. '}}</center></b-td>
+            <b-td><center>{{ i.leave_limit + ' /  0 ' }}</center></b-td>
+            <b-td v-if="i.dd == null && i.hh == null"><center>{{ 0 +' / '+ 0 +'  '}}</center></b-td>
+            <b-td v-else><center>{{ i.dd +' / '+ i.hh +'  '}}</center></b-td>
+            <b-td v-if="i.hh == 0"><center>{{ (i.leave_limit - i.dd) +' / '+ 0 +'  '}}</center></b-td>
+            <b-td v-else-if="i.dd == null && i.hh == null"><center>{{ (i.leave_limit - i.dd) +' / '+ 0 +'  '}}</center></b-td>
+            <b-td v-else-if="i.hh != 0"><center>{{ (i.leave_limit - i.dd - 1) +' / '+ (9 - i.hh) +'  '}}</center></b-td>
           </b-tr>
         </b-tbody>
           <b-thead class="thead-light" head-variant="danger">
             <b-tr v-if="responseData">
               <b-th><b>รวมทั้งหมด : </b></b-th>
-              <b-th><center><b>{{ sumLimits(responseData) + ' วัน  0 ชม.'}}</b></center></b-th>
-              <b-th><center><b>{{ sumLeave1(responseData) + ' วัน ' + sumLeave2(responseData) + ' ชม.'}}</b></center></b-th>
-              <b-th v-if="sumLeave2(responseData) > 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData) - 1) + ' วัน ' + (24 - sumLeave2(responseData)) + ' ชม. '}}</b></center></b-th>
-              <b-th v-if="sumLeave2(responseData) == 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData)) + ' วัน 0 ชม. '}}</b></center></b-th>
+              <b-th><center><b>{{ sumLimits(responseData) + ' /  0 '}}</b></center></b-th>
+              <b-th><center><b>{{ sumLeave1(responseData) + ' / ' + sumLeave2(responseData) + ' '}}</b></center></b-th>
+              <b-th v-if="sumLeave2(responseData) > 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData) - 1) + ' / ' + (24 - sumLeave2(responseData)) + '  '}}</b></center></b-th>
+              <b-th v-if="sumLeave2(responseData) == 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData)) + ' / 0  '}}</b></center></b-th>
             </b-tr>
           </b-thead>
       </b-table-simple>

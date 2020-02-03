@@ -3,29 +3,67 @@
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
-          <h2 align="left">ข้อมูลการลาของพนักงาน</h2>
-            <b-nav-form >
-              <b-input-group size="sm">
-                <b-form-input
-                  size="sm" 
-                  class="mr-sm-2"
-                  v-model="filter"
-                  type="search"
-                  id="filterInput"
-                  placeholder="ค้นหา.."
-                  autocomplete = on
+          <h2 align="left" style="font-weight: bold;">ข้อมูลการลาของพนักงาน</h2>
+
+          <div style="text-align:left;">
+            <b-row style="margin-top:10px; width:60%">
+              <b-col>
+                <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
+                <datetime 
+                  type="date" 
+                  v-model="valDateStart" 
+                  format="dd/MM/yyyy" 
+                  :min-datetime="currentDate"
+                  style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                  >
+                </datetime>
+              </b-col>
+              <b-col>
+                <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
+                <datetime 
+                  type="date"
+                  v-model="valDateStop" 
+                  format="dd/MM/yyyy" 
+                  :min-datetime="currentDate" 
+                  style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                  >
+                </datetime>
+              </b-col>
+              <b-col>
+                <p style="cursor:default;"><b>สถานะ :</b></p>
+                <b-form-select
+                  v-model="selectStat"
+                  :options="optionStat"
+                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                 >
-                </b-form-input>
-                <b-input-group-append>
-                  <div class="close" style="cursor: pointer; margin-left:10px" @click="getHrApprove()">
-                    <img src="../assets/refresh.png" id="tooltip-target-1" width="33" height="33">
-                    <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
-                      Refresh
-                    </b-tooltip>
-                  </div>
-                </b-input-group-append>
-              </b-input-group>
-            </b-nav-form>
+                </b-form-select>
+              </b-col>
+            </b-row>
+            <b-row style="margin-top:10px; width:60%">
+              <b-col>
+                <p style="cursor:default;"><b>ประเภทการลา :</b></p>
+                <b-form-select
+                  v-model="selectType"
+                  :options="optionsType"
+                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                >
+                </b-form-select>
+              </b-col>
+              <b-col>
+                <p style="cursor:default;"><b>แผนก :</b></p>
+                <b-form-select
+                  v-model="selectDep"
+                  :options="optionsDep"
+                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                >
+                </b-form-select>
+              </b-col>
+              <b-col style="padding-top:24px">
+                <b-button style="vertical-align: sub;" variant="outline-primary" @click="filterData()">ค้นหา</b-button>
+              </b-col>
+            </b-row>
+          </div>
+
             <table lg="12" sm="12" xs="12" style="border :1px solid black; margin-top:10px; width:100% ">
               <div>
                 <b-table
@@ -40,15 +78,33 @@
                   :sort-direction="sortDirection"
                   @filtered="onFiltered"
                   show-empty
-                > 
+                >
                   <template v-slot:table-busy>
                     <div class="text-center text-danger ">
                       <b-spinner class="align-middle"></b-spinner>
                       <strong> Loading...</strong>
                     </div>
                   </template>
+
+                  <template v-slot:cell(leave_time)="data">
+                    <div v-if="data.item.leave_type_id == 4">
+                        {{ data.item.leave_time }}
+                    </div>
+                    <div v-else >
+                        {{ data.item.leave_type_name }}
+                    </div>
+                  </template>
+                  
                   <template v-slot:empty>
                     <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
+                  </template>
+
+                  <template v-slot:cell(leave_remark)>
+                    <img src="../assets/Details.png" width="33" height="33">
+                  </template>
+                  
+                  <template v-slot:head()="data">
+                        <span style="font-size: 18px;">{{ data.label }}</span>
                   </template>
 
                   <template v-slot:cell(head_approve_date)="data">
@@ -82,13 +138,13 @@
                       <div v-else-if="data.item.cancel_date != null">
                         <h6>ไม่ผ่าน</h6>
                       </div>
-                      <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null">
+                      <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null && data.item.emp_leave_id != null">
                         <h6>รอการอนุมัติจาก Head เเละ Hr</h6>
                       </div>
-                      <div v-else-if="data.item.head_approve_date == null && data.item.cancel_date == null">
+                      <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_date == null && data.item.emp_leave_id != null">
                         <h6>รอการอนุมัติจาก Head</h6>
                       </div>
-                      <div v-else-if="data.item.hr_approve_date == null && data.item.cancel_date == null">
+                      <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_date == null && data.item.emp_leave_id != null">
                         <h6>รอการอนุมัติจาก Hr</h6>
                       </div>
                   </template>
@@ -137,17 +193,49 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import * as mJS from "../assets/js/mainJS"
 import * as authService from '@/services/auth.service';
 import { async } from 'q';
+import { Datetime } from 'vue-datetime' // npm install --save luxon vue-datetime weekstart
+import 'vue-datetime/dist/vue-datetime.css'
+import { Settings } from 'luxon'
+
+Vue.use(Datetime)
 
 export default {
   name: "HrLeave",
-  components: {},
+  components: {
+    datetime: Datetime
+  },
   props: {},
   data() {
     return {
+      tempData: [],
       items: [],
+      optionStat: [
+        { value: null ,text: "--เลือกสถานะ--"},
+        { value: 1 ,text: "ผ่าน"},
+        { value: 2 ,text: "ไม่ผ่าน"},
+        { value: 3 ,text: "รอการอนุมัติจาก Head เเละ Hr" },
+        { value: 4 ,text: "รอการอนุมัติจาก Head"},
+        { value: 5 ,text: "รอการอนุมัติจาก Hr"}
+      ],
+      optionsDep: [
+        { value: null ,text: "--เลือกแผนก--"},
+        { value: 1 ,text: "พัฒนาระบบสารสนเทศ"},
+        { value: 2 ,text: "วิศวกรรม "},
+        { value: 3 ,text: "ทรัพยากรมนุษย์"}
+      ],
+      optionsType: [
+        { value: null ,text: "--เลือกประเภทการลา--"},
+        { value: 1 ,text: "ลาป่วย"},
+        { value: 2 ,text: "ลากิจ"},
+        { value: 3 ,text: "ลาพักร้อน"},
+        { value: 4 ,text: "ลาคลอด"},
+        { value: 5 ,text: "ลาบวช"},
+        { value: 6 ,text: "ลาไม่รับค่าจ้าง"}
+      ],
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
@@ -155,12 +243,13 @@ export default {
         { key: 'dept_name', label: 'เเผนก', class: 'text-center',sortable: true },
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
         { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
-        { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
         { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
         { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center',sortable: true },
+        { key: 'leave_time', label: 'เวลา', class: 'text-center' },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
         { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
+        { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
       ],
       isBusy: false,
       totalRows:1,
@@ -171,7 +260,13 @@ export default {
       filterOn: [],
       sortBy: '',
       sortDesc: false,
-      sortDirection: 'asc'
+      sortDirection: 'asc',
+      valDateStart: '',
+      valDateStop: '',
+      selectType: '',
+      selectDep:'',
+      selectStat: '',
+      currentDate: ''
     }
   },
   computed: {
@@ -191,8 +286,72 @@ export default {
   },
   mounted() {
     this.getHrApprove();
+    this.selectType = null;
+    this.selectDep = null;
+    this.selectStat = null;
   },
   methods: {
+    filterData() {
+      var ths = this;
+      var allData = this.tempData;
+      if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
+        console.log("Alert")
+          this.$swal.fire({
+            heightAuto: false,
+            icon: 'warning',
+            title: 'เลือกข้อมูลที่จะค้นหา...'
+          })
+      }
+      if (this.valDateStart != null && this.valDateStart != "") {
+        console.log("valDateStart")
+        // allData = allData.filter(function(v) {
+        //   return v.
+        // })
+      }
+      if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
+        console.log("valDateStop")
+      }
+      if (this.selectStat != null && this.selectStat != "") {
+        console.log("selectStat")
+        if (this.selectStat == 1) {
+          allData = allData.filter(function(v) {
+            return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_date == null;
+          });
+        } else if (this.selectStat == 2) {
+          allData = allData.filter(function(v) {
+            return v.cancel_date != null;
+          });
+        } else if (this.selectStat == 3) {
+          allData = allData.filter(function(v) {
+            return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_date == null && v.emp_leave_id != null;
+          });
+        } else if (this.selectStat == 4) {
+          allData = allData.filter(function(v) {
+            return v.head_approve_date == null && v.hr_approve_date != null && v.cancel_date == null && v.emp_leave_id != null;
+          });
+        } else if (this.selectStat == 5) {
+          allData = allData.filter(function(v) {
+            return v.hr_approve_date == null && v.head_approve_date != null && v.cancel_date == null && v.emp_leave_id != null;
+          });
+        }
+      }
+      if(this.selectType != null && this.selectType != "") {
+        console.log("selectType")
+        console.log(this.selectType)
+        allData = allData.filter(function(v) {
+          return v.leave_reason_id == ths.selectType;
+        })
+      }
+      if(this.selectDep != null && this.selectDep != "") {
+        console.log("selectDep")
+        console.log(this.selectDep)
+        allData = allData.filter(function(v) {
+          return v.dept_id == ths.selectDep;
+        })
+      }
+      this.items = allData;
+      this.totalRows = this.items.length
+    },
     showMsgBoxTwo(id) {
         this.$bvModal.msgBoxConfirm('คุณต้องการอนุมัติการลานี้ใช่หรือไม่?', {
           title: 'การอนุมัติ',
@@ -219,9 +378,9 @@ export default {
           }
         })
       },
-    getHrApprove: function(){
+    getHrApprove: async function(){
     this.isBusy = true;
-    authService.getDataHR({}).then(response => {
+    await authService.getDataHR({}).then(response => {
       console.log(response.data)
       if (response.data != null && response.data.length > 0) { 
         for (var i = 0; i < response.data.length; i++) {
@@ -229,11 +388,14 @@ export default {
           response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
           response.data[i].HeaderbtnApprove = false;
           response.data[i].HrbtnApprove = false;
-        }
+          response.data[i].leave_time = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[1] : "") + ' - ' + (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[1] : "");
+          response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
+          response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
+        } 
         console.log(response.data)
         this.items = response.data;
-        this.totalRows = this.items.length
         this.isBusy = false;
+        this.tempData = response.data;
       } else {
             console.log("else");
             setTimeout(() => {
@@ -241,6 +403,7 @@ export default {
               console.log("isbusy");
         }
       });
+      this.totalRows = this.items.length
     },
     handleResize: function() {
       window.width = window.innerWidth;
@@ -248,27 +411,31 @@ export default {
       if(window.width <= 750){
         this.fields = [
           { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+          { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
           { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
-          { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
+          { key: 'dept_name', label: 'เเผนก', class: 'text-center',sortable: true },
+          { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
           { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
-          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center',sortable: true },
-          { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'leave_time', label: 'เวลา', class: 'text-center' },
+          { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
+          { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center' },
         ]
       }
       else{
-        fields: [
-         { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+        this.fields = [
+          { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
           { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
           { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
           { key: 'dept_name', label: 'เเผนก', class: 'text-center',sortable: true },
           { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
-          { key: 'leave_reason_name', label: 'เหตุผลการลา', class: 'text-center',sortable: true },
-          { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
+          { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
           { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
           { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center',sortable: true },
           { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
           { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
           { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
+          { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
         ]
       }
     },
@@ -299,12 +466,16 @@ export default {
     top: 8%;
     left: 60%;
   }
-
   .close:hover {
-  cursor: pointer;
-}
-
-#HrLeave .btn-secondary {
+    cursor: pointer;
+  }
+  #HrLeave .btn-secondary {
     font-size: 12px;
+  }
+  #HrLeave .vdatetime-input {
+    width: 235px !important;
+    height: 40px !important;
+    font-size: 16px !important;
+    border: none;
   }
 </style>

@@ -36,14 +36,13 @@
             <b-col>
               <p style="margin-bottom:-15px; cursor:default;"><b>ประเภทการลา :</b></p>
                 <b-form-select
-                  label="เหตุผลการลา"
                   v-model="selectType"
                   :options="options1"
                   @change="changeSelectType()"
                   class="mt-3"
                   style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                 >
-                </b-form-select> 
+                </b-form-select>
                 <div v-if="selectType == 2" class="mt-3">
                   <font color="red">{{ textValue2 }}</font>
                 </div>
@@ -275,6 +274,8 @@ export default {
       timeAM12: "12:00:00",
       timePM13: "13:00:00",
       timePM18: "18:00:00",
+      timeFull9: "9:00:00",
+      timeFull18: "18:00:00",
       sel1: "",
       sel2: ""
     }
@@ -465,11 +466,6 @@ export default {
     display: none;
     -webkit-appearance: none;
   }
-  .popupLeave-example {
-    max-width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
   #sizePopupLeave .vs-popup {
     /* position: relative; */
     /* z-index: 1; */
@@ -492,27 +488,21 @@ export default {
   #sizePopupLeave  .field-input {
     width: 130px !important;
     height: 37px !important;
+    font-size: 16px !important;
+    padding: none;
   }
   #sizePopupLeave .vdatetime-input {
     width: 235px !important;
     height: 40px !important;
     font-size: 16px !important;
+    border: none;
   }
   #sizePopupLeave .fs-16 {
     display: none;
   }
-   #sizePopupLeave .field-input {
-    font-size: 16px !important;
-  }
   /* #sizePopupLeave .before {
     display: none;
   } */
-  #sizePopupLeave .vdatetime-input {
-    border: none;
-  }
-  #sizePopupLeave .field-input {
-    padding: none;
-  }
   #sizePopupLeave .custom-select {
     border: none;
   }
