@@ -69,19 +69,24 @@
                 </b-form-select>
               </b-col> -->
               <b-col style="padding-top:24px">
-                  <b-button 
-                    style="margin-top:-6px"
-                    variant="outline-primary" 
-                    @click="filterData()"> ค้นหา
-                  </b-button>
-                  <vs-button
-                    style="margin-left:20px;"
-                    @click="showLeavePopup()"
-                    color="primary"
-                    type="filled"
-                  >
-                    <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
-                  </vs-button>
+                <b-button
+                  style="margin-top:-6px"
+                  variant="outline-primary"
+                  @click="filterData()"> ค้นหา
+                </b-button>
+                  <img src="../assets/refresh.png" id="tooltip-target-1" width="33" height="33" @click="getDataAsync()">
+                  <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
+                    Refresh
+                  </b-tooltip>
+                <vs-button
+                  style="margin-left:20px;"
+                  @click="showLeavePopup()"
+                  color="primary"
+                  type="filled"
+                >
+                  <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
+                </vs-button>
+                  
               </b-col>
              </b-row>
           </div>
@@ -98,15 +103,12 @@
               >
               </b-form-input>
             <b-input-group-append>
-            <div class="close" style="cursor: pointer; margin-left:10px; " @click="getDataAsync()">
-              <img src="../assets/refresh.png" id="tooltip-target-1"  width="33" height="33">
-              <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
-                Refresh
-              </b-tooltip>
-            </div>
+          
             </b-input-group-append>
             </b-input-group>
           </b-nav-form> -->
+
+            
           <table width=100% style="margin-top:10px; border: 1px solid black;">
             <div >
               <b-table
@@ -337,16 +339,16 @@ export default {
         { value: 6 ,text: "ลาไม่รับค่าจ้าง"}
       ],
       fields: [
-        { key: 'no', label: 'ลำดับ', class: 'text-center setFontsize',sortable: true },
-        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
-        { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
-        { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
-        { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
-        { key: 'leave_time', label: 'เวลา', class: 'text-center' },
-        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
-        { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-        { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
-        { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center' },
+        { key: 'no', label: 'ลำดับ', class: 'text-center no',sortable: true },
+        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date',sortable: true },
+        { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name',sortable: true },
+        { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
+        { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date' },
+        { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },
+        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
+        { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
+        { key: 'status', label: 'สถานะ', class: 'text-center status',sortable: true },
+        { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
       ],
       dataModal:{},
       isBusy: false,
@@ -380,12 +382,12 @@ export default {
       return this.name.length >= 4 ? true : false
     }
   },
-  created(){
-    window.addEventListener("resize", this.handleResize);
-  },
-  destroyed(){
-    window.removeEventListener('resize', this.handleResize);
-  },
+  // created(){
+  //   window.addEventListener("resize", this.handleResize);
+  // },
+  // destroyed(){
+  //   window.removeEventListener('resize', this.handleResize);
+  // },
   mounted() {
     this.getDataAsync();
     this.selectType = null;
@@ -563,4 +565,34 @@ export default {
       แก้ไขกรอบ  ขอลางานในวันที่ :
                 ลางานถึงวันที่ :
   */
+  #EmpLeave .no {
+    width : 100px !important;
+  }
+  #EmpLeave .leave_date {
+    width : 185px !important;
+  }
+  #EmpLeave .leave_reason_name {
+    width : 250px !important;
+  }
+  #EmpLeave .leave_start_date {
+    width : 185px !important;
+  }
+  #EmpLeave .leave_stop_date {
+    width : 185px !important;
+  }
+  #EmpLeave .leave_time {
+    width : 200px !important;
+  }
+  #EmpLeave .head_approve_date {
+    width : 200px !important;
+  }
+  #EmpLeave .hr_approve_date {
+    width : 200px !important;
+  }
+  #EmpLeave .status {
+    width : 250px !important;
+  }
+  #EmpLeave .leave_remark {
+    width : 150px !important;
+  }
 </style>

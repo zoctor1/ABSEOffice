@@ -250,19 +250,19 @@ export default {
         { value: 6 ,text: "ลาไม่รับค่าจ้าง"}
       ],
       fields: [
-        { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
-        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
-        { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
-        { key: 'dept_name', label: 'เเผนก', class: 'text-center',sortable: true },
-        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
-        { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
-        { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
-        { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center',sortable: true },
-        { key: 'leave_time', label: 'เวลา', class: 'text-center' },
-        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
-        { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-        { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
-        { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
+        { key: 'no', label: 'ลำดับ', class: 'text-center no',sortable: true },
+        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date',sortable: true },
+        { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name',sortable: true },
+        { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name',sortable: true },
+        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name',sortable: true },
+        { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name',sortable: true },
+        { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
+        { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date',sortable: true },
+        { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },
+        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
+        { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
+        { key: 'status', label: 'สถานะ', class: 'text-center status',sortable: true },
+        { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center leave_remark' },
       ],
       remarkModal:{},
       selectedFilter: "",
@@ -294,12 +294,12 @@ export default {
         })
     }
   },
-  created(){
-    window.addEventListener("resize", this.handleResize);
-  },
-  destroyed(){
-    window.removeEventListener('resize', this.handleResize);
-  },
+  // created(){
+  //   window.addEventListener("resize", this.handleResize);
+  // },
+  // destroyed(){
+  //   window.removeEventListener('resize', this.handleResize);
+  // },
   mounted() {
     this.getHeaderApprove();
     this.selectType = null;
@@ -521,5 +521,44 @@ export default {
     height: 40px !important;
     font-size: 16px !important;
     border: none;
+  }
+  #HeaderAppve .no {
+    width : 50px !important;
+  }
+  #HeaderAppve .leave_date {
+    width : 140px !important;
+  }
+  #HeaderAppve .full_Name {
+    width : 185px !important;
+  }
+  #HeaderAppve .dept_name {
+    width : 160px !important;
+  }
+  #HeaderAppve .position_name {
+    width : 160px !important;
+  }
+  #HeaderAppve .leave_reason_name {
+    width : 160px !important;
+  }
+  #HeaderAppve .leave_start_date {
+    width : 130px !important;
+  }
+  #HeaderAppve .leave_stop_date {
+    width : 130px !important;
+  }
+  #HeaderAppve .leave_time {
+    width : 150px !important;
+  }
+  #HeaderAppve .head_approve_date {
+    width : 160px !important;
+  }
+  #HeaderAppve .hr_approve_date {
+    width : 160px !important;
+  }
+  #HeaderAppve .status {
+    width : 180px !important;
+  }
+  #HeaderAppve .leave_remark {
+    width : 170px !important;
   }
 </style>
