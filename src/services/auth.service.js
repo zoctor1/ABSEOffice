@@ -153,20 +153,24 @@ export function postApproveHead(approveH) {
 //     }).catch(error => reject(new ErrorWrapper(error)))
 // }
 
-export function notApproveHead(commentHeader, notApproveH) {
-    console.log(commentHeader + notApproveH);
+export function notApproveHead(notApproveH, commentHeader) {
+    if (commentHeader == undefined) {
+        commentHeader = "";
+    }
     return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/NotApproveHead`, {}, { headers: {commentHeader : commentHeader, cancelHead : notApproveH} }).then(
+        axios.post(`${API_URL}/NotApproveHead`, {}, { params: {commentHeader : commentHeader, leaveID : notApproveH} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function notApproveHR(commentHR, notApproveHr) {
-    console.log(commentHR + notApproveHr);
+export function notApproveHR(notApproveHr,commentHR) {
+    if (commentHR == undefined) {
+        commentHR = "";
+    }
     return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/NotApproveHR`, {}, { headers: {commentHR : commentHR, cancelHR : notApproveHr} }).then(
+        axios.post(`${API_URL}/NotApproveHR`, {}, { params: {commentHR : commentHR, leaveID : notApproveHr} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })

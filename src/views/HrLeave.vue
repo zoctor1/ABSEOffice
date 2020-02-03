@@ -212,12 +212,32 @@ export default {
               this.getHrApprove();
             });
           } else if (value == false) {
-            authService.notApproveHR(id).then(response => {
-              console.log(response.data);
+              this.showMsgOk(id);
+          }
+        })
+      },
+      showMsgOk(id) {
+        const h = this.$createElement
+        const titleVNode = h('div', { domProps: { innerHTML: 'สาเหตุที่ไม่อนุมัติ' } })
+        const messageVNode = h('div', { class: ['foobar'] }, [
+           h('b-form-textarea', { class: ['textarea-large'] })
+        ])
+        this.$bvModal.msgBoxOk([messageVNode], {
+          title: [titleVNode],
+          buttonSize: 'sm',
+          centered: true, size: 'sm'
+        }).then(value => {
+          if(value == true){
+            console.log(id);
+            console.log(messageVNode.children[0].elm.value);
+            authService.notApproveHR(id, messageVNode.children[0].elm.value).then(response => {
               this.getHrApprove();
             });
           }
-        })
+          else if(value == false){
+            console.log("gg")
+          }
+        });
       },
     getHrApprove: function(){
     this.isBusy = true;
@@ -227,7 +247,6 @@ export default {
         for (var i = 0; i < response.data.length; i++) {
           response.data[i].no = i+1;
           response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-          response.data[i].HeaderbtnApprove = false;
           response.data[i].HrbtnApprove = false;
         }
         console.log(response.data)
