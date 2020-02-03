@@ -59,22 +59,22 @@
 
                   <template v-slot:cell(head_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
-                      <h6>ไม่อนุมัติ</h6>
+                      <b-badge variant="danger">ไม่อนุมัติ</b-badge>
                     </div>
                     <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date != null">
-                      <h6>{{data.item.head_approve_date}}</h6>
+                      <b-badge variant="success">{{data.item.head_approve_date}}</b-badge>
                     </div>
                     <div v-else-if="data.item.cancel_date == null && data.item.head_approve_date == null">
-                      <h6>รอการอนุมัติ</h6>
+                      <b-badge variant="warning">รอการอนุมัติ</b-badge>
                     </div>
                   </template>
 
                   <template v-slot:cell(hr_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
-                      <h6>ไม่อนุมัติ</h6>
+                      <b-badge variant="danger">ไม่อนุมัติ</b-badge>
                     </div>
                     <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date != null">
-                      <h6>{{data.item.hr_approve_date}}</h6>
+                      <b-badge variant="success">{{data.item.hr_approve_date}}</b-badge>
                     </div>
                     <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date == null">
                       <b-button class="btn-secondary" v-if="!data.item.HrbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)">รอการอนุมัติ</b-button>
@@ -83,19 +83,19 @@
 
                   <template v-slot:cell(status)="data">
                       <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_date == null">
-                        <h6>ผ่าน</h6>
+                        <b-badge variant="success">ผ่าน</b-badge>
                       </div>
                       <div v-else-if="data.item.cancel_date != null">
-                        <h6>ไม่ผ่าน</h6>
+                        <b-badge variant="danger">ไม่ผ่าน</b-badge>
                       </div>
                       <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null">
-                        <h6>รอการอนุมัติจาก Head เเละ Hr</h6>
+                        <b-badge variant="warning">รอการอนุมัติจาก Head เเละ Hr</b-badge>
                       </div>
                       <div v-else-if="data.item.head_approve_date == null && data.item.cancel_date == null">
-                        <h6>รอการอนุมัติจาก Head</h6>
+                        <b-badge variant="warning">รอการอนุมัติจาก Head</b-badge>
                       </div>
                       <div v-else-if="data.item.hr_approve_date == null && data.item.cancel_date == null">
-                        <h6>รอการอนุมัติจาก Hr</h6>
+                        <b-badge variant="warning">รอการอนุมัติจาก Hr</b-badge>
                       </div>
                   </template>
                 </b-table>
