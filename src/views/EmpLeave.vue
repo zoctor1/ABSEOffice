@@ -141,6 +141,12 @@
               <template v-slot:empty>
                 <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
               </template>
+              
+              <template v-slot:cell(leave_reason_name)="data">
+                <div style="cursor: pointer" @click="dataModal = data.item, $bvModal.show('timeModal')">
+                    <img src="../assets/Details.png" width="33" height="33">
+                </div>
+              </template>
 
               <template v-slot:cell(leave_remark)="data">
                 <div style="cursor: pointer" @click="dataModal = data.item, $bvModal.show('remarkModal')">
@@ -241,9 +247,19 @@
       <b-modal id="remarkModal" :centered="true" hide-footer>
         <template v-slot:modal-title>รายละเอียดการลา</template>
           <div class="d-block text-center">
-            <h5>{{dataModal.leave_remark}}</h5>
+            <h6>{{dataModal.leave_remark}}</h6>
           </div>
         <b-button class="mt-3" block @click="$bvModal.hide('remarkModal')">ปิด</b-button>
+      </b-modal>
+
+      <b-modal id="timeModal" :centered="true" hide-footer>
+        <template v-slot:modal-title>รายละเอียดเวลา</template>
+          <div class="d-block text-center">
+            <h6>ประเภทการลา : {{dataModal.leave_reason_name}}</h6>
+            <h6>วันที่ลา : {{dataModal.leave_start_date}}</h6>
+            <h6>ลาถึงวันที่ : {{dataModal.leave_stop_date}}</h6>
+          </div>
+        <b-button class="mt-3" block @click="$bvModal.hide('timeModal')">ปิด</b-button>
       </b-modal>
 
       <!-- <b-modal id="success" :centered="true" hide-footer>
@@ -342,8 +358,8 @@ export default {
         { key: 'no', label: 'ลำดับ', class: 'text-center no',sortable: true },
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date',sortable: true },
         { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name',sortable: true },
-        { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
-        { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date' },
+        // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
+        // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date' },
         { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
@@ -498,22 +514,20 @@ export default {
       if(window.width <= 750){
         this.fields = [
           { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
-          { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
-          { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
-          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
-          { key: 'leave_time', label: 'เวลา', class: 'text-center' },
-          { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
-          { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center' },
+          { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center',sortable: true },
+          // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
         ]
       }
       else{
         this.fields = [
           { key: 'no', label: 'ลำดับ', class: 'text-center setFontsize',sortable: true },
           { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
-          { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
-          { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
-          { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
-          { key: 'leave_time', label: 'เวลา', class: 'text-center' },
+          { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center',sortable: true },
+          { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
+          // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
           { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
           { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
           { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
