@@ -106,7 +106,7 @@
                   </template>
 
                   <template v-slot:cell(leave_remark)="data">
-                    <div style="cursor: pointer" @click="dataModal = data.item, $bvModal.show('bv-modal-example')">
+                    <div style="cursor: pointer" @click="dataModal = data.item, $bvModal.show('remarkModal')">
                       <img src="../assets/Details.png" width="33" height="33">
                     </div>
                   </template>
@@ -143,13 +143,13 @@
                         <b-badge variant="danger">ไม่ผ่าน</b-badge>
                       </div>
                       <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null && data.item.emp_leave_id != null">
-                        <h6>รอการอนุมัติจาก Head เเละ Hr</h6>
+                         <b-badge variant="warning">รอการอนุมัติจาก Head เเละ Hr</b-badge>
                       </div>
                       <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_date == null && data.item.emp_leave_id != null">
-                        <h6>รอการอนุมัติจาก Head</h6>
+                        <b-badge variant="warning">รอการอนุมัติจาก Head</b-badge>
                       </div>
                       <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_date == null && data.item.emp_leave_id != null">
-                        <h6>รอการอนุมัติจาก Hr</h6>
+                        <b-badge variant="warning">รอการอนุมัติจาก Hr</b-badge>
                       </div>
                   </template>
                 </b-table>
@@ -193,12 +193,12 @@
       </b-col>
     </div>
     <br>
-    <b-modal id="bv-modal-example" style="margin-top:50px" :centered="true" hide-footer>
+    <b-modal id="remarkModal" style="margin-top:50px" :centered="true" hide-footer>
       <template v-slot:modal-title>รายละเอียดการลา</template>
       <div class="d-block text-center">
         <h5>{{dataModal.leave_remark}}</h5>
       </div>
-      <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">ปิด</b-button>
+      <b-button class="mt-3" block @click="$bvModal.hide('remarkModal')">ปิด</b-button>
     </b-modal>
 
     <b-modal id="timeModal" :centered="true" hide-footer>

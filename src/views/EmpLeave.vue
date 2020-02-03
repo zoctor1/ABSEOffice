@@ -360,6 +360,7 @@ export default {
         { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
         { key: 'time_detail', label: 'รายละเอียดเวลา', class: 'text-center',sortable: true },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
+        { key: 'leave_time', label: 'เวลา', class: 'text-center' },
         // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
         // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
         { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
