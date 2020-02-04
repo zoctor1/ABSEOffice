@@ -54,7 +54,7 @@
         <b-tbody>
           <b-tr v-for="i in responseData" :key="i">
             <b-th>{{ i.leave_reason_name }}</b-th>
-            <b-td><center>{{ i.leave_limit + ' /  0' }}</center></b-td>
+            <b-td><center>{{ i.leave_limit }}</center></b-td>
             <b-td v-if="i.dd == null && i.hh == null"><center>{{ 0 +' / '+ 0}}</center></b-td>
             <b-td v-else><center>{{ i.dd +' / '+ i.hh +'  '}}</center></b-td>
             <b-td v-if="i.hh == 0"><center>{{ (i.leave_limit - i.dd) +' / '+ 0}}</center></b-td>
@@ -65,7 +65,7 @@
           <b-thead class="thead-light" head-variant="danger">
             <b-tr v-if="responseData">
               <b-th><b>รวมทั้งหมด : </b></b-th>
-              <b-th><center><b>{{ sumLimits(responseData) + ' / 0'}}</b></center></b-th>
+              <b-th><center><b>{{ sumLimits(responseData) }}</b></center></b-th>
               <b-th><center><b>{{ sumLeave1(responseData) + ' / ' + sumLeave2(responseData)}}</b></center></b-th>
               <b-th v-if="sumLeave2(responseData) > 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData) - 1) + ' / ' + (9 - sumLeave2(responseData))}}</b></center></b-th>
               <b-th v-if="sumLeave2(responseData) == 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData)) + ' / 0'}}</b></center></b-th>

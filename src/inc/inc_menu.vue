@@ -21,10 +21,10 @@
     <!-- <vs-navbar-item index="2" >
       <a style="cursor: pointer;" @click="toUrl('EmpOT')"><font size=3 color="#FEFCFF">(User) ข้อมูลการทำงานนอกเวลา(OT)</font></a>
     </vs-navbar-item> -->
-    <vs-navbar-item index="2">
+    <vs-navbar-item index="2" v-if="userIn.header_flag == 1">
       <a style="cursor: pointer;" @click="toUrl('HeaderApprove'), indexActive = 2"><font style="font-size: 20px;" color="#FEFCFF">(Header) การอนุมัติลางาน</font></a>
     </vs-navbar-item>
-    <vs-navbar-item index="3">
+    <vs-navbar-item index="3" v-if="userIn.dept_id == 3">
       <a style="cursor: pointer;" @click="toUrl('HrLeave'), indexActive = 3"><font style="font-size: 20px;" color="#FEFCFF">(Hr) ข้อมูลการลางานของพนักงาน</font></a>
     </vs-navbar-item>
     <!-- <vs-navbar-item index="5" style="margin-right:10px;">
@@ -49,30 +49,11 @@
         <a @click="show()" style="cursor: default; color: black;"> 
           ข้อมูลส่วนตัว
         </a>
-        <!-- <a href="#" v-b-modal.modal-center>ข้อมูลส่วนตัว
-          <b-modal title="ข้อมูลส่วนตัว" id="modal-center" :hide-footer="true" centered >
-            <template>
-              <label style="font-size: 18px;" ><img src="../assets/user.png" style="margin-right:7px; width: 30px; height: 30px;"  class="userIcon"></label>
-            </template>
-            <p class="my-4">ชื่อ : {{userIn.first_name}} {{userIn.last_name}}</p>
-            <p class="my-4">แผนก : {{userIn.dept_name}}</p>
-            <p class="my-4">ตำแหน่ง : {{userIn.position_name}}</p>
-            <p class="my-4">E-mail : {{userIn.username}}</p>
-            <p class="my-4">เบอร์ติดต่อ : {{userIn.mobile}}</p>
-          </b-modal>
-        </a> -->
         <a style="color: black; cursor: pointer;" @click="logout()">
           ออกจากระบบ
         </a>
       </div>
-    </div>
-       
-      <!-- <img style="cursor: pointer; margin:0px 20px 0px 10px;" @click="toUrl('Main')" alt="Vue logo" src="../assets/user.png" width="40" height="40" /> -->
-  
-    <!-- <vs-button @click="logout()" style="margin-right:25px;" color="danger" type="gradient" > 
-      <font-awesome-icon icon="sign-out-alt" style="margin-right:8px;" />
-      ออกจากระบบ 
-    </vs-button> -->
+    </div>  
     </vs-navbar>
      <modal 
         name="modalShowData" 
@@ -129,6 +110,7 @@ export default {
   },
   computed: {},
   beforeMount() {
+    this.userIn = JSON.parse(localStorage.getItem("user"));
     if (this.$route.name == "EmpLeave") {
       this.indexActive = 1;
     } else if (this.$route.name == "HeaderApprove") {
@@ -140,7 +122,6 @@ export default {
     }
   },
   mounted() {
-    this.userIn = JSON.parse(localStorage.getItem("user"));
   },
   methods: {
     show () {

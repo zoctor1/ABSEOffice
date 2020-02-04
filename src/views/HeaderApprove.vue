@@ -436,7 +436,8 @@ export default {
       },
       getHeaderApprove: async function() {
       this.isBusy = true;
-      await authService.getDataHeader({}).then(response => {
+      var user = JSON.parse(localStorage.getItem("user"));
+      await authService.getDataHeader(user.dept_id).then(response => {
         console.log(response.data)
         if (response.data != null && response.data.length > 0) {
           this.selectedFilter = null;

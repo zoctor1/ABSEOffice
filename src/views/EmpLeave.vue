@@ -482,10 +482,10 @@ export default {
         }, 1000);
       },
     getDataAsync: async function(){
-      this.isBusy = true;
+        this.isBusy = true;
         var user = JSON.parse(localStorage.getItem("user"));
         await authService.getUserLeave(user.uuid).then(response => {
-          console.log(JSON.stringify(response.data))
+          console.log(response.data)
           if (response.data.length > 0) {
             for (var i = 0; i < response.data.length; i++) {
               response.data[i].no = i+1;
