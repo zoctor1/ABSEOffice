@@ -7,13 +7,13 @@
             คำขออนุมัติการลางาน
           </h2>
           <div style="text-align:left;">
-            <b-row style="margin-top:10px; width:60%">
+            <b-row style="margin-top:10px; width:100%">
               <b-col>
                 <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
-                <datetime
-                  type="date"
-                  v-model="valDateStart"
-                  format="dd/MM/yyyy"
+                <datetime 
+                  type="date" 
+                  v-model="valDateStart" 
+                  format="dd/MM/yyyy" 
                   :min-datetime="currentDate"
                   style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                   >
@@ -21,11 +21,11 @@
               </b-col>
               <b-col>
                 <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
-                <datetime
+                <datetime 
                   type="date"
-                  v-model="valDateStop"
-                  format="dd/MM/yyyy"
-                  :min-datetime="currentDate"
+                  v-model="valDateStop" 
+                  format="dd/MM/yyyy" 
+                  :min-datetime="currentDate" 
                   style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                   >
                 </datetime>
@@ -39,8 +39,7 @@
                 >
                 </b-form-select>
               </b-col>
-            </b-row>
-            <b-row style="margin-top:10px; width:60%">
+           
               <b-col>
                 <p style="cursor:default;"><b>ประเภทการลา :</b></p>
                 <b-form-select
@@ -50,7 +49,7 @@
                 >
                 </b-form-select>
               </b-col>
-              <b-col>
+              <!-- <b-col>
                 <p style="cursor:default;"><b>แผนก :</b></p>
                 <b-form-select
                   v-model="selectDep"
@@ -58,11 +57,18 @@
                   style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                 >
                 </b-form-select>
-              </b-col>
+              </b-col> -->
               <b-col style="padding-top:24px">
-                <b-button style="vertical-align: sub;" variant="outline-primary" @click="filterData()">ค้นหา</b-button>
+                <b-button
+                  variant="outline-primary"
+                  @click="filterData()"> ค้นหา
+                </b-button>
+                  <img src="../assets/refresh.png" id="tooltip-target-1" width="33" height="33" @click="getDataAsync()">
+                  <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
+                    Refresh
+                  </b-tooltip>
               </b-col>
-            </b-row>
+             </b-row>
           </div>
 
             <table width=100% style="border :1px solid black; margin-top:10px; " >
@@ -107,14 +113,8 @@
                     <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
                   </template>
 
-                  <template v-slot:cell(time_detail)="data">
-                    <div style="cursor: pointer" @click="dataModal = data.item, $bvModal.show('timeModal')">
-                      <img src="../assets/Details.png" width="33" height="33">
-                    </div>
-                  </template>
-
                   <template v-slot:cell(leave_remark)="data">
-                    <div style="cursor: pointer" @click="dataModal = data.item, $bvModal.show('remarkModal')">
+                    <div style="cursor: pointer" @click="dataModal = data.item, show('remarkModal')">
                       <img src="../assets/Details.png" width="33" height="33">
                     </div>
                   </template>
@@ -200,13 +200,26 @@
       </b-col>
     </div>
     <br>
-    <b-modal id="remarkModal" style="margin-top:50px" :centered="true" hide-footer>
-      <template v-slot:modal-title>รายละเอียดการลา</template>
-      <div class="d-block text-center">
-        <h5>{{dataModal.leave_remark}}</h5>
+    <modal 
+        name="remarkModal" 
+        :clickToClose="false"
+        height="auto"
+        width="350px"
+      >
+      <p style="background-color: #f1f1f1; font-size: 20px; text-align: center; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
+        รายละเอียดการลา 
+      </p>
+      <div style="padding:15px 15px 15px 20px">
+        <center>
+          <p style="font-size: 18px; text-align: center">ประเภทการลา : {{dataModal.leave_reason_name}}</p>
+          <p style="font-size: 18px; text-align: center">วันที่ลา : {{dataModal.leave_start_date}}</p>
+          <p style="font-size: 18px; text-align: center">ลาถึงวันที่ : {{dataModal.leave_stop_date}}</p>
+          <p style="font-size: 18px; text-align: center">เวลา : {{ dataModal.leave_time }} </p>
+          <p style="font-size: 18px; text-align: center">รายละเอียดการลา : {{ dataModal.leave_remark }} </p>
+        </center>
       </div>
-      <b-button class="mt-3" block @click="$bvModal.hide('remarkModal')">ปิด</b-button>
-    </b-modal>
+      <b-button block variant="secondary" style="font-size: 16px" @click="hide()">ปิด</b-button>
+    </modal>
 
     <b-modal id="timeModal" :centered="true" hide-footer>
       <template v-slot:modal-title>รายละเอียดเวลา</template>
@@ -229,8 +242,9 @@ import 'vue-datetime/dist/vue-datetime.css'
 import { Settings } from 'luxon'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
+import VModal from 'vue-js-modal'
 
-Vue.use(Datetime,VueSweetalert2)
+Vue.use(Datetime,VueSweetalert2,VModal)
 
 export default {
   name: "HeaderAppve",
@@ -266,20 +280,19 @@ export default {
         { value: 6 ,text: "ลาไม่รับค่าจ้าง"}
       ],
       fields: [
-        { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
-        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
-        { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
-        { key: 'dept_name', label: 'เเผนก', class: 'text-center',sortable: true },
-        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center',sortable: true },
-        { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center',sortable: true },
-        { key: 'time_detail', label: 'รายละเอียดเวลา', class: 'text-center',sortable: true },
-        { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-        // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
-        // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center',sortable: true },
-        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
-        { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-        { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
-        { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
+        { key: 'no', label: 'ลำดับ', class: 'text-center no',sortable: true },
+        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date',sortable: true },
+        { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name',sortable: true },
+        { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name',sortable: true },
+        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name',sortable: true },
+        // { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center leave_reason_name',sortable: true },
+        // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
+        // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date',sortable: true },
+        { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },
+        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
+        { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
+        { key: 'status', label: 'สถานะ', class: 'text-center status',sortable: true },
+        { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center leave_remark' },
       ],
       dataModal:{},
       selectedFilter: "",
@@ -299,7 +312,11 @@ export default {
       selectType: '',
       selectDep:'',
       selectStat: '',
-      currentDate: ''
+      currentDate: '',
+      window : {
+        width: 0,
+        height: 0
+      }
     }
   },
   computed: {
@@ -324,6 +341,12 @@ export default {
     this.selectStat = null;
   },
   methods: {
+      show () {
+        this.$modal.show('remarkModal');
+      },
+      hide () {
+        this.$modal.hide('remarkModal');
+      },
       filterData() {
         var ths = this;
         var allData = this.tempData;
@@ -465,9 +488,9 @@ export default {
       this.totalRows = this.items.length
     },
     handleResize: function() {
-      window.width = window.innerWidth;
-      window.height = window.innerHeight;
-      if(window.width <= 750){
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      if(this.window.width <= 750){
         this.fields = [
           { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
           { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
