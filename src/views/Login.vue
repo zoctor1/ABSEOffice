@@ -133,7 +133,6 @@ export default {
   /* 
   background-position: 0% 100%; background-repeat: no-repeat; background-size: auto; 
   */
-
   body {
     font-family: 
     "Open Sans", -apple-system, BlinkMacSystemFont, 

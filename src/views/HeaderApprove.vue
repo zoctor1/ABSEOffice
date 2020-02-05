@@ -6,9 +6,9 @@
           <h2 style="text-align: left; font-weight: bold;">
             คำขออนุมัติการลางาน
           </h2>
-          <div style="text-align:left;">
-            <b-row style="margin-top:10px; width:100%">
-              <b-col>
+            <div style="text-align:left;">
+            <b-row style="margin:10px 0px 10px 10px; width:100%">
+              <b-col sm="12" md="6" lg="2">
                 <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
                 <datetime 
                   type="date" 
@@ -19,7 +19,7 @@
                   >
                 </datetime>
               </b-col>
-              <b-col>
+              <b-col sm="12" md="6" lg="2">
                 <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
                 <datetime 
                   type="date"
@@ -30,7 +30,7 @@
                   >
                 </datetime>
               </b-col>
-              <b-col>
+              <b-col sm="12" md="6" lg="2">
                 <p style="cursor:default;"><b>สถานะ :</b></p>
                 <b-form-select
                   v-model="selectStat"
@@ -39,8 +39,7 @@
                 >
                 </b-form-select>
               </b-col>
-           
-              <b-col>
+              <b-col sm="12" md="6" lg="2">
                 <p style="cursor:default;"><b>ประเภทการลา :</b></p>
                 <b-form-select
                   v-model="selectType"
@@ -49,24 +48,38 @@
                 >
                 </b-form-select>
               </b-col>
-              <!-- <b-col>
-                <p style="cursor:default;"><b>แผนก :</b></p>
-                <b-form-select
-                  v-model="selectDep"
-                  :options="optionsDep"
-                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                >
-                </b-form-select>
-              </b-col> -->
-              <b-col style="padding-top:24px">
+              <b-col sm="6" md="6" lg="2" style="padding-top:24px">
                 <b-button
                   variant="outline-primary"
-                  @click="filterData()"> ค้นหา
+                  @click="filterData()"
+                  style="height:42px; margin-right:10px"
+                > 
+                <img 
+                  src="../assets/Details.png" 
+                  width="25" 
+                  height="25"
+                >
+                  ค้นหา
                 </b-button>
-                  <img src="../assets/refresh.png" id="tooltip-target-1" width="33" height="33" @click="getDataAsync()">
-                  <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
+                
+                <b-button
+                  variant="outline-danger"
+                  @click="defaultValue()"
+                  style="height:42px;" 
+                >
+                  <img 
+                    src="../assets/clean_icon.png"
+                    width="30"
+                    height="30"
+                  > 
+                    เคลียร์ข้อมูล
+                </b-button>
+              </b-col>
+              <b-col>
+                <!-- <img src="../assets/refresh.png" id="tooltip-target-2" width="33" height="33" @click="getDataAsync()">
+                  <b-tooltip placement='right' target="tooltip-target-2" triggers="hover">
                     Refresh
-                  </b-tooltip>
+                  </b-tooltip> -->
               </b-col>
              </b-row>
           </div>
@@ -285,7 +298,7 @@ export default {
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name',sortable: true },
         { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name',sortable: true },
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name',sortable: true },
-        // { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center leave_reason_name',sortable: true },
+        { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center leave_reason_name',sortable: true },
         // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
         // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date',sortable: true },
         { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },

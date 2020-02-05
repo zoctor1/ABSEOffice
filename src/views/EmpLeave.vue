@@ -1,7 +1,7 @@
 <template>
   <div id="EmpLeave" lg="12" sm="12" xs="12">
     <popupLeave v-bind:showPop="showPop" />
-    
+    {{window}}
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
@@ -17,8 +17,8 @@
               </div>
           </div>
           <div style="text-align:left;">
-            <b-row style="margin-top:10px; width:100%">
-              <b-col>
+            <b-row style="margin:10px 0px 10px 10px; width:100%">
+              <b-col sm="12" md="6" lg="2">
                 <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
                 <datetime 
                   type="date" 
@@ -29,7 +29,7 @@
                   >
                 </datetime>
               </b-col>
-              <b-col>
+              <b-col sm="12" md="6" lg="2">
                 <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
                 <datetime 
                   type="date"
@@ -40,7 +40,7 @@
                   >
                 </datetime>
               </b-col>
-              <b-col>
+              <b-col sm="12" md="6" lg="2">
                 <p style="cursor:default;"><b>สถานะ :</b></p>
                 <b-form-select
                   v-model="selectStat"
@@ -49,8 +49,7 @@
                 >
                 </b-form-select>
               </b-col>
-           
-              <b-col>
+              <b-col sm="12" md="6" lg="2">
                 <p style="cursor:default;"><b>ประเภทการลา :</b></p>
                 <b-form-select
                   v-model="selectType"
@@ -59,55 +58,54 @@
                 >
                 </b-form-select>
               </b-col>
-              <!-- <b-col>
-                <p style="cursor:default;"><b>แผนก :</b></p>
-                <b-form-select
-                  v-model="selectDep"
-                  :options="optionsDep"
-                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                >
-                </b-form-select>
-              </b-col> -->
-              <b-col style="padding-top:24px">
+              <b-col sm="6" md="6" lg="2" style="padding-top:24px">
                 <b-button
-                  style="margin-top:-6px"
                   variant="outline-primary"
-                  @click="filterData()"> ค้นหา
+                  @click="filterData()"
+                  style="height:42px; margin-right:10px"
+                > 
+                <img 
+                  src="../assets/Details.png" 
+                  width="25" 
+                  height="25"
+                >
+                  ค้นหา
                 </b-button>
-                  <img src="../assets/refresh.png" id="tooltip-target-1" width="33" height="33" @click="getDataAsync()">
-                  <b-tooltip placement='right' target="tooltip-target-1" triggers="hover">
-                    Refresh
-                  </b-tooltip>
+                
+                <b-button
+                  variant="outline-danger"
+                  @click="defaultValue()"
+                  style="height:42px;" 
+                >
+                  <img 
+                    src="../assets/clean_icon.png"
+                    width="30"
+                    height="30"
+                  > 
+                    เคลียร์ข้อมูล
+                </b-button>
+              </b-col>
+              <b-col sm="6" md="6" lg="2" style="padding-top:24px;">
                 <vs-button
-                  style="margin-left:20px;"
                   @click="showLeavePopup()"
                   color="primary"
                   type="filled"
+                  style="height:42px;"
                 >
-                  <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
+                  <img 
+                  src="../assets/Plus_icon3.png" 
+                  style="margin-top:-3px"
+                  width="20" 
+                  height="20" 
+                  /> เพิ่มการลา
                 </vs-button>
-                  
+                <!-- <img src="../assets/refresh.png" id="tooltip-target-2" width="33" height="33" @click="getDataAsync()">
+                  <b-tooltip placement='right' target="tooltip-target-2" triggers="hover">
+                    Refresh
+                  </b-tooltip> -->
               </b-col>
              </b-row>
           </div>
-          <!-- <b-nav-form >
-            <b-input-group size="sm">
-              <b-form-input
-                size="sm" 
-                class="mr-sm-2"
-                v-model="filter"
-                type="search"
-                id="filterInput"
-                placeholder="ค้นหา.."
-                autocomplete = on
-              >
-              </b-form-input>
-            <b-input-group-append>
-          
-            </b-input-group-append>
-            </b-input-group>
-          </b-nav-form> -->
-
             
           <table width=100% style="margin-top:10px; border: 1px solid black;">
             <div >
@@ -129,7 +127,7 @@
               
               <!-- :busy="isBusy" is reload variable  -->
               <template v-slot:head()="data">
-                    <span style="font-size: 18px;">{{ data.label }}</span>
+                  <span style="font-size: 18px;">{{ data.label }}</span>
               </template>
               <template v-slot:table-busy>
                 <div class="text-center text-danger ">
@@ -155,6 +153,12 @@
                 <div v-else >
                     {{ data.item.leave_type_name }}
                 </div>
+                <!-- <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date != null">
+                  <b-badge variant="success">{{data.item.hr_approve_date}}</b-badge>
+                </div>
+                <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date == null && data.item.emp_leave_id != null">
+                  <b-badge variant="warning">รอการอนุมัติ</b-badge>
+                </div> -->
               </template>
 
               <template v-slot:cell(hr_approve_date)="data">
@@ -315,7 +319,7 @@ export default {
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center no',sortable: true },
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date',sortable: true },
-        // { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center leave_reason_name',sortable: true },
+        { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center leave_reason_name',sortable: true },
         // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
         // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date' },
         { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },
@@ -373,6 +377,12 @@ export default {
     this.selectStat = null;
   },
   methods: {
+    defaultValue() {
+      this.valDateStart = "";
+      this.valDateStop = "";
+      this.selectStat = null;
+      this.selectType = null;
+    },
     show () {
       this.$modal.show('remarkModal');
     },
@@ -451,7 +461,6 @@ export default {
       this.isBusy = true;
         var user = JSON.parse(localStorage.getItem("user"));
         await authService.getUserLeave(user.uuid).then(response => {
-          console.log(JSON.stringify(response.data))
           if (response.data.length > 0) {
             for (var i = 0; i < response.data.length; i++) {
               response.data[i].no = i+1;
@@ -488,20 +497,20 @@ export default {
           { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true }
         ]
       }
-      // else{
-      //   this.fields = [
-      //     { key: 'no', label: 'ลำดับ', class: 'text-center setFontsize',sortable: true },
-      //     { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
-      //     { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center',sortable: true },
-      //     { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
-      //     // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
-      //     // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
-      //     { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
-      //     { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-      //     { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
-      //     { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center' },
-      //   ]
-      // }
+      else {
+        this.fields = [
+          { key: 'no', label: 'ลำดับ', class: 'text-center setFontsize',sortable: true },
+          { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
+          { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center',sortable: true },
+          { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' },
+          // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center',sortable: true },
+          // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+          { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+          { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
+          { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center' },
+        ]
+      }
     },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`

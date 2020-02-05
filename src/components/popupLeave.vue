@@ -185,7 +185,7 @@
                 color="primary"
                 type="filled"
               >
-                บันทึก
+                ส่งอนุมัติ
               </vs-button>
             </center>
         </div>

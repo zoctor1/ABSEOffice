@@ -1,11 +1,23 @@
 <template>
-  <calendar
-    id ="calendarMain"
-    style="margin: 20px -10px 10px -10px;background: #f8f8f8;"
-    :first-day="1"
-    :all-events="events"
-  >
-  </calendar>
+    <div>
+        <div style="text-align:right; margin-right:5px">
+            <b-form-select 
+                class="selectCalendar"
+                style="width:250px; margin:10px 0 10px 0px"
+                v-model="selectCalendar" 
+                :options="optionCalendar"
+                
+            >
+            </b-form-select>
+        </div>
+        <calendar
+            id ="calendarMain"
+            style="margin: 0px -10px 10px -10px;background: #f8f8f8;"
+            :first-day="1"
+            :all-events="events"
+        >
+        </calendar>
+    </div>
 </template>
 
 <script>
@@ -16,6 +28,12 @@
         name: 'app',
         data() {
             return {
+                selectCalendar: null,
+                optionCalendar: [
+                    { value: null ,text: 'เลือกปฏิทินข้อมูลการลางาน', disabled: true},
+                    { value: 1 ,text: 'ข้อมูลส่วนตัว' },
+                    { value: 2 ,text: 'ข้อมูลการลางานของพนักงาน' }
+                ],
                 events: []
             }
         },
@@ -80,31 +98,4 @@
     #calendarMain .card-header h2{
         font-weight: bold !important;
     }
-    
-    /* #calendarMain .title{
-        font-weight: bold !important;
-    } */
-    /* #calendarMain .week-number {
-        display: none;
-    }
-    #calendarMain .badge-success { 
-        display: none;
-    }
-    #calendarMain .event-title { 
-        display: none;
-    }
-    #calendarMain .card-inverse  { 
-        display: none;
-    }
-     /* #calendarMain .modal-body .event-color {
-        display: none;
-    }
-    #calendarMain .badge-success { 
-        display: none;
-    } */
-    /* #calendarMain .title {
-        margin-left: 50%
-    } */
-    
-    
 </style>

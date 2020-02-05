@@ -267,7 +267,7 @@ export default {
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name',sortable: true },
         { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name',sortable: true },
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name',sortable: true },
-        // { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name',sortable: true },
+        { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name',sortable: true },
         // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
         // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date',sortable: true },
         { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },

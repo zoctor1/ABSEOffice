@@ -34,10 +34,10 @@
     <vs-spacer></vs-spacer>
     <p class="my-4" style="margin: 0px 30px 0px 10px; border-left: 2px solid rgb(255, 255, 255); cursor:default;">
       <b-row>
-         <b  style="absolute : relative; right:auto"> &nbsp; &nbsp; &nbsp;{{userIn.first_name}} {{userIn.last_name}}</b>
+         <b> &nbsp; &nbsp; &nbsp;{{userIn.first_name}} {{userIn.last_name}}</b>
       </b-row>
       <b-row>
-         <b  style="absolute : relative; right:auto"> &nbsp; &nbsp; &nbsp;{{userIn.dept_name}}</b>
+         <b> &nbsp; &nbsp; &nbsp;{{userIn.dept_name}}</b>
       </b-row>
     </p>
 
@@ -49,30 +49,11 @@
         <a @click="show()" style="cursor: default; color: black;"> 
           ข้อมูลส่วนตัว
         </a>
-        <!-- <a href="#" v-b-modal.modal-center>ข้อมูลส่วนตัว
-          <b-modal title="ข้อมูลส่วนตัว" id="modal-center" :hide-footer="true" centered >
-            <template>
-              <label style="font-size: 18px;" ><img src="../assets/user.png" style="margin-right:7px; width: 30px; height: 30px;"  class="userIcon"></label>
-            </template>
-            <p class="my-4">ชื่อ : {{userIn.first_name}} {{userIn.last_name}}</p>
-            <p class="my-4">แผนก : {{userIn.dept_name}}</p>
-            <p class="my-4">ตำแหน่ง : {{userIn.position_name}}</p>
-            <p class="my-4">E-mail : {{userIn.username}}</p>
-            <p class="my-4">เบอร์ติดต่อ : {{userIn.mobile}}</p>
-          </b-modal>
-        </a> -->
         <a style="color: black; cursor: pointer;" @click="logout()">
           ออกจากระบบ
         </a>
       </div>
     </div>
-       
-      <!-- <img style="cursor: pointer; margin:0px 20px 0px 10px;" @click="toUrl('Main')" alt="Vue logo" src="../assets/user.png" width="40" height="40" /> -->
-  
-    <!-- <vs-button @click="logout()" style="margin-right:25px;" color="danger" type="gradient" > 
-      <font-awesome-icon icon="sign-out-alt" style="margin-right:8px;" />
-      ออกจากระบบ 
-    </vs-button> -->
     </vs-navbar>
      <modal 
         name="modalShowData" 
@@ -123,8 +104,6 @@ export default {
       indexActive: 0,
       colorxx:'#c72a75',
       colorx2:'#5252e8',
-      hhhh:false
-      // showDataPop:false
     };
   },
   computed: {},
