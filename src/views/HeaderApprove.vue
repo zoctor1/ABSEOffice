@@ -354,6 +354,13 @@ export default {
     this.selectStat = null;
   },
   methods: {
+      defaultValue() {
+        this.valDateStart = "";
+        this.valDateStop = "";
+        this.selectStat = null;
+        this.selectType = null;
+        this.getHeaderApprove();
+      },
       show () {
         this.$modal.show('remarkModal');
       },

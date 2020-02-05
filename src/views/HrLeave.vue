@@ -59,7 +59,31 @@
                 </b-form-select>
               </b-col>
               <b-col style="padding-top:24px">
-                <b-button style="vertical-align: sub;" variant="outline-primary" @click="filterData()">ค้นหา</b-button>
+                <b-button
+                  variant="outline-primary"
+                  @click="filterData()"
+                  style="height:42px; margin-right:10px"
+                > 
+                <img 
+                  src="../assets/Details.png" 
+                  width="25" 
+                  height="25"
+                >
+                  ค้นหา
+                </b-button>
+                
+                <b-button
+                  variant="outline-danger"
+                  @click="defaultValue()"
+                  style="height:42px;" 
+                >
+                  <img 
+                    src="../assets/clean_icon.png"
+                    width="30"
+                    height="30"
+                  > 
+                    เคลียร์ข้อมูล
+                </b-button>
               </b-col>
             </b-row>
           </div>
@@ -321,6 +345,14 @@ export default {
     this.selectStat = null;
   },
   methods: {
+    defaultValue() {
+      this.valDateStart = "";
+      this.valDateStop = "";
+      this.selectStat = null;
+      this.selectType = null;
+      this.selectDep = null;
+      this.getHrApprove();
+    },
     show () {
       this.$modal.show('remarkModal');
     },

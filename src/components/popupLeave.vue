@@ -329,7 +329,7 @@ export default {
       this.selectTimeStart="",
       this.selectTimeStop=""
       this.flagRangDate = false;
-      this.selectType= null;
+      this.selectType = null;
       this.selected = 3;
       // this.options = [{options1}];
       // this.options1 = [{options1}];

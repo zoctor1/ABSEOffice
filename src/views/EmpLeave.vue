@@ -382,6 +382,7 @@ export default {
       this.valDateStop = "";
       this.selectStat = null;
       this.selectType = null;
+      this.getDataAsync();
     },
     show () {
       this.$modal.show('remarkModal');
