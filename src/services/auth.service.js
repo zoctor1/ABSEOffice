@@ -19,10 +19,10 @@ export function getDataHR() {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function getDataHeader(dept_id) {
-    console.log(dept_id);
+export function getDataHeader(deptId) {
+    console.log(deptId);
     return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/dataForHeader`, {}, { headers: {datahd : dept_id} }).then(
+        axios.post(`${API_URL}/dataForHeader`, {}, { headers: {datahd : deptId} }).then(
             response => {
                 console.log(response.data)
                 return resolve(new ResponseWrapper(response, response.data))
@@ -123,10 +123,9 @@ export function notApproveHR(notApproveHr,commentHR) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function getEvent(eventC) {
-    console.log(eventC);
+export function getEvent(empId, deptId, header) {
     return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/CalendarEvent`, {}, { headers: {event : eventC} }).then(
+        axios.post(`${API_URL}/CalendarEvent`, {}, { params: {eventEmp : empId, eventDept : deptId, eventHeader : header} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })

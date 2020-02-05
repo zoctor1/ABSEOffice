@@ -30,7 +30,7 @@
                 var count = 0;
                 var startDate = new Date();
                 var stopDate = new Date();
-                await authService.getEvent(user.uuid).then(response => {
+                await authService.getEvent(user.uuid, user.dept_id, user.header_flag).then(response => {
                     console.log(response.data);
                     response.data.forEach( function(obj) {
                         if(obj.head_approve_date != null && obj.hr_approve_date != null && obj.cancel_date == null){
