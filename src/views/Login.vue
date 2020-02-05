@@ -22,7 +22,7 @@
                 </b-button>
                 <br>
               </center>
-                <b-link @click="flagShow = 2">ลืมรหัสผ่าน?</b-link>
+                <!-- <b-link @click="flagShow = 2">ลืมรหัสผ่าน?</b-link> -->
             </b-col> 
         </b-card>
         <div v-else-if="flagShow == 2" >

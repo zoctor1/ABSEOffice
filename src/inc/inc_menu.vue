@@ -21,10 +21,10 @@
     <!-- <vs-navbar-item index="2" >
       <a style="cursor: pointer;" @click="toUrl('EmpOT')"><font size=3 color="#FEFCFF">(User) ข้อมูลการทำงานนอกเวลา(OT)</font></a>
     </vs-navbar-item> -->
-    <vs-navbar-item index="2">
+    <vs-navbar-item index="2" v-if="userIn.header_flag == 1">
       <a style="cursor: pointer;" @click="toUrl('HeaderApprove'), indexActive = 2"><font style="font-size: 20px;" color="#FEFCFF">(Header) การอนุมัติลางาน</font></a>
     </vs-navbar-item>
-    <vs-navbar-item index="3">
+    <vs-navbar-item index="3" v-if="userIn.dept_id == 3 && userIn.header_flag == 0">
       <a style="cursor: pointer;" @click="toUrl('HrLeave'), indexActive = 3"><font style="font-size: 20px;" color="#FEFCFF">(Hr) ข้อมูลการลางานของพนักงาน</font></a>
     </vs-navbar-item>
     <!-- <vs-navbar-item index="5" style="margin-right:10px;">
@@ -108,6 +108,7 @@ export default {
   },
   computed: {},
   beforeMount() {
+    this.userIn = JSON.parse(localStorage.getItem("user"));
     if (this.$route.name == "EmpLeave") {
       this.indexActive = 1;
     } else if (this.$route.name == "HeaderApprove") {
@@ -119,7 +120,6 @@ export default {
     }
   },
   mounted() {
-    this.userIn = JSON.parse(localStorage.getItem("user"));
   },
   methods: {
     show () {

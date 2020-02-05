@@ -458,7 +458,7 @@ export default {
         }, 1000);
       },
     getDataAsync: async function(){
-      this.isBusy = true;
+        this.isBusy = true;
         var user = JSON.parse(localStorage.getItem("user"));
         await authService.getUserLeave(user.uuid).then(response => {
           if (response.data.length > 0) {

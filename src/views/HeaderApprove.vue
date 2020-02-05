@@ -164,13 +164,13 @@
                         <b-badge variant="danger">ไม่ผ่าน</b-badge>
                       </div>
                       <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null && data.item.emp_leave_id != null">
-                        <h6>รอการอนุมัติจาก Head เเละ Hr</h6>
+                         <b-badge variant="warning">รอการอนุมัติจาก Head เเละ Hr</b-badge>
                       </div>
                       <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_date == null && data.item.emp_leave_id != null">
-                        <h6>รอการอนุมัติจาก Head</h6>
+                        <b-badge variant="warning">รอการอนุมัติจาก Head</b-badge>
                       </div>
                       <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_date == null && data.item.emp_leave_id != null">
-                        <h6>รอการอนุมัติจาก Hr</h6>
+                        <b-badge variant="warning">รอการอนุมัติจาก Hr</b-badge>
                       </div>
                   </template>
                 </b-table>
@@ -296,7 +296,7 @@ export default {
         { key: 'no', label: 'ลำดับ', class: 'text-center no',sortable: true },
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date',sortable: true },
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name',sortable: true },
-        { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name',sortable: true },
+        // { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name',sortable: true },
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name',sortable: true },
         { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center leave_reason_name',sortable: true },
         // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
@@ -472,7 +472,8 @@ export default {
       },
       getHeaderApprove: async function() {
       this.isBusy = true;
-      await authService.getDataHeader({}).then(response => {
+      var user = JSON.parse(localStorage.getItem("user"));
+      await authService.getDataHeader(user.dept_id).then(response => {
         console.log(response.data)
         if (response.data != null && response.data.length > 0) {
           this.selectedFilter = null;

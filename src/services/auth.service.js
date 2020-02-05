@@ -10,33 +10,6 @@ axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.get['Content-Type'] = 'application/json';
 axios.defaults.crossDomain = true;
 
-export function getEmployee() {
-    return new Promise((resolve, reject) => {
-        axios.get(`${API_URL}/employee`, {}, { params: {} }).then(
-            response => {
-                return resolve(new ResponseWrapper(response, response.data))
-            })
-    }).catch(error => reject(new ErrorWrapper(error)))
-}
-
-export function getleaveType() {
-    return new Promise((resolve, reject) => {
-        axios.get(`${API_URL}/leave-info`, {}, { params: {} }).then(
-            response => {
-                return resolve(new ResponseWrapper(response, response.data))
-            })
-    }).catch(error => reject(new ErrorWrapper(error)))
-}
-
-export function getEmpLeave() {
-    return new Promise((resolve, reject) => {
-        axios.get(`${API_URL}/EmpLeave`, {}, { params: {} }).then(
-            response => {
-                return resolve(new ResponseWrapper(response, response.data))
-            })
-    }).catch(error => reject(new ErrorWrapper(error)))
-}
-
 export function getDataHR() {
     return new Promise((resolve, reject) => {
         axios.get(`${API_URL}/dataForHR`, {}, { params: {} }).then(
@@ -46,19 +19,12 @@ export function getDataHR() {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function getDataHeader() {
+export function getDataHeader(deptId) {
+    console.log(deptId);
     return new Promise((resolve, reject) => {
-        axios.get(`${API_URL}/dataForHeader`, {}, { params: {} }).then(
+        axios.post(`${API_URL}/dataForHeader`, {}, { headers: {datahd : deptId} }).then(
             response => {
-                return resolve(new ResponseWrapper(response, response.data))
-            })
-    }).catch(error => reject(new ErrorWrapper(error)))
-}
-
-export function getLeaveByUser(id) {
-    return new Promise((resolve, reject) => {
-        axios.get(`${API_URL}/admin/leaveuser/${id}`, {}, { params: {} }).then(
-            response => {
+                console.log(response.data)
                 return resolve(new ResponseWrapper(response, response.data))
             })
     }).catch(error => reject(new ErrorWrapper(error)))
@@ -133,26 +99,6 @@ export function postApproveHead(approveH) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-// export function notApproveHead(notApproveH) {
-//     console.log(notApproveH);
-//     return new Promise((resolve, reject) => {
-//         axios.post(`${API_URL}/NotApproveHead`, {}, { headers: {cancelHead : notApproveH} }).then(
-//             response => {
-//                 return resolve(new ResponseWrapper(response, response.data))
-//             })
-//     }).catch(error => reject(new ErrorWrapper(error)))
-// }
-
-// export function notApproveHR(notApproveHr) {
-//     console.log(notApproveHr);
-//     return new Promise((resolve, reject) => {
-//         axios.post(`${API_URL}/NotApproveHR`, {}, { headers: {cancelHR : notApproveHr} }).then(
-//             response => {
-//                 return resolve(new ResponseWrapper(response, response.data))
-//             })
-//     }).catch(error => reject(new ErrorWrapper(error)))
-// }
-
 export function notApproveHead(notApproveH, commentHeader) {
     if (commentHeader == undefined) {
         commentHeader = "";
@@ -177,11 +123,9 @@ export function notApproveHR(notApproveHr,commentHR) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function getEvent(eventC) {
-    console.log("//////////////////");
-    console.log(eventC);
+export function getEvent(empId, deptId, header) {
     return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/CalendarEvent`, {}, { headers: {event : eventC} }).then(
+        axios.post(`${API_URL}/CalendarEvent`, {}, { params: {eventEmp : empId, eventDept : deptId, eventHeader : header} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })

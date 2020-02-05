@@ -141,13 +141,13 @@
                         <b-badge variant="danger">ไม่ผ่าน</b-badge>
                       </div>
                       <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_date == null && data.item.emp_leave_id != null">
-                        <h6>รอการอนุมัติจาก Head เเละ Hr</h6>
+                         <b-badge variant="warning">รอการอนุมัติจาก Head เเละ Hr</b-badge>
                       </div>
                       <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_date == null && data.item.emp_leave_id != null">
-                        <h6>รอการอนุมัติจาก Head</h6>
+                        <b-badge variant="warning">รอการอนุมัติจาก Head</b-badge>
                       </div>
                       <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_date == null && data.item.emp_leave_id != null">
-                        <h6>รอการอนุมัติจาก Hr</h6>
+                        <b-badge variant="warning">รอการอนุมัติจาก Hr</b-badge>
                       </div>
                   </template>
                 </b-table>
