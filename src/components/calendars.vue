@@ -6,7 +6,6 @@
                 style="width:250px; margin:10px 0 10px 0px"
                 v-model="selectCalendar" 
                 :options="optionCalendar"
-                
             >
             </b-form-select>
         </div>
@@ -98,4 +97,7 @@
     #calendarMain .card-header h2{
         font-weight: bold !important;
     }
+   #calendarMain .modal-content {
+       margin-top: 60%;
+   }
 </style>
