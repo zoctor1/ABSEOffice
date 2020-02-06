@@ -94,7 +94,7 @@
     #calendarMain .close {
         display: none;
     }
-    #calendarMain .card-header h2{
+    #calendarMain .card-header h2 {
         font-weight: bold !important;
     }
    #calendarMain .modal-content {
