@@ -1,15 +1,22 @@
 <template>
     <div>
-        <div style="text-align:right; margin-right:5px">
-            <b-form-select 
-                class="selectCalendar"
-                style="width:250px; margin:10px 0 10px 0px"
-                v-model="selectCalendar" 
-                :options="optionCalendar"
-                
+        <div align="right">
+            <b-form-checkbox
+                id="checkbox-1"
+                v-model="checkEvent"
+                name="checkbox-1"
+                :value="true"
+                :unchecked-value="false"
+                @input="checkEventCalendar()"
+                v-if="user.header_flag == 1 || this.user.dept_id == 3"
             >
-            </b-form-select>
+                ดูข้อมูลการลาของพนักงานในเเผนกทั้งหมด
+            </b-form-checkbox>
+            <div v-else>
+                <br>
+            </div>
         </div>
+        
         <calendar
             id ="calendarMain"
             style="margin: 0px -10px 10px -10px;background: #f8f8f8;"
@@ -28,12 +35,8 @@
         name: 'app',
         data() {
             return {
-                selectCalendar: null,
-                optionCalendar: [
-                    { value: null ,text: 'เลือกปฏิทินข้อมูลการลางาน', disabled: true},
-                    { value: 1 ,text: 'ข้อมูลส่วนตัว' },
-                    { value: 2 ,text: 'ข้อมูลการลางานของพนักงาน' }
-                ],
+                checkEvent: false,
+                user:{},
                 events: []
             }
         },
@@ -41,14 +44,18 @@
             Calendar
         },
         methods: {
+            checkEventCalendar(){
+                this.calendarEvent()
+            },
             calendarEvent: async function(){
                 let me = this;
                 var user = JSON.parse(localStorage.getItem("user"));
                 var dataTemp = [];
                 var count = 0;
+                var choice = this.checkEvent;
                 var startDate = new Date();
                 var stopDate = new Date();
-                await authService.getEvent(user.uuid, user.dept_id, user.header_flag).then(response => {
+                await authService.getEvent(user.uuid, user.dept_id, user.header_flag, choice).then(response => {
                     console.log(response.data);
                     response.data.forEach( function(obj) {
                         if(obj.head_approve_date != null && obj.hr_approve_date != null && obj.cancel_date == null){
@@ -75,6 +82,7 @@
         },
         mounted() {
             this.calendarEvent();
+            this.user = JSON.parse(localStorage.getItem("user"));
         }
     }
 </script>

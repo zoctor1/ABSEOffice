@@ -123,9 +123,9 @@ export function notApproveHR(notApproveHr,commentHR) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function getEvent(empId, deptId, header) {
+export function getEvent(empId, deptId, header, choice) {
     return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/CalendarEvent`, {}, { params: {eventEmp : empId, eventDept : deptId, eventHeader : header} }).then(
+        axios.post(`${API_URL}/CalendarEvent`, {}, { params: {eventEmp : empId, eventDept : deptId, eventHeader : header, eventChoice : choice} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })
