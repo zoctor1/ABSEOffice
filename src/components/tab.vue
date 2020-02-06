@@ -46,7 +46,7 @@
           </b-tr>
           <b-tr >
             <b-th>ประเภท</b-th>
-            <b-th><center>สิทธิ<br>(วัน/ชั่วโมง)</center></b-th>
+            <b-th><center>สิทธิ<br>(วัน)</center></b-th>
             <b-th><center>ใช้ไป<br>(วัน/ชั่วโมง)</center></b-th>
             <b-th><center>คงเหลือ<br>(วัน/ชั่วโมง)</center></b-th>
           </b-tr>
