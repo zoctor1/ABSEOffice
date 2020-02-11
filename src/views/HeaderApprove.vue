@@ -55,7 +55,7 @@
                   style="height:42px; margin-right:10px"
                 > 
                 <img 
-                  src="../assets/Details.png" 
+                  src="../assets/Details3.png" 
                   width="25" 
                   height="25"
                 >
@@ -68,7 +68,7 @@
                   style="height:42px;" 
                 >
                   <img 
-                    src="../assets/clean_icon.png"
+                    src="../assets/clean_icon3.png"
                     width="30"
                     height="30"
                   > 
@@ -90,8 +90,8 @@
                   responsive
                   :busy="isBusy"
                   striped hover 
-                  :items="items"
-                  :fields="fields"
+                  :items="itemHeader"
+                  :fields="fieldHeader"
                   :filter="filter"
                   :current-page="currentPage"
                   :per-page="perPage"
@@ -115,6 +115,12 @@
                       <span style="font-size: 18px;">{{ data.label }}</span>
                   </template>
                   
+                  <template v-slot:cell(full_Name)="data">
+                    <div style="cursor: pointer" @click="dataModal = data.item, show('popupDataUser')">
+                      {{data.item.full_Name}}
+                    </div>
+                  </template>
+
                   <template v-slot:cell(leave_remark)="data">
                     <div style="cursor: pointer" @click="dataModal = data.item, show('remarkModal')">
                         <img src="../assets/Details.png" width="33" height="33">
@@ -250,7 +256,7 @@
       </b-col>
     </div>
     <br>
-    
+
     <modal 
         name="remarkModal" 
         :clickToClose="false"
@@ -299,8 +305,42 @@
         </b-row>  
 
       </div>
-      <b-button block variant="secondary" style="font-size: 16px" @click="hide()">ปิด</b-button>
+      <b-button block variant="secondary" style="font-size: 16px" @click="hide('remarkModal')">ปิด</b-button>
     </modal>
+
+
+    <modal 
+      name="popupDataUser" 
+      :clickToClose="false"
+      height="auto"
+      width="390px"
+    >
+      <p style="background-color: #f1f1f1; font-size: 20px; text-align: center; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
+        ข้อมูลการลา 
+      </p>
+        <table width=100% style="margin-top:10px; border: 1px solid black;">
+            <div>
+              <!-- <b-table
+                responsive
+                striped hover 
+                :items="items"
+                :fields="fields"
+                :current-page="currentPage"
+                :per-page="perPage"
+                :sort-by.sync="sortBy"
+                :sort-desc.sync="sortDesc"
+                :sort-direction="sortDirection"
+                @filtered="onFiltered" 
+                show-empty
+              >
+              </b-table> -->
+            </div>
+        </table>
+      <b-button block variant="secondary" style="font-size: 16px" @click="hide('popupDataUser')">ปิด</b-button>
+    </modal>
+
+
+
   </div>
 </template>
 
@@ -326,7 +366,6 @@ export default {
   data() {
     return {
       tempData: [],
-      items: [],
       optionStat: [
         { value: null ,text: "--เลือกสถานะ--"},
         { value: 1 ,text: "ผ่าน"},
@@ -350,7 +389,8 @@ export default {
         { value: 5 ,text: "ลาบวช"},
         { value: 6 ,text: "ลาไม่รับค่าจ้าง"}
       ],
-      fields: [
+      itemHeader: [],
+      fieldHeader: [
         { key: 'no', label: 'ลำดับ', class: 'text-center no',sortable: true },
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date',sortable: true },
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name',sortable: true },
@@ -392,19 +432,19 @@ export default {
   },
   computed: {
     sortOptions() {
-      return this.fields
+      return this.fieldHeader
         .filter(f => f.sortable)
         .map(f => {
           return { text: f.label, value: f.key }
         })
     }
   },
-  // created(){
-  //   window.addEventListener("resize", this.handleResize);
-  // },
-  // destroyed(){
-  //   window.removeEventListener('resize', this.handleResize);
-  // },
+  created(){
+    window.addEventListener("resize", this.handleResize);
+  },
+  destroyed(){
+    window.removeEventListener('resize', this.handleResize);
+  },
   mounted() {
     this.getHeaderApprove();
     this.selectType = null;
@@ -419,11 +459,11 @@ export default {
         this.selectType = null;
         this.getHeaderApprove();
       },
-      show () {
-        this.$modal.show('remarkModal');
+      show (name) {
+        this.$modal.show(name);
       },
-      hide () {
-        this.$modal.hide('remarkModal');
+      hide (name) {
+        this.$modal.hide(name);
       },
       filterData() {
         var ths = this;
@@ -484,8 +524,8 @@ export default {
               return v.dept_id == ths.selectDep;
             })
           }
-          this.items = allData;
-          this.totalRows = this.items.length
+          this.itemHeader = allData;
+          this.totalRows = this.itemHeader.length
         }
       },
       showMsgBoxTwo(id) {
@@ -554,7 +594,7 @@ export default {
             } 
           console.log(response.data)
           this.tempData = response.data;
-          this.items = response.data;
+          this.itemHeader = response.data;
           this.isBusy = false;
         } else {
             console.log("else");
@@ -563,13 +603,13 @@ export default {
               console.log("isbusy");
           }
       });
-      this.totalRows = this.items.length
+      this.totalRows = this.itemHeader.length
     },
     handleResize: function() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
       if(this.window.width <= 750){
-        this.fields = [
+        this.fieldHeader = [
           { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
           { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
           { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
@@ -581,7 +621,7 @@ export default {
         ]
       }
       else{
-        this.fields = [
+        this.fieldHeader = [
           { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
           { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center',sortable: true },
           { key: 'full_Name', label: 'ชื่อ', class: 'text-center',sortable: true },
@@ -607,7 +647,7 @@ export default {
         this.infoModal.title = ''
         this.infoModal.content = ''
       },
-      onFiltered(filteredItems) {
+      onFiltered(filteredItem) {
         this.totalRows = filteredItems.length
         this.currentPage = 1
       },

@@ -66,7 +66,7 @@
                   style="height:42px; margin-right:10px"
                 > 
                 <img 
-                  src="../assets/Details.png" 
+                  src="../assets/Details3.png" 
                   width="25" 
                   height="25"
                 >
@@ -79,7 +79,7 @@
                   style="height:42px;" 
                 >
                   <img 
-                    src="../assets/clean_icon.png"
+                    src="../assets/clean_icon3.png"
                     width="30"
                     height="30"
                   > 
@@ -630,13 +630,13 @@ export default {
       text-align:right;
       margin-left:-10px;
     }
-
   @media (max-width: 1000px) {
     .buttonAddLeave {
       text-align: left !important;
       margin-left:0px;
     }
   }
+
   #parent2 {
     position: Sticky ;
     top: 8%;

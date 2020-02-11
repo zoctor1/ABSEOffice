@@ -1,5 +1,6 @@
 <template>
   <div id="HrLeave" lg="12" sm="12" xs="12">
+    {{window}}
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
@@ -7,7 +8,7 @@
 
           <div style="text-align:left;">
             <b-row style="margin:10px 0px 10px 10px; width:60%">
-              <b-col>
+              <b-col md="12" lg="4">
                 <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
                 <datetime 
                   type="date" 
@@ -18,7 +19,7 @@
                   >
                 </datetime>
               </b-col>
-              <b-col>
+              <b-col md="12" lg="4">
                 <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
                 <datetime 
                   type="date"
@@ -29,7 +30,7 @@
                   >
                 </datetime>
               </b-col>
-              <b-col>
+              <b-col md="12" lg="4">
                 <p style="cursor:default;"><b>สถานะ :</b></p>
                 <b-form-select
                   v-model="selectStat"
@@ -40,7 +41,7 @@
               </b-col>
             </b-row>
             <b-row style="margin:10px 0px 10px 10px; width:60%">
-              <b-col>
+              <b-col md="6" lg="4">
                 <p style="cursor:default;"><b>ประเภทการลา :</b></p>
                 <b-form-select
                   v-model="selectType"
@@ -49,7 +50,7 @@
                 >
                 </b-form-select>
               </b-col>
-              <b-col>
+              <b-col md="6" lg="4">
                 <p style="cursor:default;"><b>แผนก :</b></p>
                 <b-form-select
                   v-model="selectDep"
@@ -58,14 +59,14 @@
                 >
                 </b-form-select>
               </b-col>
-              <b-col style="padding-top:24px">
+              <b-col md="12" lg="4" style="padding-top:24px">
                 <b-button
                   variant="outline-primary"
                   @click="filterData()"
-                  style="height:42px; margin-right:10px"
+                  style="height:42px; margin:0px 10px 10px 0px"
                 > 
                 <img 
-                  src="../assets/Details.png" 
+                  src="../assets/Details3.png" 
                   width="25" 
                   height="25"
                 >
@@ -75,10 +76,10 @@
                 <b-button
                   variant="outline-danger"
                   @click="defaultValue()"
-                  style="height:42px;" 
+                  style="height:42px; margin:0px 10px 10px 0px" 
                 >
                   <img 
-                    src="../assets/clean_icon.png"
+                    src="../assets/clean_icon3.png"
                     width="30"
                     height="30"
                   > 
