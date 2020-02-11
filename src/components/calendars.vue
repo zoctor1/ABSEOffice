@@ -138,4 +138,7 @@
     #calendarMain .btn-warning{
         display: none;
     }
+    #calendarMain .modal-content {
+       margin-top: 60%;
+   }
 </style>

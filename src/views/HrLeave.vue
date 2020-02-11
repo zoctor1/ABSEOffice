@@ -6,7 +6,7 @@
           <h2 align="left" style="font-weight: bold;">ข้อมูลการลาของพนักงาน</h2>
 
           <div style="text-align:left;">
-            <b-row style="margin-top:10px; width:60%">
+            <b-row style="margin:10px 0px 10px 10px; width:60%">
               <b-col>
                 <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
                 <datetime 
@@ -39,7 +39,7 @@
                 </b-form-select>
               </b-col>
             </b-row>
-            <b-row style="margin-top:10px; width:60%">
+            <b-row style="margin:10px 0px 10px 10px; width:60%">
               <b-col>
                 <p style="cursor:default;"><b>ประเภทการลา :</b></p>
                 <b-form-select
