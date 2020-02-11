@@ -9,7 +9,6 @@ import EmpLeave from "./views/EmpLeave.vue";
 import EmpOT from "./views/EmpOT.vue";
 import HrLeave from "./views/HrLeave.vue";
 import HrOT from "./views/HrOT.vue";
-import employee from "./views/Emp_info.vue"
 
 // ============= Views ============= //
 
@@ -33,6 +32,5 @@ export default new Router({
     { path: "/EmpOT", name: "EmpOT", component: EmpOT },
     { path: "/HrLeave", name: "HrLeave", component: HrLeave },
     { path: "/HrOT", name: "HrOT", component: HrOT },
-    { path: "/employee", name: "employee", component: employee },
   ]
 });

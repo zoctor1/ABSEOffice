@@ -181,7 +181,7 @@
             <center>
               <vs-button
                 style="margin-bottom:25px; position: static;"
-                @click="insertData()"
+                @click="confirmMessage()"
                 color="primary"
                 type="filled"
               >
@@ -292,6 +292,21 @@ export default {
     Settings.defaultLocale = 'th'
   },
   methods: {
+    confirmMessage () {
+      var ths = this;
+      Swal.fire({
+        title: 'ต้องการยืนยันการอนุมัติใช่หรือไม่?',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'ใช่',
+        cancelButtonText: 'ไม่'
+      }).then((result) => {
+          if (result.value) {
+            ths.insertData();
+          }
+        })
+    },
     changeSelectType() {
       if (this.selectType == 2 || this.selectType == 3) {
         var cDate = new Date().setDate(new Date().getDate() + 3);
@@ -394,20 +409,26 @@ export default {
             authService.addImage(fileData).then(response => {
               console.log(response.data);
             });
+            Swal.fire (
+              'การส่งอนุมัติเสร็จสิ้น',
+              ' ',
+              'success'
+            )
           } else {
             setTimeout(() => {
               this.isLoading = false}, 500);
               console.log("aaa");
             }
         });
-      } else {
-        setTimeout(() => {
-          this.isLoading = false;
-          this.$swal.fire({
-            heightAuto: false,
-            title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
-          })},250);
-          console.log("else")
+      }
+        else {
+          setTimeout(() => {
+            this.isLoading = false;
+            this.$swal.fire({
+              heightAuto: false,
+              title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
+            })},250);
+            console.log("else")
         }
     }
   },

@@ -3,6 +3,7 @@
         <div align="right">
             <b-form-checkbox
                 id="checkbox-1"
+                style="margin-right:6px"
                 v-model="checkEvent"
                 name="checkbox-1"
                 :value="true"
@@ -10,14 +11,13 @@
                 @input="checkEventCalendar()"
                 v-if="user.header_flag == 1 || this.user.dept_id == 3"
             >
-                ดูข้อมูลการลาของพนักงานในเเผนกทั้งหมด
+                ดูข้อมูลการลาของพนักงาน
             </b-form-checkbox>
             <div v-else>
                 <br>
             </div>
         </div>
         
-
         <calendar
             id ="calendarMain"
             style="margin: 0px -10px 10px -10px;background: #f8f8f8;"
@@ -121,7 +121,7 @@
         display: none;    
     }
     #calendarMain .title {
-        text-align: right;
+        margin-left: 50%;
     }
     #calendarMain .card-header {
         font-weight: bold;
