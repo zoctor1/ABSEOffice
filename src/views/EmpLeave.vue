@@ -2,6 +2,8 @@
   <div id="EmpLeave" lg="12" sm="12" xs="12">
     <!-- {{window}} -->
     <popupLeave v-bind:showPop="showPop" />
+    <!-- <popupLeaveEdit v-bind:defaultShow="defaultShow" /> -->
+    <!-- {{window}} -->
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
@@ -224,6 +226,17 @@
                   </button>
                 </div>
               </template>
+
+              <!-- <template v-slot:cell(edit)>
+                <vs-button
+                    @click="editLeavePopup()"
+                    color="warning"
+                    type="filled"
+                    style="width:110px;height:40px; cursor: pointer"
+                >
+                   เเก้ไข/ยกเลิก
+                </vs-button>
+              </template> -->
               </b-table>
             </div>
           </table>
@@ -359,6 +372,7 @@ import Vue from 'vue'
 import * as mJS from "../assets/js/mainJS"
 import * as authService from '@/services/auth.service';
 import popupLeave from "@/components/popupLeave.vue"
+// import popupLeaveEdit from "@/components/popupLeaveEdit.vue"
 import { Datetime } from 'vue-datetime' // npm install --save luxon vue-datetime weekstart
 import 'vue-datetime/dist/vue-datetime.css'
 import { Settings } from 'luxon'
@@ -373,6 +387,7 @@ export default {
   name: "EmpLeave",
   components: {
     popupLeave,
+    // popupLeaveEdit,
     datetime: Datetime
   },
   props: {},
@@ -410,7 +425,8 @@ export default {
         { key: 'leave_time', label: 'ช่วงเวลา', class: 'text-center leave_time' },
         // { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
         // { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
-        { key: 'status', label: 'สถานะ', class: 'text-center status' },
+        { key: 'status', label: 'สถานะ', class: 'text-center status',sortable: true },
+        // { key: 'edit', label: 'เเก้ไข/ยกเลิก', class: 'text-center edit'},
         { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
       ],
       dataModal:{},
@@ -425,6 +441,7 @@ export default {
       sortDesc: false,
       sortDirection: 'asc',
       showPop:false,
+      defaultShow:false,
       valDateStart: '',
       valDateStop: '',
       selectType: '',
@@ -529,12 +546,19 @@ export default {
       this.totalRows = this.items.length
     },
     showLeavePopup: function() {
-        var ths = this;
-        ths.showPop = true;
-        setTimeout(function() {
-          ths.showPop = false;
-        }, 1000);
-      },
+      var ths = this;
+      ths.showPop = true;
+      setTimeout(function() {
+        ths.showPop = false;
+      }, 1000);
+    },
+    // editLeavePopup: function() {
+    //   var ths = this;
+    //   ths.defaultShow = true;
+    //   setTimeout(function() {
+    //     ths.defaultShow = false;
+    //   }, 1000);
+    // },
     getDataAsync: async function(){
         this.isBusy = true;
         var user = JSON.parse(localStorage.getItem("user"));
@@ -583,7 +607,8 @@ export default {
           { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },
           // { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
           // { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
-          { key: 'status', label: 'สถานะ', class: 'text-center status' },
+          { key: 'status', label: 'สถานะ', class: 'text-center status',sortable: true },
+          // { key: 'edit', label: 'เเก้ไข/ยกเลิก', class: 'text-center edit'},
           { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
         ]
       }
