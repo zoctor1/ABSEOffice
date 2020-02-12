@@ -165,6 +165,11 @@
                           <font color="#ffffff">ไม่อนุมัติ</font>
                       </button>
                     </div>
+                    <div v-if="data.item.cancel_date != null">
+                      <button style="width:115px;height:28px; cursor: default; border: 2px solid rgba(241, 130, 141,1); border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
+                          <font color="#ffffff">ถูกยกเลิก</font>
+                      </button>
+                    </div>
                     <div v-else-if="data.item.cancel_approve_date == null && data.item.head_approve_date != null">
                       <button style="width:135px;height:28px; cursor: default; border: 2px solid rgba(41, 241, 195, 1); border-radius: 4px; background-color: #28a745;"> 
                         <font color="#00000" style="font-size: 13px" >{{data.item.hr_approve_date}}</font>
@@ -186,6 +191,12 @@
                     <div v-else-if="data.item.cancel_approve_date != null">
                       <button style="width:115px;height:28px; cursor: default; border: 2px solid rgba(241, 130, 141,1); border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
                           <font color="#ffffff">ไม่อนุมัติ</font>
+                      </button>
+                    </div>
+                    <div v-else-if="data.item.cancel_date != null">
+                      <b-badge variant="warning"></b-badge>
+                        <button style="width:135px;height:28px; cursor: default; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+                        <font color="#00000" style="font-size: 13px">ถูกยกเลิก</font>
                       </button>
                     </div>
                     <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_approve_date == null && data.item.emp_leave_id != null">
@@ -298,6 +309,7 @@
         <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
           <b-col>
             <p style="font-size: 18px;"><b>วันที่หัวหน้าอนุมัติ :</b></p>
+            <p v-if="dataModal.cancel_date != null"> - </p>
             <p v-if="dataModal.head_approve_date != null && dataModal.head_remark == null" style="font-size: 18px;">
               {{ dataModal.head_approve_date }} 
             </p>
@@ -307,18 +319,19 @@
             <p v-else-if="dataModal.cancel_approve_date != null && dataModal.head_remark != null">
               ไม่อนุมัติ ({{ dataModal.head_remark }})
             </p>
-            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
           </b-col>  
           <b-col>
             <p style="font-size: 18px;"><b>วันที่ฝ่ายบุคคลรับทราบ :</b></p>
+            <p v-if="dataModal.cancel_date != null"> - </p>
             <p v-if="dataModal.hr_approve_date != null && dataModal.hr_remark == null" style="font-size: 18px;">
               {{ dataModal.hr_approve_date }} 
             </p>
@@ -328,13 +341,13 @@
             <p v-else-if="dataModal.cancel_approve_date != null && dataModal.hr_remark != null">
               ไม่อนุมัติ ({{ dataModal.hr_remark }})
             </p>
-            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
           </b-col>  

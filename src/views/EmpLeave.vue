@@ -332,6 +332,7 @@
         <b-row style=" margin-left:0px;">
           <b-col>
             <p style="font-size: 18px;"><b>วันที่หัวหน้าอนุมัติ :</b></p>
+            <p v-if="dataModal.cancel_date != null"> - </p>
             <p v-if="dataModal.head_approve_date != null && dataModal.head_remark == null" style="font-size: 18px;">
               {{ dataModal.head_approve_date }} 
             </p>
@@ -341,18 +342,19 @@
             <p v-else-if="dataModal.cancel_approve_date != null  && dataModal.head_remark == null">
               ไม่อนุมัติ 
             </p>
-            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
           </b-col>  
           <b-col>
             <p style="font-size: 18px;"><b>วันที่ฝ่ายบุคคลรับทราบ :</b></p>
+            <p v-if="dataModal.cancel_date != null"> - </p>
             <p v-if="dataModal.hr_approve_date != null && dataModal.hr_remark == null" style="font-size: 18px;">
               {{ dataModal.hr_approve_date }} 
             </p>
@@ -362,13 +364,13 @@
             <p v-else-if="dataModal.cancel_approve_date != null && dataModal.hr_remark != null">
               ไม่อนุมัติ ({{ dataModal.hr_remark }})
             </p>
-            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
           </b-col>  
@@ -417,7 +419,6 @@ export default {
   name: "EmpLeave",
   components: {
     popupLeave,
-    // popupLeaveEdit,
     datetime: Datetime
   },
   props: {},
@@ -613,17 +614,16 @@ export default {
         ths.showPop = false;
       }, 1000);
     },
-    editLeaveData: function() {
+    editLeaveData: function(empLeaveId) {
       var ths = this;
       ths.showPop = true;
-      ths.selectType = data.item.leave_reason_id;
-      ths.selected = data.item.leave_type_id;
-      ths.sel1 = data.item.leave_start_date;
-      ths.sel2 = data.item.leave_stop_date;
-      ths.$v.form.description.$model = data.item.leave_remark;
+      // ths.selectType = data.item.leave_reason_id;
+      // ths.selected = data.item.leave_type_id;
+      // ths.sel1 = data.item.leave_start_date;
+      // ths.sel2 = data.item.leave_stop_date;
+      // ths.$v.form.description.$model = data.item.leave_remark;
       setTimeout(function() {
         ths.showPop = false;
-        
       }, 1000);
     },
     getDataAsync: async function(){
