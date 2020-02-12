@@ -216,6 +216,12 @@
                       <font color="#ffffff">ไม่อนุมัติ</font>
                   </button>
                 </div>
+                <div v-else-if="data.item.cancel_date != null">
+                  <b-badge variant="warning"></b-badge>
+                  <button style="width:135px;height:28px; cursor: default; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+                      <font color="#00000" style="font-size: 13px">ถูกยกเลิก</font>
+                  </button>
+                </div>
                 <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_approve_date == null && data.item.emp_leave_id != null">
                   <b-badge variant="warning"></b-badge>
                   <button style="width:135px;height:28px; cursor: default; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
@@ -369,16 +375,16 @@
         </b-row>  
 
         <b-row>
-          <button v-if="dataModal.cancel_approve_date == null && dataModal.head_approve_date == null && dataModal.hr_approve_date == null" @click="cancelBtn()" style="width:110px;height:28px; cursor: pointer; margin-left:145px; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+          <button v-if="dataModal.cancel_approve_date == null && dataModal.head_approve_date == null && dataModal.hr_approve_date == null && dataModal.cancel_date == null" @click="cancelBtn(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; margin-left:145px; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
             <font color="#00000" style="font-size: 13px">ยกเลิก</font>
           </button>
-          <button v-else-if="dataModal.cancel_approve_date == null && dataModal.head_approve_date == null" @click="cancelBtn()" style="width:110px;height:28px; cursor: pointer; margin-left:145px; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+          <button v-else-if="dataModal.cancel_approve_date == null && dataModal.head_approve_date == null && dataModal.cancel_date == null" @click="cancelBtn(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; margin-left:145px; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
             <font color="#00000" style="font-size: 13px">ยกเลิก</font>
           </button>
-          <button v-else-if="dataModal.cancel_approve_date == null && dataModal.hr_approve_date == null" @click="cancelBtn()" style="width:110px;height:28px; cursor: pointer; margin-left:145px; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+          <button v-else-if="dataModal.cancel_approve_date == null && dataModal.hr_approve_date == null && dataModal.cancel_date == null" @click="cancelBtn(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; margin-left:145px; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
             <font color="#00000" style="font-size: 13px">ยกเลิก</font>
           </button>
-          <button v-else-if="dataModal.cancel_approve_date != null" style="width:110px;height:28px; cursor: pointer; margin-left:145px; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+          <button v-else-if="dataModal.cancel_approve_date != null && dataModal.cancel_date == null" @click="editLeaveData(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; margin-left:145px; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
             <font color="#00000" style="font-size: 13px">เเก้ไข</font>
           </button>
         </b-row>
@@ -504,8 +510,27 @@ export default {
     this.selectStat = null;
   },
   methods: {
-    cancelBtn(){
-      
+    cancelBtn(cancel){
+      this.$bvModal.msgBoxConfirm('คุณต้องการยกเลิกการลานี้ใช่หรือไม่?', {
+          headerClass: 'header-1',
+          title: 'ยกเลิกการลา',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'ใช่',
+          cancelTitle: 'ไม่',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        }).then(value => {
+          console.log(value)
+          if (value == true) {
+            authService.postcancelCheck(cancel).then(response => {
+              console.log(response.data);
+              this.getDataAsync();
+            });
+          } 
+      })
     },
     defaultValue() {
       this.valDateStart = "";
@@ -584,6 +609,18 @@ export default {
     showLeavePopup: function() {
       var ths = this;
       ths.showPop = true;
+      setTimeout(function() {
+        ths.showPop = false;
+      }, 1000);
+    },
+    editLeaveData: function() {
+      var ths = this;
+      ths.showPop = true;
+      // ths.selectType = data.item.leave_reason_id;
+      // ths.selected = data.item.leave_type_id;
+      // ths.sel1 = data.item.leave_start_date;
+      // ths.sel2 = data.item.leave_stop_date;
+      // ths.$v.form.description.$model = data.item.leave_remark;
       setTimeout(function() {
         ths.showPop = false;
       }, 1000);
