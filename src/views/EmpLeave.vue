@@ -1,6 +1,5 @@
 <template>
   <div id="EmpLeave" lg="12" sm="12" xs="12">
-    <!-- {{window}} -->
     <popupLeave v-bind:showPop="showPop" />
     <!-- <popupLeaveEdit v-bind:defaultShow="defaultShow" /> -->
     <!-- {{window}} -->
@@ -66,6 +65,11 @@
                   @click="filterData()"
                   style="height:42px; margin-right:10px"
                 > 
+                <img 
+                  src="../assets/Details3.png" 
+                  width="25" 
+                  height="25"
+                >
                   ค้นหา
                 </b-button>
                 
@@ -74,6 +78,11 @@
                   @click="defaultValue()"
                   style="height:42px;" 
                 >
+                  <img 
+                    src="../assets/clean_icon3.png"
+                    width="30"
+                    height="30"
+                  > 
                     เคลียร์ข้อมูล
                 </b-button>
               </b-col>
@@ -288,83 +297,59 @@
       </div>
       <br>
 
-    <modal 
+      <modal 
         name="remarkModal" 
         :clickToClose="false"
         height="auto"
-        width="400px"
+        width="390px"
       >
       <p style="background-color: #f1f1f1; font-size: 20px; text-align: center; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
         รายละเอียดการลา 
       </p>
-      <div style="padding-bottom:15px;">
-        
-        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-          <b-col>
-            <p><b style="font-size: 16px;">ประเภทการลา :</b></p>
-          </b-col>
-          <b-col>
-            <p style="font-size: 16px;">{{dataModal.leave_reason_name}}</p>
-          </b-col>
+      <div style="padding:15px 15px 20px 10px">
+        <b-row style=" margin-left:14px;">
+          <p style="font-size: 18px;"><b>ประเภทการลา :</b></p>
+          <p style="font-size: 18px;">&nbsp;{{dataModal.leave_reason_name}}</p>
         </b-row>
 
-        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+        <b-row style=" margin-left:0px;">
           <b-col>
-            <p><b style="font-size: 16px;">ช่วงเวลา :</b></p>
+            <p style="font-size: 18px;"><b>วันที่ลา :</b> </p>
+            <p style="font-size: 18px;">{{dataModal.leave_start_date}}</p>
           </b-col>
           <b-col>
-            <p style="font-size: 16px;">{{ dataModal.leave_type_name }}</p>
-          </b-col>
-        </b-row>
-
-        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-          <b-col>
-            <p><b style="font-size: 16px;">วันที่ลา :</b></p>
-          </b-col>
-          <b-col>
-            <p style="font-size: 16px;">{{dataModal.leave_start_date}}</p>
-          </b-col>
-        </b-row>
-
-        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-          <b-col>
-            <p><b style="font-size: 16px;">ลาถึงวันที่ :</b></p>
-          </b-col>
-          <b-col>
-            <p style="font-size: 16px;">{{dataModal.leave_stop_date}}</p>
-          </b-col>
-        </b-row>
-
-        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-          <b-col>
-            <p><b style="font-size: 16px;">วันที่กรอกข้อมูล :</b></p>
-          </b-col>
-          <b-col>
-            <p style="font-size: 16px;">{{dataModal.leave_date}}</p>
-          </b-col>
-        </b-row>
-
-        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-          <b-col>
-            <p style="font-size: 16px;"><b>วันที่หัวหน้าอนุมัติ :</b></p>
+            <p style="font-size: 18px;"><b>ลาถึงวันที่ :</b></p>
+            <p style="font-size: 18px;">{{dataModal.leave_stop_date}}</p>
           </b-col>  
+        </b-row>  
+
+        <b-row style=" margin-left:14px;">
+          <p style="font-size: 18px;"><b>ช่วงเวลา :</b></p>
+          <p style="font-size: 18px;">&nbsp;{{ dataModal.leave_time }}</p>
+        </b-row>  
+
+        <b-row style=" margin-left:14px;">
+          <p style="font-size: 18px;"><b>รายละเอียดการลา :</b></p>
+          <p style="font-size: 18px;">&nbsp;{{ dataModal.leave_remark }} </p>
+        </b-row> 
+
+        <b-row style=" margin-left:0px;">
           <b-col>
-            <p v-if="dataModal.head_approve_date != null && dataModal.head_remark == null" style="font-size: 16px;">
+            <p style="font-size: 18px;"><b>วันที่หัวหน้าอนุมัติ :</b></p>
+            <p v-if="dataModal.cancel_date != null"> - </p>
+            <p v-if="dataModal.head_approve_date != null && dataModal.head_remark == null" style="font-size: 18px;">
               {{ dataModal.head_approve_date }} 
             </p>
             <p v-else-if="dataModal.cancel_approve_date != null  && dataModal.head_remark == null" style="font-size: 16px;">
               ไม่อนุมัติ 
             </p>
-            <p v-else-if="dataModal.cancel_approve_date != null && dataModal.head_remark != null" style="font-size: 16px;">
-              ไม่อนุมัติ ({{ dataModal.head_remark }})
-            </p>
-            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null" style="font-size: 16px;">
+            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null" style="font-size: 16px;">
+            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.cancel_approve_date == null" style="font-size: 16px;">
+            <p v-else-if="dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
           </b-col>
@@ -375,7 +360,9 @@
             <p style="font-size: 16px;"><b>วันที่ฝ่ายบุคคลรับทราบ :</b></p>
           </b-col>  
           <b-col>
-            <p v-if="dataModal.hr_approve_date != null && dataModal.hr_remark == null" style="font-size: 16px;">
+            <p style="font-size: 18px;"><b>วันที่ฝ่ายบุคคลรับทราบ :</b></p>
+            <p v-if="dataModal.cancel_date != null"> - </p>
+            <p v-if="dataModal.hr_approve_date != null && dataModal.hr_remark == null" style="font-size: 18px;">
               {{ dataModal.hr_approve_date }} 
             </p>
             <p v-else-if="dataModal.cancel_approve_date != null && dataModal.hr_remark == null" style="font-size: 16px;">
@@ -384,13 +371,13 @@
             <p v-else-if="dataModal.cancel_approve_date != null && dataModal.hr_remark != null" style="font-size: 16px;">
               ไม่อนุมัติ ({{ dataModal.hr_remark }})
             </p>
-            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null" style="font-size: 16px;">
+            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null" style="font-size: 16px;">
+            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.cancel_approve_date == null" style="font-size: 16px;">
+            <p v-else-if="dataModal.cancel_approve_date == null && dataModal.cancel_date == null">
               รอการอนุมัติ 
             </p>
           </b-col>
@@ -422,8 +409,10 @@
           </b-col>
         </b-row>
       </div>
-      <b-button block variant="secondary" style="font-size: 16px" @click="hide('remarkModal')">ปิด</b-button>
+      <b-button block variant="secondary" style="font-size: 16px" @click="hide()">ปิด</b-button>
     </modal>
+
+
   </div>
 </template>
 
@@ -447,7 +436,6 @@ export default {
   name: "EmpLeave",
   components: {
     popupLeave,
-    // popupLeaveEdit,
     datetime: Datetime
   },
   props: {},
@@ -457,9 +445,11 @@ export default {
       items: [],
       optionStat: [
         { value: null ,text: "--เลือกสถานะ--"},
-        { value: 1 ,text: "อนุมัติ"},
+        { value: 1 ,text: "ผ่าน"},
         { value: 2 ,text: "ไม่อนุมัติ"},
-        { value: 3 ,text: "อยู่ในระหว่างการดำเนินการ" }
+        { value: 3 ,text: "รอการอนุมัติจาก Head เเละ Hr" },
+        { value: 4 ,text: "รอการอนุมัติจาก Head"},
+        { value: 5 ,text: "รอการอนุมัติจาก Hr"}
       ],
       optionsDep: [
         { value: null ,text: "--เลือกแผนก--"},
@@ -482,7 +472,7 @@ export default {
         { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name' },
         // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date' },
         // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date' },
-        { key: 'leave_time', label: 'ช่วงเวลา', class: 'text-center leave_time' },
+        { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },
         // { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
         // { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
         { key: 'status', label: 'สถานะ', class: 'text-center status' },
@@ -567,11 +557,11 @@ export default {
       this.selectType = null;
       this.getDataAsync();
     },
-    show (name) {
-      this.$modal.show(name);
+    show () {
+      this.$modal.show('remarkModal');
     },
-    hide (name) {
-      this.$modal.hide(name);
+    hide () {
+      this.$modal.hide('remarkModal');
     },
     filterData() {
       var ths = this;
@@ -636,7 +626,7 @@ export default {
         ths.showPop = false;
       }, 1000);
     },
-    editLeaveData: function() {
+    editLeaveData: function(empLeaveId) {
       var ths = this;
       ths.showPop = true;
       // ths.selectType = data.item.leave_reason_id;
@@ -681,17 +671,17 @@ export default {
       this.window.height = window.innerHeight;
       if(this.window.width <= 750){
         this.fields = [
-          { key: 'no', label: 'ลำดับ', class: 'text-center' },
-          { key: 'status', label: 'สถานะ', class: 'text-center'},
+          { key: 'no', label: 'ลำดับ', class: 'text-center',sortable: true },
+          { key: 'status', label: 'สถานะ', class: 'text-center',sortable: true },
           { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
         ]
       }
       else {
         this.fields = [
-          { key: 'no', label: 'ลำดับ', class: 'text-center no' },
-          { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date'},
-          { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name' },
-          // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date' },
+          { key: 'no', label: 'ลำดับ', class: 'text-center no',sortable: true },
+          { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date',sortable: true },
+          { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name',sortable: true },
+          // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
           // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date' },
           { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },
           // { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
