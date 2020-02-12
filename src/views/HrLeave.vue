@@ -61,14 +61,9 @@
               <b-col md="12" lg="4" style="padding-top:24px">
                 <b-button
                   variant="outline-primary"
-                  @click="filterData()"
+                  @click="defaultValue()"
                   style="height:42px; margin:0px 10px 10px 0px"
                 > 
-                <img 
-                  src="../assets/Details3.png" 
-                  width="25" 
-                  height="25"
-                >
                   ค้นหา
                 </b-button>
                 
@@ -77,11 +72,6 @@
                   @click="defaultValue()"
                   style="height:42px; margin:0px 10px 10px 0px" 
                 >
-                  <img 
-                    src="../assets/clean_icon3.png"
-                    width="30"
-                    height="30"
-                  > 
                     เคลียร์ข้อมูล
                 </b-button>
               </b-col>
@@ -258,39 +248,77 @@
         name="remarkModal" 
         :clickToClose="false"
         height="auto"
-        width="390px"
+        width="400px"
       >
       <p style="background-color: #f1f1f1; font-size: 20px; text-align: center; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
         รายละเอียดการลา 
       </p>
-      <div style="padding:15px 15px 20px 10px">
-        <b-row style=" margin-left:14px;">
-          <p style="font-size: 18px;"><b>ประเภทการลา :</b></p>
-          <p style="font-size: 18px;">&nbsp;{{dataModal.leave_reason_name}}</p>
-        </b-row>
-
-        <b-row style=" margin-left:0px;">
+      <div style="padding-bottom:15px;">
+        
+        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
           <b-col>
-            <p style="font-size: 18px;"><b>วันที่ลา :</b> </p>
-            <p style="font-size: 18px;">{{dataModal.leave_start_date}}</p>
+            <p><b style="font-size: 16px;">ประเภทการลา :</b></p>
           </b-col>
           <b-col>
-            <p style="font-size: 18px;"><b>ลาถึงวันที่ :</b></p>
-            <p style="font-size: 18px;">{{dataModal.leave_stop_date}}</p>
-          </b-col>  
-        </b-row>  
+            <p style="font-size: 16px;">{{dataModal.leave_reason_name}}</p>
+          </b-col>
+        </b-row>
 
-        <b-row style=" margin-left:14px;">
-          <p style="font-size: 18px;"><b>ช่วงเวลา :</b></p>
-          <p style="font-size: 18px;">&nbsp;{{ dataModal.leave_time }}</p>
-        </b-row>  
+        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p><b style="font-size: 16px;">ช่วงเวลา :</b></p>
+          </b-col>
+          <b-col>
+            <p style="font-size: 16px;">{{ dataModal.leave_type_name }}</p>
+          </b-col>
+        </b-row>
 
-        <b-row style=" margin-left:14px;">
-          <p style="font-size: 18px;"><b>รายละเอียดการลา :</b></p>
-          <p style="font-size: 18px;">&nbsp;{{ dataModal.leave_remark }} </p>
-        </b-row> 
+        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p><b style="font-size: 16px;">วันที่ลา :</b></p>
+          </b-col>
+          <b-col>
+            <p style="font-size: 16px;">{{dataModal.leave_start_date}}</p>
+          </b-col>
+        </b-row>
 
-        <b-row style=" margin-left:0px;">
+        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p><b style="font-size: 16px;">ลาถึงวันที่ :</b></p>
+          </b-col>
+          <b-col>
+            <p style="font-size: 16px;">{{dataModal.leave_stop_date}}</p>
+          </b-col>
+        </b-row>
+
+        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p><b style="font-size: 16px;">วันที่กรอกข้อมูล :</b></p>
+          </b-col>
+          <b-col>
+            <p style="font-size: 16px;">{{ dataModal.leave_date }}</p>
+          </b-col>
+        </b-row>
+
+        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p><b style="font-size: 16px;">วันที่หัวหน้าอนุมัติ :</b></p>
+          </b-col>
+          <b-col>
+            <p style="font-size: 16px;">{{ dataModal.head_approve_date }}</p>
+          </b-col>
+        </b-row>
+
+        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p><b style="font-size: 16px;">วันที่ฝ่ายบุคคลรับทราบ :</b></p>
+          </b-col>
+          <b-col>
+            <p style="font-size: 16px;">{{ dataModal.hr_approve_date }}</p>
+          </b-col>
+        </b-row>
+
+        <b-row style=" margin:0px 10px 0px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
           <b-col>
             <p style="font-size: 18px;"><b>วันที่หัวหน้าอนุมัติ :</b></p>
             <p v-if="dataModal.head_approve_date != null && dataModal.head_remark == null" style="font-size: 18px;">
@@ -336,7 +364,7 @@
         </b-row>  
 
       </div>
-      <b-button block variant="secondary" style="font-size: 16px" @click="hide()">ปิด</b-button>
+      <b-button block variant="secondary" style="font-size: 16px" @click="hide('remarkModal')">ปิด</b-button>
     </modal>
   </div>
 </template>
@@ -387,15 +415,15 @@ export default {
         { value: 6 ,text: "ลาไม่รับค่าจ้าง"}
       ],
       fields: [
-        { key: 'no', label: 'ลำดับ', class: 'text-center no',sortable: true },
-        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date',sortable: true },
-        { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name',sortable: true },
-        { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name',sortable: true },
-        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name',sortable: true },
-        { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name',sortable: true },
-        // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
-        // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date',sortable: true },
-        { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },
+        { key: 'no', label: 'ลำดับ', class: 'text-center no' },
+        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date' },
+        { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
+        { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
+        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
+        { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name' },
+        // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date' },
+        // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date' },
+        { key: 'leave_time', label: 'ช่วงเวลา', class: 'text-center leave_time' },
         // { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
         { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
         { key: 'status', label: 'สถานะ', class: 'text-center status',sortable: true },
@@ -454,24 +482,16 @@ export default {
       this.selectDep = null;
       this.getHrApprove();
     },
-    show () {
-      this.$modal.show('remarkModal');
+    show (name) {
+        this.$modal.show(name);
     },
-    hide () {
-      this.$modal.hide('remarkModal');
+    hide (name) {
+      this.$modal.hide(name);
     },
     filterData() {
       var ths = this;
       var allData = this.tempData;
       console.log(allData)
-      if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
-        console.log("Alert")
-          this.$swal.fire({
-            heightAuto: false,
-            icon: 'warning',
-            title: 'เลือกข้อมูลที่จะค้นหา...'
-          })
-      } else {
           if (this.valDateStart != null && this.valDateStart != "") {
             console.log("valDateStart")
             // allData = allData.filter(function(v) {
@@ -519,7 +539,6 @@ export default {
               return v.dept_id == ths.selectDep;
             })
         }
-      }
       this.items = allData;
       this.totalRows = this.items.length
     },
@@ -667,7 +686,7 @@ export default {
     font-size: 16px !important;
     border: none;
   }
-    #HrLeave .no {
+  #HrLeave .no {
     width : 50px !important;
   }
   #HrLeave .leave_date {
@@ -705,5 +724,9 @@ export default {
   }
   #HrLeave .leave_remark {
     width : 170px !important;
+  }
+
+  .popupRemark:hover {
+    background-color:#f5f5f5;
   }
 </style>
