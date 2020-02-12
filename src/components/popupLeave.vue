@@ -81,7 +81,6 @@
                   </div>
                   </div>
                 </b-col>
-                
               </b-row>
             </div>
             <div style="margin-top:-10px">
@@ -221,9 +220,10 @@ export default {
     Loading,
     datetime: Datetime
   },
-  props: ["showPop"],
+  props: ["showPop", "editPop"],
   data() {
     return {
+      dataLeave: {},
       options: [
         { text: 'ลาครึ่งเช้า', value: 1 },
         { text: 'ลาครึ่งบ่าย', value: 2 },
@@ -349,6 +349,44 @@ export default {
       // this.options = [{options1}];
       // this.options1 = [{options1}];
     },
+    EditLeave() {
+      this.$modal.show('hello-world');
+      this.isLoading = false;
+      this.$v.form.description.$model = this.dataLeave.leave_remark;
+      // this.$v.form.valDate1.$model = this.dataLeave.leave_start_date;
+      // this.$v.form.valDate2.$model = this.dataLeave.leave_stop_date;
+      this.selectType = this.dataLeave.leave_reason_id;
+      this.selected = this.dataLeave.leave_type_id;
+      var obj = {};
+      obj["leave_reason_id"] = this.selectType;
+      obj["leave_type_id"] = this.selected;
+      // if(this.selected == 1){
+      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeAM9
+      //   this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeAM12
+      // }
+      // else if(this.selected == 2){
+      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM13
+      //   this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM18
+      // }
+      // else if(this.selected == 3){
+      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeFull9
+      //   this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.timeFull18
+      // }
+      // else if(this.selected == 4){
+      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
+      //   this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
+      // }
+      // obj["leave_start_date"] = mainJs.setDateToServer(
+      //    this.sel1
+      // );
+      // obj["leave_stop_date"] = mainJs.setDateToServer(
+      //   this.sel2
+      // );
+      obj["leave_remark"] = this.$v.form.description.$model;
+      authService.EditLeave(obj).then(response => {
+          console.log(response.data);
+      });
+    },
     validation: function(value) {
       var key = Object.keys(value);
       for (var i = 0; i < key.length; i++) {
@@ -436,6 +474,13 @@ export default {
     showPop() {
       if (this.showPop) {
         this.defaultValue();
+      }
+    },
+    editPop(){
+      if(this.editPop){
+        this.dataLeave = this.editPop;
+        console.log(this.dataLeave);
+        this.EditLeave();
       }
     }
   },
