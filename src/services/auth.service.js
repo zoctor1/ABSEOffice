@@ -40,7 +40,6 @@ export function loginUser(user,pass) {
 }
 
 export function insertData(obj) {
-    console.log("insertData")
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/addDataLeave`, JSON.stringify(obj), {}).then(
             response => {
@@ -126,6 +125,24 @@ export function notApproveHR(notApproveHr,commentHR) {
 export function getEvent(empId, deptId, header, choice) {
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/CalendarEvent`, {}, { params: {eventEmp : empId, eventDept : deptId, eventHeader : header, eventChoice : choice} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function postcancelCheck(cancel) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/CancelLeave`, {}, { headers : {leaveId : cancel} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function EditLeave(obj) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/EditLeave`, JSON.stringify(obj), {}).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })
