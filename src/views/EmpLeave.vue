@@ -132,32 +132,40 @@
               </template>
               
               <template v-slot:cell(leave_remark)="data">
-                <div style="cursor: pointer" @click="dataModal = data.item, show('remarkModal')">
-                    <img src="../assets/Details.png" width="33" height="33">
+                <div>
+                  <img 
+                    src="../assets/Details.png" 
+                    style="cursor: pointer" 
+                    width="33" 
+                    height="33"  
+                    @click="dataModal = data.item, show('remarkModal')"
+                  >
                 </div>
               </template>
               
               <template v-slot:cell(leave_time)="data">
-                <div v-if="data.item.leave_type_id == 4">
-                    <button style="width:115px;height:28px; cursor: default; border: 2px solid rgba(240, 52, 52, 1); border-radius: 4px;"> 
-                      {{ data.item.leave_time }}
-                    </button>
-                </div>
-                <div v-else-if="data.item.leave_type_id == 3" >
-                    <button style="width:115px;height:28px; cursor: default; border: 2px solid rgba(44, 130, 201, 1); border-radius: 4px; background-color: rgba(197, 239, 247, 1);"> 
-                      {{ data.item.leave_type_name }} 
-                    </button>
-                </div>
-                <div v-else-if="data.item.leave_type_id == 2" >
-                    <button style="width:115px;height:28px; cursor: default; border: 2px solid rgba(248, 148, 6, 1); border-radius: 4px; background-color: rgba(253, 227, 167, 1);">
-                      {{ data.item.leave_type_name }} 
-                    </button>
-                </div>
-                <div v-else-if="data.item.leave_type_id == 1" >
-                    <button style="width:115px;height:28px; cursor: default; border: 2px solid rgba(238, 238, 0, 1); border-radius: 4px; background-color: rgba(255, 255, 204, 1);"> 
-                      {{ data.item.leave_type_name }} 
-                    </button>
-                </div>
+                <center>
+                  <div v-if="data.item.leave_type_id == 4">
+                      <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(255, 148, 120, 1);"> 
+                        {{ data.item.leave_time }}
+                      </p>
+                  </div>
+                  <div v-else-if="data.item.leave_type_id == 3" >
+                      <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(129, 207, 224, 1);"> 
+                        {{ data.item.leave_type_name }} 
+                      </p>
+                  </div>
+                  <div v-else-if="data.item.leave_type_id == 2" >
+                      <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(252, 214, 112, 1);">
+                        {{ data.item.leave_type_name }} 
+                      </p>
+                  </div>
+                  <div v-else-if="data.item.leave_type_id == 1" >
+                      <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(255, 255, 126, 1);"> 
+                        {{ data.item.leave_type_name }} 
+                      </p>
+                  </div>
+                </center>
               </template>
 
               <template v-slot:cell(hr_approve_date)="data">
@@ -197,40 +205,36 @@
               </template>
 
               <template v-slot:cell(status)="data">
+                <center>
                 <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_approve_date == null">
-                  <button style="width:115px;height:28px; cursor: default; border: 2px solid rgb(26, 255, 26); border-radius: 4px; background-color: rgb(0, 204, 0);"> 
-                      <font color="#ffffff">ผ่านการอนุมัติ</font>
-                  </button>
+                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
+                    <font color="#ffffff">ผ่านการอนุมัติ</font>
+                  </p>
                 </div>
                 <div v-else-if="data.item.cancel_approve_date != null">
-                  <button style="width:115px;height:28px; cursor: default; border: 2px solid rgba(241, 130, 141,1); border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
+                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(226,106,106);"> 
                       <font color="#ffffff">ไม่อนุมัติ</font>
-                  </button>
-                </div>
-                <div v-else-if="data.item.cancel_date != null">
-                  <b-badge variant="warning"></b-badge>
-                  <button style="width:135px;height:28px; cursor: default; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
-                      <font color="#00000" style="font-size: 13px">ถูกยกเลิก</font>
-                  </button>
+                  </p>
                 </div>
                 <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_approve_date == null && data.item.emp_leave_id != null">
                   <b-badge variant="warning"></b-badge>
-                  <button style="width:135px;height:28px; cursor: default; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+                  <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
                       <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
-                  </button>
+                  </p>
                 </div>
                 <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_approve_date == null && data.item.emp_leave_id != null">
                   <b-badge variant="warning"></b-badge>
-                  <button style="width:135px;height:28px; cursor: default; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+                  <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
                       <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
-                  </button>
+                  </p>
                 </div>
                 <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_approve_date == null && data.item.emp_leave_id != null">
                   <b-badge variant="warning"></b-badge>
-                  <button style="width:135px;height:28px; cursor: default; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+                  <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
                       <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
-                  </button>
+                  </p>
                 </div>
+                </center>
               </template>
 
               <!-- <template v-slot:cell(edit)>
@@ -336,88 +340,87 @@
             <p><b style="font-size: 16px;">วันที่กรอกข้อมูล :</b></p>
           </b-col>
           <b-col>
-            <p style="font-size: 16px;">{{ dataModal.leave_date }}</p>
+            <p style="font-size: 16px;">{{dataModal.leave_date}}</p>
           </b-col>
         </b-row>
 
         <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
           <b-col>
-            <p><b style="font-size: 16px;">วันที่หัวหน้าอนุมัติ :</b></p>
-          </b-col>
+            <p style="font-size: 16px;"><b>วันที่หัวหน้าอนุมัติ :</b></p>
+          </b-col>  
           <b-col>
-            <p style="font-size: 16px;">{{ dataModal.head_approve_date }}</p>
-          </b-col>
-        </b-row>
-
-        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-          <b-col>
-            <p><b style="font-size: 16px;">วันที่ฝ่ายบุคคลรับทราบ :</b></p>
-          </b-col>
-          <b-col>
-            <p style="font-size: 16px;">{{ dataModal.hr_approve_date }}</p>
-          </b-col>
-        </b-row>
-
-        <b-row style=" margin:0px 10px 0px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-          <b-col>
-            <p style="font-size: 18px;"><b>วันที่หัวหน้าอนุมัติ :</b></p>
-            <p v-if="dataModal.head_approve_date != null && dataModal.head_remark == null" style="font-size: 18px;">
+            <p v-if="dataModal.head_approve_date != null && dataModal.head_remark == null" style="font-size: 16px;">
               {{ dataModal.head_approve_date }} 
             </p>
-            <p v-else-if="dataModal.cancel_approve_date != null && dataModal.head_remark != null">
+            <p v-else-if="dataModal.cancel_approve_date != null  && dataModal.head_remark == null" style="font-size: 16px;">
+              ไม่อนุมัติ 
+            </p>
+            <p v-else-if="dataModal.cancel_approve_date != null && dataModal.head_remark != null" style="font-size: 16px;">
               ไม่อนุมัติ ({{ dataModal.head_remark }})
             </p>
-            <p v-else-if="dataModal.cancel_approve_date != null  && dataModal.head_remark == null">
-              ไม่อนุมัติ 
-            </p>
-            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null" style="font-size: 16px;">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null" style="font-size: 16px;">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.cancel_approve_date == null">
+            <p v-else-if="dataModal.cancel_approve_date == null" style="font-size: 16px;">
               รอการอนุมัติ 
             </p>
-          </b-col>  
-          <b-col>
-            <p style="font-size: 18px;"><b>วันที่ฝ่ายบุคคลรับทราบ :</b></p>
-            <p v-if="dataModal.hr_approve_date != null && dataModal.hr_remark == null" style="font-size: 18px;">
-              {{ dataModal.hr_approve_date }} 
-            </p>
-            <p v-else-if="dataModal.cancel_approve_date != null && dataModal.hr_remark == null">
-              ไม่อนุมัติ 
-            </p>
-            <p v-else-if="dataModal.cancel_approve_date != null && dataModal.hr_remark != null">
-              ไม่อนุมัติ ({{ dataModal.hr_remark }})
-            </p>
-            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null">
-              รอการอนุมัติ 
-            </p>
-            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null">
-              รอการอนุมัติ 
-            </p>
-            <p v-else-if="dataModal.cancel_approve_date == null">
-              รอการอนุมัติ 
-            </p>
-          </b-col>  
+          </b-col>
         </b-row>  
 
-        <b-row>
-          <button v-if="dataModal.cancel_approve_date == null && dataModal.head_approve_date == null && dataModal.hr_approve_date == null && dataModal.cancel_date == null" @click="cancelBtn(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; margin-left:145px; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
-            <font color="#00000" style="font-size: 13px">ยกเลิก</font>
-          </button>
-          <button v-else-if="dataModal.cancel_approve_date == null && dataModal.head_approve_date == null && dataModal.cancel_date == null" @click="cancelBtn(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; margin-left:145px; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
-            <font color="#00000" style="font-size: 13px">ยกเลิก</font>
-          </button>
-          <button v-else-if="dataModal.cancel_approve_date == null && dataModal.hr_approve_date == null && dataModal.cancel_date == null" @click="cancelBtn(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; margin-left:145px; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
-            <font color="#00000" style="font-size: 13px">ยกเลิก</font>
-          </button>
-          <button v-else-if="dataModal.cancel_approve_date != null && dataModal.cancel_date == null" @click="editLeaveData(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; margin-left:145px; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
-            <font color="#00000" style="font-size: 13px">เเก้ไข</font>
-          </button>
+        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p style="font-size: 16px;"><b>วันที่ฝ่ายบุคคลรับทราบ :</b></p>
+          </b-col>  
+          <b-col>
+            <p v-if="dataModal.hr_approve_date != null && dataModal.hr_remark == null" style="font-size: 16px;">
+              {{ dataModal.hr_approve_date }} 
+            </p>
+            <p v-else-if="dataModal.cancel_approve_date != null && dataModal.hr_remark == null" style="font-size: 16px;">
+              ไม่อนุมัติ 
+            </p>
+            <p v-else-if="dataModal.cancel_approve_date != null && dataModal.hr_remark != null" style="font-size: 16px;">
+              ไม่อนุมัติ ({{ dataModal.hr_remark }})
+            </p>
+            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_approve_date == null" style="font-size: 16px;">
+              รอการอนุมัติ 
+            </p>
+            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_approve_date == null" style="font-size: 16px;">
+              รอการอนุมัติ 
+            </p>
+            <p v-else-if="dataModal.cancel_approve_date == null" style="font-size: 16px;">
+              รอการอนุมัติ 
+            </p>
+          </b-col>
+        </b-row>
+        
+        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p><b style="font-size: 16px;">รายละเอียดการลา :</b></p>
+          </b-col>
+          <b-col>
+            <p style="font-size: 16px;">{{dataModal.leave_remark}}</p>
+          </b-col>
         </b-row>
 
+        <b-row>
+          <b-col style="text-align: center; margin-top:10px">
+            <button v-if="dataModal.cancel_approve_date == null && dataModal.head_approve_date == null && dataModal.hr_approve_date == null && dataModal.cancel_date == null" @click="cancelBtn(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+              <font color="#00000" style="font-size: 16px">ยกเลิกการลา</font>
+            </button>
+            <button v-else-if="dataModal.cancel_approve_date == null && dataModal.head_approve_date == null && dataModal.cancel_date == null" @click="cancelBtn(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+              <font color="#00000" style="font-size: 16px">ยกเลิกการลา</font>
+            </button>
+            <button v-else-if="dataModal.cancel_approve_date == null && dataModal.hr_approve_date == null && dataModal.cancel_date == null" @click="cancelBtn(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+              <font color="#00000" style="font-size: 16px">ยกเลิกการลา</font>
+            </button>
+            <button v-else-if="dataModal.cancel_approve_date != null && dataModal.cancel_date == null" @click="editLeaveData(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+              <font color="#00000" style="font-size: 16px">เเก้ไข</font>
+            </button>
+          </b-col>
+        </b-row>
       </div>
       <b-button block variant="secondary" style="font-size: 16px" @click="hide('remarkModal')">ปิด</b-button>
     </modal>
@@ -477,12 +480,12 @@ export default {
         { key: 'no', label: 'ลำดับ', class: 'text-center no' },
         { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date' },
         { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name' },
-        // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
+        // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date' },
         // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date' },
         { key: 'leave_time', label: 'ช่วงเวลา', class: 'text-center leave_time' },
         // { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
         // { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
-        { key: 'status', label: 'สถานะ', class: 'text-center status',sortable: true },
+        { key: 'status', label: 'สถานะ', class: 'text-center status' },
         { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
       ],
       dataModal:{},
@@ -548,10 +551,10 @@ export default {
           hideHeaderClose: false,
           centered: true
         }).then(value => {
-          console.log(value)
+          // console.log(value)
           if (value == true) {
             authService.postcancelCheck(cancel).then(response => {
-              console.log(response.data);
+              // console.log(response.data);
               this.getDataAsync();
             });
           } 
@@ -618,7 +621,7 @@ export default {
       }
       if(this.selectDep != null && this.selectDep != "") {
         console.log("selectDep")
-        console.log(this.selectDep)
+        // console.log(this.selectDep)
         allData = allData.filter(function(v) {
           return v.dept_id == ths.selectDep;
         })
@@ -658,7 +661,7 @@ export default {
               response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
               response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
             } 
-              console.log(response.data)
+              // console.log(response.data)
               this.items = response.data;
               this.tempData = response.data;
               this.isBusy = false;
@@ -693,7 +696,7 @@ export default {
           { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },
           // { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
           // { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
-          { key: 'status', label: 'สถานะ', class: 'text-center status',sortable: true },
+          { key: 'status', label: 'สถานะ', class: 'text-center status' },
           { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
         ]
       }
