@@ -49,10 +49,29 @@
                 >
                 </b-form-select>
               </b-col>
-              <b-col sm="6" md="6" lg="2" style="padding-top:24px">
+              <b-col sm="6" md="6" lg="2" >
+                <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
+                  <b-form-group
+                    label-align ="left"
+                    label-size="md"
+                    label-for="filterInput"
+                    class="mb-0"
+                  >
+                    <b-input-group size="md">
+                      <b-form-input
+                        v-model="filter"
+                        type="search"
+                        id="filterInput"
+                        placeholder="พิมพ์ชื่อเพื่อค้นหา..."
+                        style="height:42px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                      ></b-form-input>
+                    </b-input-group>
+                  </b-form-group>
+              </b-col>
+              <b-col style="padding-top:24px">
                 <b-button
                   variant="outline-primary"
-                  @click="defaultValue()"
+                  @click="filterData()"
                   style="height:42px; margin-right:10px"
                 > 
                   ค้นหา
@@ -65,12 +84,6 @@
                 >
                     เคลียร์ข้อมูล
                 </b-button>
-              </b-col>
-              <b-col>
-                <!-- <img src="../assets/refresh.png" id="tooltip-target-2" width="33" height="33" @click="getDataAsync()">
-                  <b-tooltip placement='right' target="tooltip-target-2" triggers="hover">
-                    Refresh
-                  </b-tooltip> -->
               </b-col>
              </b-row>
           </div>
@@ -141,7 +154,7 @@
                     </div>
                   </template>
 
-                  <!-- <template v-slot:cell(hr_approve_date)="data">
+                  <template v-slot:cell(hr_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
                       <button style="width:115px;height:28px; cursor: default; border: 2px solid rgba(241, 130, 141,1); border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
                           <font color="#ffffff">ไม่อนุมัติ</font>
@@ -157,9 +170,9 @@
                           <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
                       </button>
                     </div>
-                  </template> -->
+                  </template>
 
-                  <!-- <template v-slot:cell(head_approve_date)="data">
+                  <template v-slot:cell(head_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
                       <button style="width:115px;height:28px; cursor: default; border: 2px solid rgba(241, 130, 141,1); border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
                           <font color="#ffffff">ไม่อนุมัติ</font>
@@ -175,7 +188,7 @@
                           <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
                       </button>
                     </div>
-                  </template> -->
+                  </template>
 
                   <template v-slot:cell(status)="data">
                     <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_date == null">
@@ -422,8 +435,8 @@ export default {
         // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date' },
         // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date' },
         { key: 'leave_time', label: 'ช่วงเวลา', class: 'text-center leave_time' },
-        // { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
-        // { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
+        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
+        { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
         { key: 'status', label: 'สถานะ', class: 'text-center status' },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center leave_remark' },
       ],
@@ -491,6 +504,9 @@ export default {
         var ths = this;
         var allData = this.tempData;
         console.log(allData)
+          if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
+              ths.getHeaderApprove();
+          }
           if (this.valDateStart != null && this.valDateStart != "") {
             console.log("valDateStart")
             // allData = allData.filter(function(v) {

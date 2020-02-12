@@ -63,7 +63,7 @@
               <b-col xs="6" sm="6" md="6" lg="2" style="padding-top:24px">
                 <b-button
                   variant="outline-primary"
-                  @click="defaultValue()"
+                  @click="filterData()"
                   style="height:42px; margin-right:10px"
                 > 
                   ค้นหา
@@ -198,7 +198,7 @@
 
               <template v-slot:cell(status)="data">
                 <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_date == null">
-                  <button style="width:115px;height:28px; cursor: default; border: 2px solid rgb(26, 255, 26); border-radius: 4px; background-color: rgb(0, 204, 0);"> 
+                  <button style="width:115px;height:28px; cursor: default; border: 2px solid rgb(26, 255, 26); border-radius: 4px; background-color: #36D7B7;"> 
                       <font color="#ffffff">ผ่านการอนุมัติ</font>
                   </button>
                 </div>
@@ -495,6 +495,9 @@ export default {
     filterData() {
       var ths = this;
       var allData = this.tempData;
+      if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
+        ths.getDataAsync();
+      }
       if (this.valDateStart != null && this.valDateStart != "") {
         console.log("valDateStart")
         // allData = allData.filter(function(v) {

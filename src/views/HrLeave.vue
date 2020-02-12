@@ -7,8 +7,8 @@
           <h2 align="left" style="font-weight: bold;">ข้อมูลการลาของพนักงาน</h2>
 
           <div style="text-align:left;">
-            <b-row style="margin:10px 0px 10px 10px; width:60%">
-              <b-col md="12" lg="4">
+            <b-row style="margin:10px 0px 0px 10px; width:100%">
+              <b-col md="12" lg="2">
                 <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
                 <datetime 
                   type="date" 
@@ -19,7 +19,7 @@
                   >
                 </datetime>
               </b-col>
-              <b-col md="12" lg="4">
+              <b-col md="12" lg="2">
                 <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
                 <datetime 
                   type="date"
@@ -30,18 +30,7 @@
                   >
                 </datetime>
               </b-col>
-              <b-col md="12" lg="4">
-                <p style="cursor:default;"><b>สถานะ :</b></p>
-                <b-form-select
-                  v-model="selectStat"
-                  :options="optionStat"
-                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                >
-                </b-form-select>
-              </b-col>
-            </b-row>
-            <b-row style="margin:10px 0px 10px 10px; width:60%">
-              <b-col md="6" lg="4">
+              <b-col md="12" lg="2">
                 <p style="cursor:default;"><b>ประเภทการลา :</b></p>
                 <b-form-select
                   v-model="selectType"
@@ -49,22 +38,14 @@
                   style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                 >
                 </b-form-select>
+                
               </b-col>
-              <b-col md="6" lg="4">
-                <p style="cursor:default;"><b>แผนก :</b></p>
-                <b-form-select
-                  v-model="selectDep"
-                  :options="optionsDep"
-                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                >
-                </b-form-select>
-              </b-col>
-              <b-col md="12" lg="4" style="padding-top:24px">
+              <b-col md="12" lg="2" style="padding-top:24px">
                 <b-button
                   variant="outline-primary"
-                  @click="defaultValue()"
+                  @click="filterData()"
                   style="height:42px; margin:0px 10px 10px 0px"
-                > 
+                >
                   ค้นหา
                 </b-button>
                 
@@ -75,6 +56,47 @@
                 >
                     เคลียร์ข้อมูล
                 </b-button>
+              </b-col>
+            </b-row>
+            <b-row style="margin:0px 0px 10px 10px; width:100%">
+              <b-col md="6" lg="2">
+                <p style="cursor:default;"><b>สถานะ :</b></p>
+                <b-form-select
+                  v-model="selectStat"
+                  :options="optionStat"
+                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                >
+                </b-form-select>
+              </b-col>
+              <b-col md="6" lg="2">
+                <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
+                  <b-form-group
+                    label-align ="left"
+                    label-size="md"
+                    label-for="filterInput"
+                    class="mb-0"
+                  >
+                    <b-input-group size="md">
+                      <b-form-input
+                        v-model="filter"
+                        type="search"
+                        id="filterInput"
+                        placeholder="พิมพ์ชื่อเพื่อค้นหา..."
+                        style="height:42px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                      ></b-form-input>
+                    </b-input-group>
+                  </b-form-group>
+              </b-col>
+              <b-col md="12" lg="2">
+                <p style="cursor:default;"><b>แผนก :</b></p>
+                <b-form-select
+                  v-model="selectDep"
+                  :options="optionsDep"
+                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                >
+                </b-form-select>
+              </b-col>
+              <b-col lg="2">
               </b-col>
             </b-row>
           </div>
@@ -139,7 +161,7 @@
                     </div>
                   </template>
 
-                  <!-- <template v-slot:cell(hr_approve_date)="data">
+                  <template v-slot:cell(hr_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
                       <button style="width:115px;height:28px; cursor: default; border: 2px solid rgba(241, 130, 141,1); border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
                           <font color="#ffffff">ไม่อนุมัติ</font>
@@ -150,14 +172,14 @@
                           <font color="#00000" style="font-size: 13px" >{{data.item.hr_approve_date}}</font>
                       </button>  
                     </div>
-                    <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date == null && data.item.emp_leave_id != null">
-                      <button style="width:135px;height:28px; cursor: default; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
-                          <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
+                    <div v-else-if="data.item.cancel_date == null && data.item.hr_approve_date == null && data.item.emp_leave_id != null" @click="showMsgBoxTwo()">
+                      <button style="width:135px;height:28px; cursor: default; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffffff;"> 
+                          <font color="#00000" style="font-size: 13px">รอการอนุมัติ</font>
                       </button>
                     </div>
-                  </template> -->
+                  </template>
 
-                  <!-- <template v-slot:cell(head_approve_date)="data">
+                  <template v-slot:cell(head_approve_date)="data">
                     <div v-if="data.item.cancel_date != null">
                       <button style="width:115px;height:28px; cursor: default; border: 2px solid rgba(241, 130, 141,1); border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
                           <font color="#ffffff">ไม่อนุมัติ</font>
@@ -173,7 +195,7 @@
                           <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
                       </button>
                     </div>
-                  </template> -->
+                  </template>
 
                   <template v-slot:cell(status)="data">
                     <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_date == null">
@@ -389,8 +411,8 @@ export default {
         // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date' },
         // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date' },
         { key: 'leave_time', label: 'ช่วงเวลา', class: 'text-center leave_time' },
-        // { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
-        // { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
+        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
+        { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
         { key: 'status', label: 'สถานะ', class: 'text-center status' },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center leave_remark' },
       ],
@@ -463,6 +485,9 @@ export default {
             //   return v.
             // })
           }
+          if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
+            ths.getHrApprove();
+          }
           if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
             console.log("valDateStop")
           }
@@ -503,7 +528,7 @@ export default {
             allData = allData.filter(function(v) {
               return v.dept_id == ths.selectDep;
             })
-        }
+          }
       this.items = allData;
       this.totalRows = this.items.length
     },
