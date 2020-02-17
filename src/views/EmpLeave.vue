@@ -1,8 +1,6 @@
 <template>
   <div id="EmpLeave" lg="12" sm="12" xs="12">
-    <popupLeave v-bind:showPop="showPop" />
-    <!-- <popupLeaveEdit v-bind:defaultShow="defaultShow" /> -->
-    <!-- {{window}} -->
+    <popupLeave v-bind:showPop="showPop" v-bind:editPop="editPop"/>
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
@@ -463,6 +461,7 @@ export default {
   props: {},
   data() {
     return {
+      dataEmp:{},
       tempData: [],
       items: [],
       optionStat: [
@@ -512,7 +511,7 @@ export default {
       sortDesc: false,
       sortDirection: 'asc',
       showPop:false,
-      defaultShow:false,
+      editPop:{},
       valDateStart: '',
       valDateStop: '',
       selectType: '',
@@ -648,17 +647,18 @@ export default {
         ths.showPop = false;
       }, 1000);
     },
-    editLeaveData: function(empLeaveId) {
+    editLeaveData: function() {
       var ths = this;
-      ths.showPop = true;
+      ths.editPop = this.dataModal;
+      
       // ths.selectType = data.item.leave_reason_id;
       // ths.selected = data.item.leave_type_id;
       // ths.sel1 = data.item.leave_start_date;
       // ths.sel2 = data.item.leave_stop_date;
       // ths.$v.form.description.$model = data.item.leave_remark;
-      setTimeout(function() {
-        ths.showPop = false;
-      }, 1000);
+      // setTimeout(function() {
+      //   ths.editPop = false;
+      // }, 1000);
     },
     getDataAsync: async function(){
         this.isBusy = true;

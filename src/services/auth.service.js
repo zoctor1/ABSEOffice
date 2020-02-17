@@ -141,6 +141,7 @@ export function postcancelCheck(cancel) {
 }
 
 export function EditLeave(obj) {
+    console.log(obj);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/EditLeave`, JSON.stringify(obj), {}).then(
             response => {
