@@ -17,3 +17,15 @@ export function setDateToServer(d, flag) {
         }
     }
 }
+
+export function checkStopTime(Start, Stop) {
+    var status = true;
+    var timeStart = new Date(Start);
+    var timeStop = new Date(Stop);
+
+    if (timeStart.getTime() > timeStop.getTime()) {
+        status = false;
+    }
+        
+    return status;
+}

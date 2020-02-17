@@ -11,7 +11,7 @@
           <h4 style="margin-bottom:10px; cursor: default;">ตำแหน่ง : {{userIn.position_name}} </h4>
         </center>
           <b-row>
-            <b-col style="margin-top:5px" md="6" sm="6" xs="12">
+            <b-col style="margin-top:5px" md="4" sm="6" xs="12">
               <div>
                 <center>
                   <vs-button
@@ -25,11 +25,23 @@
                 </center>
               </div>
             </b-col>
-            <b-col style="margin-top:5px" md="6" sm="6" xs="12">
+            <b-col style="margin-top:5px" md="4" sm="6" xs="12">
               <div>
                 <center>
                   <popupOT /> 
                 </center>
+              </div>
+            </b-col>
+            <b-col style="margin-top:5px" md="4" sm="6" xs="12">
+              <div>    
+                <vs-button
+                  @click="show('holidayShow')"
+                  color="primary" 
+                  type="filled" 
+                  style="width:144px; height:44px;"
+                >
+                  <img src="../assets/Plus_icon3.png" width="20" height="20" /> ปฏิทินวันหยุด
+                </vs-button>
               </div>
             </b-col>
           </b-row>
@@ -43,11 +55,13 @@
             <b-th></b-th>
             <b-th></b-th>
             <b-th></b-th>
+            <b-th></b-th>
           </b-tr>
           <b-tr >
             <b-th>ประเภท</b-th>
             <b-th><center>สิทธิ<br>(วัน)</center></b-th>
             <b-th><center>ใช้ไป<br>(วัน/ชั่วโมง)</center></b-th>
+            <b-th><center>ชดเชย<br>(วัน/ชั่วโมง)</center></b-th>
             <b-th><center>คงเหลือ<br>(วัน/ชั่วโมง)</center></b-th>
           </b-tr>
         </b-thead>
@@ -73,6 +87,11 @@
           </b-thead>
       </b-table-simple>
     </b-col>
+    <loading
+      :active.sync="isLoading"
+      :is-full-page="fullPage"
+    >
+    </loading>
   </div>
 </template>
 
@@ -83,12 +102,17 @@ import 'vuesax/dist/vuesax.css'
 import * as authService from '@/services/auth.service';
 import popupLeave from "@/components/popupLeave.vue"
 import popupOT from "@/components/popupOT.vue"
+import holiday from "@/components/holiday.vue"
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
   name: "home",
   components: {
     popupLeave,
-    popupOT
+    popupOT,
+    holiday,
+    Loading
   },
   data() {
     return {
@@ -106,6 +130,7 @@ export default {
       select1:3,
       selected: null,
       selected2: null,
+      isLoading: false,
       options1:[
         {text: '--- กรุณาเลือกเหตุผลในการลา ---',value: null},
         {text:'ลากิจ',value:0},
@@ -210,12 +235,14 @@ export default {
 	  	// 	  return remain3;
 			//   }, 0);
       // },
-      showStat:function(){
+      showStat: async function(){
+        this.isLoading = true;
         var user = JSON.parse(localStorage.getItem("user"));
-        authService.getLeaveStat(user.uuid).then(response => {
+        await authService.getLeaveStat(user.uuid).then(response => {
           this.responseData = response.data;
           console.log(response.data);
         });
+        this.isLoading = false;
       },
       info(item, index, button) {
         this.infoModal.title = `Row index: ${index}`

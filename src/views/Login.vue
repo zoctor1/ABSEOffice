@@ -43,6 +43,11 @@
         </div>
         <br>
       </div>
+      <loading
+        :active.sync="isLoading"
+        :is-full-page="fullPage"
+      >
+      </loading>
     </div>
   </div>
 </template>
@@ -52,12 +57,15 @@ import Vue from "vue";
 import * as authService from '@/services/auth.service';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 Vue.use(VueSweetalert2);
 
 export default {
   name: "Login",
   components: {
-    // Swal
+    Loading
   },
   props: {},
   data() {
@@ -66,6 +74,7 @@ export default {
       email: "hr@abs.co.th",
       pass: "1234",
       textError: "รหัสผ่านไม่ถูกต้อง",
+      isLoading: false
     }
   },
   computed: {},
@@ -80,7 +89,7 @@ export default {
     toURL: function(url) {
       this.$router.push("/" + url);
     },
-    loginUser: function(){
+    loginUser: async function(){
       if (this.email == "" && this.pass == "") {
           this.$swal.fire({
             heightAuto: false,
@@ -100,12 +109,14 @@ export default {
             title: 'กรุณากรอกรหัสผ่าน'
           })
       } else {
-        authService.loginUser( encodeURI(this.email), encodeURI(this.pass)).then(response => { 
+        await authService.loginUser( encodeURI(this.email), encodeURI(this.pass)).then(response => { 
           console.log(response)
           if (response.data != "" && response.data != null && response.data != undefined) {
             console.log(response.data)
+            this.isLoading = true;
             this.toURL("Homepage");
             localStorage.setItem("user", JSON.stringify(response.data));
+            this.isLoading = false;
           } else {
             this.$swal.fire({
               heightAuto: false,

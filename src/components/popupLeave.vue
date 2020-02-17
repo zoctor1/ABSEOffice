@@ -66,7 +66,7 @@
                 <b-col>
                   <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
                   <div class="form-group" :class="{ 'form-group--error': $v.form.valDate1.$error }">
-                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
+                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" :max-datetime="maxDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
                     <div class="error" v-if="!$v.form.valDate1.required"><font color="red">จำเป็น*</font></div>
                     <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                   </div>
@@ -75,7 +75,7 @@
                   <div v-if="selected != 1 && selected != 2">
                   <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
                   <div class="form-group" :class="{ 'form-group--error': $v.form.valDate2.$error }">
-                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="$v.form.valDate1.$model !='' ? $v.form.valDate1.$model : currentDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
+                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="$v.form.valDate1.$model !='' ? $v.form.valDate1.$model : currentDate" :max-datetime="maxDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
                     <div class="error" v-if="!$v.form.valDate2.required"><font color="red">จำเป็น*</font></div>
                     <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div> 
                   </div>
@@ -86,6 +86,18 @@
             <div style="margin-top:-10px">
               <b-row>
                 <b-col>
+                  <div v-if="selected != 2 && selected != 3 && selected != 4">
+                    <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
+                    <p style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px; cursor:default; width: 130px; height: 42px; padding: 7px 6px 6px 14px">{{ timeAM9 }}</p>
+                  </div>
+                  <div v-if="selected != 1 && selected != 3 && selected != 4">
+                    <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
+                    <p style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px; cursor:default; width: 130px; height: 42px; padding: 7px 6px 6px 14px">{{ timePM13 }}</p>
+                  </div>
+                  <div v-if="selected != 1 && selected != 2 && selected != 4">
+                    <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
+                    <p style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px; cursor:default; width: 130px; height: 42px; padding: 7px 6px 6px 14px">{{ timeFull9 }}</p>
+                  </div>
                   <div v-if="selected != 3 && selected != 2 && selected != 1">
                     <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
                     <VueCtkDateTimePicker
@@ -98,18 +110,6 @@
                       :no-header="true"
                       label="เลือกเวลา"
                     />
-                  </div>
-                  <div v-if="selected != 2 && selected != 3 && selected != 4">
-                    <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
-                    <p style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px; cursor:default; width: 130px; height: 42px; padding: 7px 6px 6px 14px">{{ timeAM9 }}</p>
-                  </div>
-                  <div v-if="selected != 1 && selected != 3 && selected != 4">
-                    <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
-                    <p style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px; cursor:default; width: 130px; height: 42px; padding: 7px 6px 6px 14px">{{ timePM13 }}</p>
-                  </div>
-                  <div v-if="selected != 1 && selected != 2 && selected != 4">
-                    <p style="cursor:default;"><b>เวลาที่เริ่มลา :</b></p>
-                    <p style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px; cursor:default; width: 130px; height: 42px; padding: 7px 6px 6px 14px">{{ timeFull9 }}</p>
                   </div>
                 </b-col>
                 <b-col>
@@ -271,6 +271,7 @@ export default {
       flagRangDate: false,
       validateRangDate: {},
       currentDate: "",
+      maxDate: "",
       file: null,
       timeAM9: "9:00:00",
       timeAM12: "12:00:00",
@@ -292,6 +293,7 @@ export default {
     Settings.defaultLocale = 'th'
   },
   methods: {
+    
     confirmMessage () {
       var ths = this;
       Swal.fire({
@@ -308,12 +310,27 @@ export default {
         })
     },
     changeSelectType() {
+      if (this.selectType == 1) { 
+        var cDate = new Date().setDate(new Date().getDate() - 15);
+        this.currentDate = mainJs.setDateToServer(new Date(cDate).toString(), "TZ");
+        cDate = new Date().setDate(new Date().getDate());
+        this.maxDate = mainJs.setDateToServer(new Date(cDate).toString(), "TZ");
+      }
       if (this.selectType == 2 || this.selectType == 3) {
+        this.maxDate = "";
         var cDate = new Date().setDate(new Date().getDate() + 3);
         this.currentDate = mainJs.setDateToServer(new Date(cDate).toString(), "TZ");
-      } else {
-        this.currentDate = mainJs.setDateToServer(new Date().toString(), "TZ");
-      }
+      } 
+      if (this.selectType == 4 || this.selectType == 5) {
+        this.maxDate = "";
+        var cDate = new Date().setDate(new Date().getDate() - 15);
+        this.currentDate = mainJs.setDateToServer(new Date(cDate).toString(), "TZ");
+      } 
+      if (this.selectType == 6) {
+        this.maxDate = "";
+        var cDate = new Date().setDate(new Date().getDate() - 7);
+        this.currentDate = mainJs.setDateToServer(new Date(cDate).toString(), "TZ");
+      } 
     },
     show () {
       this.$modal.show('hello-world');
@@ -434,7 +451,16 @@ export default {
       //   this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
       // );
       obj["leave_remark"] = this.$v.form.description.$model;
-      if (this.validation(obj)) {
+
+      if ( await mainJs.checkStopTime(obj["leave_start_date"], obj["leave_stop_date"]) == false) {
+        Swal.fire (
+          'กรอกช่วงเวลาให้ถูกต้อง',
+          ' ',
+          'error'
+        )
+        this.isLoading = false;
+      }
+      else if (this.validation(obj)) {
         await authService.insertData(obj).then(response => {
           console.log(response.data);
           if (response.data > 0) {

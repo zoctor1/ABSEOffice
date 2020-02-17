@@ -466,11 +466,10 @@ export default {
       items: [],
       optionStat: [
         { value: null ,text: "--เลือกสถานะ--"},
-        { value: 1 ,text: "ผ่าน"},
+        { value: 1 ,text: "อนุมัติ"},
         { value: 2 ,text: "ไม่อนุมัติ"},
-        { value: 3 ,text: "รอการอนุมัติจาก Head เเละ Hr" },
-        { value: 4 ,text: "รอการอนุมัติจาก Head"},
-        { value: 5 ,text: "รอการอนุมัติจาก Hr"}
+        { value: 3 ,text: "อยู่ในระหว่างการดำเนินการ" },
+        { value: 4 ,text: "ถูกยกเลิก" }
       ],
       optionsDep: [
         { value: null ,text: "--เลือกแผนก--"},
