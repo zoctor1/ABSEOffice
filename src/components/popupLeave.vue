@@ -280,7 +280,8 @@ export default {
       timeFull9: "9:00:00",
       timeFull18: "18:00:00",
       sel1: "",
-      sel2: ""
+      sel2: "",
+      checkData:{}
     }
   },
   computed: {},
@@ -304,13 +305,12 @@ export default {
         cancelButtonText: 'ไม่'
       }).then((result) => {
           if (result.value) {
-            // if(result.value){
-            //   ths.insertData();
-            // }
-            // else if(){
-
-            // }
-            ths.insertData();
+            if(ths.checkData == 1){
+              ths.EditLeave();
+            }
+            else if (ths.checkData == 0) {
+              ths.insertData();
+            }
           }
         })
     },
@@ -372,41 +372,34 @@ export default {
       // this.options1 = [{options1}];
     },
     EditLeave() {
-      this.$modal.show('hello-world');
       this.isLoading = false;
-      this.$v.form.description.$model = this.dataLeave.leave_remark;
-      // this.$v.form.valDate1.$model = this.dataLeave.leave_start_date;
-      // this.$v.form.valDate2.$model = this.dataLeave.leave_stop_date;
-      this.selectType = this.dataLeave.leave_reason_id;
-      this.selected = this.dataLeave.leave_type_id;
       var obj = {};
       obj["leave_reason_id"] = this.selectType;
       obj["leave_type_id"] = this.selected;
       // if(this.selected == 1){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeAM9
-      //   this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeAM12
+        this.sel1 = this.$v.form.valDate1.$model.split("/") + " " + this.timeAM9
+        // this.sel2 = this.$v.form.valDate1.$model.split("/") + " " + this.timeAM12
       // }
       // else if(this.selected == 2){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM13
-      //   this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM18
+      //   this.sel1 = this.$v.form.valDate1.$model.split("/") + " " + this.timePM13
+      //   this.sel2 = this.$v.form.valDate1.$model.split("/") + " " + this.timePM18
       // }
       // else if(this.selected == 3){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeFull9
-      //   this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.timeFull18
+      //   this.sel1 = this.$v.form.valDate1.$model.split("/") + " " + this.timeFull9
+      //   this.sel2 = this.$v.form.valDate2.$model.split("/") + " " + this.timeFull18
       // }
       // else if(this.selected == 4){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
-      //   this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
+      //   this.sel1 = this.$v.form.valDate1.$model.split("/") + " " + this.selectTimeStart
+      //   this.sel2 = this.$v.form.valDate2.$model.split("/") + " " + this.selectTimeStop
       // }
-      // obj["leave_start_date"] = mainJs.setDateToServer(
-      //    this.sel1
-      // );
-      // obj["leave_stop_date"] = mainJs.setDateToServer(
-      //   this.sel2
-      // );
+      obj["leave_start_date"] = this.Sel1;
+      obj["leave_stop_date"] = this.$v.Sel2;
       obj["leave_remark"] = this.$v.form.description.$model;
+      obj["emp_leave_id"] = this.dataLeave.emp_leave_id;
+      console.log(this.Sel1);
+      console.log(obj);
       authService.EditLeave(obj).then(response => {
-          // console.log(response.data);
+        console.log(response.data);
       });
     },
     validation: function(value) {
@@ -498,16 +491,35 @@ export default {
   watch: {
     showPop() {
       if (this.showPop) {
-        this.defaultValue();
-      }
-    },
-    editPop(){
-      if(this.editPop){
-        this.dataLeave = this.editPop;
-        console.log(this.dataLeave);
-        this.EditLeave();
+        this.checkData = 0;
+        console.log(this.checkData)
+        if(this.editPop != ""){
+          this.$modal.show('hello-world');
+          this.dataLeave = this.editPop;
+          this.checkData = 1;
+          this.$v.form.description.$model = this.dataLeave.leave_remark;
+          this.$v.form.valDate1.$model = this.dataLeave.leave_start_date;
+          this.$v.form.valDate2.$model = this.dataLeave.leave_stop_date;
+          this.selectType = this.dataLeave.leave_reason_id;
+          this.selected = this.dataLeave.leave_type_id;
+        } else {
+          this.defaultValue();
+        }
       }
     }
+    // editPop(){
+    //   if(this.editPop){
+    //     this.$modal.show('hello-world');
+    //     this.dataLeave = this.editPop;
+    //     this.checkData = 1;
+    //     console.log(this.dataLeave);
+    //     console.log(this.checkData)
+    //     this.$v.form.description.$model = this.dataLeave.leave_remark;
+    //     this.$v.form.valDate1.$model = this.dataLeave.leave_start_date;
+    //     this.$v.form.valDate2.$model = this.dataLeave.leave_stop_date;
+    //     // this.EditLeave();
+    //   }
+    // }
   },
   validations: {
     form: {

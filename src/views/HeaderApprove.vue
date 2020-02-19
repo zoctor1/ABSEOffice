@@ -185,7 +185,7 @@
                     <div v-if="data.item.cancel_header_date != null">
                       <font>{{data.item.cancel_header_date}}</font>
                     </div>
-                    <div v-else-if="data.item.cancel_date != null && data.item.cancel_header_date == null && data.item.cancel_hr_date == null">
+                    <div v-else-if="data.item.cancel_date != null && data.item.cancel_header_date == null">
                       <font>{{data.item.cancel_date}}</font>
                     </div>
                     <div v-else-if="data.item.cancel_header_date == null && data.item.head_approve_date != null">
@@ -199,7 +199,7 @@
 
                   <template v-slot:cell(status)="data">
                     <center>
-                    <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_header_date == null && data.item.cancel_hr_date == null">
+                    <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_header_date == null">
                       <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
                         <font color="#ffffff">ผ่านการอนุมัติ</font>
                       </p>
@@ -209,36 +209,25 @@
                           <font color="#ffffff">ไม่อนุมัติ</font>
                       </p>
                     </div>
-                    <div v-else-if="data.item.cancel_hr_date != null">
-                      <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(226,106,106);"> 
-                          <font color="#ffffff">ไม่อนุมัติ</font>
-                      </p>
-                    </div>
-                    <div v-else-if="data.item.cancel_header_date != null && data.item.cancel_hr_date != null">
-                      <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(226,106,106);"> 
-                          <font color="#ffffff">ไม่อนุมัติ</font>
-                      </p>
-                    </div>
-
                     <div v-else-if="data.item.cancel_date != null">
                       <b-badge variant="warning"></b-badge>
                         <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
                           <font color="#ffffff">ถูกยกเลิก</font>
                         </p>
                     </div>
-                    <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_header_date == null && data.item.cancel_hr_date == null && data.item.emp_leave_id != null">
+                    <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
                       <b-badge variant="warning"></b-badge>
                       <button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
                           <font color="#00000" >รอการอนุมัติ</font>
                       </button>
                     </div>
-                    <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_header_date == null && data.item.cancel_hr_date == null && data.item.emp_leave_id != null">
+                    <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
                       <b-badge variant="warning"></b-badge>
                       <button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
                           <font color="#00000" >รอการอนุมัติ</font>
                       </button>
                     </div>
-                    <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_header_date == null && data.item.cancel_hr_date == null && data.item.emp_leave_id != null">
+                    <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
                       <b-badge variant="warning"></b-badge>
                       <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
                           <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
@@ -358,24 +347,21 @@
             <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_header_date == null && dataModal.cancel_date == null" style="font-size: 16px;">
               รอการอนุมัติ 
             </p>
-            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_header_date == null && dataModal.cancel_date == null" style="font-size: 16px;">
-              รอการอนุมัติ 
-            </p>
             <p v-else-if="dataModal.cancel_header_date == null && dataModal.cancel_date == null" style="font-size: 16px;">
               รอการอนุมัติ 
             </p>
           </b-col>
         </b-row>  
 
-         <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+         <b-row v-if="dataModal.cancel_header_date != null && dataModal.head_remark != null" style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
           <b-col>
             <p style="font-size: 16px;"><b>เหตุผลที่หัวหน้าไม่อนุมัติ :</b></p>
           </b-col>  
           <b-col>
-            <p v-if="dataModal.cancel_header_date != null && dataModal.head_remark != null" style="font-size: 16px;">
+            <p style="font-size: 16px;">
               {{ dataModal.head_remark }}
             </p>
-            <p v-else> - </p>
+           
           </b-col>
         </b-row>  
 
@@ -385,18 +371,9 @@
           </b-col>  
           <b-col>
             <p v-if="dataModal.cancel_date != null" style="font-size: 16px;"> - </p>
-            <p v-if="dataModal.hr_approve_date != null && dataModal.hr_remark == null" style="font-size: 16px;">
-              {{ dataModal.hr_approve_date }} 
-            </p>
-            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_hr_date == null && dataModal.cancel_date == null" style="font-size: 16px;">
-              -
-            </p>
-            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_hr_date == null && dataModal.cancel_date == null" style="font-size: 16px;">
-              -
-            </p>
-            <p v-else-if="dataModal.cancel_hr_date == null && dataModal.cancel_date == null" style="font-size: 16px;">
-              -
-            </p>
+            <p v-else-if="dataModal.hr_approve_date != null" style="font-size: 16px;"> {{dataModal.hr_approve_date}} </p>
+            <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_date == null" style="font-size: 16px;"> - </p>
+            <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_date == null" style="font-size: 16px;"> - </p>
           </b-col>
         </b-row>
         
@@ -585,7 +562,7 @@ export default {
             console.log("selectStat")
             if (this.selectStat == 1) {
               allData = allData.filter(function(v) {
-                return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_header_date == null && v.cancel_hr_date == null;
+                return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_header_date == null;
               });
             } else if (this.selectStat == 2) {
               allData = allData.filter(function(v) {
@@ -593,15 +570,11 @@ export default {
               });
             } else if (this.selectStat == 2) {
               allData = allData.filter(function(v) {
-                return v.cancel_hr_date != null;
-              });
-            } else if (this.selectStat == 2) {
-              allData = allData.filter(function(v) {
-                return v.cancel_header_date != null && v.cancel_hr_date != null;
+                return v.cancel_header_date != null ;
               });
             } else if (this.selectStat == 3) {
               allData = allData.filter(function(v) {
-                return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_header_date == null && v.cancel_hr_date == null && v.emp_leave_id != null;
+                return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_header_date == null && v.emp_leave_id != null;
               });
             } else if (this.selectStat == 4) {
               allData = allData.filter(function(v) {
