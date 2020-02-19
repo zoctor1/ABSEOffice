@@ -74,11 +74,16 @@ export default {
       email: "hr@abs.co.th",
       pass: "1234",
       textError: "รหัสผ่านไม่ถูกต้อง",
-      isLoading: false
+      isLoading: false,
+      fullPage:''
     }
   },
   computed: {},
-  mounted() {},
+  mounted() {
+    this.isLoading = true;
+    setTimeout(() => {
+      this.isLoading = false}, 500);
+  },
   methods: {
     onEvtEnter: function(evt) {
       if (evt.keyCode == 13) {
