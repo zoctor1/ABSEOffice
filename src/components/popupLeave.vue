@@ -280,7 +280,6 @@ export default {
     Settings.defaultLocale = 'th'
   },
   methods: {
-    
     confirmMessage () {
       var ths = this;
       Swal.fire({
@@ -292,6 +291,12 @@ export default {
         cancelButtonText: 'ไม่'
       }).then((result) => {
           if (result.value) {
+            // if(result.value){
+            //   ths.insertData();
+            // }
+            // else if(){
+
+            // }
             ths.insertData();
           }
         })
@@ -386,7 +391,7 @@ export default {
       // );
       obj["leave_remark"] = this.$v.form.description.$model;
       authService.EditLeave(obj).then(response => {
-          console.log(response.data);
+          // console.log(response.data);
       });
     },
     validation: function(value) {
@@ -429,12 +434,6 @@ export default {
       obj["leave_stop_date"] = mainJs.setDateToServer(
         this.sel2
       );
-      // obj["leave_start_date"] = mainJs.setDateToServer(
-      //   this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
-      // );
-      // obj["leave_stop_date"] = mainJs.setDateToServer(
-      //   this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
-      // );
       obj["leave_remark"] = this.$v.form.description.$model;
 
       if ( await mainJs.checkStopTime(obj["leave_start_date"], obj["leave_stop_date"]) == false) {
