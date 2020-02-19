@@ -24,7 +24,7 @@
     </vs-navbar-item> -->
     <vs-navbar-item index="2" >
       <!-- v-if="userIn.header_flag == 1" -->
-      <a style="cursor: pointer;" @click="toUrl('HeaderApprove'), indexActive = 2"><font style="font-size: 20px;" color="#FEFCFF">คำขอการอนุมัติลางาน</font></a>
+      <a style="cursor: pointer;" @click="toUrl('HeaderApprove'), indexActive = 2"><font style="font-size: 20px;" color="#FEFCFF">คำขออนุมัติการลางาน</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="3" >
       <!-- v-if="userIn.dept_id == 3" -->
@@ -115,6 +115,11 @@
         
       </div>
     </modal>
+    <loading
+      :active.sync="isLoading"
+      :is-full-page="fullPage"
+    >
+    </loading>
   </div>
 </template>
 
@@ -127,6 +132,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faSignOutAlt, faBell } from "@fortawesome/free-solid-svg-icons";
 import VModal from 'vue-js-modal'
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
  
 Vue.use(VModal)
 library.add(faSignOutAlt, faBell);
@@ -134,7 +141,8 @@ library.add(faSignOutAlt, faBell);
 export default {
   name: "inc_menu",
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
+    Loading
   },
   props: {},
   data() {
@@ -144,6 +152,7 @@ export default {
       indexActive: 0,
       colorxx:'#c72a75',
       colorx2:'#5252e8',
+      isLoading: false,
     };
   },
   computed: {},
@@ -171,9 +180,11 @@ export default {
     toUrl: function(url) {
       this.$router.push("/" + url);
     },
-    logout: function(){
+    logout: async function(){
       this.$router.push("/Login");
-      localStorage.removeItem("user");
+      this.isLoading = true;
+      await localStorage.removeItem("user");
+      this.isLoading = false
     }
   },
   watch: {},

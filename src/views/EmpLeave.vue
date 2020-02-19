@@ -516,6 +516,7 @@ export default {
       selectType: '',
       selectDep:'',
       selectStat: '',
+      fullPage: '',
       currentDate: '',
       window : {
         width: 0,
@@ -616,11 +617,7 @@ export default {
           allData = allData.filter(function(v) {
             return v.head_approve_date == null && v.hr_approve_date != null && v.cancel_approve_date == null && v.emp_leave_id != null;
           });
-        } else if (this.selectStat == 5) {
-          allData = allData.filter(function(v) {
-            return v.hr_approve_date == null && v.head_approve_date != null && v.cancel_approve_date == null && v.emp_leave_id != null;
-          });
-        }
+        } 
       }
       if(this.selectType != null && this.selectType != "") {
         console.log("selectType")

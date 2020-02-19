@@ -1,5 +1,6 @@
 <template>
   <div id="HeaderAppve" lg="12" sm="12" xs="12">
+    <popupLeaveHeaderHr v-bind:showPop="showPop"/>
     <!-- {{window}} -->
     <center>
       <div><br>
@@ -7,9 +8,9 @@
           <h2 style="text-align: left; font-weight: bold;">
             คำขออนุมัติการลางาน
           </h2>
-            <div style="text-align:left;">
-            <b-row style="margin:10px 0px 10px 10px; width:100%">
-              <b-col sm="12" md="6" lg="2">
+          <div style="text-align:left;">
+            <b-row style="margin:10px 0px 0px 10px; width:100%">
+              <b-col md="12" lg="2">
                 <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
                 <datetime 
                   type="date" 
@@ -20,7 +21,7 @@
                   >
                 </datetime>
               </b-col>
-              <b-col sm="12" md="6" lg="2">
+              <b-col md="12" lg="2">
                 <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
                 <datetime 
                   type="date"
@@ -31,7 +32,22 @@
                   >
                 </datetime>
               </b-col>
-              <b-col sm="12" md="6" lg="2">
+              <b-col md="12" lg="2">
+                <p style="cursor:default;"><b>ประเภทการลา :</b></p>
+                <b-form-select
+                  v-model="selectType"
+                  :options="optionsType"
+                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                >
+                </b-form-select>
+                
+              </b-col>
+              <b-col md="12" lg="2">
+                
+              </b-col>
+            </b-row>
+            <b-row style="margin:0px 0px 10px 10px; width:100%">
+              <b-col md="6" lg="2">
                 <p style="cursor:default;"><b>สถานะ :</b></p>
                 <b-form-select
                   v-model="selectStat"
@@ -40,16 +56,7 @@
                 >
                 </b-form-select>
               </b-col>
-              <b-col sm="12" md="6" lg="2">
-                <p style="cursor:default;"><b>ประเภทการลา :</b></p>
-                <b-form-select
-                  v-model="selectType"
-                  :options="optionsType"
-                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                >
-                </b-form-select>
-              </b-col>
-              <b-col sm="6" md="6" lg="2" >
+              <b-col md="6" lg="2">
                 <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
                   <b-form-group
                     label-align ="left"
@@ -68,24 +75,39 @@
                     </b-input-group>
                   </b-form-group>
               </b-col>
-              <b-col style="padding-top:24px">
+              <b-col md="12" lg="2" style="padding-top:24px">
                 <b-button
                   variant="outline-primary"
                   @click="filterData()"
-                  style="height:42px; margin-right:10px"
-                > 
+                  style="height:42px; width:135px; margin:0px 10px 10px 0px;"
+                >
                   ค้นหา
                 </b-button>
                 
                 <b-button
                   variant="outline-danger"
                   @click="defaultValue()"
-                  style="height:42px;" 
+                  style="height:42px; width:135px; margin:0px 0px 10px 0px" 
                 >
-                    เคลียร์ข้อมูล
+                  เคลียร์ข้อมูล
                 </b-button>
               </b-col>
-             </b-row>
+              <b-col lg="2" style="padding-top:24px">
+                <vs-button
+                  @click="showLeavePopup()"
+                  color="primary"
+                  type="filled"
+                  style="height:42px; "
+                >
+                  <img 
+                  src="../assets/Plus_icon3.png" 
+                  style="margin-top:-3px"
+                  width="20" 
+                  height="20" 
+                  /> เพิ่มการลาของพนักงาน
+                </vs-button>
+              </b-col>
+            </b-row>
           </div>
 
             <table width=100% style="margin-top:10px; border: 1px solid black;">
@@ -466,13 +488,15 @@ import { Settings } from 'luxon'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 import VModal from 'vue-js-modal'
+import popupLeaveHeaderHr from "@/components/popupLeaveHeaderHr.vue"
 
 Vue.use(Datetime,VueSweetalert2,VModal)
 
 export default {
   name: "HeaderAppve",
   components: {
-    datetime: Datetime
+    datetime: Datetime,
+    popupLeaveHeaderHr
   },
   props: {},
   data() {
@@ -535,6 +559,7 @@ export default {
       selectDep:'',
       selectStat: '',
       currentDate: '',
+      showPop:false,
       window : {
         width: 0,
         height: 0
@@ -563,6 +588,13 @@ export default {
     this.selectStat = null;
   },
   methods: {
+      showLeavePopup: function() {
+        var ths = this;
+        ths.showPop = true;
+        setTimeout(function() {
+          ths.showPop = false;
+        }, 1000);
+      },
       defaultValue() {
         this.valDateStart = "";
         this.valDateStop = "";

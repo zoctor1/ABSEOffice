@@ -1,10 +1,12 @@
 <template>
   <div id="HrLeave" lg="12" sm="12" xs="12">
+    <popupLeaveHeaderHr v-bind:showPop="showPop"/>
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
-          <h2 align="left" style="font-weight: bold;">ข้อมูลการลาของพนักงาน</h2>
-
+          <h2 align="left" style="font-weight: bold;">
+            ข้อมูลการลาของพนักงาน
+          </h2>
           <div style="text-align:left;">
             <b-row style="margin:10px 0px 0px 10px; width:100%">
               <b-col md="12" lg="2">
@@ -39,22 +41,14 @@
                 </b-form-select>
                 
               </b-col>
-              <b-col md="12" lg="2" style="padding-top:24px">
-                <b-button
-                  variant="outline-primary"
-                  @click="filterData()"
-                  style="height:42px; margin:0px 10px 10px 0px"
+              <b-col md="12" lg="2">
+                <p style="cursor:default;"><b>แผนก :</b></p>
+                <b-form-select
+                  v-model="selectDep"
+                  :options="optionsDep"
+                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                 >
-                  ค้นหา
-                </b-button>
-                
-                <b-button
-                  variant="outline-danger"
-                  @click="defaultValue()"
-                  style="height:42px; margin:0px 10px 10px 0px" 
-                >
-                    เคลียร์ข้อมูล
-                </b-button>
+                </b-form-select>
               </b-col>
             </b-row>
             <b-row style="margin:0px 0px 10px 10px; width:100%">
@@ -86,16 +80,37 @@
                     </b-input-group>
                   </b-form-group>
               </b-col>
-              <b-col md="12" lg="2">
-                <p style="cursor:default;"><b>แผนก :</b></p>
-                <b-form-select
-                  v-model="selectDep"
-                  :options="optionsDep"
-                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+              <b-col md="12" lg="2" style="padding-top:24px">
+                <b-button
+                  variant="outline-primary"
+                  @click="filterData()"
+                  style="height:42px; width:135px; margin:0px 10px 10px 0px;"
                 >
-                </b-form-select>
+                  ค้นหา
+                </b-button>
+                
+                <b-button
+                  variant="outline-danger"
+                  @click="defaultValue()"
+                  style="height:42px; width:135px; margin:0px 0px 10px 0px" 
+                >
+                    เคลียร์ข้อมูล
+                </b-button>
               </b-col>
-              <b-col lg="2">
+              <b-col lg="2" style="padding-top:24px">
+                <vs-button
+                  @click="showLeavePopup()"
+                  color="primary"
+                  type="filled"
+                  style="height:42px; "
+                >
+                  <img 
+                  src="../assets/Plus_icon3.png" 
+                  style="margin-top:-3px"
+                  width="20" 
+                  height="20" 
+                  /> เพิ่มการลาของพนักงาน
+                </vs-button>
               </b-col>
             </b-row>
           </div>
@@ -443,13 +458,15 @@ import { Settings } from 'luxon'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 import VModal from 'vue-js-modal'
+import popupLeaveHeaderHr from "@/components/popupLeaveHeaderHr.vue"
 
 Vue.use(Datetime,VueSweetalert2,VModal)
 
 export default {
   name: "HrLeave",
   components: {
-    datetime: Datetime
+    datetime: Datetime,
+    popupLeaveHeaderHr
   },
   props: {},
   data() {
@@ -510,6 +527,7 @@ export default {
       selectDep:'',
       selectStat: '',
       currentDate: '',
+      showPop:false,
       window : {
         width: 0,
         height: 0
@@ -538,6 +556,13 @@ export default {
     this.selectStat = null;
   },
   methods: {
+    showLeavePopup: function() {
+      var ths = this;
+      ths.showPop = true;
+      setTimeout(function() {
+        ths.showPop = false;
+      }, 1000);
+    },
     defaultValue() {
       this.valDateStart = "";
       this.valDateStop = "";

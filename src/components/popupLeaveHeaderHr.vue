@@ -1,5 +1,5 @@
 <template>
-  <div id="popupLeave">
+  <div id="popupLeaveHeaderHr">
 
     <modal name="hello-world"
       id="sizePopupLeave"
@@ -8,45 +8,104 @@
       :active.sync="popupLeave"
     >
       <p style="background-color: #f1f1f1; font-size: 22px; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
-        กรอกรายละเอียดประวัติการลา 
+        รายละเอียดการลาของพนักงาน
         <button type="button" aria-label="Close" class="close" @click="hide()" >
           <img src="../assets/Close-icon.png" width="33" height="33" />
         </button>
       </p>
         <div style="padding: 0px 25px 10px 20px">
-        <center><h4 style="cursor:default;">{{userIn.first_name}} {{userIn.last_name}}</h4></center>
-        <center><h5 style="cursor:default;">แผนก : {{userIn.dept_name}}</h5></center>
-        <center><h5 style="cursor:default;">ตำแหน่ง : {{userIn.position_name}}</h5></center>
-
-        <div class="con-select-example" style="margin-top:15px">
-          <b-row>
-            <b-col>
-              <p style="margin-bottom:-15px; cursor:default;"><b>ประเภทการลา :</b></p>
-                <b-form-select
-                  v-model="selectType"
-                  :options="optionLeaveType"
-                  @change="changeSelectType()"
-                  class="mt-3"
-                  style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                >
-                </b-form-select>
-                <div v-if="selectType == 2" class="mt-3">
-                  <font color="red">{{ textValue2 }}</font>
+          <div class="con-select-example" style="margin-top:10px">
+            <b-row>
+              <b-col>
+                <div class="form-group" :class="{ 'form-group--error': $v.form.description.$error }" style="margin-bottom: 0px">
+                  <p style="cursor:default;"><b>ชื่อ-นามสกุล :</b></p>
+                  <b-form-textarea
+                    style="width:340px;height:32px; padding:1px; "
+                    v-model.trim="$v.form.description.$model"
+                    placeholder="กรอกชื่อ-นามสกุล (ไม่ใส่คำนำหน้า)"
+                    rows="1"
+                    no-resize
+                    >
+                  </b-form-textarea>
+                  <div class="error" v-if="!$v.form.description.required"><font color="red">จำเป็น*</font></div>
+                  <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                 </div>
-                <div v-else-if="selectType == 3" class="mt-3">
-                  <font color="red">{{ textValue3 }}</font>
-                </div>
-            </b-col>
-            <b-col>
-              <p style="cursor:default;"><b>เวลา :</b></p>
-                <b-form-radio-group
-                  v-model="selected"
-                  :options="optionTime"
-                >
-                </b-form-radio-group> 
-            </b-col>
-          </b-row>
-        </div>
+              </b-col>
+            </b-row>
+            <b-row style="margin-bottom:10px">
+              <b-col>
+                <p style="cursor:default;"><b>แผนก :</b></p>
+                  <b-form-select
+                    v-model="selectDept"
+                    :options="optionDept"
+                    style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                  >
+                  </b-form-select> 
+              </b-col>
+              <b-col>
+                <p style="cursor:default;"><b>ตำแหน่ง :</b></p>
+                  <div v-if="selectDept != 1 && selectDept != 2 && selectDept != 3">
+                    <b-form-select
+                      v-model="selectPosition"
+                      :options="optionPosition"
+                      style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                    >
+                    </b-form-select>
+                  </div>
+                  <div v-else-if="selectDept != 2 && selectDept != 3">
+                    <b-form-select
+                      v-model="selectPosition"
+                      :options="optionPositionIT"
+                      style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                    >
+                    </b-form-select> 
+                  </div>
+                  <div v-else-if="selectDept != 1 && selectDept != 3">
+                    <b-form-select
+                      v-model="selectPosition"
+                      :options="optionPositionEN"
+                      style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                    >
+                    </b-form-select> 
+                  </div>
+                  <div v-else-if="selectDept != 1 && selectDept != 2">
+                    <b-form-select
+                      v-model="selectPosition"
+                      :options="optionPositionHR"
+                      style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                    >
+                    </b-form-select> 
+                  </div>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <p style="margin-bottom:-15px; cursor:default;"><b>ประเภทการลา :</b></p>
+                  <b-form-select
+                    v-model="selectType"
+                    :options="optionLeaveType"
+                    @change="changeSelectType()"
+                    class="mt-3"
+                    style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                  >
+                  </b-form-select>
+                  <div v-if="selectType == 2" class="mt-3">
+                    <font color="red">{{ textValue2 }}</font>
+                  </div>
+                  <div v-else-if="selectType == 3" class="mt-3">
+                    <font color="red">{{ textValue3 }}</font>
+                  </div>
+              </b-col>
+              <b-col>
+                <p style="cursor:default;"><b>เวลา :</b></p>
+                  <b-form-radio-group
+                    v-model="selected"
+                    :options="optionTime"
+                  >
+                  </b-form-radio-group> 
+              </b-col>
+            </b-row>
+          </div>
           <div>
             <div style="margin-top:10px">
               <b-row>
@@ -155,18 +214,9 @@
             :is-full-page="fullPage"
           >
           </loading>
-          <div v-show="flagSave == 1" style="margin-top:25px">
-            <b-col sm="12">
-              <center>
-                <font color="red">
-                {{textError}}
-                </font>
-              </center>
-            </b-col>
-          </div>
             <center>
               <vs-button
-                style="margin-bottom:25px; position: static;"
+                style="margin-top:-10px; position: static;"
                 @click="confirmMessage()"
                 color="primary"
                 type="filled"
@@ -201,7 +251,7 @@ Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
 Vue.use(Datetime)
 
 export default {
-  name: "popupLeave",
+  name: "popupLeaveHeaderHr",
   components: {
     Swal,
     Loading,
@@ -211,20 +261,56 @@ export default {
   data() {
     return {
       dataLeave: {},
-      optionTime: [
-        { text: 'ลาครึ่งเช้า', value: 1 },
-        { text: 'ลาครึ่งบ่าย', value: 2 },
-        { text: 'ลาเต็มวัน ', value: 3 },
-        { text: 'อื่น ๆ', value: 4 }
+      selectDept: "",
+      optionDept: [
+        { value: null ,text: "--กรุณาเลือกแผนก--", disabled: true},
+        { value: 1 ,text: 'พัฒนาระบบสารสนเทศ' },
+        { value: 2 ,text: 'วิศวกรรม' },
+        { value: 3 ,text: 'ทรัพยากรมนุษย์ ' }
       ],
+      selectPosition: "",
+      optionPosition : [
+        { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
+      ],
+      optionPositionIT: [
+        { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
+        { value: 1 ,text: 'ผู้จัดการฝ่ายพัฒนาระบบสารสนเทศ' },
+        { value: 2 ,text: 'หัวหน้าทีมพัฒนาระบบ Mobile application' },
+        { value: 3 ,text: 'หัวหน้าทีมพัฒนาระบบ Web application ' },
+        { value: 4 ,text: 'หัวหน้าทีมพัฒนาระบบ Service application' },
+        { value: 5 ,text: 'ผู้พัฒนาระบบ Mobile application' },
+        { value: 6 ,text: 'ผู้พัฒนาระบบ Web application ' },
+        { value: 7 ,text: 'ผู้พัฒนาระบบ Service application' },
+      ],
+      optionPositionEN: [
+        { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
+        { value: 1 ,text: 'หัวหน้าฝ่ายวิศวกรรม' },
+        { value: 2 ,text: 'เลขาหัวหน้าฝ่ายวิศวกรรม' },
+        { value: 3 ,text: 'วิศวกรรมซอฟต์แวร์ ' },
+        { value: 4 ,text: 'วิศวกรรมฮาร์ดแวร์' }
+      ],
+      optionPositionHR: [
+        { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
+        { value: 1 ,text: 'ผู้บริหารฝ่ายบุคคล' },
+        { value: 2 ,text: 'เลขาผู้บริหารฝ่ายบุคคล' },
+        { value: 3 ,text: 'ผู้ช่วยเลขาผู้บริหารฝ่ายบุคคล ' },
+        { value: 4 ,text: 'ผู้ช่วยของผู้ช่วยเลขาผู้บริหารฝ่ายบุคคล' },
+      ],
+      optionTime: [
+        { value: 1 ,text: 'ลาครึ่งเช้า' },
+        { value: 2 ,text: 'ลาครึ่งบ่าย' },
+        { value: 3 ,text: 'ลาเต็มวัน ' },
+        { value: 4 ,text: 'อื่น ๆ' }
+      ],
+      selectType: "",
       optionLeaveType: [
-        { text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true},
-        { text: "ลาป่วย",value: 1 },
-        { text: "ลากิจ",value: 2},
-        { text: "ลาพักร้อน",value: 3 },
-        { text: "ลาคลอด",value: 4 },
-        { text: "ลาบวช",value: 5 },
-        { text: "ลาไม่รับค่าจ้าง",value: 6 }
+        { value: null ,text: "--กรุณาเลือกประเภทการลา--", disabled: true},
+        { value: 1 ,text: "ลาป่วย" },
+        { value: 2 ,text: "ลากิจ" },
+        { value: 3 ,text: "ลาพักร้อน" },
+        { value: 4 ,text: "ลาคลอด" },
+        { value: 5 ,text: "ลาบวช" },
+        { value: 6 ,text: "ลาไม่รับค่าจ้าง" }
       ],
       description:'',
       selected1: "",
@@ -235,7 +321,6 @@ export default {
       types: [
         'date',
       ],
-      selectType: "",
       selected: 3,
       selectTimeStart: "",
       selectTimeStop: "",
@@ -350,6 +435,8 @@ export default {
       this.flagRangDate = false;
       this.selectType = null;
       this.selected = 3;
+      this.selectDept = null;
+      this.selectPosition = null;
     },
     EditLeave() {
       this.$modal.show('hello-world');
@@ -545,15 +632,8 @@ export default {
     display: none;
     -webkit-appearance: none;
   }
-  #sizePopupLeave .vs-popup {
-    /* position: relative; */
-    /* z-index: 1; */
-    width: 30% !important;
-    /* height: 65% !important; */
-  }
-  #sizePopupLeave .vs-popup--content {
-    overflow: hidden !important;
-    z-index: 1;
+  #sizePopupLeave .v--modal {
+    margin-top: 2%;
   }
   #sizePopupLeave .vhd-input {
     margin-top: 10px;
@@ -579,9 +659,6 @@ export default {
   #sizePopupLeave .fs-16 {
     display: none;
   }
-  /* #sizePopupLeave .before {
-    display: none;
-  } */
   #sizePopupLeave .custom-select {
     border: none;
   }
