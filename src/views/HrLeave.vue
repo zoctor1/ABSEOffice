@@ -235,7 +235,7 @@
                     <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_header_date == null && data.item.cancel_hr_date == null && data.item.emp_leave_id != null">
                       <b-badge variant="warning"></b-badge>
                       <button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
-                          <font color="#00000" >รอการอนุมัติ</font>
+                          <font color="#00000" >รอการรับทราบ</font>
                       </button>
                     </div>
                     <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_header_date == null && data.item.cancel_hr_date == null && data.item.emp_leave_id != null">
@@ -247,7 +247,7 @@
                     <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_header_date == null && data.item.cancel_hr_date == null&& data.item.emp_leave_id != null">
                       <b-badge variant="warning"></b-badge>
                       <button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
-                          <font color="#00000" >รอการอนุมัติ</font>
+                          <font color="#00000" >รอการรับทราบ</font>
                       </button>
                     </div>
                     </center>
@@ -357,11 +357,8 @@
             <p v-if="dataModal.head_approve_date != null && dataModal.head_remark == null" style="font-size: 16px;">
               {{ dataModal.head_approve_date }} 
             </p>
-            <p v-else-if="dataModal.cancel_header_date != null  && dataModal.head_remark == null" style="font-size: 16px;">
+            <p v-else-if="dataModal.cancel_header_date != null  && dataModal.head_remark != null" style="font-size: 16px;">
               ไม่อนุมัติ 
-            </p>
-            <p v-else-if="dataModal.cancel_header_date != null && dataModal.head_remark != null" style="font-size: 16px;">
-              ไม่อนุมัติ (เหตุผล : {{ dataModal.head_remark }})
             </p>
             <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_header_date == null && dataModal.cancel_date == null" style="font-size: 16px;">
               รอการอนุมัติ 
@@ -375,6 +372,18 @@
           </b-col>
         </b-row>  
 
+         <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p style="font-size: 16px;"><b>เหตุผลที่หัวหน้าไม่อนุมัติ :</b></p>
+          </b-col>  
+          <b-col>
+            <p v-if="dataModal.cancel_header_date != null && dataModal.head_remark != null" style="font-size: 16px;">
+              {{ dataModal.head_remark }}
+            </p>
+            <p v-else> - </p>
+          </b-col>
+        </b-row>  
+
         <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
           <b-col>
             <p style="font-size: 16px;"><b>วันที่ฝ่ายบุคคลรับทราบ :</b></p>
@@ -384,20 +393,14 @@
             <p v-if="dataModal.hr_approve_date != null && dataModal.hr_remark == null" style="font-size: 16px;">
               {{ dataModal.hr_approve_date }} 
             </p>
-            <p v-else-if="dataModal.cancel_hr_date != null && dataModal.hr_remark == null" style="font-size: 16px;">
-              ไม่อนุมัติ 
-            </p>
-            <p v-else-if="dataModal.cancel_hr_date != null && dataModal.hr_remark != null" style="font-size: 16px;">
-              ไม่อนุมัติ (เหตุผล : {{ dataModal.hr_remark }})
-            </p>
             <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_hr_date == null && dataModal.cancel_date == null" style="font-size: 16px;">
-              รอการอนุมัติ 
+              -
             </p>
             <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_hr_date == null && dataModal.cancel_date == null" style="font-size: 16px;">
-              รอการอนุมัติ 
+              -
             </p>
             <p v-else-if="dataModal.cancel_hr_date == null && dataModal.cancel_date == null" style="font-size: 16px;">
-              รอการอนุมัติ 
+              -
             </p>
           </b-col>
         </b-row>
@@ -598,13 +601,13 @@ export default {
       this.totalRows = this.items.length
     },
     showMsgBoxTwo(id) {
-        this.$bvModal.msgBoxConfirm('คุณต้องการอนุมัติการลานี้ใช่หรือไม่?', {
-          title: 'การอนุมัติ',
+        this.$bvModal.msgBoxConfirm('คุณต้องการรับทราบการลานี้ใช่หรือไม่?', {
+          title: 'รับทราบการลา',
           size: 'sm',
           buttonSize: 'sm',
           okVariant: 'danger',
-          okTitle: 'อนุมัติ',
-          cancelTitle: 'ไม่อนุมัติ',
+          okTitle: 'รับทราบ',
+          cancelTitle: 'ปิด',
           footerClass: 'p-2',
           hideHeaderClose: false,
           centered: true
@@ -615,34 +618,35 @@ export default {
               console.log(response.data);
               this.getHrApprove();
             });
-          } else if (value == false) {
-              this.showMsgOk(id);
-          }
+          } 
+          // else if (value == false) {
+          //     this.showMsgOk(id);
+          // }
         })
       },
-      showMsgOk(id) {
-        const h = this.$createElement
-        const titleVNode = h('div', { domProps: { innerHTML: 'สาเหตุที่ไม่อนุมัติ' } })
-        const messageVNode = h('div', { class: ['foobar'] }, [
-           h('b-form-textarea', { class: ['textarea-large'] })
-        ])
-        this.$bvModal.msgBoxOk([messageVNode], {
-          title: [titleVNode],
-          buttonSize: 'sm',
-          centered: true, size: 'sm'
-        }).then(value => {
-          if(value == true){
-            console.log(id);
-            console.log(messageVNode.children[0].elm.value);
-            authService.notApproveHR(id, messageVNode.children[0].elm.value).then(response => {
-              this.getHrApprove();
-            });
-          }
-          else if(value == false){
-            console.log("gg")
-          }
-        });
-      },
+      // showMsgOk(id) {
+      //   const h = this.$createElement
+      //   const titleVNode = h('div', { domProps: { innerHTML: 'สาเหตุที่ไม่อนุมัติ' } })
+      //   const messageVNode = h('div', { class: ['foobar'] }, [
+      //      h('b-form-textarea', { class: ['textarea-large'] })
+      //   ])
+      //   this.$bvModal.msgBoxOk([messageVNode], {
+      //     title: [titleVNode],
+      //     buttonSize: 'sm',
+      //     centered: true, size: 'sm'
+      //   }).then(value => {
+      //     if(value == true){
+      //       console.log(id);
+      //       console.log(messageVNode.children[0].elm.value);
+      //       authService.notApproveHR(id, messageVNode.children[0].elm.value).then(response => {
+      //         this.getHrApprove();
+      //       });
+      //     }
+      //     else if(value == false){
+      //       console.log("gg")
+      //     }
+      //   });
+      // },
     getHrApprove: async function(){
     this.isBusy = true;
     await authService.getDataHR().then(response => {
