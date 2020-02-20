@@ -82,7 +82,7 @@ export default {
   mounted() {
     this.isLoading = true;
     setTimeout(() => {
-      this.isLoading = false}, 500);
+      this.isLoading = false}, 2000);
   },
   methods: {
     onEvtEnter: function(evt) {
@@ -94,7 +94,7 @@ export default {
     toURL: function(url) {
       this.$router.push("/" + url);
     },
-    loginUser: async function(){
+    loginUser: function(){
       if (this.email == "" && this.pass == "") {
           this.$swal.fire({
             heightAuto: false,
@@ -114,14 +114,12 @@ export default {
             title: 'กรุณากรอกรหัสผ่าน'
           })
       } else {
-        await authService.loginUser( encodeURI(this.email), encodeURI(this.pass)).then(response => { 
+          authService.loginUser( encodeURI(this.email), encodeURI(this.pass)).then(response => { 
           console.log(response)
           if (response.data != "" && response.data != null && response.data != undefined) {
             console.log(response.data)
-            this.isLoading = true;
             this.toURL("Homepage");
             localStorage.setItem("user", JSON.stringify(response.data));
-            this.isLoading = false;
           } else {
             this.$swal.fire({
               heightAuto: false,
