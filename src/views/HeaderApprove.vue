@@ -205,13 +205,13 @@
                   <template v-slot:cell(head_approve_date)="data">
                     <center>
                     <div v-if="data.item.cancel_header_date != null">
-                      <font>{{data.item.cancel_header_date}}</font>
+                      <font>{{data.item.cancel_header_date_format}}</font>
                     </div>
                     <div v-else-if="data.item.cancel_date != null && data.item.cancel_header_date == null">
-                      <font>{{data.item.cancel_date}}</font>
+                      <font>{{data.item.cancel_date_format}}</font>
                     </div>
                     <div v-else-if="data.item.cancel_header_date == null && data.item.head_approve_date != null">
-                      <font>{{data.item.head_approve_date}}</font>
+                      <font>{{data.item.head_approve_date_format}}</font>
                     </div>
                     <div v-else-if="data.item.cancel_header_date == null && data.item.head_approve_date == null && data.item.emp_leave_id != null">
                       <font color="#00000" > - </font>
@@ -221,7 +221,7 @@
 
                   <template v-slot:cell(status)="data">
                     <center>
-                    <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_header_date == null">
+                    <div v-if="data.item.head_approve_date != null && data.item.cancel_header_date == null">
                       <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
                         <font color="#ffffff">ผ่านการอนุมัติ</font>
                       </p>
@@ -248,12 +248,6 @@
                       <button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
                           <font color="#00000" >รอการอนุมัติ</font>
                       </button>
-                    </div>
-                    <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
-                      <b-badge variant="warning"></b-badge>
-                      <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
-                          <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
-                      </p>
                     </div>
                     </center>
                   </template>
@@ -332,7 +326,7 @@
             <p><b style="font-size: 16px;">วันที่ลา :</b></p>
           </b-col>
           <b-col>
-            <p style="font-size: 16px;">{{dataModal.leave_start_date}}</p>
+            <p style="font-size: 16px;">{{dataModal.leave_start_date_format}}</p>
           </b-col>
         </b-row>
 
@@ -341,7 +335,7 @@
             <p><b style="font-size: 16px;">ลาถึงวันที่ :</b></p>
           </b-col>
           <b-col>
-            <p style="font-size: 16px;">{{dataModal.leave_stop_date}}</p>
+            <p style="font-size: 16px;">{{dataModal.leave_stop_date_format}}</p>
           </b-col>
         </b-row>
 
@@ -350,9 +344,18 @@
             <p><b style="font-size: 16px;">วันที่กรอกข้อมูล :</b></p>
           </b-col>
           <b-col>
-            <p style="font-size: 16px;">{{dataModal.leave_date}}</p>
+            <p style="font-size: 16px;">{{dataModal.leave_date_format}}</p>
           </b-col>
         </b-row>
+
+        <b-row v-if="dataModal.modify_date != null" style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p style="font-size: 16px;"><b>วันที่เเก้ไขข้อมูลการลาล่าสุด :</b></p>
+          </b-col>  
+          <b-col>
+            <p style="font-size: 16px;"> {{ dataModal.modify_date_format }} </p>
+          </b-col>
+        </b-row>  
 
        <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
           <b-col>
@@ -361,10 +364,10 @@
           <b-col>
             <p v-if="dataModal.cancel_date != null"> - </p>
             <p v-if="dataModal.head_approve_date != null && dataModal.head_remark == null" style="font-size: 16px;">
-              {{ dataModal.head_approve_date }} 
+              {{ dataModal.head_approve_date_format }} 
             </p>
             <p v-else-if="dataModal.cancel_header_date != null  && dataModal.head_remark != null" style="font-size: 16px;">
-              ไม่อนุมัติ 
+              ไม่อนุมัติ ({{ dataModal.cancel_header_date_format }} )
             </p>
             <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_header_date == null && dataModal.cancel_date == null" style="font-size: 16px;">
               รอการอนุมัติ 
@@ -396,6 +399,15 @@
             <p v-else-if="dataModal.hr_approve_date != null" style="font-size: 16px;"> {{dataModal.hr_approve_date}} </p>
             <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_date == null" style="font-size: 16px;"> - </p>
             <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_date == null" style="font-size: 16px;"> - </p>
+          </b-col>
+        </b-row>
+
+        <b-row v-if="dataModal.cancel_date != null" style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p><b style="font-size: 16px;">ยกเลิกเมื่อ :</b></p>
+          </b-col>
+          <b-col>
+            <p style="font-size: 16px;">{{dataModal.cancel_date_format}}</p>
           </b-col>
         </b-row>
         
@@ -493,7 +505,7 @@ export default {
       itemHeader: [],
       fieldHeader: [
         { key: 'no', label: 'ลำดับ', class: 'text-center no' },
-        { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date' },
+        { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date' },
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name' },
         // { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
@@ -501,7 +513,7 @@ export default {
         // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date' },
         // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date' },
         { key: 'leave_time', label: 'เวลา', class: 'text-center leave_time' },
-        { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
+        { key: 'head_approve_date_format', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center head_approve_date' },
         // { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center hr_approve_date' },
         { key: 'status', label: 'สถานะ', class: 'text-center status' },
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center leave_remark' },
@@ -691,8 +703,16 @@ export default {
             response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name + "(" + response.data[i].nick_name + ")";
             response.data[i].HeaderbtnApprove = false;
             response.data[i].leave_time = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[1] : "") + ' - ' + (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[1] : "");
-            response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
-            response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
+            response.data[i].leave_date_format = mJS.setDateFormat(response.data[i].leave_date);
+            response.data[i].leave_start_date_format = mJS.setDateFormat(response.data[i].leave_start_date);
+            response.data[i].leave_stop_date_format = mJS.setDateFormat(response.data[i].leave_stop_date);
+            response.data[i].modify_date_format = mJS.setDateFormat(response.data[i].modify_date);
+            response.data[i].head_approve_date_format = mJS.setDateFormat(response.data[i].head_approve_date);
+            response.data[i].hr_approve_date_format = mJS.setDateFormat(response.data[i].hr_approve_date);
+            response.data[i].cancel_date_format = mJS.setDateFormat(response.data[i].cancel_date);
+            response.data[i].cancel_header_date_format = mJS.setDateFormat(response.data[i].cancel_header_date);
+            // response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
+            // response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
             } 
           console.log(response.data)
           this.tempData = response.data;
@@ -713,26 +733,26 @@ export default {
       if(this.window.width <= 750){
         this.fieldHeader = [
           { key: 'no', label: 'ลำดับ', class: 'text-center' },
-          { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center' },
+          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
           { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
           // { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
           // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
           // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
-          { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+          { key: 'head_approve_date_format', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
           { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
         ]
       }
       else{
         this.fieldHeader = [
           { key: 'no', label: 'ลำดับ', class: 'text-center' },
-          { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center' },
+          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
           { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
           { key: 'dept_name', label: 'เเผนก', class: 'text-center' },
           { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center' },
           { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
           // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
           // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
-          { key: 'head_approve_date', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+          { key: 'head_approve_date_format', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
           // { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
           { key: 'status', label: 'สถานะ', class: 'text-center' },
           { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }

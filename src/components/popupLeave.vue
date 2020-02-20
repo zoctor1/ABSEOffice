@@ -268,7 +268,7 @@ export default {
       timeFull18: "18:00:00",
       sel1: "",
       sel2: "",
-      checkData:{}
+      checkData:{},
     }
   },
   computed: {},
@@ -357,33 +357,36 @@ export default {
       this.selected = 3;
     },
     EditLeave() {
-      this.isLoading = false;
+      this.isLoading = false; 
       var obj = {};
       obj["leave_reason_id"] = this.selectType;
       obj["leave_type_id"] = this.selected;
-      // if(this.selected == 1){
-        this.sel1 = this.$v.form.valDate1.$model.split("/") + " " + this.timeAM9
-        // this.sel2 = this.$v.form.valDate1.$model.split("/") + " " + this.timeAM12
-      // }
-      // else if(this.selected == 2){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("/") + " " + this.timePM13
-      //   this.sel2 = this.$v.form.valDate1.$model.split("/") + " " + this.timePM18
-      // }
-      // else if(this.selected == 3){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("/") + " " + this.timeFull9
-      //   this.sel2 = this.$v.form.valDate2.$model.split("/") + " " + this.timeFull18
-      // }
-      // else if(this.selected == 4){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("/") + " " + this.selectTimeStart
-      //   this.sel2 = this.$v.form.valDate2.$model.split("/") + " " + this.selectTimeStop
-      // }
-      obj["leave_start_date"] = this.Sel1;
-      obj["leave_stop_date"] = this.$v.Sel2;
+      if(this.selected == 1){
+        this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeAM9
+        this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeAM12
+      }
+      else if(this.selected == 2){
+        this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM13
+        this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM18
+      }
+      else if(this.selected == 3){
+        this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeFull9
+        this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.timeFull18
+      }
+      else if(this.selected == 4){
+        this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
+        this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
+      }
+      obj["leave_start_date"] = mainJs.setDateToServer(
+         this.sel1
+      );
+      obj["leave_stop_date"] = mainJs.setDateToServer(
+        this.sel2
+      );
       obj["leave_remark"] = this.$v.form.description.$model;
       obj["emp_leave_id"] = this.dataLeave.emp_leave_id;
-      console.log(this.Sel1);
-      console.log(obj);
       authService.EditLeave(obj).then(response => {
+        this.$modal.hide('hello-world');
         console.log(response.data);
       });
     },
@@ -480,14 +483,17 @@ export default {
         console.log(this.checkData)
         if(this.editPop != ""){
           this.$modal.show('hello-world');
+          this.popupLeave = true;
           this.dataLeave = this.editPop;
+          console.log(this.dataLeave)
           this.checkData = 1;
           this.$v.form.description.$model = this.dataLeave.leave_remark;
-          this.$v.form.valDate1.$model = this.dataLeave.leave_start_date;
-          this.$v.form.valDate2.$model = this.dataLeave.leave_stop_date;
+          this.$v.form.valDate1.$model = mainJs.setDateToServer(this.dataLeave.leave_start_date, "TZ");
+          this.$v.form.valDate2.$model = mainJs.setDateToServer(this.dataLeave.leave_stop_date, "TZ");
           this.selectType = this.dataLeave.leave_reason_id;
           this.selected = this.dataLeave.leave_type_id;
-        } else {
+        } 
+        else {
           this.defaultValue();
         }
       }
