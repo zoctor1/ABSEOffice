@@ -1,6 +1,6 @@
 <template>
   <div style="background-color:#f8f8f8; margin-left:5px; ">
-    <popupLeave v-bind:showPop="showPop" />
+    <popupLeave v-bind:showPop="showPop"/>
 
     <b-col>
       <div style="position: drelative;">
