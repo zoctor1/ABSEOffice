@@ -677,7 +677,7 @@ export default {
         this.selectedFilter = null;
         for (var i = 0; i < response.data.length; i++) {
           response.data[i].no = i+1;
-          response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name + "(" + response.data[i].nick_name + ")";
+          response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name + " " + "(" + response.data[i].nick_name + ")";
           response.data[i].HrbtnApprove = false;
           response.data[i].leave_time = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[1] : "") + ' - ' + (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[1] : "");
           response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");

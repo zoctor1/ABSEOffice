@@ -17,19 +17,15 @@
           <div class="con-select-example" style="margin-top:10px">
             <b-row>
               <b-col>
-                <div class="form-group" :class="{ 'form-group--error': $v.form.description.$error }" style="margin-bottom: 0px">
-                  <p style="cursor:default;"><b>ชื่อ-นามสกุล :</b></p>
-                  <b-form-textarea
-                    style="width:340px;height:32px; padding:1px; "
-                    v-model.trim="$v.form.description.$model"
-                    placeholder="กรอกชื่อ-นามสกุล (ไม่ใส่คำนำหน้า)"
-                    rows="1"
-                    no-resize
-                    >
-                  </b-form-textarea>
-                  <div class="error" v-if="!$v.form.description.required"><font color="red">จำเป็น*</font></div>
-                  <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
-                </div>
+                <p style="cursor:default;"><b>ชื่อ-นามสกุล :</b></p>
+                <template>
+                  <b-form-input list="my-list-id" style="width:528px;"></b-form-input>
+
+                  <datalist id="my-list-id">
+                    <option>Manual Option</option>
+                    <option v-for="size in sizes" :key="size">{{ size }}</option>
+                  </datalist>
+                </template>
               </b-col>
             </b-row>
             <b-row style="margin-bottom:10px">
@@ -260,6 +256,7 @@ export default {
   props: ["showPop", "editPop"],
   data() {
     return {
+      sizes: ['Small', 'Medium', 'Large', 'Extra Large'],
       dataLeave: {},
       selectDept: "",
       optionDept: [
@@ -312,7 +309,6 @@ export default {
         { value: 5 ,text: "ลาบวช" },
         { value: 6 ,text: "ลาไม่รับค่าจ้าง" }
       ],
-      description:'',
       selected1: "",
       selected2: null,
       value1:'',
@@ -334,7 +330,8 @@ export default {
         valDate1: '',
         valDate2: '',
         leaveType: '',
-        leaveReason: ''
+        leaveReason: '',
+        codeName: ''
       },
       userIn:{},
       isLoading: false,
@@ -426,6 +423,7 @@ export default {
       this.isLoading = false;
       this.popupLeave = true;
       this.flagSave = 0;
+      this.$v.form.codeName.$model = "";
       this.$v.form.description.$model = "";
       this.$v.form.selectTimeFrom.$model = "";
       this.$v.form.valDate1.$model = "";
@@ -651,10 +649,7 @@ export default {
     padding: none;
   }
   #sizePopupLeave .vdatetime-input {
-    width: 235px !important;
-    height: 40px !important;
-    font-size: 16px !important;
-    border: none;
+    width: 235px !important; 
   }
   #sizePopupLeave .fs-16 {
     display: none;
@@ -662,4 +657,5 @@ export default {
   #sizePopupLeave .custom-select {
     border: none;
   }
+
 </style>
