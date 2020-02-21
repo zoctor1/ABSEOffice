@@ -57,7 +57,18 @@
                 </b-form-select>
               </b-col>
               <b-col md="6" lg="2">
-                <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
+                <p style="cursor:default;"><b>ชื่อ-นามสกุล :</b></p>
+                  <b-form-input 
+                    list="my-list-id" 
+                    style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                    >
+                  </b-form-input>
+
+                  <datalist id="my-list-id">
+                    <option>Manual Option</option>
+                    <option v-for="size in sizes" :key="size">{{ size }}</option>
+                  </datalist>
+                <!-- <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
                   <b-form-group
                     label-align ="left"
                     label-size="md"
@@ -73,7 +84,7 @@
                         style="height:42px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                       ></b-form-input>
                     </b-input-group>
-                  </b-form-group>
+                  </b-form-group> -->
               </b-col>
               <b-col md="12" lg="2" style="padding-top:24px">
                 <b-button
@@ -467,6 +478,7 @@ export default {
   props: {},
   data() {
     return {
+      sizes: ['Small', 'Medium', 'Large', 'Extra Large'],
       tempData: [],
       optionStat: [
         { value: null ,text: "--เลือกสถานะ--"},

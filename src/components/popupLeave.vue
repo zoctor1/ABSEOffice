@@ -342,6 +342,7 @@ export default {
       return value == undefined || value == null || (value + "").trim() == "";
     },
     defaultValue() {
+      console.log("default popup")
       this.$modal.show('hello-world');
       this.isLoading = false;
       this.popupLeave = true;
@@ -350,8 +351,8 @@ export default {
       this.$v.form.selectTimeFrom.$model = "";
       this.$v.form.valDate1.$model = "";
       this.$v.form.valDate2.$model = "";
-      this.selectTimeStart="",
-      this.selectTimeStop=""
+      this.selectTimeStart="";
+      this.selectTimeStop="";
       this.flagRangDate = false;
       this.selectType = null;
       this.selected = 3;

@@ -18,14 +18,12 @@
             <b-row>
               <b-col>
                 <p style="cursor:default;"><b>ชื่อ-นามสกุล :</b></p>
-                <template>
                   <b-form-input list="my-list-id" style="width:528px;"></b-form-input>
 
                   <datalist id="my-list-id">
                     <option>Manual Option</option>
                     <option v-for="size in sizes" :key="size">{{ size }}</option>
                   </datalist>
-                </template>
               </b-col>
             </b-row>
             <b-row style="margin-bottom:10px">
@@ -258,14 +256,14 @@ export default {
     return {
       sizes: ['Small', 'Medium', 'Large', 'Extra Large'],
       dataLeave: {},
-      selectDept: "",
+      selectDept: null,
       optionDept: [
         { value: null ,text: "--กรุณาเลือกแผนก--", disabled: true},
         { value: 1 ,text: 'พัฒนาระบบสารสนเทศ' },
         { value: 2 ,text: 'วิศวกรรม' },
         { value: 3 ,text: 'ทรัพยากรมนุษย์ ' }
       ],
-      selectPosition: "",
+      selectPosition: null,
       optionPosition : [
         { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
       ],
@@ -299,7 +297,7 @@ export default {
         { value: 3 ,text: 'ลาเต็มวัน ' },
         { value: 4 ,text: 'อื่น ๆ' }
       ],
-      selectType: "",
+      selectType: null,
       optionLeaveType: [
         { value: null ,text: "--กรุณาเลือกประเภทการลา--", disabled: true},
         { value: 1 ,text: "ลาป่วย" },
@@ -419,6 +417,7 @@ export default {
       return value == undefined || value == null || (value + "").trim() == "";
     },
     defaultValue() {
+      console.log("default popup")
       this.$modal.show('hello-world');
       this.isLoading = false;
       this.popupLeave = true;
@@ -428,13 +427,13 @@ export default {
       this.$v.form.selectTimeFrom.$model = "";
       this.$v.form.valDate1.$model = "";
       this.$v.form.valDate2.$model = "";
-      this.selectTimeStart="",
-      this.selectTimeStop=""
+      this.selectTimeStart="";
+      this.selectTimeStop="";
       this.flagRangDate = false;
-      this.selectType = null;
+      this.selectType = "";
+      this.selectDept = "";
       this.selected = 3;
-      this.selectDept = null;
-      this.selectPosition = null;
+      this.selectPosition = "";
     },
     EditLeave() {
       this.$modal.show('hello-world');
@@ -568,6 +567,7 @@ export default {
   },
   watch: {
     showPop() {
+      console.log(this.showPop)
       if (this.showPop) {
         this.defaultValue();
       }
