@@ -18,6 +18,20 @@ export function setDateToServer(d, flag) {
     }
 }
 
+export function setDateFormat(d){
+    if (d == undefined || d == null || d.trim() == ""){
+        return null;
+    }
+    else{
+        var dd = new Date(d);
+        return (dd.getDate() < "10" ? "0" + dd.getDate() : dd.getDate()) + "/" + 
+            (dd.getMonth() + 1 < "10" ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1) + "/" + 
+             dd.getFullYear() + " " + 
+            (dd.getHours() < "10" ? "0" + dd.getHours() : dd.getHours()) + ":" + 
+            (dd.getMinutes() < "10" ? "0" + dd.getMinutes() : dd.getMinutes()) 
+    }
+}
+
 export function checkStopTime(Start, Stop) {
     var status = true;
     var timeStart = new Date(Start);
