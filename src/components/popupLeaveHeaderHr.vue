@@ -280,7 +280,7 @@ export default {
       },
       userIn:{},
       isLoading: false,
-      fullPage: true,
+      fullPage: '',
       date: null,
       flagRangDate: false,
       validateRangDate: {},
