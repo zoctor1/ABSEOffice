@@ -10,6 +10,42 @@ axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.headers.get['Content-Type'] = 'application/json';
 axios.defaults.crossDomain = true;
 
+export function getDataDept() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${API_URL}/dataDept`, {}, { params: {} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function getDataTypeLeave() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${API_URL}/dataTypeLeave`, {}, { params: {} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function getDataReasonLeave() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${API_URL}/dataReasonLeave`, {}, { params: {} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function getDataUserDept(empId, deptId) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/dataUserDept`, {}, { headers: {myDataDept : empId, dataDept : deptId} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
 export function getDataHR() {
     return new Promise((resolve, reject) => {
         axios.get(`${API_URL}/dataForHR`, {}, { params: {} }).then(
@@ -20,11 +56,9 @@ export function getDataHR() {
 }
 
 export function getDataHeader(deptId) {
-    console.log(deptId);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/dataForHeader`, {}, { headers: {datahd : deptId} }).then(
             response => {
-                console.log(response.data)
                 return resolve(new ResponseWrapper(response, response.data))
             })
     }).catch(error => reject(new ErrorWrapper(error)))
@@ -144,6 +178,16 @@ export function EditLeave(obj) {
     console.log(obj);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/EditLeave`, JSON.stringify(obj), {}).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function insertDataByHeader(obj) {
+    console.log(obj);
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/insertDataByHeader`, JSON.stringify(obj), {}).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })

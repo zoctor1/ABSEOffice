@@ -52,7 +52,7 @@
                 <p style="cursor:default;"><b>ประเภทการลา :</b></p>
                 <b-form-select
                   v-model="selectType"
-                  :options="optionsType"
+                  :options="optionsLeaveType"
                   style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                 >
                 </b-form-select>
@@ -474,21 +474,7 @@ export default {
         { value: 3 ,text: "อยู่ในระหว่างการดำเนินการ" },
         { value: 4 ,text: "ถูกยกเลิก" }
       ],
-      optionsDep: [
-        { value: null ,text: "--เลือกแผนก--"},
-        { value: 1 ,text: "พัฒนาระบบสารสนเทศ"},
-        { value: 2 ,text: "วิศวกรรม "},
-        { value: 3 ,text: "ทรัพยากรมนุษย์"}
-      ],
-      optionsType: [
-        { value: null ,text: "--เลือกประเภทการลา--"},
-        { value: 1 ,text: "ลาป่วย"},
-        { value: 2 ,text: "ลากิจ"},
-        { value: 3 ,text: "ลาพักร้อน"},
-        { value: 4 ,text: "ลาคลอด"},
-        { value: 5 ,text: "ลาบวช"},
-        { value: 6 ,text: "ลาไม่รับค่าจ้าง"}
-      ],
+      optionsLeaveType: [],
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center no' },
         { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date' },
@@ -550,6 +536,7 @@ export default {
     this.selectType = null;
     this.selectDep = null;
     this.selectStat = null;
+    this.getDataReasonLeave();
   },
   methods: {
     cancelBtn(cancel){
@@ -646,11 +633,23 @@ export default {
         ths.editPop = "";
       } 
       else {
-        ths.editPop = this.dataModal;  
+        ths.editPop = this.dataModal; 
+        this.hide('remarkModal'); 
       }
       setTimeout(function() {
         ths.showPop = false;
       }, 1000);
+    },
+    getDataReasonLeave: async function(){
+       var dataReason = [];
+      await authService.getDataReasonLeave().then(response => {
+        if (response.data != null && response.data.length > 0) {
+          response.data.forEach(function (obj, i) {
+            dataReason.push({ text: obj.leave_reason_name,value: obj.leave_reason_id });
+          });
+          this.optionsLeaveType = dataReason;
+        }
+      });
     },
     getDataAsync: async function(){
         this.isBusy = true;

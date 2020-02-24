@@ -30,6 +30,7 @@
 </template>
 
 <script>
+    import * as mainJs from '../assets/js/mainJS'
     import {Calendar} from 'vue-bootstrap4-calendar';
     import * as authService from '@/services/auth.service';
 
@@ -68,12 +69,14 @@
                 await authService.getEvent(user.uuid, user.dept_id, user.header_flag, choice).then(response => {
                     console.log(response.data);
                     response.data.forEach( function(obj) {
-                        if(obj.head_approve_date != null && obj.hr_approve_date != null && obj.cancel_approve_date == null){
+                        if(obj.head_approve_date != null && obj.hr_approve_date != null && obj.cancel_date == null){
                             if(choice == true){
                                 startDate = new Date(obj.leave_start_date);
                                 stopDate = new Date(obj.leave_stop_date);
+                                start = mainJs.setDateFormat(startDate);
+                                stop = mainJs.setDateFormat(stopDate);
                                 fullname = obj.first_name + " " + obj.last_name;
-                                description = "ประเภทการลา : " + obj.leave_reason_name + " รายละเอียดการลา : "  +  obj.leave_remark  + " ระยะเวลาการลา : " +  obj.leave_start_date + " ถึง " + obj.leave_stop_date;
+                                description = "ประเภทการลา : " + obj.leave_reason_name + " รายละเอียดการลา : "  +  obj.leave_remark  + " ระยะเวลาการลา : " +  start + " ถึง " + stop;
                                 for (var d = startDate; d <= stopDate; d.setDate(d.getDate() + 1)) {
                                     count++;
                                     dataTemp.push({

@@ -212,19 +212,19 @@ export default {
     return {
       dataLeave: {},
       optionTime: [
-        { text: 'ลาครึ่งเช้า', value: 1 },
-        { text: 'ลาครึ่งบ่าย', value: 2 },
-        { text: 'ลาเต็มวัน ', value: 3 },
-        { text: 'อื่น ๆ', value: 4 }
+        // { text: 'ลาครึ่งเช้า', value: 1 },
+        // { text: 'ลาครึ่งบ่าย', value: 2 },
+        // { text: 'ลาเต็มวัน ', value: 3 },
+        // { text: 'อื่น ๆ', value: 4 }
       ],
       optionLeaveType: [
-        { text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true},
-        { text: "ลาป่วย",value: 1 },
-        { text: "ลากิจ",value: 2},
-        { text: "ลาพักร้อน",value: 3 },
-        { text: "ลาคลอด",value: 4 },
-        { text: "ลาบวช",value: 5 },
-        { text: "ลาไม่รับค่าจ้าง",value: 6 }
+        // { text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true},
+        // { text: "ลาป่วย",value: 1 },
+        // { text: "ลากิจ",value: 2},
+        // { text: "ลาพักร้อน",value: 3 },
+        // { text: "ลาคลอด",value: 4 },
+        // { text: "ลาบวช",value: 5 },
+        // { text: "ลาไม่รับค่าจ้าง",value: 6 }
       ],
       description:'',
       selected1: "",
@@ -279,6 +279,8 @@ export default {
     this.currentDate = mainJs.setDateToServer(new Date().toString(), "TZ");
     this.userIn = JSON.parse(localStorage.getItem("user"));
     Settings.defaultLocale = 'th'
+    this.getDataTypeLeave();
+    this.getDataReasonLeave();
   },
   methods: {
     confirmMessage () {
@@ -398,6 +400,28 @@ export default {
         }
       }
       return true;
+    },
+    getDataTypeLeave: async function(){
+      var dataType = [];
+      await authService.getDataTypeLeave().then(response => {
+        if (response.data != null && response.data.length > 0) {
+          response.data.forEach(function (obj, i) {
+            dataType.push({ text: obj.leave_type_name, value: obj.leave_type_id });
+          });
+          this.optionTime = dataType;
+        }
+      });
+    },
+    getDataReasonLeave: async function(){
+      var dataReason = [];
+      await authService.getDataReasonLeave().then(response => {
+        if (response.data != null && response.data.length > 0) {
+          response.data.forEach(function (obj, i) {
+            dataReason.push({ text: obj.leave_reason_name,value: obj.leave_reason_id });
+          });
+          this.optionLeaveType = dataReason;
+        }
+      });
     },
     insertData: async function() {
       this.isLoading = true;

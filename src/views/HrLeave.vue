@@ -35,7 +35,7 @@
                 <p style="cursor:default;"><b>ประเภทการลา :</b></p>
                 <b-form-select
                   v-model="selectType"
-                  :options="optionsType"
+                  :options="optionLeaveType"
                   style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                 >
                 </b-form-select>
@@ -460,21 +460,8 @@ export default {
         { value: 3 ,text: "อยู่ในระหว่างการดำเนินการ" },
         { value: 4 ,text: "ถูกยกเลิก" }
       ],
-      optionsDep: [
-        { value: null ,text: "--เลือกแผนก--"},
-        { value: 1 ,text: "พัฒนาระบบสารสนเทศ"},
-        { value: 2 ,text: "วิศวกรรม "},
-        { value: 3 ,text: "ทรัพยากรมนุษย์"}
-      ],
-      optionsType: [
-        { value: null ,text: "--เลือกประเภทการลา--"},
-        { value: 1 ,text: "ลาป่วย"},
-        { value: 2 ,text: "ลากิจ"},
-        { value: 3 ,text: "ลาพักร้อน"},
-        { value: 4 ,text: "ลาคลอด"},
-        { value: 5 ,text: "ลาบวช"},
-        { value: 6 ,text: "ลาไม่รับค่าจ้าง"}
-      ],
+      optionsDep: [],
+      optionLeaveType: [],
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center no' },
         { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date', formatter: 'setDateFormat' },
@@ -534,6 +521,8 @@ export default {
     this.selectType = null;
     this.selectDep = null;
     this.selectStat = null;
+    this.getDataReasonLeave();
+    this.getDataDept();
   },
   methods: {
     showLeavePopup: function() {
@@ -661,6 +650,29 @@ export default {
       //     }
       //   });
       // },
+    getDataDept: async function(){
+      var dataDept = [];
+      await authService.getDataDept().then(response => {
+        console.log(response.data)
+        if (response.data != null && response.data.length > 0) {
+          response.data.forEach(function (obj, i) {
+            dataDept.push({ text: obj.dept_name,value: obj.dept_id });
+          });
+          this.optionsDep = dataDept;
+        }
+      });
+    },
+    getDataReasonLeave: async function(){
+      var dataReason = [];
+      await authService.getDataReasonLeave().then(response => {
+        if (response.data != null && response.data.length > 0) {
+          response.data.forEach(function (obj, i) {
+            dataReason.push({ text: obj.leave_reason_name,value: obj.leave_reason_id });
+          });
+          this.optionLeaveType = dataReason;
+        }
+      });
+    },
     getHrApprove: async function(){
     this.isBusy = true;
     await authService.getDataHR().then(response => {

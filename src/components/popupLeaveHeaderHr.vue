@@ -19,61 +19,31 @@
               <b-col>
                 <p style="cursor:default;"><b>ชื่อ-นามสกุล :</b></p>
                 <template>
-                  <b-form-input list="my-list-id" style="width:528px;"></b-form-input>
+                  <!-- <b-form-input list="my-list-id" style="width:528px;"></b-form-input> -->
 
-                  <datalist id="my-list-id">
+                  <!-- <datalist id="my-list-id">
                     <option>Manual Option</option>
                     <option v-for="size in sizes" :key="size">{{ size }}</option>
-                  </datalist>
+                  </datalist> -->
+                  <b-form-select
+                    v-model="sizeModal"
+                    :options="sizes"
+                    style="width:528px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                  >
+                  </b-form-select>
                 </template>
               </b-col>
             </b-row>
-            <b-row style="margin-bottom:10px">
+            
+             <b-row>
               <b-col>
-                <p style="cursor:default;"><b>แผนก :</b></p>
-                  <b-form-select
-                    v-model="selectDept"
-                    :options="optionDept"
-                    style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                  >
-                  </b-form-select> 
+                <p style="margin-bottom:-15px; cursor:default;"><b>เเผนก : </b><br> <label v-if="empData != null && Object.keys(empData).length > 0 && sizeModal != null && sizeModal != '' && sizeModal != undefine"> {{ empData[sizeModal].dept_name }} </label> </p>
               </b-col>
               <b-col>
-                <p style="cursor:default;"><b>ตำแหน่ง :</b></p>
-                  <div v-if="selectDept != 1 && selectDept != 2 && selectDept != 3">
-                    <b-form-select
-                      v-model="selectPosition"
-                      :options="optionPosition"
-                      style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                    >
-                    </b-form-select>
-                  </div>
-                  <div v-else-if="selectDept != 2 && selectDept != 3">
-                    <b-form-select
-                      v-model="selectPosition"
-                      :options="optionPositionIT"
-                      style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                    >
-                    </b-form-select> 
-                  </div>
-                  <div v-else-if="selectDept != 1 && selectDept != 3">
-                    <b-form-select
-                      v-model="selectPosition"
-                      :options="optionPositionEN"
-                      style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                    >
-                    </b-form-select> 
-                  </div>
-                  <div v-else-if="selectDept != 1 && selectDept != 2">
-                    <b-form-select
-                      v-model="selectPosition"
-                      :options="optionPositionHR"
-                      style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                    >
-                    </b-form-select> 
-                  </div>
+                <p style="margin-bottom:-15px; cursor:default;"><b>ตำเเหน่ง : </b><br> <label v-if="empData != null && Object.keys(empData).length > 0 && sizeModal != null && sizeModal != '' && sizeModal != undefine" > {{ empData[sizeModal].position_name }} </label> </p>
               </b-col>
-            </b-row>
+            </b-row><br>
+
             <b-row>
               <b-col>
                 <p style="margin-bottom:-15px; cursor:default;"><b>ประเภทการลา :</b></p>
@@ -256,59 +226,31 @@ export default {
   props: ["showPop", "editPop"],
   data() {
     return {
-      sizes: ['Small', 'Medium', 'Large', 'Extra Large'],
+      sizeModal:"",
+      sizes: [],
+      empData: {},
       dataLeave: {},
       selectDept: "",
-      optionDept: [
-        { value: null ,text: "--กรุณาเลือกแผนก--", disabled: true},
-        { value: 1 ,text: 'พัฒนาระบบสารสนเทศ' },
-        { value: 2 ,text: 'วิศวกรรม' },
-        { value: 3 ,text: 'ทรัพยากรมนุษย์ ' }
-      ],
+      // optionDept: [
+      //   { value: null ,text: "--กรุณาเลือกแผนก--", disabled: true},
+      //   { value: 1 ,text: 'พัฒนาระบบสารสนเทศ' },
+      //   { value: 2 ,text: 'วิศวกรรม' },
+      //   { value: 3 ,text: 'ทรัพยากรมนุษย์ ' }
+      // ],
       selectPosition: "",
-      optionPosition : [
-        { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
-      ],
-      optionPositionIT: [
-        { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
-        { value: 1 ,text: 'ผู้จัดการฝ่ายพัฒนาระบบสารสนเทศ' },
-        { value: 2 ,text: 'หัวหน้าทีมพัฒนาระบบ Mobile application' },
-        { value: 3 ,text: 'หัวหน้าทีมพัฒนาระบบ Web application ' },
-        { value: 4 ,text: 'หัวหน้าทีมพัฒนาระบบ Service application' },
-        { value: 5 ,text: 'ผู้พัฒนาระบบ Mobile application' },
-        { value: 6 ,text: 'ผู้พัฒนาระบบ Web application ' },
-        { value: 7 ,text: 'ผู้พัฒนาระบบ Service application' },
-      ],
-      optionPositionEN: [
-        { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
-        { value: 1 ,text: 'หัวหน้าฝ่ายวิศวกรรม' },
-        { value: 2 ,text: 'เลขาหัวหน้าฝ่ายวิศวกรรม' },
-        { value: 3 ,text: 'วิศวกรรมซอฟต์แวร์ ' },
-        { value: 4 ,text: 'วิศวกรรมฮาร์ดแวร์' }
-      ],
-      optionPositionHR: [
-        { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
-        { value: 1 ,text: 'ผู้บริหารฝ่ายบุคคล' },
-        { value: 2 ,text: 'เลขาผู้บริหารฝ่ายบุคคล' },
-        { value: 3 ,text: 'ผู้ช่วยเลขาผู้บริหารฝ่ายบุคคล ' },
-        { value: 4 ,text: 'ผู้ช่วยของผู้ช่วยเลขาผู้บริหารฝ่ายบุคคล' },
-      ],
-      optionTime: [
-        { value: 1 ,text: 'ลาครึ่งเช้า' },
-        { value: 2 ,text: 'ลาครึ่งบ่าย' },
-        { value: 3 ,text: 'ลาเต็มวัน ' },
-        { value: 4 ,text: 'อื่น ๆ' }
-      ],
+      // optionPosition : [
+      //   { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
+      // ],
+      // optionPositionHR: [
+      //   { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
+      //   { value: 1 ,text: 'ผู้บริหารฝ่ายบุคคล' },
+      //   { value: 2 ,text: 'เลขาผู้บริหารฝ่ายบุคคล' },
+      //   { value: 3 ,text: 'ผู้ช่วยเลขาผู้บริหารฝ่ายบุคคล ' },
+      //   { value: 4 ,text: 'ผู้ช่วยของผู้ช่วยเลขาผู้บริหารฝ่ายบุคคล' },
+      // ],
+      optionTime: [],
       selectType: "",
-      optionLeaveType: [
-        { value: null ,text: "--กรุณาเลือกประเภทการลา--", disabled: true},
-        { value: 1 ,text: "ลาป่วย" },
-        { value: 2 ,text: "ลากิจ" },
-        { value: 3 ,text: "ลาพักร้อน" },
-        { value: 4 ,text: "ลาคลอด" },
-        { value: 5 ,text: "ลาบวช" },
-        { value: 6 ,text: "ลาไม่รับค่าจ้าง" }
-      ],
+      optionLeaveType: [],
       selected1: "",
       selected2: null,
       value1:'',
@@ -360,9 +302,11 @@ export default {
     this.currentDate = mainJs.setDateToServer(new Date().toString(), "TZ");
     this.userIn = JSON.parse(localStorage.getItem("user"));
     Settings.defaultLocale = 'th'
+    this.getDataTypeLeave();
+    this.getDataReasonLeave();
+    this.getDataUserDept();
   },
   methods: {
-    
     confirmMessage () {
       var ths = this;
       Swal.fire({
@@ -432,47 +376,10 @@ export default {
       this.selectTimeStop=""
       this.flagRangDate = false;
       this.selectType = null;
+      this.sizeModal = null;
       this.selected = 3;
       this.selectDept = null;
       this.selectPosition = null;
-    },
-    EditLeave() {
-      this.$modal.show('hello-world');
-      this.isLoading = false;
-      this.$v.form.description.$model = this.dataLeave.leave_remark;
-      // this.$v.form.valDate1.$model = this.dataLeave.leave_start_date;
-      // this.$v.form.valDate2.$model = this.dataLeave.leave_stop_date;
-      this.selectType = this.dataLeave.leave_reason_id;
-      this.selected = this.dataLeave.leave_type_id;
-      var obj = {};
-      obj["leave_reason_id"] = this.selectType;
-      obj["leave_type_id"] = this.selected;
-      // if(this.selected == 1){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeAM9
-      //   this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeAM12
-      // }
-      // else if(this.selected == 2){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM13
-      //   this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM18
-      // }
-      // else if(this.selected == 3){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeFull9
-      //   this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.timeFull18
-      // }
-      // else if(this.selected == 4){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
-      //   this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
-      // }
-      // obj["leave_start_date"] = mainJs.setDateToServer(
-      //    this.sel1
-      // );
-      // obj["leave_stop_date"] = mainJs.setDateToServer(
-      //   this.sel2
-      // );
-      obj["leave_remark"] = this.$v.form.description.$model;
-      authService.EditLeave(obj).then(response => {
-          console.log(response.data);
-      });
     },
     validation: function(value) {
       var key = Object.keys(value);
@@ -483,13 +390,50 @@ export default {
       }
       return true;
     },
+    getDataUserDept: async function(){
+      var ths = this;
+      var user = JSON.parse(localStorage.getItem("user"));
+      var dataUserDept = [];
+      var fullname = "";
+      await authService.getDataUserDept(user.uuid, user.dept_id).then(response => {
+        if(response.data != null && response.data.length > 0){
+          ths.empData = {};
+          response.data.forEach(function (obj, i){
+            fullname = obj.first_name + " " + obj.last_name;
+            dataUserDept.push({ value: obj.emp_id, text: fullname });
+            ths.empData[obj.emp_id] = obj;
+          });
+          ths.sizes = dataUserDept;
+        }
+        console.log(ths.empData);
+      });
+    },
+    getDataTypeLeave: async function(){
+      var dataType = [];
+      await authService.getDataTypeLeave().then(response => {
+        if (response.data != null && response.data.length > 0) {
+          response.data.forEach(function (obj, i) {
+            dataType.push({ text: obj.leave_type_name, value: obj.leave_type_id });
+          });
+          this.optionTime = dataType;
+        }
+      });
+    },
+    getDataReasonLeave: async function(){
+       var dataReason = [];
+      await authService.getDataReasonLeave().then(response => {
+        if (response.data != null && response.data.length > 0) {
+          response.data.forEach(function (obj, i) {
+            dataReason.push({ text: obj.leave_reason_name,value: obj.leave_reason_id });
+          });
+          this.optionLeaveType = dataReason;
+        }
+      });
+    },
     insertData: async function() {
       this.isLoading = true;
-      console.log("loading")
-      var user = JSON.parse(localStorage.getItem("user"));
       var obj = {};
-      obj["emp_id"] = user.uuid;
-      obj["leave_date"] = mainJs.setDateToServer(new Date().toString());
+      obj["emp_id"] = this.sizeModal;
       obj["leave_reason_id"] = this.selectType;
       obj["leave_type_id"] = this.selected;
       if(this.selected == 1){
@@ -514,12 +458,6 @@ export default {
       obj["leave_stop_date"] = mainJs.setDateToServer(
         this.sel2
       );
-      // obj["leave_start_date"] = mainJs.setDateToServer(
-      //   this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
-      // );
-      // obj["leave_stop_date"] = mainJs.setDateToServer(
-      //   this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
-      // );
       obj["leave_remark"] = this.$v.form.description.$model;
 
       if ( await mainJs.checkStopTime(obj["leave_start_date"], obj["leave_stop_date"]) == false) {
@@ -531,7 +469,8 @@ export default {
         this.isLoading = false;
       }
       else if (this.validation(obj)) {
-        await authService.insertData(obj).then(response => {
+        console.log(obj);
+        await authService.insertDataByHeader(obj).then(response => {
           console.log(response.data);
           if (response.data > 0) {
             this.Loading = false;
@@ -570,13 +509,6 @@ export default {
     showPop() {
       if (this.showPop) {
         this.defaultValue();
-      }
-    },
-    editPop(){
-      if(this.editPop){
-        this.dataLeave = this.editPop;
-        console.log(this.dataLeave);
-        this.EditLeave();
       }
     }
   },
