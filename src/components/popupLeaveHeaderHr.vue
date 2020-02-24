@@ -31,6 +31,7 @@
                 <p style="cursor:default;"><b>แผนก :</b></p>
                   <b-form-select
                     v-model="selectDept"
+                    @change="selectPosition = null"
                     :options="optionDept"
                     style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                   >
@@ -251,19 +252,17 @@ export default {
     Loading,
     datetime: Datetime
   },
-  props: ["showPop", "editPop"],
+  props: ["showPop"],
   data() {
     return {
       sizes: ['Small', 'Medium', 'Large', 'Extra Large'],
       dataLeave: {},
-      selectDept: null,
       optionDept: [
         { value: null ,text: "--กรุณาเลือกแผนก--", disabled: true},
         { value: 1 ,text: 'พัฒนาระบบสารสนเทศ' },
         { value: 2 ,text: 'วิศวกรรม' },
         { value: 3 ,text: 'ทรัพยากรมนุษย์ ' }
       ],
-      selectPosition: null,
       optionPosition : [
         { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
       ],
@@ -297,7 +296,6 @@ export default {
         { value: 3 ,text: 'ลาเต็มวัน ' },
         { value: 4 ,text: 'อื่น ๆ' }
       ],
-      selectType: null,
       optionLeaveType: [
         { value: null ,text: "--กรุณาเลือกประเภทการลา--", disabled: true},
         { value: 1 ,text: "ลาป่วย" },
@@ -307,15 +305,14 @@ export default {
         { value: 5 ,text: "ลาบวช" },
         { value: 6 ,text: "ลาไม่รับค่าจ้าง" }
       ],
-      selected1: "",
-      selected2: null,
-      value1:'',
-      value2:'',
       popupLeave:false,
       types: [
         'date',
       ],
       selected: 3,
+      selectDept: null,
+      selectType: null,
+      selectPosition: null,
       selectTimeStart: "",
       selectTimeStop: "",
       flagSave: 0,
@@ -430,48 +427,10 @@ export default {
       this.selectTimeStart="";
       this.selectTimeStop="";
       this.flagRangDate = false;
-      this.selectType = "";
-      this.selectDept = "";
+      this.selectType = null;
+      this.selectDept = null;
       this.selected = 3;
-      this.selectPosition = "";
-    },
-    EditLeave() {
-      this.$modal.show('hello-world');
-      this.isLoading = false;
-      this.$v.form.description.$model = this.dataLeave.leave_remark;
-      // this.$v.form.valDate1.$model = this.dataLeave.leave_start_date;
-      // this.$v.form.valDate2.$model = this.dataLeave.leave_stop_date;
-      this.selectType = this.dataLeave.leave_reason_id;
-      this.selected = this.dataLeave.leave_type_id;
-      var obj = {};
-      obj["leave_reason_id"] = this.selectType;
-      obj["leave_type_id"] = this.selected;
-      // if(this.selected == 1){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeAM9
-      //   this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeAM12
-      // }
-      // else if(this.selected == 2){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM13
-      //   this.sel2 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timePM18
-      // }
-      // else if(this.selected == 3){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.timeFull9
-      //   this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.timeFull18
-      // }
-      // else if(this.selected == 4){
-      //   this.sel1 = this.$v.form.valDate1.$model.split("T")[0] + " " + this.selectTimeStart
-      //   this.sel2 = this.$v.form.valDate2.$model.split("T")[0] + " " + this.selectTimeStop
-      // }
-      // obj["leave_start_date"] = mainJs.setDateToServer(
-      //    this.sel1
-      // );
-      // obj["leave_stop_date"] = mainJs.setDateToServer(
-      //   this.sel2
-      // );
-      obj["leave_remark"] = this.$v.form.description.$model;
-      authService.EditLeave(obj).then(response => {
-          console.log(response.data);
-      });
+      this.selectPosition = null;
     },
     validation: function(value) {
       var key = Object.keys(value);
@@ -567,16 +526,9 @@ export default {
   },
   watch: {
     showPop() {
-      console.log(this.showPop)
+      console.log("this.showPop")
       if (this.showPop) {
         this.defaultValue();
-      }
-    },
-    editPop(){
-      if(this.editPop){
-        this.dataLeave = this.editPop;
-        console.log(this.dataLeave);
-        this.EditLeave();
       }
     }
   },

@@ -227,10 +227,6 @@ export default {
         { text: "ลาไม่รับค่าจ้าง",value: 6 }
       ],
       description:'',
-      selected1: "",
-      selected2: null,
-      value1:'',
-      value2:'',
       popupLeave:false,
       types: [
         'date',
@@ -481,6 +477,7 @@ export default {
     showPop() {
       if (this.showPop) {
         this.checkData = 0;
+        this.defaultValue();
         console.log(this.checkData)
         if(this.editPop != ""){
           this.$modal.show('hello-world');
@@ -494,9 +491,9 @@ export default {
           this.selectType = this.dataLeave.leave_reason_id;
           this.selected = this.dataLeave.leave_type_id;
         } 
-        else {
-          this.defaultValue();
-        }
+        // else {
+        //   this.defaultValue();
+        // }
       }
     }
     // editPop(){

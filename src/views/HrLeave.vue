@@ -560,6 +560,7 @@ export default {
     filterData() {
       var ths = this;
       var allData = this.tempData;
+      this.isBusy = true;
       console.log(allData)
           if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
             ths.getHrApprove();
@@ -613,6 +614,12 @@ export default {
           }
       this.items = allData;
       this.totalRows = this.items.length
+      setTimeout(() => {
+        this.isBusy = false
+      }, 300);
+      // setTimeout(() => {
+      //   this.isBusy = false
+      // }, 1200);
     },
     showMsgBoxTwo(id) {
         this.$bvModal.msgBoxConfirm('คุณต้องการรับทราบการลานี้ใช่หรือไม่?', {
@@ -663,6 +670,8 @@ export default {
       // },
     getHrApprove: async function(){
     this.isBusy = true;
+    var leave_time = [];
+    var leave_time_stop = [];
     await authService.getDataHR().then(response => {
       console.log(response.data)
       if (response.data != null && response.data.length > 0) { 
@@ -671,7 +680,9 @@ export default {
           response.data[i].no = i+1;
           response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name + " " + "(" + response.data[i].nick_name + ")";
           response.data[i].HrbtnApprove = false;
-          response.data[i].leave_time = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[1] : "") + ' - ' + (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[1] : "");
+          leave_time = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[1] : "");
+          leave_time_stop = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[1] : "");
+          response.data[i].leave_time = (response.data[i].leave_start_date != null ? leave_time.split(":")[0] + ":" + leave_time.split(":")[1] : "") + ' - ' + (response.data[i].leave_stop_date != null ? leave_time_stop.split(":")[0] + ":" + leave_time_stop.split(":")[1] : "");
           response.data[i].leave_date_format = mJS.setDateFormat(response.data[i].leave_date);
           response.data[i].leave_start_date_format = mJS.setDateFormat(response.data[i].leave_start_date);
           response.data[i].leave_stop_date_format = mJS.setDateFormat(response.data[i].leave_stop_date);
@@ -685,7 +696,9 @@ export default {
         } 
         console.log(response.data)
         this.items = response.data;
-        this.isBusy = false;
+        setTimeout(() => {
+          this.isBusy = false
+        },300);
         this.tempData = response.data;
       } else {
             console.log("else");
