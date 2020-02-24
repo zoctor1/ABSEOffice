@@ -223,7 +223,7 @@ export default {
     Loading,
     datetime: Datetime
   },
-  props: ["showPop", "editPop"],
+  props: ["showPop"],
   data() {
     return {
       sizeModal:"",
@@ -260,6 +260,9 @@ export default {
         'date',
       ],
       selected: 3,
+      selectDept: null,
+      selectType: null,
+      selectPosition: null,
       selectTimeStart: "",
       selectTimeStop: "",
       flagSave: 0,
@@ -363,6 +366,7 @@ export default {
       return value == undefined || value == null || (value + "").trim() == "";
     },
     defaultValue() {
+      console.log("default popup")
       this.$modal.show('hello-world');
       this.isLoading = false;
       this.popupLeave = true;
@@ -372,13 +376,14 @@ export default {
       this.$v.form.selectTimeFrom.$model = "";
       this.$v.form.valDate1.$model = "";
       this.$v.form.valDate2.$model = "";
-      this.selectTimeStart="",
-      this.selectTimeStop=""
+      this.selectTimeStart="";
+      this.selectTimeStop="";
       this.flagRangDate = false;
       this.selectType = null;
       this.sizeModal = null;
       this.selected = 3;
       this.selectDept = null;
+      this.selected = 3;
       this.selectPosition = null;
     },
     validation: function(value) {
@@ -507,6 +512,7 @@ export default {
   },
   watch: {
     showPop() {
+      console.log("this.showPop")
       if (this.showPop) {
         this.defaultValue();
       }

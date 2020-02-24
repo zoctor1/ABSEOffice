@@ -40,7 +40,7 @@
                   type="filled" 
                   style="width:144px; height:44px;"
                 >
-                  <img src="../assets/Plus_icon3.png" width="20" height="20" /> ปฏิทินวันหยุด
+                  ปฏิทินวันหยุด
                 </vs-button>
               </div>
             </b-col>
@@ -55,13 +55,11 @@
             <b-th></b-th>
             <b-th></b-th>
             <b-th></b-th>
-            <b-th></b-th>
           </b-tr>
           <b-tr >
             <b-th>ประเภท</b-th>
             <b-th><center>สิทธิ<br>(วัน)</center></b-th>
             <b-th><center>ใช้ไป<br>(วัน/ชั่วโมง)</center></b-th>
-            <b-th><center>ชดเชย<br>(วัน/ชั่วโมง)</center></b-th>
             <b-th><center>คงเหลือ<br>(วัน/ชั่วโมง)</center></b-th>
           </b-tr>
         </b-thead>

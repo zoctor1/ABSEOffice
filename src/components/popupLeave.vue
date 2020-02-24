@@ -227,10 +227,6 @@ export default {
         // { text: "ลาไม่รับค่าจ้าง",value: 6 }
       ],
       description:'',
-      selected1: "",
-      selected2: null,
-      value1:'',
-      value2:'',
       popupLeave:false,
       types: [
         'date',
@@ -344,6 +340,7 @@ export default {
       return value == undefined || value == null || (value + "").trim() == "";
     },
     defaultValue() {
+      console.log("default popup")
       this.$modal.show('hello-world');
       this.isLoading = false;
       this.popupLeave = true;
@@ -352,8 +349,8 @@ export default {
       this.$v.form.selectTimeFrom.$model = "";
       this.$v.form.valDate1.$model = "";
       this.$v.form.valDate2.$model = "";
-      this.selectTimeStart="",
-      this.selectTimeStop=""
+      this.selectTimeStart="";
+      this.selectTimeStop="";
       this.flagRangDate = false;
       this.selectType = null;
       this.selected = 3;
@@ -504,6 +501,7 @@ export default {
     showPop() {
       if (this.showPop) {
         this.checkData = 0;
+        this.defaultValue();
         console.log(this.checkData)
         if(this.editPop != ""){
           this.$modal.show('hello-world');
@@ -517,9 +515,9 @@ export default {
           this.selectType = this.dataLeave.leave_reason_id;
           this.selected = this.dataLeave.leave_type_id;
         } 
-        else {
-          this.defaultValue();
-        }
+        // else {
+        //   this.defaultValue();
+        // }
       }
     }
     // editPop(){
