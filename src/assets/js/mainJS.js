@@ -40,6 +40,21 @@ export function checkStopTime(Start, Stop) {
     if (timeStart.getTime() > timeStop.getTime()) {
         status = false;
     }
-        
+    return status;
+}
+
+export function validateTime(Start, Stop) {
+    var status = false;
+    // Start += "";
+    // Stop += "";
+    // var timeStart = new Date(Start);
+    // var timeStop = new Date(Stop);
+    // console.log(Start)
+    // console.log(Stop)
+
+    if (Start != null && Start != "" && Stop != null && Stop != "") {
+        status = true;
+    }
+
     return status;
 }

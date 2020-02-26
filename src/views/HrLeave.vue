@@ -63,22 +63,20 @@
               </b-col>
               <b-col md="6" lg="2">
                 <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
-                  <b-form-group
-                    label-align ="left"
-                    label-size="md"
-                    label-for="filterInput"
-                    class="mb-0"
-                  >
-                    <b-input-group size="md">
-                      <b-form-input
-                        v-model="filter"
-                        type="search"
-                        id="filterInput"
-                        placeholder="พิมพ์ชื่อเพื่อค้นหา..."
-                        style="height:42px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                      ></b-form-input>
-                    </b-input-group>
-                  </b-form-group>
+                  <template>
+                    <!-- <b-form-input list="my-list-id" style="width:528px;"></b-form-input> -->
+
+                    <!-- <datalist id="my-list-id">
+                      <option>Manual Option</option>
+                      <option v-for="size in sizes" :key="size">{{ size }}</option>
+                    </datalist> -->
+                    <b-form-select
+                      v-model="sizeModal"
+                      :options="sizes"
+                      style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                    >
+                    </b-form-select>
+                  </template>
               </b-col>
               <b-col md="12" lg="2" style="padding-top:24px">
                 <b-button
@@ -523,6 +521,7 @@ export default {
     this.selectStat = null;
     this.getDataReasonLeave();
     this.getDataDept();
+    this.getDataUserDept();
   },
   methods: {
     showLeavePopup: function() {
@@ -657,11 +656,32 @@ export default {
       //     }
       //   });
       // },
+    getDataUserDept: async function(){
+      console.log("getDataUser")
+      var ths = this;
+      var user = JSON.parse(localStorage.getItem("user"));
+      var dataUserDept = [];
+      var fullname = "";
+      await authService.getDataUserDept(user.uuid, user.dept_id).then(response => {
+        if(response.data != null && response.data.length > 0){
+          ths.empData = {};
+          console.log("epmdata")
+          response.data.forEach(function (obj, i){
+            fullname = obj.first_name + " " + obj.last_name;
+            dataUserDept.push({ value: obj.emp_id, text: fullname });
+            ths.empData[obj.emp_id] = obj;
+          });
+          ths.sizes = dataUserDept;
+        }
+        console.log(ths.empData);
+      });
+    },
     getDataDept: async function(){
       var dataDept = [];
       await authService.getDataDept().then(response => {
         console.log(response.data)
         if (response.data != null && response.data.length > 0) {
+          dataDept.push({ text: "--กรุณาเลือกแผนก--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
             dataDept.push({ text: obj.dept_name,value: obj.dept_id });
           });
@@ -673,6 +693,7 @@ export default {
       var dataReason = [];
       await authService.getDataReasonLeave().then(response => {
         if (response.data != null && response.data.length > 0) {
+          dataReason.push({ text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
             dataReason.push({ text: obj.leave_reason_name,value: obj.leave_reason_id });
           });

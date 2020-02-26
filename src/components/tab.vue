@@ -1,6 +1,6 @@
 <template>
   <div style="background-color:#f8f8f8; margin-left:5px; ">
-    <popupLeave v-bind:showPop="showPop"/>
+    <popupLeave v-bind:showPop="showPop" v-bind:editPop="editPop"/>
 
     <b-col>
       <div style="position: drelative;">
@@ -15,7 +15,7 @@
               <div>
                 <center>
                   <vs-button
-                    @click="showPopup()"
+                    @click="showLeavePopup(0)"
                     color="primary"
                     type="filled"
                     style="width:114px; height:44px; margin-right:auto;"
@@ -126,6 +126,7 @@ export default {
       filter: null,
       filterOn: [],
       select1:3,
+      editPop:{},
       selected: null,
       selected2: null,
       isLoading: false,
@@ -157,9 +158,16 @@ export default {
     this.showStat();
   },
   methods: {
-      showPopup: function() {
+      showLeavePopup: function(flag) {
         var ths = this;
         ths.showPop = true;
+        if (flag == 0) {
+          ths.editPop = "";
+        } 
+        else {
+          ths.editPop = this.dataModal; 
+          this.hide('remarkModal'); 
+        }
         setTimeout(function() {
           ths.showPop = false;
         }, 1000);
