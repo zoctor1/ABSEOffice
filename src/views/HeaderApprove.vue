@@ -591,19 +591,13 @@ export default {
         this.$modal.hide(name);
       },
       itemSelected (size) {
-        console.log(size)
         this.size = size;
       },
       setLabel (size) {
-        console.log(size)
         return size.name;
       },
       inputChange (text) {
-        console.log(text)
-        // console.log(this.sizes)
-        // console.log(this.sizes.filter(function(v) { return v.name.includes(text)} ))
         this.sizes = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
-        // this.sizes = this.sizes.filter(function(v) { return v.name == } );
       },
       filterData() {
         var ths = this;
@@ -613,13 +607,10 @@ export default {
             ths.getHeaderApprove();
           }
           else if (this.valDateStart != null && this.valDateStart != "") {
-            console.log("valDateStart")
           }
           else if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
-            console.log("valDateStop")
           }
           else if (this.selectStat != null && this.selectStat != "") {
-            console.log("selectStat")
             if (this.selectStat == 1) {
               allData = allData.filter(function(v) {
                 return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_header_date == null;
@@ -639,22 +630,16 @@ export default {
             }
           }
           else if(this.selectType != null && this.selectType != "" && this.selectType != undefined) {
-            console.log("selectType")
-            console.log(this.selectType)
             allData = allData.filter(function(v) {
               return v.leave_reason_id == ths.selectType;
             })
           }
           else if(this.selectDep != null && this.selectDep != "" && this.selectDep != undefined) {
-            console.log("selectDep")
-            console.log(this.selectDep)
             allData = allData.filter(function(v) {
               return v.dept_id == ths.selectDep;
             })
           }
           else if(this.size != null && this.size != "" && this.size != undefined) {
-            console.log("nameSearch")
-            console.log(this.size)
             allData = allData.filter(function(v) {
               return v.value == ths.size;
             })
@@ -678,10 +663,8 @@ export default {
           hideHeaderClose: false,
           centered: true
         }).then(value => {
-          console.log(value)
           if (value == true) {
             authService.postApproveHead(id).then(response => {
-              console.log(response.data);
               this.getHeaderApprove();
             });
           } else if (value == false) {
@@ -701,14 +684,11 @@ export default {
           centered: true, size: 'sm'
         }).then(value => {
           if(value == true){
-            console.log(id);
-            console.log(messageVNode.children[0].elm.value);
             authService.notApproveHead(id, messageVNode.children[0].elm.value).then(response => {
               this.getHeaderApprove();
             });
           }
           else if(value == false){
-            console.log("gg")
           }
         });
       },
@@ -719,7 +699,7 @@ export default {
       var fullname = "";
       var result = {};
       await authService.getDataUserDept(user.dept_id).then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         if(response.data != null && response.data.length > 0){
           response.data.forEach(function (obj, i){
             fullname = obj.first_name + " " + obj.last_name + "("+ obj.nick_name + ")";
@@ -770,17 +750,16 @@ export default {
             // response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
             // response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
             }
-          console.log(response.data)
+          // console.log(response.data)
           this.tempData = response.data;
           this.itemHeader = response.data;
           setTimeout(() => {
             this.isBusy = false
           },300);
         } else {
-            console.log("else");
+            // console.log("else");
             setTimeout(() => {
               this.isBusy = false}, 1200);
-              console.log("isbusy");
           }
       });
       this.totalRows = this.itemHeader.length
@@ -854,6 +833,7 @@ export default {
     font-weight: bold !important;
   }
   #HeaderApprove .vdatetime-input {
+    padding-left:10px;
     width: 100%;
     height: 42px !important;
     font-size: 16px !important;

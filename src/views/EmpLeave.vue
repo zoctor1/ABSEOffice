@@ -293,7 +293,6 @@
         :clickToClose="false"
         height="auto"
         width="400px"
-        @change="changeDataRemark()"
       >
       <p style="background-color: #f1f1f1; font-size: 20px; text-align: center; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
         รายละเอียดการลา 
@@ -533,9 +532,6 @@ export default {
         this.getDataAsync();   
       }
     },
-    changeDataRemark() {
-      console.log("change data")
-    },
     cancelBtn(cancel){
       this.$bvModal.msgBoxConfirm('คุณต้องการยกเลิกการลานี้ใช่หรือไม่?', {
           headerClass: 'header-1',
@@ -549,10 +545,8 @@ export default {
           hideHeaderClose: false,
           centered: true
         }).then(value => {
-          // console.log(value)
           if (value == true) {
             authService.postcancelCheck(cancel).then(response => {
-              // console.log(response.data);
               this.getDataAsync();
               this.hide('remarkModal');
             });
@@ -580,16 +574,13 @@ export default {
         ths.getDataAsync();
       }
       if (this.valDateStart != null && this.valDateStart != "") {
-        console.log("valDateStart")
-        // allData = allData.filter(function(v) {
-        //   return v.
-        // })
+        // console.log("valDateStart")
       }
       if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
-        console.log("valDateStop")
+        // console.log("valDateStop")
       }
       if (this.selectStat != null && this.selectStat != "") {
-        console.log("selectStat")
+        // console.log("selectStat")
         if (this.selectStat == 1) {
           allData = allData.filter(function(v) {
             return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_approve_date == null;
@@ -609,14 +600,14 @@ export default {
         }
       }
       if(this.selectType != null && this.selectType != "") {
-        console.log("selectType")
-        console.log(this.selectType)
+        // console.log("selectType")
+        // console.log(this.selectType)
         allData = allData.filter(function(v) {
           return v.leave_reason_id == ths.selectType;
         })
       }
       if(this.selectDep != null && this.selectDep != "") {
-        console.log("selectDep")
+        // console.log("selectDep")
         // console.log(this.selectDep)
         allData = allData.filter(function(v) {
           return v.dept_id == ths.selectDep;
@@ -660,12 +651,10 @@ export default {
       var leave_time = [];
       var leave_time_stop = [];
       await authService.getUserLeave(user.uuid).then(response => {
-        console.log("response.data");
+        // console.log("response.data");
         if (response.data.length > 0) {
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;
-            // response.data[i].dateTime_start = response.data[i].leave_start_date;
-            // response.data[i].dateTime_stop = response.data[i].leave_stop_date;
             leave_time = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[1] : "");
             leave_time_stop = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[1] : "");
             response.data[i].leave_time = (response.data[i].leave_start_date != null ? leave_time.split(":")[0] + ":" + leave_time.split(":")[1] : "") + ' - ' + (response.data[i].leave_stop_date != null ? leave_time_stop.split(":")[0] + ":" + leave_time_stop.split(":")[1] : "");
@@ -684,13 +673,12 @@ export default {
           setTimeout(() => {
             this.isBusy = false
           },300);
-          console.log("check")
+          // console.log("check")
         } else {
-            console.log("else");
+            // console.log("else");
             setTimeout(() => {
               this.isBusy = false}, 1200);
-              console.log("isbusy");
-              // alert("aaaa")
+              // console.log("isbusy");
           }
       });
       this.totalRows = this.items.length
@@ -768,6 +756,7 @@ export default {
     cursor: pointer;
   }
   #EmpLeave .vdatetime-input {
+    padding-left:10px;
     width: 100%;
     height: 42px !important;
     font-size: 16px !important;

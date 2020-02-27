@@ -42,7 +42,6 @@
                 <b-form-radio-group
                   v-model="selected"
                   :options="optionTime"
-                  @change="aaa"
                 >
                 </b-form-radio-group> 
             </b-col>
@@ -328,7 +327,6 @@ export default {
       return value == undefined || value == null || (value + "").trim() == "";
     },
     defaultValue() {
-      console.log("default popup")
       this.$modal.show('hello-world');
       this.isLoading = false;
       this.popupLeave = true;
@@ -400,7 +398,6 @@ export default {
       }
       else if (this.validation(obj)) {
         authService.EditLeave(obj).then(response => {
-        console.log("edit sent");
         if (response.data > 0) {
           this.Loading = false;
           this.$modal.hide('hello-world');
@@ -409,7 +406,6 @@ export default {
           fileData.append("image_leave", this.file);
           fileData.append("leave_emp_id", this.leaveID)
           authService.addImage(fileData).then(response => {
-            console.log(response.data);
           });
           Swal.fire (
             'การส่งอนุมัติเสร็จสิ้น',
@@ -420,7 +416,6 @@ export default {
         } else {
           setTimeout(() => {
             this.isLoading = false}, 500);
-            console.log("aaa");
           }
       });
     }
@@ -431,7 +426,6 @@ export default {
             heightAuto: false,
             title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
           })},250);
-          console.log("else")
       }
     },
     validation: function(value) {
@@ -469,7 +463,6 @@ export default {
     insertData: async function() {
       var ths = this;
       this.isLoading = true;
-      console.log("insertData aaaa ")
       var user = JSON.parse(localStorage.getItem("user"));
       var obj = {};
       obj["emp_id"] = user.uuid;
@@ -499,7 +492,6 @@ export default {
         this.sel2
       );
       obj["leave_remark"] = this.$v.form.description.$model;
-      console.log(obj["leave_start_date"],obj["leave_stop_date"] )
 
       if (mainJs.checkStopTime(obj["leave_start_date"], obj["leave_stop_date"]) == false) {
         Swal.fire (
@@ -519,7 +511,6 @@ export default {
       }
       else if (this.validation(obj)) {
         await authService.insertData(obj).then(response => {
-          console.log(response.data);
           if (response.data > 0) {
             this.Loading = false;
             this.$modal.hide('hello-world');
@@ -528,7 +519,6 @@ export default {
             fileData.append("image_leave", this.file);
             fileData.append("leave_emp_id", this.leaveID)
             authService.addImage(fileData).then(response => {
-              console.log(response.data);
             });
             Swal.fire (
               'การส่งอนุมัติเสร็จสิ้น',
@@ -539,7 +529,6 @@ export default {
           } else {
             setTimeout(() => {
               this.isLoading = false}, 500);
-              console.log("aaa");
             }
         });
       }
@@ -550,7 +539,6 @@ export default {
               heightAuto: false,
               title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
             })},250);
-            console.log("else")
         }
     }
   },
@@ -559,11 +547,9 @@ export default {
       if (this.showPop) {
         this.checkData = 0;
         this.defaultValue();
-        console.log(this.checkData)
         if(this.editPop != ""){
           this.popupLeave = true;
           this.dataLeave = this.editPop;
-          console.log(this.dataLeave)
           this.checkData = 1;
           this.$v.form.description.$model = this.dataLeave.leave_remark;
           this.$v.form.valDate1.$model = mainJs.setDateToServer(this.dataLeave.leave_start_date, "TZ");
@@ -571,24 +557,8 @@ export default {
           this.selectType = this.dataLeave.leave_reason_id;
           this.selected = this.dataLeave.leave_type_id;
         } 
-        // else {
-        //   this.defaultValue();
-        // }
       }
     }
-    // editPop(){
-    //   if(this.editPop){
-    //     this.$modal.show('hello-world');
-    //     this.dataLeave = this.editPop;
-    //     this.checkData = 1;
-    //     console.log(this.dataLeave);
-    //     console.log(this.checkData)
-    //     this.$v.form.description.$model = this.dataLeave.leave_remark;
-    //     this.$v.form.valDate1.$model = this.dataLeave.leave_start_date;
-    //     this.$v.form.valDate2.$model = this.dataLeave.leave_stop_date;
-    //     // this.EditLeave();
-    //   }
-    // }
   },
   validations: {
     form: {

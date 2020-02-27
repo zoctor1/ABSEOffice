@@ -1,7 +1,6 @@
 <template>
-  <div style="background-color:#f8f8f8; margin-left:5px; ">
+  <div id="tap" style="background-color:#f8f8f8; margin-left:5px;">
     <popupLeave v-bind:showPop="showPop" v-bind:editPop="editPop"/>
-
     <b-col>
       <div style="position: drelative;">
         <b-card style="margin-top:20px;" >
@@ -11,7 +10,7 @@
           <h4 style="margin-bottom:10px; cursor: default;">ตำแหน่ง : {{userIn.position_name}} </h4>
         </center>
           <b-row>
-            <b-col style="margin-top:5px" md="4" sm="6" xs="12">
+            <b-col style="margin-top:5px" xs="12">
               <div>
                 <center>
                   <vs-button
@@ -25,7 +24,7 @@
                 </center>
               </div>
             </b-col>
-            <b-col style="margin-top:5px" md="4" sm="6" xs="12">
+            <!-- <b-col style="margin-top:5px" md="4" sm="6" xs="12">
               <div>
                 <center>
                   <popupOT /> 
@@ -43,7 +42,7 @@
                   ปฏิทินวันหยุด
                 </vs-button>
               </div>
-            </b-col>
+            </b-col> -->
           </b-row>
         </b-card>
       </div>  
@@ -235,7 +234,6 @@ export default {
         var user = JSON.parse(localStorage.getItem("user"));
         await authService.getLeaveStat(user.uuid).then(response => {
           this.responseData = response.data;
-          console.log(response.data);
         });
         this.isLoading = false;
       },
@@ -266,24 +264,29 @@ export default {
 
 </script>
 
-<style scoped>
-  .backcolor {
+<style>
+  #tap .backcolor {
     background-color:#f8f8f8
   }
-
   input[type="date"]::-webkit-inner-spin-button {
     display: none;
     -webkit-appearance: none;
   }
-
-  .media {
+  #tap .media {
     max-width: 99%
   }
-
   @media (max-width: 550px) {
-        .vs-component vs-button vs-button-primary vs-button-filled {
-            margin-left: 20px;
-            margin-right: 20px;
-        }
+    #tap .vs-component vs-button vs-button-primary vs-button-filled {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+  }
+  #tap .vdatetime-input {
+    padding-left:10px;
+    width: 100%;
+    height: 42px !important;
+    font-size: 16px !important;
+    border: 1px solid rgba(0,0,0,.2); 
+    border-radius: 4px;
   }
 </style>

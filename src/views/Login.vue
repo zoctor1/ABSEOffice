@@ -115,9 +115,9 @@ export default {
           })
       } else {
           authService.loginUser( encodeURI(this.email), encodeURI(this.pass)).then(response => { 
-          console.log(response)
+          // console.log(response)
           if (response.data != "" && response.data != null && response.data != undefined) {
-            console.log(response.data)
+            // console.log(response.data)
             this.toURL("Homepage");
             localStorage.setItem("user", JSON.stringify(response.data));
           } else {
@@ -144,9 +144,6 @@ export default {
     background-position: center;
     background-repeat: no-repeat; 
   }
-  /* 
-  background-position: 0% 100%; background-repeat: no-repeat; background-size: auto; 
-  */
   body {
     font-family: 
     "Open Sans", -apple-system, BlinkMacSystemFont, 

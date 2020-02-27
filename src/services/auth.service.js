@@ -93,7 +93,6 @@ export function insertData(obj) {
 }
 
 export function addImage(formData) {
-    console.log(formData)
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/addImage`, formData, {headers: {"Content-Type": "multipart/form-data"}}).then(
             response => {
@@ -112,8 +111,6 @@ export function getUserLeave(userId) {
 }
 
 export function getLeaveStat(dataS) {
-    console.log(".................");
-    console.log(dataS);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/LeaveStat`, {}, { headers: {dataStat : dataS} }).then(
             response => {
@@ -123,7 +120,6 @@ export function getLeaveStat(dataS) {
 }
 
 export function postApproveHr(approveHr) {
-    console.log(approveHr);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/ApproveHR`, {}, { headers: {dataHR : approveHr} }).then(
             response => {
@@ -133,7 +129,6 @@ export function postApproveHr(approveHr) {
 }
 
 export function postApproveHead(approveH) {
-    console.log(approveH);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/ApproveHead`, {}, { headers: {dataHead : approveH} }).then(
             response => {
@@ -185,7 +180,6 @@ export function postcancelCheck(cancel) {
 }
 
 export function EditLeave(obj) {
-    console.log(obj);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/EditLeave`, JSON.stringify(obj), {}).then(
             response => {
@@ -195,7 +189,6 @@ export function EditLeave(obj) {
 }
 
 export function insertDataByHeader(obj) {
-    console.log(obj);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/insertDataByHeader`, JSON.stringify(obj), {}).then(
             response => {
