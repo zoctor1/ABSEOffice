@@ -87,7 +87,8 @@
                 <b-col>
                   <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
                   <div class="form-group" :class="{ 'form-group--error': $v.form.valDate1.$error }">
-                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" :max-datetime="maxDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
+                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" :max-datetime="maxDate"></datetime>
+                     <!-- style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;" -->
                     <div class="error" v-if="!$v.form.valDate1.required"><font color="red">จำเป็น*</font></div>
                     <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                   </div>
@@ -96,7 +97,8 @@
                   <div v-if="selected != 1 && selected != 2">
                   <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
                   <div class="form-group" :class="{ 'form-group--error': $v.form.valDate2.$error }">
-                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="$v.form.valDate1.$model !='' ? $v.form.valDate1.$model : currentDate" :max-datetime="maxDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
+                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="$v.form.valDate1.$model !='' ? $v.form.valDate1.$model : currentDate" :max-datetime="maxDate" ></datetime>
+                    <!-- style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;" -->
                     <div class="error" v-if="!$v.form.valDate2.required"><font color="red">จำเป็น*</font></div>
                     <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div> 
                   </div>
@@ -630,14 +632,6 @@ export default {
     display: none;
     -webkit-appearance: none;
   }
-  #sizePopupLeave .v--modal {
-    margin-top: 2%;
-  }
-  #sizePopupLeave .vhd-input {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
-  }
   #sizePopupLeave .vhd-picker {
     position: absolute;
     z-index: 2;
@@ -648,14 +642,30 @@ export default {
     font-size: 16px !important;
     padding: none;
   }
-  #sizePopupLeave .vdatetime-input {
-    width: 235px !important; 
-  }
+  /* #sizePopupLeave .vdatetime-input .vdatetime {
+    width: 100%; 
+  } */
   #sizePopupLeave .fs-16 {
     display: none;
   }
   #sizePopupLeave .custom-select {
     border: none;
   }
-
+  #sizePopupLeave .vs__input {
+    padding-left:10px;
+    font-family: Kanit, Arial, Helvetica, sans-serif !important;
+    font-size: 16px;
+    height:42px; 
+    width: 100%;
+    border: 1px solid rgba(0,0,0,.2); 
+    border-radius: 4px;
+  }
+  #sizePopupLeave .v--modal {
+    margin-top: 2%;
+  }
+  #sizePopupLeave .vhd-input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
 </style>

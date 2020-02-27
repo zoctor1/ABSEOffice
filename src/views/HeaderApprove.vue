@@ -17,7 +17,6 @@
                   v-model="valDateStart" 
                   format="dd/MM/yyyy" 
                   :min-datetime="currentDate"
-                  style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                   >
                 </datetime>
               </b-col>
@@ -28,7 +27,6 @@
                   v-model="valDateStop" 
                   format="dd/MM/yyyy" 
                   :min-datetime="currentDate" 
-                  style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                   >
                 </datetime>
               </b-col>
@@ -58,7 +56,6 @@
               </b-col>
               <b-col md="6" lg="2">
                 <p style="cursor:default;"><b>ชื่อ-นามสกุล :</b></p>
-                  
                   <vue-suggestion 
                     :items="sizes" 
                     v-model="size"
@@ -857,10 +854,11 @@ export default {
     font-weight: bold !important;
   }
   #HeaderApprove .vdatetime-input {
-    width: 235px !important;
-    height: 40px !important;
+    width: 100%;
+    height: 42px !important;
     font-size: 16px !important;
-    border: none;
+    border: 1px solid rgba(0,0,0,.2); 
+    border-radius: 4px;
   }
   #HeaderApprove .no {
     width : 50px !important;
@@ -900,5 +898,14 @@ export default {
   }
   #HeaderApprove .leave_remark {
     width : 170px !important;
+  }
+  #HeaderApprove .vs__input {
+    padding-left:10px;
+    font-family: Kanit, Arial, Helvetica, sans-serif !important;
+    font-size: 16px;
+    height:42px; 
+    width: 100%;
+    border: 1px solid rgba(0,0,0,.2); 
+    border-radius: 4px;
   }
 </style>

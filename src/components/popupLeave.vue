@@ -54,7 +54,7 @@
                 <b-col>
                   <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
                   <div class="form-group" :class="{ 'form-group--error': $v.form.valDate1.$error }">
-                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" :max-datetime="maxDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
+                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" :max-datetime="maxDate"></datetime>
                     <div class="error" v-if="!$v.form.valDate1.required"><font color="red">จำเป็น*</font></div>
                     <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                   </div>
@@ -63,7 +63,7 @@
                   <div v-if="selected != 1 && selected != 2">
                   <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
                   <div class="form-group" :class="{ 'form-group--error': $v.form.valDate2.$error }">
-                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="$v.form.valDate1.$model !='' ? $v.form.valDate1.$model : currentDate" :max-datetime="maxDate" style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"></datetime>
+                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="$v.form.valDate1.$model !='' ? $v.form.valDate1.$model : currentDate" :max-datetime="maxDate"></datetime>
                     <div class="error" v-if="!$v.form.valDate2.required"><font color="red">จำเป็น*</font></div>
                     <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div> 
                   </div>
@@ -640,6 +640,15 @@ export default {
     display: none;
     -webkit-appearance: none;
   }
+  #sizePopupLeave .vhd-input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  #sizePopupLeave .vhd-picker {
+    position: absolute;
+    z-index: 2;
+  }
   #sizePopupLeave .vs-popup {
     /* position: relative; */
     /* z-index: 1; */
@@ -650,27 +659,18 @@ export default {
     overflow: hidden !important;
     z-index: 1;
   }
-  #sizePopupLeave .vhd-input {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
-  }
-  #sizePopupLeave .vhd-picker {
-    position: absolute;
-    z-index: 2;
-  }
   #sizePopupLeave  .field-input {
     width: 130px !important;
     height: 37px !important;
     font-size: 16px !important;
     padding: none;
   }
-  #sizePopupLeave .vdatetime-input {
+  /* #sizePopupLeave .vdatetime-input {
     width: 235px !important;
     height: 40px !important;
     font-size: 16px !important;
     border: none;
-  }
+  } */
   #sizePopupLeave .fs-16 {
     display: none;
   }

@@ -16,7 +16,6 @@
                   v-model="valDateStart" 
                   format="dd/MM/yyyy" 
                   :min-datetime="currentDate"
-                  style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                   >
                 </datetime>
               </b-col>
@@ -27,7 +26,6 @@
                   v-model="valDateStop" 
                   format="dd/MM/yyyy" 
                   :min-datetime="currentDate" 
-                  style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                   >
                 </datetime>
               </b-col>
@@ -829,10 +827,11 @@ export default {
     font-size: 12px;
   }
   #HrLeave .vdatetime-input {
-    width: 235px !important;
-    height: 40px !important;
+    width: 100%;
+    height: 42px !important;
     font-size: 16px !important;
-    border: none;
+    border: 1px solid rgba(0,0,0,.2); 
+    border-radius: 4px;
   }
   #HrLeave .no {
     width : 50px !important;
@@ -873,8 +872,16 @@ export default {
   #HrLeave .leave_remark {
     width : 170px !important;
   }
-
-  .popupRemark:hover {
+  #HrLeave .vs__input {
+    padding-left:10px;
+    font-family: Kanit, Arial, Helvetica, sans-serif !important;
+    font-size: 16px;
+    height:42px; 
+    width: 100%;
+    border: 1px solid rgba(0,0,0,.2); 
+    border-radius: 4px;
+  }
+  #HrLeave .popupRemark:hover {
     background-color:#f5f5f5;
   }
 </style>
