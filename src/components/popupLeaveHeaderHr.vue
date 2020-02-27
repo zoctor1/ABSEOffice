@@ -417,7 +417,7 @@ export default {
           if (response.data != null && response.data.length > 0) {
             ths.empData = {};
             response.data.forEach(function (obj, i){
-              fullname = obj.first_name + " " + obj.last_name + "("+ obj.nick_name + ")";
+              fullname = obj.first_name + " " + obj.last_name + " ("+ obj.nick_name + ")";
               result = {value: obj.emp_id, name: fullname, dept: obj.dept_name, position: obj.position_name}
               dataUserDept.push(result);
               ths.empData[obj.emp_id] = obj;
@@ -433,7 +433,7 @@ export default {
           if (response.data != null && response.data.length > 0) {
             ths.empData = {};
             response.data.forEach(function (obj, i) {
-              fullname = obj.first_name + " " + obj.last_name + "("+ obj.nick_name + ")";
+              fullname = obj.first_name + " " + obj.last_name + " ("+ obj.nick_name + ")";
               result = {value: obj.emp_id, name: fullname}
               dataUserDept.push(result);
               ths.empData[obj.emp_id] = obj;
