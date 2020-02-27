@@ -79,6 +79,15 @@
 
         <b-row style=" margin:0px 10px 5px 0px;">
           <b-col>
+            <p><b style="font-size: 18px;">ชื่อเล่น : </b></p>
+          </b-col>
+          <b-col>
+            <p style="font-size: 18px;">{{userIn.nick_name}} </p>
+          </b-col>
+        </b-row>
+
+        <b-row style=" margin:0px 10px 5px 0px;">
+          <b-col>
             <p><b style="font-size: 18px;">แผนก : </b></p>
           </b-col>
           <b-col>
@@ -153,6 +162,7 @@ export default {
       colorxx:'#c72a75',
       colorx2:'#5252e8',
       isLoading: false,
+      fullPage:''
     };
   },
   computed: {},

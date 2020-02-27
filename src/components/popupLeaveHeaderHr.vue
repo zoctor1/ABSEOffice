@@ -25,24 +25,33 @@
                     <option>Manual Option</option>
                     <option v-for="size in sizes" :key="size">{{ size }}</option>
                   </datalist> -->
-                  <b-form-select
+                  <!-- <b-form-select
                     v-model="sizeModal"
                     :options="sizes"
                     style="width:528px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                   >
-                  </b-form-select>
+                  </b-form-select> //ใช้งานได้-->
+                  <vue-suggestion 
+                    :items="sizes" 
+                    v-model="size"
+                    :setLabel="setLabel"
+                    :itemTemplate="itemTemplate"
+                    @changed="inputChange"
+                    @selected="itemSelected"
+                  >
+                  </vue-suggestion> 
                 </template>
               </b-col>
             </b-row>
-            
-             <b-row>
+            <br><br>
+             <!-- <b-row>
               <b-col>
                 <p style="margin-bottom:-15px; cursor:default;"><b>เเผนก : </b><br> <label v-if="empData != null && Object.keys(empData).length > 0 && sizeModal != null && sizeModal != '' && sizeModal != undefine"> {{ empData[sizeModal].dept_name }} </label> </p>
               </b-col>
               <b-col>
                 <p style="margin-bottom:-15px; cursor:default;"><b>ตำเเหน่ง : </b><br> <label v-if="empData != null && Object.keys(empData).length > 0 && sizeModal != null && sizeModal != '' && sizeModal != undefine" > {{ empData[sizeModal].position_name }} </label> </p>
               </b-col>
-            </b-row><br>
+            </b-row><br> -->
 
             <b-row>
               <b-col>
@@ -211,10 +220,13 @@ import 'vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css';
 import VModal from 'vue-js-modal'
 import VueSimpleAlert from "vue-simple-alert";
 import 'sweetalert2/dist/sweetalert2.min.css'
+import VueSuggestion from 'vue-suggestion'
+import itemTemplate from '../components/ItemTemplate.vue';
 
 Vue.use(VModal,VueSimpleAlert);
 Vue.component('VueCtkDateTimePicker', VueCtkDateTimePicker);
-Vue.use(Datetime)
+Vue.use(Datetime);
+Vue.use(VueSuggestion);
 
 export default {
   name: "popupLeaveHeaderHr",
@@ -223,31 +235,19 @@ export default {
     Loading,
     datetime: Datetime
   },
-  props: ["showPop"],
+  props: ["showPop" , "checkPopup"],
   data() {
     return {
       sizeModal:"",
+      itemTemplate,
+      size:{},
       sizes: [],
+      empName:[],
       empData: {},
       dataLeave: {},
+      flagPopup:'',
       selectDept: "",
-      // optionDept: [
-      //   { value: null ,text: "--กรุณาเลือกแผนก--", disabled: true},
-      //   { value: 1 ,text: 'พัฒนาระบบสารสนเทศ' },
-      //   { value: 2 ,text: 'วิศวกรรม' },
-      //   { value: 3 ,text: 'ทรัพยากรมนุษย์ ' }
-      // ],
       selectPosition: "",
-      // optionPosition : [
-      //   { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
-      // ],
-      // optionPositionHR: [
-      //   { value: null ,text: "--กรุณาเลือกตำแหน่ง--", disabled: true},
-      //   { value: 1 ,text: 'ผู้บริหารฝ่ายบุคคล' },
-      //   { value: 2 ,text: 'เลขาผู้บริหารฝ่ายบุคคล' },
-      //   { value: 3 ,text: 'ผู้ช่วยเลขาผู้บริหารฝ่ายบุคคล ' },
-      //   { value: 4 ,text: 'ผู้ช่วยของผู้ช่วยเลขาผู้บริหารฝ่ายบุคคล' },
-      // ],
       optionTime: [],
       selectType: "",
       optionLeaveType: [],
@@ -307,7 +307,7 @@ export default {
     Settings.defaultLocale = 'th'
     this.getDataTypeLeave();
     this.getDataReasonLeave();
-    this.getDataUserDept();
+    // this.getDataUser();
   },
   methods: {
     confirmMessage () {
@@ -366,12 +366,11 @@ export default {
       return value == undefined || value == null || (value + "").trim() == "";
     },
     defaultValue() {
-      console.log("default popup")
       this.$modal.show('hello-world');
       this.isLoading = false;
       this.popupLeave = true;
       this.flagSave = 0;
-      this.$v.form.codeName.$model = "";
+      // this.$v.form.codeName.$model = "";
       this.$v.form.description.$model = "";
       this.$v.form.selectTimeFrom.$model = "";
       this.$v.form.valDate1.$model = "";
@@ -385,6 +384,8 @@ export default {
       this.selectDept = null;
       this.selected = 3;
       this.selectPosition = null;
+
+      this.getDataUser();
     },
     validation: function(value) {
       var key = Object.keys(value);
@@ -395,24 +396,73 @@ export default {
       }
       return true;
     },
-    getDataUserDept: async function(){
+    itemSelected (size) {
+        console.log(size)
+        this.size = size;
+    },
+    setLabel (size) {
+      console.log(size)
+      return size.name;
+    },
+    inputChange (text) {
+      // console.log(text)
+      // console.log(this.sizes)
+      // console.log(this.sizes.filter(function(v) { return v.name.includes(text)} ))
+      this.sizes = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
+      // this.sizes = this.sizes.filter(function(v) { return v.name == } );
+    },
+    getDataUser() {
       var ths = this;
       var user = JSON.parse(localStorage.getItem("user"));
       var dataUserDept = [];
       var fullname = "";
-      await authService.getDataUserDept(user.uuid, user.dept_id).then(response => {
-        if(response.data != null && response.data.length > 0){
-          ths.empData = {};
-          response.data.forEach(function (obj, i){
-            fullname = obj.first_name + " " + obj.last_name;
-            dataUserDept.push({ value: obj.emp_id, text: fullname });
-            ths.empData[obj.emp_id] = obj;
-          });
-          ths.sizes = dataUserDept;
-        }
-        console.log(ths.empData);
-      });
-    },
+      var result = {};
+      if (ths.checkPopup == 0) {
+        authService.getDataUserDept(user.dept_id).then(response => {
+          console.log(response.data)
+          if (response.data != null && response.data.length > 0) {
+            response.data.forEach(function (obj, i){
+              fullname = obj.first_name + " " + obj.last_name + "("+ obj.nick_name + ")";
+              result = {value: obj.emp_id, name: fullname}
+              dataUserDept.push(result);
+            });
+            ths.sizes = dataUserDept;
+            ths.empName = dataUserDept
+          }
+        });
+      } else if (ths.checkPopup == 1) {
+        authService.getDataAllUser().then(response => {
+          console.log(response.data)
+          if (response.data != null && response.data.length > 0) {
+            response.data.forEach(function (obj, i) {
+              fullname = obj.first_name + " " + obj.last_name + "("+ obj.nick_name + ")";
+              result = {value: obj.emp_id, name: fullname}
+              dataUserDept.push(result);
+            });
+            ths.sizes = dataUserDept;
+            ths.empName = dataUserDept
+          }
+        });
+      }
+     },
+    // getDataUserDept: async function(){
+    //   var ths = this;
+    //   var user = JSON.parse(localStorage.getItem("user"));
+    //   var dataUserDept = [];
+    //   var fullname = "";
+    //   await authService.getDataUserDept(user.dept_id).then(response => {
+    //     if(response.data != null && response.data.length > 0){
+    //       ths.empData = {};
+    //       response.data.forEach(function (obj, i){
+    //         fullname = obj.first_name + " " + obj.last_name;
+    //         dataUserDept.push({ value: obj.emp_id, text: fullname });
+    //         ths.empData[obj.emp_id] = obj;
+    //       });
+    //       ths.sizes = dataUserDept;
+    //       ths.empName = dataUserDept
+    //     }
+    //   });
+    // },
     getDataTypeLeave: async function(){
       var dataType = [];
       await authService.getDataTypeLeave().then(response => {
@@ -438,7 +488,7 @@ export default {
     insertData: async function() {
       this.isLoading = true;
       var obj = {};
-      obj["emp_id"] = this.sizeModal;
+      obj["emp_id"] = this.size.value;
       obj["leave_reason_id"] = this.selectType;
       obj["leave_type_id"] = this.selected;
       if(this.selected == 1){
@@ -512,9 +562,20 @@ export default {
   },
   watch: {
     showPop() {
-      console.log("this.showPop")
-      if (this.showPop) {
-        this.defaultValue();
+      var ths = this;
+      // console.log("this.showPop")
+      if (ths.showPop) {    
+        // if(ths.checkPopup != null){
+        //   console.log(ths.checkPopup);
+        //   ths.flagPopup = ths.checkPopup;
+        //   console.log(ths.flagPopup);
+        // }
+        ths.defaultValue();
+        // console.log(ths.showPop);
+        // console.log(ths.checkPopup);
+        // if(ths.checkPopup != null && ths.checkPopup != ""){
+        //   ths.getDataUser();
+        // }
       }
     }
   },

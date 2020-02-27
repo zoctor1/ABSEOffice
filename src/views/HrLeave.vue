@@ -1,6 +1,6 @@
 <template>
   <div id="HrLeave" lg="12" sm="12" xs="12">
-    <popupLeaveHeaderHr v-bind:showPop="showPop"/>
+    <popupLeaveHeaderHr v-bind:showPop="showPop" v-bind:checkPopup="checkPopup"/>
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
@@ -63,7 +63,17 @@
               </b-col>
               <b-col md="6" lg="2">
                 <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
-                  <b-form-group
+
+                  <vue-suggestion 
+                    :items="sizes" 
+                    v-model="size"
+                    :setLabel="setLabel"
+                    :itemTemplate="itemTemplate"
+                    @changed="inputChange"
+                    @selected="itemSelected"
+                  >
+                  </vue-suggestion> 
+                  <!-- <b-form-group
                     label-align ="left"
                     label-size="md"
                     label-for="filterInput"
@@ -78,7 +88,7 @@
                         style="height:42px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                       ></b-form-input>
                     </b-input-group>
-                  </b-form-group>
+                  </b-form-group> -->
               </b-col>
               <b-col md="12" lg="2" style="padding-top:24px">
                 <b-button
@@ -99,7 +109,7 @@
               </b-col>
               <b-col lg="2" style="padding-top:24px">
                 <vs-button
-                  @click="showLeavePopup()"
+                  @click="showLeavePopup(1)"
                   color="primary"
                   type="filled"
                   style="height:42px; "
@@ -183,7 +193,7 @@
                     </center>
                   </template>
 
-                  <template v-slot:cell(hr_approve_date)="data">
+                  <template v-slot:cell(hr_approve_date_format)="data">
                     <center>
                     <div v-if="data.item.cancel_date != null">
                       <font>{{data.item.cancel_date_format}}</font>
@@ -319,7 +329,10 @@
           <b-col>
             <p><b style="font-size: 16px;">ช่วงเวลา :</b></p>
           </b-col>
-          <b-col>
+          <b-col v-if="dataModal.leave_type_id == 4">
+            <p style="font-size: 16px;">{{ dataModal.leave_time }}</p>
+          </b-col>
+          <b-col v-else>
             <p style="font-size: 16px;">{{ dataModal.leave_type_name }}</p>
           </b-col>
         </b-row>
@@ -439,8 +452,11 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 import VModal from 'vue-js-modal'
 import popupLeaveHeaderHr from "@/components/popupLeaveHeaderHr.vue"
+import VueSuggestion from 'vue-suggestion'
+import itemTemplate from '../components/ItemTemplate.vue';
 
-Vue.use(Datetime,VueSweetalert2,VModal)
+Vue.use(Datetime,VueSweetalert2,VModal);
+Vue.use(VueSuggestion);
 
 export default {
   name: "HrLeave",
@@ -452,6 +468,10 @@ export default {
   data() {
     return {
       tempData: [],
+      itemTemplate,
+      size:{},
+      sizes: [],
+      empName:[],
       items: [],
       optionStat: [
         { value: null ,text: "--เลือกสถานะ--"},
@@ -478,6 +498,7 @@ export default {
         { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center leave_remark' },
       ],
       dataModal:{},
+      checkPopup:'',
       isBusy: false,
       totalRows:1,
       currentPage: 1,
@@ -523,11 +544,20 @@ export default {
     this.selectStat = null;
     this.getDataReasonLeave();
     this.getDataDept();
+    this.getDataAllUser();
   },
   methods: {
-    showLeavePopup: function() {
+    showLeavePopup: function(flag) {
       var ths = this;
       ths.showPop = true;
+
+      ths.checkPopup = flag;
+      // if(flag == 0){
+      //     ths.checkPopup = 0;
+      //   }
+      //   else{
+      //     ths.checkPopup = 1;
+      //   } 
       setTimeout(function() {
         ths.showPop = false;
       }, 1000);
@@ -546,6 +576,16 @@ export default {
     hide (name) {
       this.$modal.hide(name);
     },
+    itemSelected (size) {
+        this.size = size;
+      },
+      setLabel (size) {
+        return size.name;
+      },
+      inputChange (text) {
+        console.log(text)
+        this.sizes = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
+      },
     filterData() {
       var ths = this;
       var allData = this.tempData;
@@ -657,6 +697,24 @@ export default {
       //     }
       //   });
       // },
+    getDataAllUser: async function(){
+      var ths = this;
+      var dataAllUser = [];
+      var fullname = "";
+      var result = {};
+      await authService.getDataAllUser().then(response => {
+        console.log(response.data);
+        if(response.data != null && response.data.length > 0){
+          response.data.forEach(function (obj, i){
+            fullname = obj.first_name + " " + obj.last_name + "("+ obj.nick_name + ")";
+            result = {value: obj.emp_id, name: fullname}
+            dataAllUser.push(result);
+          });
+          ths.sizes = dataAllUser;
+          ths.empName = dataAllUser;
+        }
+      });
+    },
     getDataDept: async function(){
       var dataDept = [];
       await authService.getDataDept().then(response => {
@@ -685,7 +743,6 @@ export default {
     var leave_time = [];
     var leave_time_stop = [];
     await authService.getDataHR().then(response => {
-      console.log(response.data)
       if (response.data != null && response.data.length > 0) { 
         this.selectedFilter = null;
         for (var i = 0; i < response.data.length; i++) {
@@ -713,12 +770,11 @@ export default {
         },300);
         this.tempData = response.data;
       } else {
-            console.log("else");
-            setTimeout(() => {
-              this.isBusy = false}, 1200);
-              console.log("isbusy");
-        }
-      });
+          console.log("else");
+          setTimeout(() => {
+            this.isBusy = false}, 1200);
+          }
+        });
       this.totalRows = this.items.length
     },
     handleResize: function() {

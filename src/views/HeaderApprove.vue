@@ -1,6 +1,6 @@
 <template>
   <div id="HeaderAppve" lg="12" sm="12" xs="12">
-    <popupLeaveHeaderHr v-bind:showPop="showPop"/>
+    <popupLeaveHeaderHr v-bind:showPop="showPop" v-bind:checkPopup="checkPopup"/>
     <!-- {{window}} -->
     <center>
       <div><br>
@@ -58,16 +58,24 @@
               </b-col>
               <b-col md="6" lg="2">
                 <p style="cursor:default;"><b>ชื่อ-นามสกุล :</b></p>
-                  <b-form-input 
+                  
+                  <vue-suggestion 
+                    :items="sizes" 
+                    v-model="size"
+                    :setLabel="setLabel"
+                    :itemTemplate="itemTemplate"
+                    @changed="inputChange"
+                    @selected="itemSelected"
+                  >
+                  </vue-suggestion> 
+                  
+                  <!-- <b-form-input  
                     list="my-list-id" 
                     style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                     >
-                  </b-form-input>
+                  </b-form-input> -->
 
-                  <datalist id="my-list-id">
-                    <option>Manual Option</option>
-                    <option v-for="size in sizes" :key="size">{{ size }}</option>
-                  </datalist>
+                  
                 <!-- <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
                   <b-form-group
                     label-align ="left"
@@ -86,6 +94,7 @@
                     </b-input-group>
                   </b-form-group> -->
               </b-col>
+
               <b-col md="12" lg="2" style="padding-top:24px">
                 <b-button
                   variant="outline-primary"
@@ -105,7 +114,7 @@
               </b-col>
               <b-col lg="2" style="padding-top:24px">
                 <vs-button
-                  @click="showLeavePopup()"
+                  @click="showLeavePopup(0)"
                   color="primary"
                   type="filled"
                   style="height:42px; "
@@ -195,25 +204,7 @@
                     </center>
                   </template>
 
-                  <!-- <template v-slot:cell(hr_approve_date)="data">
-                    <div v-if="data.item.cancel_hr_date != null">
-                      <button style="width:115px;height:28px; cursor: default; border: 2px solid rgba(241, 130, 141,1); border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
-                          <font color="#ffffff">ไม่อนุมัติ</font>
-                      </button>
-                    </div>
-                    <div v-else-if="data.item.cancel_hr_date == null && data.item.hr_approve_date != null">
-                      <button style="width:135px;height:28px; cursor: default; border: 2px solid rgba(41, 241, 195, 1); border-radius: 4px; background-color: #28a745;"> 
-                          <font color="#00000" style="font-size: 13px" >{{data.item.hr_approve_date}}</font>
-                      </button>  
-                    </div>
-                    <div v-else-if="data.item.cancel_hr_date == null && data.item.hr_approve_date == null && data.item.emp_leave_id != null">
-                      <button style="width:135px;height:28px; cursor: default; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
-                          <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
-                      </button>
-                    </div>
-                  </template> -->
-
-                  <template v-slot:cell(head_approve_date)="data">
+                  <template v-slot:cell(head_approve_date_format)="data">
                     <center>
                     <div v-if="data.item.cancel_header_date != null">
                       <font>{{data.item.cancel_header_date_format}}</font>
@@ -221,11 +212,11 @@
                     <div v-else-if="data.item.cancel_date != null && data.item.cancel_header_date == null">
                       <font>{{data.item.cancel_date_format}}</font>
                     </div>
+                    <div v-else-if="data.item.cancel_header_date == null && data.item.head_approve_date == null">
+                      <font > - </font>
+                    </div>
                     <div v-else-if="data.item.cancel_header_date == null && data.item.head_approve_date != null">
                       <font>{{data.item.head_approve_date_format}}</font>
-                    </div>
-                    <div v-else-if="data.item.cancel_header_date == null && data.item.head_approve_date == null && data.item.emp_leave_id != null">
-                      <font color="#00000" > - </font>
                     </div>
                     </center>
                   </template>
@@ -327,7 +318,10 @@
           <b-col>
             <p><b style="font-size: 16px;">ช่วงเวลา :</b></p>
           </b-col>
-          <b-col>
+          <b-col v-if="dataModal.leave_type_id == 4">
+            <p style="font-size: 16px;">{{ dataModal.leave_time }}</p>
+          </b-col>
+          <b-col v-else>
             <p style="font-size: 16px;">{{ dataModal.leave_type_name }}</p>
           </b-col>
         </b-row>
@@ -407,7 +401,7 @@
           </b-col>  
           <b-col>
             <p v-if="dataModal.cancel_date != null" style="font-size: 16px;"> - </p>
-            <p v-else-if="dataModal.hr_approve_date != null" style="font-size: 16px;"> {{dataModal.hr_approve_date}} </p>
+            <p v-else-if="dataModal.hr_approve_date != null" style="font-size: 16px;"> {{dataModal.hr_approve_date_format}} </p>
             <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_date == null" style="font-size: 16px;"> - </p>
             <p v-else-if="dataModal.hr_approve_date == null && dataModal.cancel_date == null" style="font-size: 16px;"> - </p>
           </b-col>
@@ -478,8 +472,10 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 import VModal from 'vue-js-modal'
 import popupLeaveHeaderHr from "@/components/popupLeaveHeaderHr.vue"
+import VueSuggestion from 'vue-suggestion'
+import itemTemplate from '../components/ItemTemplate.vue';
 
-Vue.use(Datetime,VueSweetalert2,VModal)
+Vue.use(VueSuggestion);
 
 export default {
   name: "HeaderAppve",
@@ -490,7 +486,10 @@ export default {
   props: {},
   data() {
     return {
-      sizes: ['Small', 'Medium', 'Large', 'Extra Large'],
+      itemTemplate,
+      size:{},
+      sizes: [],
+      empName:[],
       tempData: [],
       optionStat: [
         { value: null ,text: "--เลือกสถานะ--"},
@@ -539,7 +538,8 @@ export default {
       window : {
         width: 0,
         height: 0
-      }
+      },
+      checkPopup:''
     }
   },
   computed: {
@@ -562,12 +562,22 @@ export default {
     this.selectType = null;
     this.selectDep = null;
     this.selectStat = null;
+    this.getDataUserDept();
     this.getDataReasonLeave();
   },
   methods: {
-      showLeavePopup: function() {
+      showLeavePopup: function(flag) {
         var ths = this;
         ths.showPop = true;
+
+        ths.checkPopup = flag;
+        // if(flag == 0){
+        //   ths.checkPopup = flag;
+        // }
+        // else{
+        //   ths.checkPopup = 1;
+        // } 
+        
         setTimeout(function() {
           ths.showPop = false;
         }, 1000);
@@ -585,24 +595,35 @@ export default {
       hide (name) {
         this.$modal.hide(name);
       },
+      itemSelected (size) {
+        console.log(size)
+        this.size = size;
+      },
+      setLabel (size) {
+        console.log(size)
+        return size.name;
+      },
+      inputChange (text) {
+        console.log(text)
+        // console.log(this.sizes)
+        // console.log(this.sizes.filter(function(v) { return v.name.includes(text)} ))
+        this.sizes = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
+        // this.sizes = this.sizes.filter(function(v) { return v.name == } );
+      },
       filterData() {
         var ths = this;
         var allData = this.tempData;
         this.isBusy = true;
-        console.log(allData)
-          if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
-              ths.getHeaderApprove();
+          if (this.selectStat == null && this.selectType == null && this.selectDep == null && this.sizes == null) {
+            ths.getHeaderApprove();
           }
-          if (this.valDateStart != null && this.valDateStart != "") {
+          else if (this.valDateStart != null && this.valDateStart != "") {
             console.log("valDateStart")
-            // allData = allData.filter(function(v) {
-            //   return v.
-            // })
           }
-          if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
+          else if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
             console.log("valDateStop")
           }
-          if (this.selectStat != null && this.selectStat != "") {
+          else if (this.selectStat != null && this.selectStat != "") {
             console.log("selectStat")
             if (this.selectStat == 1) {
               allData = allData.filter(function(v) {
@@ -626,18 +647,25 @@ export default {
               }); 
             }
           }
-          if(this.selectType != null && this.selectType != "") {
+          else if(this.selectType != null && this.selectType != "" && this.selectType != undefined) {
             console.log("selectType")
             console.log(this.selectType)
             allData = allData.filter(function(v) {
               return v.leave_reason_id == ths.selectType;
             })
           }
-          if(this.selectDep != null && this.selectDep != "") {
+          else if(this.selectDep != null && this.selectDep != "" && this.selectDep != undefined) {
             console.log("selectDep")
             console.log(this.selectDep)
             allData = allData.filter(function(v) {
               return v.dept_id == ths.selectDep;
+            })
+          }
+          else if(this.size != null && this.size != "" && this.size != undefined) {
+            console.log("nameSearch")
+            console.log(this.size)
+            allData = allData.filter(function(v) {
+              return v.value == ths.size;
             })
           }
           this.itemHeader = allData;
@@ -693,6 +721,25 @@ export default {
           }
         });
       },
+      getDataUserDept: async function(){
+      var ths = this;
+      var user = JSON.parse(localStorage.getItem("user"));
+      var dataUserDept = [];
+      var fullname = "";
+      var result = {};
+      await authService.getDataUserDept(user.dept_id).then(response => {
+        console.log(response.data)
+        if(response.data != null && response.data.length > 0){
+          response.data.forEach(function (obj, i){
+            fullname = obj.first_name + " " + obj.last_name + "("+ obj.nick_name + ")";
+            result = {value: obj.emp_id, name: fullname}
+            dataUserDept.push(result);
+          });
+          ths.sizes = dataUserDept;
+          ths.empName = dataUserDept
+        }
+      });
+     },
       getDataReasonLeave: async function(){
         var dataReason = [];
         await authService.getDataReasonLeave().then(response => {
@@ -710,7 +757,6 @@ export default {
       var leave_time = [];
       var leave_time_stop = [];
       await authService.getDataHeader(user.dept_id).then(response => {
-        console.log(response.data)
         if (response.data != null && response.data.length > 0) {
           this.selectedFilter = null;
           this.responseData = response.data;

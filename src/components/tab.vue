@@ -78,9 +78,9 @@
             <b-tr v-if="responseData">
               <b-th><b>รวมทั้งหมด : </b></b-th>
               <b-th><center><b>{{ sumLimits(responseData) }}</b></center></b-th>
-              <b-th><center><b>{{ sumLeave1(responseData) + ' / ' + sumLeave2(responseData)}}</b></center></b-th>
-              <b-th v-if="sumLeave2(responseData) > 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData) - 1) + ' / ' + (9 - sumLeave2(responseData))}}</b></center></b-th>
-              <b-th v-if="sumLeave2(responseData) == 0"><center><b>{{ (sumLimits(responseData) - sumLeave1(responseData)) + ' / 0'}}</b></center></b-th>
+              <b-th><center><b>{{ sumLeaveDay(responseData) + ' / ' + sumLeaveHour(responseData)}}</b></center></b-th>
+              <b-th v-if="sumLeaveHour(responseData) > 0"><center><b>{{ (sumLimits(responseData) - sumLeaveDay(responseData) - 1) + ' / ' + (9 - sumLeaveHour(responseData))}}</b></center></b-th>
+              <b-th v-if="sumLeaveHour(responseData) == 0"><center><b>{{ (sumLimits(responseData) - sumLeaveDay(responseData)) + ' / 0'}}</b></center></b-th>
             </b-tr>
           </b-thead>
       </b-table-simple>
@@ -142,6 +142,7 @@ export default {
         'date',
       ],
       editPop:{},
+      fullPage:''
     }
   },
   computed: {
@@ -176,34 +177,28 @@ export default {
 	  		  return acc + parseInt(val.leave_limit);
         }, 0);  
       },
-      sumLeave1: function (responseData) {
+      sumLeaveDay: function (responseData) {
   	      return responseData.reduce((acc, val) => {
             if(val.dd != null){
-              var result1 = acc + parseInt(val.dd);
-              return result1;
+              var resultDay = acc + parseInt(val.dd);
+              return resultDay;
             }
             else {
               return acc;
             }
           }, 0);
       },
-      sumLeave2: function (responseData) {
+      sumLeaveHour: function (responseData) {
   	      return responseData.reduce((acc, val) => {
             if(val.hh != null){
-              var result2 = acc + parseInt(val.hh); 
-	  		      return result2;
+              var resultHour = acc + parseInt(val.hh); 
+	  		      return resultHour;
             }
             else{
               return acc;
             }
           }, 0);
       },
-      // sumLeave3: function (responseData) {
-  	  //     return responseData.reduce((acc, val) => {
-      //       var result3 = acc + parseInt(val.mm);
-	  	// 	    return result3;
-      //     }, 0);
-      // },
       sumRemain1: function (responseData) {
   	    return responseData.reduce((acc, val) => {
           if(val.dd == 0){
@@ -233,13 +228,6 @@ export default {
           return remain2;
 			  }, 0);
       },
-      // sumRemain3: function (responseData) {
-  	  //   return responseData.reduce((acc, val) => {
-      //     var sum3 = 0 - val.mm;
-      //     var remain3 = acc + parseInt(sum3);
-	  	// 	  return remain3;
-			//   }, 0);
-      // },
       showStat: async function(){
         this.isLoading = true;
         var user = JSON.parse(localStorage.getItem("user"));
