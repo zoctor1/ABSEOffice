@@ -73,10 +73,8 @@
                             if(choice == true){
                                 startDate = new Date(obj.leave_start_date);
                                 stopDate = new Date(obj.leave_stop_date);
-                                start = mainJs.setDateFormat(startDate);
-                                stop = mainJs.setDateFormat(stopDate);
                                 fullname = obj.first_name + " " + obj.last_name;
-                                description = "ประเภทการลา : " + obj.leave_reason_name + " รายละเอียดการลา : "  +  obj.leave_remark  + " ระยะเวลาการลา : " +  start + " ถึง " + stop;
+                                description = "ประเภทการลา : " + obj.leave_reason_name + " รายละเอียดการลา : "  +  obj.leave_remark  + " ระยะเวลาการลา : " +  obj.leave_start_date + " ถึง " + obj.leave_stop_date;
                                 for (var d = startDate; d <= stopDate; d.setDate(d.getDate() + 1)) {
                                     count++;
                                     dataTemp.push({

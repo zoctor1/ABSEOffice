@@ -46,6 +46,16 @@ export function getDataUserDept(deptId) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
+export function getDataAllUser() {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/dataAllUser`, {}, { params: {} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+
 export function getDataHR() {
     return new Promise((resolve, reject) => {
         axios.get(`${API_URL}/dataForHR`, {}, { params: {} }).then(

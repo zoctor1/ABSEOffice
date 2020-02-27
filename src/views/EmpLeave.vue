@@ -315,7 +315,10 @@
           <b-col>
             <p><b style="font-size: 16px;">ช่วงเวลา :</b></p>
           </b-col>
-          <b-col>
+          <b-col v-if="dataModal.leave_type_id == 4">
+            <p style="font-size: 16px;">{{ dataModal.leave_time }}</p>
+          </b-col>
+          <b-col v-else>
             <p style="font-size: 16px;">{{ dataModal.leave_type_name }}</p>
           </b-col>
         </b-row>
@@ -357,7 +360,7 @@
               {{ dataModal.head_approve_date_format }} 
             </p>
             <p v-else-if="dataModal.cancel_header_date != null  && dataModal.head_remark != null" style="font-size: 16px;">
-              ไม่อนุมัติ 
+              ไม่อนุมัติ ({{dataModal.cancel_header_date_format}})
             </p>
             <p v-else-if="dataModal.head_approve_date == null && dataModal.cancel_header_date == null && dataModal.cancel_date == null" style="font-size: 16px;">
               รอการอนุมัติ 
@@ -707,7 +710,7 @@ export default {
       else {
         this.fields = [
           { key: 'no', label: 'ลำดับ', class: 'text-center no',sortable: true },
-          { key: 'leave_date', label: 'วันที่กรอก', class: 'text-center leave_date',sortable: true },
+          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date',sortable: true },
           { key: 'leave_reason_name', label: 'ประเภทการลา', class: 'text-center leave_reason_name',sortable: true },
           // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center leave_start_date',sortable: true },
           // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center leave_stop_date' },

@@ -212,21 +212,8 @@ export default {
   data() {
     return {
       dataLeave: {},
-      optionTime: [
-        // { text: 'ลาครึ่งเช้า', value: 1 },
-        // { text: 'ลาครึ่งบ่าย', value: 2 },
-        // { text: 'ลาเต็มวัน ', value: 3 },
-        // { text: 'อื่น ๆ', value: 4 }
-      ],
-      optionLeaveType: [
-        // { text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true},
-        // { text: "ลาป่วย",value: 1 },
-        // { text: "ลากิจ",value: 2},
-        // { text: "ลาพักร้อน",value: 3 },
-        // { text: "ลาคลอด",value: 4 },
-        // { text: "ลาบวช",value: 5 },
-        // { text: "ลาไม่รับค่าจ้าง",value: 6 }
-      ],
+      optionTime: [],
+      optionLeaveType: [],
       description:'',
       popupLeave:false,
       types: [
@@ -250,7 +237,7 @@ export default {
       },
       userIn:{},
       isLoading: false,
-      fullPage: true,
+      fullPage: '',
       date: null,
       flagRangDate: false,
       validateRangDate: {},
@@ -356,9 +343,8 @@ export default {
       this.selectType = null;
       this.selected = 3;
     },
-    EditLeave() {
+    EditLeave:async function() {
       var ths = this;
-      console.log("EditLeave")
       this.isLoading = false; 
       var obj = {};
       obj["leave_date"] = mainJs.setDateToServer(new Date().toString());
@@ -388,8 +374,7 @@ export default {
       );
       obj["leave_remark"] = this.$v.form.description.$model;
       obj["emp_leave_id"] = this.dataLeave.emp_leave_id;
-
-      if ( mainJs.checkStopTime(obj["leave_start_date"], obj["leave_stop_date"]) == false) {
+      if ( await mainJs.checkStopTime(obj["leave_start_date"], obj["leave_stop_date"]) == false) {
         Swal.fire (
           'กรอกช่วงเวลาให้ถูกต้อง',
           ' ',
