@@ -720,6 +720,7 @@ export default {
       await authService.getDataDept().then(response => {
         console.log(response.data)
         if (response.data != null && response.data.length > 0) {
+          dataDept.push({ text: "--กรุณาเลือกแผนก--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
             dataDept.push({ text: obj.dept_name,value: obj.dept_id });
           });
@@ -731,6 +732,7 @@ export default {
       var dataReason = [];
       await authService.getDataReasonLeave().then(response => {
         if (response.data != null && response.data.length > 0) {
+          dataReason.push({ text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
             dataReason.push({ text: obj.leave_reason_name,value: obj.leave_reason_id });
           });

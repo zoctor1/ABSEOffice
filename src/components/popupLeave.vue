@@ -42,6 +42,7 @@
                 <b-form-radio-group
                   v-model="selected"
                   :options="optionTime"
+                  @change="aaa"
                 >
                 </b-form-radio-group> 
             </b-col>
@@ -345,6 +346,7 @@ export default {
     EditLeave:async function() {
       this.isLoading = false; 
       var obj = {};
+      obj["leave_date"] = mainJs.setDateToServer(new Date().toString());
       obj["leave_reason_id"] = this.selectType;
       obj["leave_type_id"] = this.selected;
       if(this.selected == 1){
@@ -379,21 +381,56 @@ export default {
         )
         this.isLoading = false;
       }
-      else if (this.validation(obj)) {
-      authService.EditLeave(obj).then(response => {
-        this.$modal.hide('hello-world');
-        console.log(response.data);
-      });
+      else if (obj["leave_start_date"] == null || obj["leave_start_date"] == "" || obj["leave_stop_date"] == null || obj["leave_stop_date"] == "") {
+        Swal.fire (
+          'กรุณากรอกเวลา',
+          ' ',
+          'error'
+        )
+        this.isLoading = false;
       }
-      else {
+      else if (this.selected == 4 && mainJs.validateTime(this.selectTimeStart, this.selectTimeStop) == false) {
+        Swal.fire (
+          'กรุณากรอกเวลา',
+          ' ',
+          'error'
+        )
+        this.isLoading = false;
+      }
+      else if (this.validation(obj)) {
+        authService.editLeave(obj).then(response => {
+        console.log(response.data);
+        if (response.data > 0) {
+          this.Loading = false;
+          this.$modal.hide('hello-world');
+          this.leaveID = response.data;
+          var fileData = new FormData();
+          fileData.append("image_leave", this.file);
+          fileData.append("leave_emp_id", this.leaveID)
+          authService.addImage(fileData).then(response => {
+            console.log(response.data);
+          });
+          Swal.fire (
+            'การส่งอนุมัติเสร็จสิ้น',
+            ' ',
+            'success'
+          )
+        } else {
           setTimeout(() => {
-            this.isLoading = false;
-            this.$swal.fire({
-              heightAuto: false,
-              title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
-            })},250);
-            console.log("else")
-        }
+            this.isLoading = false}, 500);
+            console.log("aaa");
+          }
+      });
+    }
+      else {
+        setTimeout(() => {
+          this.isLoading = false;
+          this.$swal.fire({
+            heightAuto: false,
+            title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
+          })},250);
+          console.log("else")
+      }
     },
     validation: function(value) {
       var key = Object.keys(value);
@@ -419,6 +456,7 @@ export default {
       var dataReason = [];
       await authService.getDataReasonLeave().then(response => {
         if (response.data != null && response.data.length > 0) {
+          dataReason.push({ text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
             dataReason.push({ text: obj.leave_reason_name,value: obj.leave_reason_id });
           });
@@ -428,7 +466,7 @@ export default {
     },
     insertData: async function() {
       this.isLoading = true;
-      console.log("loading")
+      console.log("insertData aaaa ")
       var user = JSON.parse(localStorage.getItem("user"));
       var obj = {};
       obj["emp_id"] = user.uuid;
@@ -458,10 +496,19 @@ export default {
         this.sel2
       );
       obj["leave_remark"] = this.$v.form.description.$model;
+      console.log(obj["leave_start_date"],obj["leave_stop_date"] )
 
-      if ( await mainJs.checkStopTime(obj["leave_start_date"], obj["leave_stop_date"]) == false) {
+      if (mainJs.checkStopTime(obj["leave_start_date"], obj["leave_stop_date"]) == false) {
         Swal.fire (
           'กรอกช่วงเวลาให้ถูกต้อง',
+          ' ',
+          'error'
+        )
+        this.isLoading = false;
+      }
+      else if (this.selected == 4 && mainJs.validateTime(this.selectTimeStart, this.selectTimeStop) == false) {
+        Swal.fire (
+          'กรุณากรอกเวลา',
           ' ',
           'error'
         )
@@ -510,7 +557,6 @@ export default {
         this.defaultValue();
         console.log(this.checkData)
         if(this.editPop != ""){
-          this.$modal.show('hello-world');
           this.popupLeave = true;
           this.dataLeave = this.editPop;
           console.log(this.dataLeave)

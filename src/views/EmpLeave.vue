@@ -568,6 +568,7 @@ export default {
     filterData() {
       var ths = this;
       var allData = this.tempData;
+      ths.isBusy = true;
       if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
         ths.getDataAsync();
       }
@@ -598,7 +599,7 @@ export default {
           allData = allData.filter(function(v) {
             return v.head_approve_date == null && v.hr_approve_date != null && v.cancel_approve_date == null && v.emp_leave_id != null;
           });
-        } 
+        }
       }
       if(this.selectType != null && this.selectType != "") {
         console.log("selectType")
@@ -616,6 +617,9 @@ export default {
       }
       this.items = allData;
       this.totalRows = this.items.length
+      setTimeout(() => {
+        this.isBusy = false
+      },300);
     },
     showLeavePopup: function(flag) {
       var ths = this;
@@ -632,9 +636,10 @@ export default {
       }, 1000);
     },
     getDataReasonLeave: async function(){
-       var dataReason = [];
+      var dataReason = [];
       await authService.getDataReasonLeave().then(response => {
         if (response.data != null && response.data.length > 0) {
+          dataReason.push({ text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
             dataReason.push({ text: obj.leave_reason_name,value: obj.leave_reason_id });
           });
@@ -676,9 +681,9 @@ export default {
               this.isBusy = false}, 1200);
               console.log("isbusy");
               // alert("aaaa")
-            }
-        });
-        this.totalRows = this.items.length
+          }
+      });
+      this.totalRows = this.items.length
     },
     handleResize: function() {
       this.window.width = window.innerWidth;

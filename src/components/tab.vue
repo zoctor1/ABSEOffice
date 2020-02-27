@@ -126,6 +126,7 @@ export default {
       filter: null,
       filterOn: [],
       select1:3,
+      editPop:{},
       selected: null,
       selected2: null,
       isLoading: false,
@@ -166,7 +167,8 @@ export default {
           ths.editPop = "";
         } 
         else {
-          ths.editPop = this.responseData; 
+          ths.editPop = this.dataModal; 
+          this.hide('remarkModal'); 
         }
         setTimeout(function() {
           ths.showPop = false;

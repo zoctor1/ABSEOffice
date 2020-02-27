@@ -564,6 +564,7 @@ export default {
     this.selectStat = null;
     this.getDataUserDept();
     this.getDataReasonLeave();
+    this.getDataUserDept();
   },
   methods: {
       showLeavePopup: function(flag) {
@@ -744,6 +745,7 @@ export default {
         var dataReason = [];
         await authService.getDataReasonLeave().then(response => {
           if (response.data != null && response.data.length > 0) {
+            dataReason.push({ text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true})
             response.data.forEach(function (obj, i) {
               dataReason.push({ value: obj.leave_reason_id, text: obj.leave_reason_name });
             });

@@ -8,7 +8,7 @@
         <b-card v-if="flagShow == 1" bg-variant="light" tag="article" style="max-width: 22rem; margin-top: 80px;" class="mb-2">
           <p style="font-size:150%; margin:12px 0px 12px; cursor:default;"> ล็อคอินเข้าสู่ระบบ </p>
             <b-col sm="12">
-              <p align="left" style="cursor:default;">Email:</p>
+              <p align="left" style="cursor:default;">Email:</p> 
               <b-form-input type="text" placeholder="กรุณากรอกอีเมล" v-model="email" @keypress="onEvtEnter"></b-form-input>
             </b-col>
             <b-col sm="12">

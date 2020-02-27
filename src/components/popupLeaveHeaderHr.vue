@@ -9,7 +9,7 @@
     >
       <p style="background-color: #f1f1f1; font-size: 22px; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
         รายละเอียดการลาของพนักงาน
-        <button type="button" aria-label="Close" class="close" @click="hide()" >
+        <button type="button" aria-label="Close" class="close" @click="hide()">
           <img src="../assets/Close-icon.png" width="33" height="33" />
         </button>
       </p>
@@ -28,7 +28,7 @@
                   <!-- <b-form-select
                     v-model="sizeModal"
                     :options="sizes"
-                    style="width:528px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                    style="width:528px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; margin-bottom:10px;"
                   >
                   </b-form-select> //ใช้งานได้-->
                   <vue-suggestion 
@@ -48,8 +48,16 @@
               <b-col>
                 <p style="margin-bottom:-15px; cursor:default;"><b>เเผนก : </b><br> <label v-if="empData != null && Object.keys(empData).length > 0 && sizeModal != null && sizeModal != '' && sizeModal != undefine"> {{ empData[sizeModal].dept_name }} </label> </p>
               </b-col>
-              <b-col>
-                <p style="margin-bottom:-15px; cursor:default;"><b>ตำเเหน่ง : </b><br> <label v-if="empData != null && Object.keys(empData).length > 0 && sizeModal != null && sizeModal != '' && sizeModal != undefine" > {{ empData[sizeModal].position_name }} </label> </p>
+              <b-col v-if="empData != null && Object.keys(empData).length > 0 && sizeModal != null && sizeModal != '' && sizeModal != undefine" >
+                <p style="margin-bottom:-15px; cursor:default;">
+                  <b>ตำเเหน่ง : </b>
+                  <label
+                    style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; padding:5px 0px 0px 11px" 
+                    
+                  > 
+                    {{ empData[sizeModal].position_name }} 
+                  </label> 
+                </p>
               </b-col>
             </b-row><br> -->
 
@@ -478,6 +486,7 @@ export default {
        var dataReason = [];
       await authService.getDataReasonLeave().then(response => {
         if (response.data != null && response.data.length > 0) {
+          dataReason.push({ text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
             dataReason.push({ text: obj.leave_reason_name,value: obj.leave_reason_id });
           });
@@ -487,8 +496,11 @@ export default {
     },
     insertData: async function() {
       this.isLoading = true;
+      console.log("insertData aaaa ")
+      var user = JSON.parse(localStorage.getItem("user"));
       var obj = {};
       obj["emp_id"] = this.size.value;
+      obj["leave_date"] = mainJs.setDateToServer(new Date().toString());
       obj["leave_reason_id"] = this.selectType;
       obj["leave_type_id"] = this.selected;
       if(this.selected == 1){
@@ -514,8 +526,9 @@ export default {
         this.sel2
       );
       obj["leave_remark"] = this.$v.form.description.$model;
+      console.log(obj["leave_start_date"],obj["leave_stop_date"] )
 
-      if ( await mainJs.checkStopTime(obj["leave_start_date"], obj["leave_stop_date"]) == false) {
+      if (mainJs.checkStopTime(obj["leave_start_date"], obj["leave_stop_date"]) == false) {
         Swal.fire (
           'กรอกช่วงเวลาให้ถูกต้อง',
           ' ',
@@ -523,9 +536,17 @@ export default {
         )
         this.isLoading = false;
       }
+      else if (this.selected == 4 && mainJs.validateTime(this.selectTimeStart, this.selectTimeStop) == false) {
+        Swal.fire (
+          'กรุณากรอกเวลา',
+          ' ',
+          'error'
+        )
+        this.isLoading = false;
+      }
       else if (this.validation(obj)) {
-        console.log(obj);
-        await authService.insertDataByHeader(obj).then(response => {
+        await authService.insertData(obj).then(response => {
+          console.log("pass validation")
           console.log(response.data);
           if (response.data > 0) {
             this.Loading = false;
