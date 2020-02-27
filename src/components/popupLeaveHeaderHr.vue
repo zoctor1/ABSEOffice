@@ -44,14 +44,14 @@
               </b-col>
             </b-row><br>
 
-             <b-row>
+             <!-- <b-row>
               <b-col>
                 <p style="margin-bottom:-15px; cursor:default;"><b>เเผนก : </b><br> <label v-if=" Object.keys(size).length > 0 && size != null && size != '' " > {{ size.dept }} </label> </p>
               </b-col>
               <b-col>
                 <p style="margin-bottom:-15px; cursor:default;"><b>ตำเเหน่ง : </b><br> <label v-if=" Object.keys(size).length > 0 && size != null && size != '' " > {{ size.position }} </label> </p>
               </b-col>
-            </b-row><br>
+            </b-row><br> -->
 
             <b-row>
               <b-col>
@@ -413,7 +413,7 @@ export default {
           if (response.data != null && response.data.length > 0) {
             ths.empData = {};
             response.data.forEach(function (obj, i){
-              fullname = obj.first_name + " " + obj.last_name + "("+ obj.nick_name + ")";
+              fullname = obj.first_name + " " + obj.last_name + " ("+ obj.nick_name + ")";
               result = {value: obj.emp_id, name: fullname, dept: obj.dept_name, position: obj.position_name}
               dataUserDept.push(result);
               ths.empData[obj.emp_id] = obj;
@@ -427,7 +427,7 @@ export default {
           if (response.data != null && response.data.length > 0) {
             ths.empData = {};
             response.data.forEach(function (obj, i) {
-              fullname = obj.first_name + " " + obj.last_name + "("+ obj.nick_name + ")";
+              fullname = obj.first_name + " " + obj.last_name + " ("+ obj.nick_name + ")";
               result = {value: obj.emp_id, name: fullname}
               dataUserDept.push(result);
               ths.empData[obj.emp_id] = obj;

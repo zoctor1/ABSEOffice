@@ -702,7 +702,7 @@ export default {
         // console.log(response.data)
         if(response.data != null && response.data.length > 0){
           response.data.forEach(function (obj, i){
-            fullname = obj.first_name + " " + obj.last_name + "("+ obj.nick_name + ")";
+            fullname = obj.first_name + " " + obj.last_name + " ("+ obj.nick_name + ")";
             result = {value: obj.emp_id, name: fullname}
             dataUserDept.push(result);
           });
