@@ -42,24 +42,16 @@
                   </vue-suggestion> 
                 </template>
               </b-col>
-            </b-row>
-            <br><br>
-             <!-- <b-row>
+            </b-row><br>
+
+             <b-row>
               <b-col>
-                <p style="margin-bottom:-15px; cursor:default;"><b>เเผนก : </b><br> <label v-if="empData != null && Object.keys(empData).length > 0 && sizeModal != null && sizeModal != '' && sizeModal != undefine"> {{ empData[sizeModal].dept_name }} </label> </p>
+                <p style="margin-bottom:-15px; cursor:default;"><b>เเผนก : </b><br> <label v-if=" Object.keys(size).length > 0 && size != null && size != '' " > {{ size.dept }} </label> </p>
               </b-col>
-              <b-col v-if="empData != null && Object.keys(empData).length > 0 && sizeModal != null && sizeModal != '' && sizeModal != undefine" >
-                <p style="margin-bottom:-15px; cursor:default;">
-                  <b>ตำเเหน่ง : </b>
-                  <label
-                    style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; padding:5px 0px 0px 11px" 
-                    
-                  > 
-                    {{ empData[sizeModal].position_name }} 
-                  </label> 
-                </p>
+              <b-col>
+                <p style="margin-bottom:-15px; cursor:default;"><b>ตำเเหน่ง : </b><br> <label v-if=" Object.keys(size).length > 0 && size != null && size != '' " > {{ size.position }} </label> </p>
               </b-col>
-            </b-row><br> -->
+            </b-row><br>
 
             <b-row>
               <b-col>
@@ -243,7 +235,7 @@ export default {
     Loading,
     datetime: Datetime
   },
-  props: ["showPop" , "checkPopup"],
+  props: ["showPopHeader" , "checkPopup"],
   data() {
     return {
       sizeModal:"",
@@ -253,7 +245,6 @@ export default {
       empName:[],
       empData: {},
       dataLeave: {},
-      flagPopup:'',
       selectDept: "",
       selectPosition: "",
       optionTime: [],
@@ -314,7 +305,6 @@ export default {
     Settings.defaultLocale = 'th'
     this.getDataTypeLeave();
     this.getDataReasonLeave();
-    // this.getDataUser();
   },
   methods: {
     confirmMessage () {
@@ -401,11 +391,9 @@ export default {
       return true;
     },
     itemSelected (size) {
-        console.log(size)
         this.size = size;
     },
     setLabel (size) {
-      console.log(size)
       return size.name;
     },
     inputChange (text) {
@@ -425,23 +413,28 @@ export default {
         authService.getDataUserDept(user.dept_id).then(response => {
           console.log(response.data)
           if (response.data != null && response.data.length > 0) {
+            ths.empData = {};
             response.data.forEach(function (obj, i){
               fullname = obj.first_name + " " + obj.last_name + "("+ obj.nick_name + ")";
-              result = {value: obj.emp_id, name: fullname}
+              result = {value: obj.emp_id, name: fullname, dept: obj.dept_name, position: obj.position_name}
               dataUserDept.push(result);
+              ths.empData[obj.emp_id] = obj;
             });
             ths.sizes = dataUserDept;
             ths.empName = dataUserDept
+            console.log(ths.sizes)
           }
         });
       } else if (ths.checkPopup == 1) {
         authService.getDataAllUser().then(response => {
           console.log(response.data)
           if (response.data != null && response.data.length > 0) {
+            ths.empData = {};
             response.data.forEach(function (obj, i) {
               fullname = obj.first_name + " " + obj.last_name + "("+ obj.nick_name + ")";
               result = {value: obj.emp_id, name: fullname}
               dataUserDept.push(result);
+              ths.empData[obj.emp_id] = obj;
             });
             ths.sizes = dataUserDept;
             ths.empName = dataUserDept
@@ -580,21 +573,10 @@ export default {
     }
   },
   watch: {
-    showPop() {
+    showPopHeader() {
       var ths = this;
-      // console.log("this.showPop")
-      if (ths.showPop) {    
-        // if(ths.checkPopup != null){
-        //   console.log(ths.checkPopup);
-        //   ths.flagPopup = ths.checkPopup;
-        //   console.log(ths.flagPopup);
-        // }
+      if (ths.showPopHeader) {    
         ths.defaultValue();
-        // console.log(ths.showPop);
-        // console.log(ths.checkPopup);
-        // if(ths.checkPopup != null && ths.checkPopup != ""){
-        //   ths.getDataUser();
-        // }
       }
     }
   },

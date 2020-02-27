@@ -574,8 +574,7 @@ export default {
       },
       showLeavePopup: function(flag) {
         var ths = this;
-        ths.showPop = true;
-
+        ths.showPopHeader = true;
         ths.checkPopup = flag;
         setTimeout(function() {
           ths.showPopHeader = false;
