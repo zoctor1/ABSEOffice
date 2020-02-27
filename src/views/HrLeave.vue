@@ -577,28 +577,20 @@ export default {
         return size.name;
       },
       inputChange (text) {
-        console.log(text)
         this.sizes = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
       },
     filterData() {
       var ths = this;
       var allData = this.tempData;
       this.isBusy = true;
-      console.log(allData)
           if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
             ths.getHrApprove();
           }
           if (this.valDateStart != null && this.valDateStart != "") {
-            console.log("valDateStart")
-            // allData = allData.filter(function(v) {
-            //   return v.
-            // })
           }
           if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
-            console.log("valDateStop")
           }
           if (this.selectStat != null && this.selectStat != "") {
-            console.log("selectStat")
             if (this.selectStat == 1) {
               allData = allData.filter(function(v) {
                 return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_header_date == null;
@@ -610,15 +602,11 @@ export default {
             } 
           }
           if(this.selectType != null && this.selectType != "") {
-            console.log("selectType")
-            console.log(this.selectType)
             allData = allData.filter(function(v) {
               return v.leave_reason_id == ths.selectType;
             })
           }
           if(this.selectDep != null && this.selectDep != "") {
-            console.log("selectDep")
-            console.log(this.selectDep)
             allData = allData.filter(function(v) {
               return v.dept_id == ths.selectDep;
             })
@@ -628,9 +616,6 @@ export default {
       setTimeout(() => {
         this.isBusy = false
       }, 300);
-      // setTimeout(() => {
-      //   this.isBusy = false
-      // }, 1200);
     },
     showMsgBoxTwo(id) {
         this.$bvModal.msgBoxConfirm('คุณต้องการรับทราบการลานี้ใช่หรือไม่?', {
@@ -644,48 +629,20 @@ export default {
           hideHeaderClose: false,
           centered: true
         }).then(value => {
-          console.log(value)
           if (value == true) {
             authService.postApproveHr(id).then(response => {
-              console.log(response.data);
               this.getHrApprove();
             });
           } 
-          // else if (value == false) {
-          //     this.showMsgOk(id);
-          // }
         })
       },
-      // showMsgOk(id) {
-      //   const h = this.$createElement
-      //   const titleVNode = h('div', { domProps: { innerHTML: 'สาเหตุที่ไม่อนุมัติ' } })
-      //   const messageVNode = h('div', { class: ['foobar'] }, [
-      //      h('b-form-textarea', { class: ['textarea-large'] })
-      //   ])
-      //   this.$bvModal.msgBoxOk([messageVNode], {
-      //     title: [titleVNode],
-      //     buttonSize: 'sm',
-      //     centered: true, size: 'sm'
-      //   }).then(value => {
-      //     if(value == true){
-      //       console.log(id);
-      //       console.log(messageVNode.children[0].elm.value);
-      //       authService.notApproveHR(id, messageVNode.children[0].elm.value).then(response => {
-      //         this.getHrApprove();
-      //       });
-      //     }
-      //     else if(value == false){
-      //       console.log("gg")
-      //     }
-      //   });
-      // },
     getDataAllUser: async function(){
       var ths = this;
       var dataAllUser = [];
       var fullname = "";
       var result = {};
       await authService.getDataAllUser().then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         if(response.data != null && response.data.length > 0){
           response.data.forEach(function (obj, i){
             fullname = obj.first_name + " " + obj.last_name + " ("+ obj.nick_name + ")";
@@ -700,7 +657,7 @@ export default {
     getDataDept: async function(){
       var dataDept = [];
       await authService.getDataDept().then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         if (response.data != null && response.data.length > 0) {
           dataDept.push({ text: "--กรุณาเลือกแผนก--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
@@ -747,14 +704,14 @@ export default {
           // response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
           // response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
         } 
-        console.log(response.data)
+        // console.log(response.data)
         this.items = response.data;
         setTimeout(() => {
           this.isBusy = false
         },300);
         this.tempData = response.data;
       } else {
-          console.log("else");
+          // console.log("else");
           setTimeout(() => {
             this.isBusy = false}, 1200);
           }
@@ -827,6 +784,7 @@ export default {
     font-size: 12px;
   }
   #HrLeave .vdatetime-input {
+    padding-left:10px;
     width: 100%;
     height: 42px !important;
     font-size: 16px !important;

@@ -399,9 +399,6 @@ export default {
       return size.name;
     },
     inputChange (text) {
-      // console.log(text)
-      // console.log(this.sizes)
-      // console.log(this.sizes.filter(function(v) { return v.name.includes(text)} ))
       this.sizes = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
       // this.sizes = this.sizes.filter(function(v) { return v.name == } );
     },
@@ -413,7 +410,6 @@ export default {
       var result = {};
       if (ths.checkPopup == 0) {
         authService.getDataUserDept(user.dept_id).then(response => {
-          console.log(response.data)
           if (response.data != null && response.data.length > 0) {
             ths.empData = {};
             response.data.forEach(function (obj, i){
@@ -424,12 +420,10 @@ export default {
             });
             ths.sizes = dataUserDept;
             ths.empName = dataUserDept
-            console.log(ths.sizes)
           }
         });
       } else if (ths.checkPopup == 1) {
         authService.getDataAllUser().then(response => {
-          console.log(response.data)
           if (response.data != null && response.data.length > 0) {
             ths.empData = {};
             response.data.forEach(function (obj, i) {
@@ -444,24 +438,6 @@ export default {
         });
       }
      },
-    // getDataUserDept: async function(){
-    //   var ths = this;
-    //   var user = JSON.parse(localStorage.getItem("user"));
-    //   var dataUserDept = [];
-    //   var fullname = "";
-    //   await authService.getDataUserDept(user.dept_id).then(response => {
-    //     if(response.data != null && response.data.length > 0){
-    //       ths.empData = {};
-    //       response.data.forEach(function (obj, i){
-    //         fullname = obj.first_name + " " + obj.last_name;
-    //         dataUserDept.push({ value: obj.emp_id, text: fullname });
-    //         ths.empData[obj.emp_id] = obj;
-    //       });
-    //       ths.sizes = dataUserDept;
-    //       ths.empName = dataUserDept
-    //     }
-    //   });
-    // },
     getDataTypeLeave: async function(){
       var dataType = [];
       await authService.getDataTypeLeave().then(response => {
@@ -488,7 +464,6 @@ export default {
     insertData: async function() {
       var ths = this;
       this.isLoading = true;
-      console.log("insertData aaaa ")
       var user = JSON.parse(localStorage.getItem("user"));
       var obj = {};
       obj["emp_id"] = this.size.value;
@@ -518,7 +493,6 @@ export default {
         this.sel2
       );
       obj["leave_remark"] = this.$v.form.description.$model;
-      console.log(obj["leave_start_date"],obj["leave_stop_date"] )
 
       if (mainJs.checkStopTime(obj["leave_start_date"], obj["leave_stop_date"]) == false) {
         Swal.fire (
@@ -538,8 +512,6 @@ export default {
       }
       else if (this.validation(obj)) {
         await authService.insertDataByHeader(obj).then(response => {
-          console.log("pass validation")
-          console.log(response.data);
           if (response.data > 0) {
             this.Loading = false;
             this.$modal.hide('hello-world');
@@ -548,7 +520,6 @@ export default {
             fileData.append("image_leave", this.file);
             fileData.append("leave_emp_id", this.leaveID)
             authService.addImage(fileData).then(response => {
-              console.log(response.data);
             });
             Swal.fire (
               'การส่งอนุมัติเสร็จสิ้น',
@@ -559,7 +530,6 @@ export default {
           } else {
             setTimeout(() => {
               this.isLoading = false}, 500);
-              console.log("aaa");
             }
         });
       }
@@ -570,7 +540,6 @@ export default {
               heightAuto: false,
               title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
             })},250);
-            console.log("else")
         }
     }
   },
@@ -642,9 +611,6 @@ export default {
     font-size: 16px !important;
     padding: none;
   }
-  /* #sizePopupLeave .vdatetime-input .vdatetime {
-    width: 100%; 
-  } */
   #sizePopupLeave .fs-16 {
     display: none;
   }

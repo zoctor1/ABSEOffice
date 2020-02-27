@@ -67,7 +67,6 @@
                 var fullname = "";
                 var description = "";
                 await authService.getEvent(user.uuid, user.dept_id, user.header_flag, choice).then(response => {
-                    console.log(response.data);
                     response.data.forEach( function(obj) {
                         if(obj.head_approve_date != null && obj.hr_approve_date != null && obj.cancel_date == null){
                             if(choice == true){
@@ -103,7 +102,6 @@
                             }
                         }
                         else{
-                            console.log("not approve")
                         }
                     });
                 }); 
