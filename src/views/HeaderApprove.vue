@@ -1,6 +1,6 @@
 <template>
-  <div id="HeaderAppve" lg="12" sm="12" xs="12">
-    <popupLeaveHeaderHr v-bind:showPop="showPop"/>
+  <div id="HeaderApprove" lg="12" sm="12" xs="12">
+    <popupLeaveHeaderHr v-bind:showPopHeader="showPopHeader" @leaveSuccess="handelLeaveSave" />
     <!-- {{window}} -->
     <center>
       <div><br>
@@ -12,7 +12,7 @@
             <b-row style="margin:10px 0px 0px 10px; width:100%">
               <b-col md="12" lg="2">
                 <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
-                <datetime 
+                <datetime
                   type="date" 
                   v-model="valDateStart" 
                   format="dd/MM/yyyy" 
@@ -479,7 +479,7 @@ import popupLeaveHeaderHr from "@/components/popupLeaveHeaderHr.vue"
 Vue.use(Datetime,VueSweetalert2,VModal)
 
 export default {
-  name: "HeaderAppve",
+  name: "HeaderApprove",
   components: {
     datetime: Datetime,
     popupLeaveHeaderHr
@@ -493,9 +493,9 @@ export default {
       tempData: [],
       optionStat: [
         { value: null ,text: "--เลือกสถานะ--"},
-        { value: 1 ,text: "อนุมัติ"},
+        { value: 1 ,text: "ผ่านการอนุมัติ"},
         { value: 2 ,text: "ไม่อนุมัติ"},
-        { value: 3 ,text: "อยู่ในระหว่างการดำเนินการ" },
+        { value: 3 ,text: "รอการอนุมัติ" },
         { value: 4 ,text: "ถูกยกเลิก" }
       ],
       optionLeaveType: [],
@@ -534,7 +534,7 @@ export default {
       selectDep:'',
       selectStat: '',
       currentDate: '',
-      showPop:false,
+      showPopHeader:false,
       window : {
         width: 0,
         height: 0
@@ -565,11 +565,16 @@ export default {
     this.getDataUserDept();
   },
   methods: {
+      handelLeaveSave(value) {
+        if (value) {
+          this.getHeaderApprove();   
+        }
+      },
       showLeavePopup: function() {
         var ths = this;
-        ths.showPop = true;
+        ths.showPopHeader = true;
         setTimeout(function() {
-          ths.showPop = false;
+          ths.showPopHeader = false;
         }, 1000);
       },
       defaultValue() {
@@ -612,13 +617,9 @@ export default {
               allData = allData.filter(function(v) {
                 return v.cancel_header_date != null;
               });
-            } else if (this.selectStat == 2) {
+            }  else if (this.selectStat == 3) {
               allData = allData.filter(function(v) {
-                return v.cancel_header_date != null ;
-              });
-            } else if (this.selectStat == 3) {
-              allData = allData.filter(function(v) {
-                return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_header_date == null && v.emp_leave_id != null;
+                return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_header_date == null && v.emp_leave_id != null && v.cancel_date == null;
               });
             } else if (this.selectStat == 4) {
               allData = allData.filter(function(v) {
@@ -752,7 +753,7 @@ export default {
             response.data[i].cancel_header_date_format = mJS.setDateFormat(response.data[i].cancel_header_date);
             // response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
             // response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
-            } 
+            }
           console.log(response.data)
           this.tempData = response.data;
           this.itemHeader = response.data;
@@ -830,55 +831,55 @@ export default {
   .close:hover {
     cursor: pointer;
   }
-  #HeaderAppve .btn-secondary {
+  #HeaderApprove .btn-secondary {
     font-size: 12px;
   }
   .header-1 .modal-title {
     font-weight: bold !important;
   }
-  #HeaderAppve .vdatetime-input {
+  #HeaderApprove .vdatetime-input {
     width: 235px !important;
     height: 40px !important;
     font-size: 16px !important;
     border: none;
   }
-  #HeaderAppve .no {
+  #HeaderApprove .no {
     width : 50px !important;
   }
-  #HeaderAppve .leave_date {
+  #HeaderApprove .leave_date {
     width : 140px !important;
   }
-  #HeaderAppve .full_Name {
+  #HeaderApprove .full_Name {
     width : 185px !important;
   }
-  #HeaderAppve .dept_name {
+  #HeaderApprove .dept_name {
     width : 160px !important;
   }
-  #HeaderAppve .position_name {
+  #HeaderApprove .position_name {
     width : 160px !important;
   }
-  #HeaderAppve .leave_reason_name {
+  #HeaderApprove .leave_reason_name {
     width : 160px !important;
   }
-  #HeaderAppve .leave_start_date {
+  #HeaderApprove .leave_start_date {
     width : 130px !important;
   }
-  #HeaderAppve .leave_stop_date {
+  #HeaderApprove .leave_stop_date {
     width : 130px !important;
   }
-  #HeaderAppve .leave_time {
+  #HeaderApprove .leave_time {
     width : 150px !important;
   }
-  #HeaderAppve .head_approve_date {
+  #HeaderApprove .head_approve_date {
     width : 160px !important;
   }
-  #HeaderAppve .hr_approve_date {
+  #HeaderApprove .hr_approve_date {
     width : 160px !important;
   }
-  #HeaderAppve .status {
+  #HeaderApprove .status {
     width : 180px !important;
   }
-  #HeaderAppve .leave_remark {
+  #HeaderApprove .leave_remark {
     width : 170px !important;
   }
 </style>

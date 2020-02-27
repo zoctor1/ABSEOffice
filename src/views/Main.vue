@@ -1,10 +1,10 @@
 <template>
   <div id="Main" style="background:#f9f9f9;">
     <b-row style="width: 100%;">
-      <b-col lg="8" md="12" sm="12" >
+      <b-col lg="8" md="12" sm="12" style="padding-left:34px;">
         <calendar />
       </b-col>
-      <b-col lg="4" md="12" sm="12" style="background: #f9f9f9; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 20px;">
+      <b-col lg="4" md="12" sm="12" style="background: #f9f9f9; margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
         <tab />
       </b-col>
     </b-row>

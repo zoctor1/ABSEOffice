@@ -239,7 +239,7 @@ export default {
     Loading,
     datetime: Datetime
   },
-  props: ["showPop"],
+  props: ["showPopHeader"],
   data() {
     return {
       sizeModal:"",
@@ -290,8 +290,7 @@ export default {
         valDate1: '',
         valDate2: '',
         leaveType: '',
-        leaveReason: '',
-        codeName: ''
+        leaveReason: ''
       },
       userIn:{},
       isLoading: false,
@@ -386,7 +385,6 @@ export default {
       this.isLoading = false;
       this.popupLeave = true;
       this.flagSave = 0;
-      this.$v.form.codeName.$model = "";
       this.$v.form.description.$model = "";
       this.$v.form.selectTimeFrom.$model = "";
       this.$v.form.valDate1.$model = "";
@@ -397,9 +395,6 @@ export default {
       this.selectType = null;
       this.sizeModal = null;
       this.selected = 3;
-      this.selectDept = null;
-      this.selected = 3;
-      this.selectPosition = null;
     },
     validation: function(value) {
       var key = Object.keys(value);
@@ -416,13 +411,15 @@ export default {
       var user = JSON.parse(localStorage.getItem("user"));
       var dataUserDept = [];
       var fullname = "";
-      await authService.getDataUserDept(user.uuid, user.dept_id).then(response => {
+      await authService.getDataUserDept(user.dept_id).then(response => {
         if(response.data != null && response.data.length > 0){
           ths.empData = {};
           console.log("epmdata")
           response.data.forEach(function (obj, i){
+            console.log(obj)
             fullname = obj.first_name + " " + obj.last_name;
             dataUserDept.push({ value: obj.emp_id, text: fullname });
+            console.log(obj.emp_id)
             ths.empData[obj.emp_id] = obj;
           });
           ths.sizes = dataUserDept;
@@ -454,6 +451,7 @@ export default {
       });
     },
     insertData: async function() {
+      var ths = this;
       this.isLoading = true;
       console.log("insertData aaaa ")
       var user = JSON.parse(localStorage.getItem("user"));
@@ -504,7 +502,7 @@ export default {
         this.isLoading = false;
       }
       else if (this.validation(obj)) {
-        await authService.insertData(obj).then(response => {
+        await authService.insertDataByHeader(obj).then(response => {
           console.log("pass validation")
           console.log(response.data);
           if (response.data > 0) {
@@ -522,6 +520,7 @@ export default {
               ' ',
               'success'
             )
+            ths.$emit("leaveSuccess", true);
           } else {
             setTimeout(() => {
               this.isLoading = false}, 500);
@@ -541,9 +540,10 @@ export default {
     }
   },
   watch: {
-    showPop() {
+    showPopHeader() {
       console.log("this.showPop")
-      if (this.showPop) {
+      if (this.showPopHeader) {
+        console.log("inside showpop")
         this.defaultValue();
       }
     }

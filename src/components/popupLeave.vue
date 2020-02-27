@@ -357,6 +357,7 @@ export default {
       this.selected = 3;
     },
     EditLeave() {
+      var ths = this;
       console.log("EditLeave")
       this.isLoading = false; 
       var obj = {};
@@ -413,8 +414,8 @@ export default {
         this.isLoading = false;
       }
       else if (this.validation(obj)) {
-        authService.insertData(obj).then(response => {
-        console.log(response.data);
+        authService.EditLeave(obj).then(response => {
+        console.log("edit sent");
         if (response.data > 0) {
           this.Loading = false;
           this.$modal.hide('hello-world');
@@ -430,6 +431,7 @@ export default {
             ' ',
             'success'
           )
+          ths.$emit("leaveSuccess", true);
         } else {
           setTimeout(() => {
             this.isLoading = false}, 500);
@@ -480,6 +482,7 @@ export default {
       });
     },
     insertData: async function() {
+      var ths = this;
       this.isLoading = true;
       console.log("insertData aaaa ")
       var user = JSON.parse(localStorage.getItem("user"));
@@ -547,6 +550,7 @@ export default {
               ' ',
               'success'
             )
+            ths.$emit("leaveSuccess", true);
           } else {
             setTimeout(() => {
               this.isLoading = false}, 500);

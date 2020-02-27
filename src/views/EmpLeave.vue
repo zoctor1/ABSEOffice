@@ -1,6 +1,6 @@
 <template>
   <div id="EmpLeave" lg="12" sm="12" xs="12">
-    <popupLeave v-bind:showPop="showPop" v-bind:editPop="editPop"/>
+    <popupLeave v-bind:showPop="showPop" v-bind:editPop="editPop" @leaveSuccess="handelLeaveSave" />
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
@@ -295,6 +295,7 @@
         :clickToClose="false"
         height="auto"
         width="400px"
+        @change="changeDataRemark()"
       >
       <p style="background-color: #f1f1f1; font-size: 20px; text-align: center; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
         รายละเอียดการลา 
@@ -345,15 +346,6 @@
             <p style="font-size: 16px;">{{dataModal.leave_date_format}}</p>
           </b-col>
         </b-row>
-
-         <b-row v-if="dataModal.modify_date != null" style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-          <b-col>
-            <p style="font-size: 16px;"><b>วันที่เเก้ไขข้อมูลการลา :</b></p>
-          </b-col>  
-          <b-col>
-            <p style="font-size: 16px;"> {{ dataModal.modify_date_format }} </p>
-          </b-col>
-        </b-row>  
 
         <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
           <b-col>
@@ -407,21 +399,30 @@
             <p style="font-size: 16px;">{{dataModal.leave_remark}}</p>
           </b-col>
         </b-row>
+        
+         <b-row v-if="dataModal.modify_date != null" style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p style="font-size: 16px;"><b>วันที่เเก้ไขข้อมูลการลา :</b></p>
+          </b-col>  
+          <b-col>
+            <p style="font-size: 16px;"> {{ dataModal.modify_date_format }} </p>
+          </b-col>
+        </b-row>  
 
         <b-row>
-          <b-col style="text-align: center; margin-top:10px">
-            <button v-if="dataModal.cancel_header_date == null && dataModal.head_approve_date == null && dataModal.hr_approve_date == null && dataModal.cancel_date == null" @click="cancelBtn(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
-              <font color="#00000" style="font-size: 16px">ยกเลิกการลา</font>
-            </button>
-            
-            <button v-if="dataModal.cancel_header_date == null && dataModal.head_approve_date == null && dataModal.hr_approve_date == null && dataModal.cancel_date == null" @click="showLeavePopup(1)" style="width:110px;height:28px; cursor: pointer; border: 2px solid rgb(179, 179, 0); border-radius: 4px; background-color: #ffc107;"> 
+          <b-col style="text-align: center; margin:10px -80px 0px 0px">
+            <button v-if="dataModal.cancel_header_date == null && dataModal.head_approve_date == null && dataModal.hr_approve_date == null && dataModal.cancel_date == null" @click="showLeavePopup(1)" style="width:110px;height:28px; cursor: pointer; border: 2px solid rgb(213, 217, 13); border-radius: 4px; background-color: rgba(255, 255, 126, 1);"> 
               <font color="#00000" style="font-size: 16px">แก้ไขการลา</font>
             </button>
-            
+          </b-col>
+          <b-col style="text-align: center; margin-top:10px">
+            <button v-if="dataModal.cancel_header_date == null && dataModal.head_approve_date == null && dataModal.hr_approve_date == null && dataModal.cancel_date == null" @click="cancelBtn(dataModal.emp_leave_id)" style="width:110px;height:28px; cursor: pointer; border: 2px solid rgb(255, 112, 77); border-radius: 4px; background-color: rgb(255, 133, 102);"> 
+              <font color="#fffff" style="font-size: 16px">ยกเลิกการลา</font>
+            </button>
           </b-col>
         </b-row>
       </div>
-      <b-button block variant="secondary" style="font-size: 16px" @click="hide('remarkModal')">ปิด</b-button>
+      <b-button block variant="secondary" style="font-size: 16px;" @click="hide('remarkModal')">ปิด</b-button>
     </modal>
   </div>
 </template>
@@ -456,9 +457,9 @@ export default {
       items: [],
       optionStat: [
         { value: null ,text: "--เลือกสถานะ--"},
-        { value: 1 ,text: "อนุมัติ"},
+        { value: 1 ,text: "ผ่านการอนุมัติ"},
         { value: 2 ,text: "ไม่อนุมัติ"},
-        { value: 3 ,text: "อยู่ในระหว่างการดำเนินการ" },
+        { value: 3 ,text: "รอการอนุมัติ" },
         { value: 4 ,text: "ถูกยกเลิก" }
       ],
       optionsLeaveType: [],
@@ -526,6 +527,14 @@ export default {
     this.getDataReasonLeave();
   },
   methods: {
+    handelLeaveSave(value) {
+      if (value) {
+        this.getDataAsync();   
+      }
+    },
+    changeDataRemark() {
+      console.log("change data")
+    },
     cancelBtn(cancel){
       this.$bvModal.msgBoxConfirm('คุณต้องการยกเลิกการลานี้ใช่หรือไม่?', {
           headerClass: 'header-1',
@@ -586,15 +595,15 @@ export default {
           });
         } else if (this.selectStat == 2) {
           allData = allData.filter(function(v) {
-            return v.cancel_approve_date != null;
+            return v.cancel_header_date != null;
           });
         } else if (this.selectStat == 3) {
           allData = allData.filter(function(v) {
-            return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_approve_date == null && v.emp_leave_id != null;
+            return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_header_date == null && v.emp_leave_id != null && v.cancel_date == null;
           });
         } else if (this.selectStat == 4) {
           allData = allData.filter(function(v) {
-            return v.head_approve_date == null && v.hr_approve_date != null && v.cancel_approve_date == null && v.emp_leave_id != null;
+            return v.cancel_date != null;
           });
         }
       }
@@ -671,7 +680,9 @@ export default {
             // console.log(response.data)
           this.items = response.data;
           this.tempData = response.data;
-          this.isBusy = false;
+          setTimeout(() => {
+            this.isBusy = false
+          },300);
           console.log("check")
         } else {
             console.log("else");

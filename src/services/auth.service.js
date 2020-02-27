@@ -37,9 +37,9 @@ export function getDataReasonLeave() {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function getDataUserDept(empId, deptId) {
+export function getDataUserDept(deptId) {
     return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/dataUserDept`, {}, { headers: {myDataDept : empId, dataDept : deptId} }).then(
+        axios.post(`${API_URL}/dataUserDept`, {}, { headers: {dataDept : deptId} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })

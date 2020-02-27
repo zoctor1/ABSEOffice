@@ -1,6 +1,6 @@
 <template>
   <div id="HrLeave" lg="12" sm="12" xs="12">
-    <popupLeaveHeaderHr v-bind:showPop="showPop"/>
+    <popupLeaveHeaderHr v-bind:showPopHeader="showPopHeader" @leaveSuccess="handelLeaveSave" />
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
@@ -453,10 +453,8 @@ export default {
       items: [],
       optionStat: [
         { value: null ,text: "--เลือกสถานะ--"},
-        { value: 1 ,text: "อนุมัติ"},
-        { value: 2 ,text: "ไม่อนุมัติ"},
-        { value: 3 ,text: "อยู่ในระหว่างการดำเนินการ" },
-        { value: 4 ,text: "ถูกยกเลิก" }
+        { value: 1 ,text: "ผ่านการอนุมัติ"},
+        { value: 2 ,text: "รอการรับทราบ"}
       ],
       optionsDep: [],
       optionLeaveType: [],
@@ -492,7 +490,7 @@ export default {
       selectDep:'',
       selectStat: '',
       currentDate: '',
-      showPop:false,
+      showPopHeader:false,
       window : {
         width: 0,
         height: 0
@@ -524,11 +522,16 @@ export default {
     this.getDataUserDept();
   },
   methods: {
+    handelLeaveSave(value) {
+      if (value) {
+        this.getHrApprove();   
+      }
+    },
     showLeavePopup: function() {
       var ths = this;
-      ths.showPop = true;
+      ths.showPopHeader = true;
       setTimeout(function() {
-        ths.showPop = false;
+        ths.showPopHeader = false;
       }, 1000);
     },
     defaultValue() {
@@ -570,19 +573,7 @@ export default {
               });
             } else if (this.selectStat == 2) {
               allData = allData.filter(function(v) {
-                return v.cancel_header_date != null;
-              });
-            } else if (this.selectStat == 2) {
-              allData = allData.filter(function(v) {
-                return v.cancel_header_date != null;
-              });
-            } else if (this.selectStat == 3) {
-              allData = allData.filter(function(v) {
-                return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_header_date == null && v.emp_leave_id != null;
-              });
-            } else if (this.selectStat == 4) {
-              allData = allData.filter(function(v) {
-                return v.cancel_date != null;
+                return v.head_approve_date != null && v.hr_approve_date == null && v.cancel_header_date == null && v.emp_leave_id != null && v.cancel_date == null;
               });
             } 
           }
