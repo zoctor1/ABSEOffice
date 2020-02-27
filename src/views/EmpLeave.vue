@@ -24,7 +24,6 @@
                   v-model="valDateStart" 
                   format="dd/MM/yyyy" 
                   :min-datetime="currentDate"
-                  style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                   >
                 </datetime>
               </b-col>
@@ -35,7 +34,6 @@
                   v-model="valDateStop" 
                   format="dd/MM/yyyy" 
                   :min-datetime="currentDate" 
-                  style="border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                   >
                 </datetime>
               </b-col>
@@ -770,10 +768,11 @@ export default {
     cursor: pointer;
   }
   #EmpLeave .vdatetime-input {
-    width: 235px !important;
-    height: 40px !important;
+    width: 100%;
+    height: 42px !important;
     font-size: 16px !important;
-    border: none;
+    border: 1px solid rgba(0,0,0,.2); 
+    border-radius: 4px;
   }
   /* #EmpLeave .vdatetime-input
       แก้ไขกรอบ  ขอลางานในวันที่ :
