@@ -42,7 +42,6 @@
                 <b-form-radio-group
                   v-model="selected"
                   :options="optionTime"
-                  @change="aaa"
                 >
                 </b-form-radio-group> 
             </b-col>
@@ -420,7 +419,6 @@ export default {
         } else {
           setTimeout(() => {
             this.isLoading = false}, 500);
-            console.log("aaa");
           }
       });
     }
@@ -539,7 +537,6 @@ export default {
           } else {
             setTimeout(() => {
               this.isLoading = false}, 500);
-              console.log("aaa");
             }
         });
       }
