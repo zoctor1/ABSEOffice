@@ -18,6 +18,16 @@ export function setDateToServer(d, flag) {
     }
 }
 
+export function formatDateFilter(d) {
+    if (d == undefined || d == null || d.trim() == "") {
+        return null;
+    } else {
+        var dd = new Date(d);
+        return dd.getFullYear() + "-" + (dd.getMonth() + 1 < "10" ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1) + "-" + (dd.getDate() < "10" ? "0" + dd.getDate() : dd.getDate());
+        
+    }
+}
+
 export function setDateFormat(d){
     if (d == undefined || d == null || d.trim() == ""){
         return null;

@@ -57,8 +57,8 @@
               <b-col md="6" lg="2">
                 <p style="cursor:default;"><b>ชื่อ-นามสกุล :</b></p>
                   <vue-suggestion 
-                    :items="sizes" 
-                    v-model="size"
+                    :items="nameSearchArray" 
+                    v-model="nameSearch"
                     :setLabel="setLabel"
                     :itemTemplate="itemTemplate"
                     @changed="inputChange"
@@ -484,8 +484,8 @@ export default {
   data() {
     return {
       itemTemplate,
-      size:{},
-      sizes: [],
+      nameSearch:"",
+      nameSearchArray: [],
       empName:[],
       tempData: [],
       optionStat: [
@@ -525,8 +525,8 @@ export default {
       sortBy: '',
       sortDesc: false,
       sortDirection: 'asc',
-      valDateStart: '',
-      valDateStop: '',
+      valDateStart: "",
+      valDateStop: "",
       selectType: '',
       selectDep:'',
       selectStat: '',
@@ -590,27 +590,41 @@ export default {
       hide (name) {
         this.$modal.hide(name);
       },
-      itemSelected (size) {
-        this.size = size;
+      itemSelected (nameSearch) {
+        this.nameSearch = nameSearch;
       },
-      setLabel (size) {
-        return size.name;
+      setLabel (nameSearch) {
+        return nameSearch.name;
       },
       inputChange (text) {
-        this.sizes = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
+        this.nameSearchArray = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
       },
       filterData() {
         var ths = this;
         var allData = this.tempData;
         this.isBusy = true;
-          if (this.selectStat == null && this.selectType == null && this.selectDep == null && this.sizes == null) {
-            ths.getHeaderApprove();
+          if (this.selectStat == null && this.selectType == null && Object.keys(this.valDateStart).length <= 0 && Object.keys(this.valDateStop).length <= 0 && Object.keys(this.nameSearch).length <= 0 ) {
+            this.$swal.fire({
+              heightAuto: false,
+              icon: 'warning',
+              title: 'เลือกข้อมูลที่จะค้นหา...'
+            })
           }
-          else if (this.valDateStart != null && this.valDateStart != "") {
+          if (this.valDateStart != null && this.valDateStart != "" ) {
+            var startTimeSelect = mJS.formatDateFilter(this.valDateStart)
+            allData = allData.filter(function(v) {
+              var leavestart = mJS.formatDateFilter(v.leave_start_date)
+              return startTimeSelect == leavestart;
+            });
           }
-          else if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
+          if (this.valDateStop != null && this.valDateStop != "" ) {
+            var stopTimeSelect = mJS.formatDateFilter(this.valDateStop)
+            allData = allData.filter(function(v) {
+              var leavestop = mJS.formatDateFilter(v.leave_stop_date)
+              return stopTimeSelect == leavestop;
+            });
           }
-          else if (this.selectStat != null && this.selectStat != "") {
+          if (this.selectStat != null && this.selectStat != "") {
             if (this.selectStat == 1) {
               allData = allData.filter(function(v) {
                 return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_header_date == null;
@@ -629,19 +643,14 @@ export default {
               }); 
             }
           }
-          else if(this.selectType != null && this.selectType != "" && this.selectType != undefined) {
+          if (this.selectType != null && this.selectType != "" ) {
             allData = allData.filter(function(v) {
               return v.leave_reason_id == ths.selectType;
             })
           }
-          else if(this.selectDep != null && this.selectDep != "" && this.selectDep != undefined) {
+          if (this.nameSearch != null && this.nameSearch != "" ) {
             allData = allData.filter(function(v) {
-              return v.dept_id == ths.selectDep;
-            })
-          }
-          else if(this.size != null && this.size != "" && this.size != undefined) {
-            allData = allData.filter(function(v) {
-              return v.value == ths.size;
+              return v.emp_id == ths.nameSearch.value;
             })
           }
           this.itemHeader = allData;
@@ -699,14 +708,13 @@ export default {
       var fullname = "";
       var result = {};
       await authService.getDataUserDept(user.dept_id).then(response => {
-        // console.log(response.data)
         if(response.data != null && response.data.length > 0){
           response.data.forEach(function (obj, i){
             fullname = obj.first_name + " " + obj.last_name + " ("+ obj.nick_name + ")";
             result = {value: obj.emp_id, name: fullname}
             dataUserDept.push(result);
           });
-          ths.sizes = dataUserDept;
+          ths.nameSearchArray = dataUserDept;
           ths.empName = dataUserDept
         }
       });
@@ -750,14 +758,12 @@ export default {
             // response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
             // response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
             }
-          // console.log(response.data)
           this.tempData = response.data;
           this.itemHeader = response.data;
           setTimeout(() => {
             this.isBusy = false
           },300);
         } else {
-            // console.log("else");
             setTimeout(() => {
               this.isBusy = false}, 1200);
           }

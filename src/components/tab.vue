@@ -63,7 +63,7 @@
           </b-tr>
         </b-thead>
         <b-tbody>
-          <b-tr v-for="i in responseData" :key="i">
+          <b-tr v-for="i in responseData" :key="i.leave_reason_id">
             <b-th>{{ i.leave_reason_name }}</b-th>
             <b-td><center>{{ i.leave_limit }}</center></b-td>
             <b-td v-if="i.dd == null && i.hh == null"><center>{{ 0 +' / '+ 0}}</center></b-td>
@@ -141,7 +141,6 @@ export default {
       types: [
         'date',
       ],
-      editPop:{},
       fullPage:''
     }
   },
