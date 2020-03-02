@@ -1,6 +1,8 @@
 <template>
   <div id="tap" style="background-color:#f8f8f8; margin-left:5px;">
     <popupLeave v-bind:showPop="showPop" v-bind:editPop="editPop"/>
+    <popupOT v-bind:showPopOT="showPopOT"/>
+
     <b-col>
       <div style="position: drelative;">
         <b-card style="margin-top:20px;" >
@@ -24,14 +26,21 @@
                 </center>
               </div>
             </b-col>
-            <!-- <b-col style="margin-top:5px" md="4" sm="6" xs="12">
+            <b-col style="margin-top:5px" md="4" sm="6" xs="12">
               <div>
                 <center>
-                  <popupOT /> 
+                  <vs-button 
+                    @click="showPopupOT()"
+                    color="primary" 
+                    type="filled" 
+                    style="width:144px; height:44px;"
+                  >
+                    <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มเวลาทำงาน
+                  </vs-button>
                 </center>
               </div>
             </b-col>
-            <b-col style="margin-top:5px" md="4" sm="6" xs="12">
+            <!-- <b-col style="margin-top:5px" md="4" sm="6" xs="12">
               <div>    
                 <vs-button
                   @click="show('holidayShow')"
@@ -63,7 +72,7 @@
           </b-tr>
         </b-thead>
         <b-tbody>
-          <b-tr v-for="i in responseData" :key="i">
+          <b-tr v-for="i in responseData" :key="i.leave_reason_id">
             <b-th>{{ i.leave_reason_name }}</b-th>
             <b-td><center>{{ i.leave_limit }}</center></b-td>
             <b-td v-if="i.dd == null && i.hh == null"><center>{{ 0 +' / '+ 0}}</center></b-td>
@@ -118,6 +127,7 @@ export default {
       value1:'',
       value2:'',
       showPop:false,
+      showPopOT:false,
       popupLeave:false,
       popupActivo3:false,
       popupOT:false,
@@ -159,6 +169,13 @@ export default {
     this.showStat();
   },
   methods: {
+      showPopupOT: function() {
+        var ths = this;
+        ths.showPopOT = true;
+        setTimeout(function() {
+          ths.showPopOT = false;
+        }, 1000);
+      },
       showLeavePopup: function(flag) {
         var ths = this;
         ths.showPop = true;

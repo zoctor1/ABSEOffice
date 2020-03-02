@@ -49,8 +49,6 @@ export function validateTime(Start, Stop) {
     // Stop += "";
     // var timeStart = new Date(Start);
     // var timeStop = new Date(Stop);
-    // console.log(Start)
-    // console.log(Stop)
 
     if (Start != null && Start != "" && Stop != null && Stop != "") {
         status = true;
