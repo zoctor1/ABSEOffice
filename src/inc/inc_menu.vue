@@ -30,6 +30,10 @@
       <!-- v-if="userIn.dept_id == 3" -->
       <a style="cursor: pointer;" @click="toUrl('HrLeave'), indexActive = 3"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการลางานของพนักงาน</font></a>
     </vs-navbar-item>
+    <vs-navbar-item index="4">
+      <!-- v-if="userIn.dept_id == 3" -->
+      <a style="cursor: pointer;" @click="toUrl('NewEmployeeApprove'), indexActive = 4"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการสมัครของพนักงานใหม่</font></a>
+    </vs-navbar-item>
     <!-- <vs-navbar-item index="5" style="margin-right:10px;">
       <a style="cursor: pointer;" @click="toUrl('HrOT')"><font size=3 color="#FEFCFF">(Hr) ข้อมูลการทำงานนอกเวลาของพนักงาน</font></a>
     </vs-navbar-item> -->
@@ -174,6 +178,8 @@ export default {
       this.indexActive = 2;
     } else if (this.$route.name == "HrLeave") {
       this.indexActive = 3;
+    } else if (this.$route.name == "NewMemberApprove") {
+      this.indexActive = 4;
     } else {
       this.indexActive = 0;
     }

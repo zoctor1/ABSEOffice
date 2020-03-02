@@ -55,6 +55,16 @@ export function getDataAllUser() {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
+export function getNewEmployee() {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/dataNewEmployee`, {}, { params: {} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+
 
 export function getDataHR() {
     return new Promise((resolve, reject) => {
@@ -196,3 +206,12 @@ export function insertDataByHeader(obj) {
             })
     }).catch(error => reject(new ErrorWrapper(error)))
 }
+
+// export function signInMember(obj) {
+//     return new Promise((resolve, reject) => {
+//         axios.post(`${API_URL}/signInMember`, JSON.stringify(obj), {}).then(
+//             response => {
+//                 return resolve(new ResponseWrapper(response, response.data))
+//             })
+//     }).catch(error => reject(new ErrorWrapper(error)))
+// }
