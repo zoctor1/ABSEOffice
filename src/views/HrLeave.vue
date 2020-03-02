@@ -63,8 +63,8 @@
                 <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
 
                   <vue-suggestion 
-                    :items="sizes" 
-                    v-model="size"
+                    :items="nameSearchArray" 
+                    v-model="nameSearch"
                     :setLabel="setLabel"
                     :itemTemplate="itemTemplate"
                     @changed="inputChange"
@@ -467,8 +467,8 @@ export default {
     return {
       tempData: [],
       itemTemplate,
-      size:{},
-      sizes: [],
+      nameSearch:"",
+      nameSearchArray: [],
       empName:[],
       items: [],
       optionStat: [
@@ -570,52 +570,70 @@ export default {
     hide (name) {
       this.$modal.hide(name);
     },
-    itemSelected (size) {
-        this.size = size;
-      },
-      setLabel (size) {
-        return size.name;
-      },
-      inputChange (text) {
-        this.sizes = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
-      },
+    itemSelected (nameSearch) {
+        this.nameSearch = nameSearch;
+    },
+    setLabel (nameSearch) {
+      return nameSearch.name;
+    },
+    inputChange (text) {
+      this.nameSearchArray = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
+    },
     filterData() {
       var ths = this;
       var allData = this.tempData;
-      this.isBusy = true;
-          if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
-            ths.getHrApprove();
-          }
-          if (this.valDateStart != null && this.valDateStart != "") {
-          }
-          if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
-          }
-          if (this.selectStat != null && this.selectStat != "") {
-            if (this.selectStat == 1) {
-              allData = allData.filter(function(v) {
-                return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_header_date == null;
-              });
-            } else if (this.selectStat == 2) {
-              allData = allData.filter(function(v) {
-                return v.head_approve_date != null && v.hr_approve_date == null && v.cancel_header_date == null && v.emp_leave_id != null && v.cancel_date == null;
-              });
-            } 
-          }
-          if(this.selectType != null && this.selectType != "") {
-            allData = allData.filter(function(v) {
-              return v.leave_reason_id == ths.selectType;
-            })
-          }
-          if(this.selectDep != null && this.selectDep != "") {
-            allData = allData.filter(function(v) {
-              return v.dept_id == ths.selectDep;
-            })
-          }
+      if (this.selectStat == null && this.selectType == null && this.selectDep == null && Object.keys(this.valDateStart).length <= 0 && Object.keys(this.valDateStop).length <= 0 && Object.keys(this.nameSearch).length <= 0 ) {
+          this.$swal.fire({
+            heightAuto: false,
+            icon: 'warning',
+            title: 'เลือกข้อมูลที่จะค้นหา...'
+          })
+      }
+      if (this.valDateStart != null && this.valDateStart != "") {
+        var startTimeSelect = mJS.formatDateFilter(this.valDateStart)
+        allData = allData.filter(function(v) {
+          var leavestart = mJS.formatDateFilter(v.leave_start_date)
+          return startTimeSelect == leavestart;
+        });
+      }
+      if(this.valDateStop != null && this.valDateStop != "" ) {
+        var stopTimeSelect = mJS.formatDateFilter(this.valDateStop)
+        allData = allData.filter(function(v) {
+          var leavestop = mJS.formatDateFilter(v.leave_stop_date)
+          return stopTimeSelect == leavestop;
+        });
+      }
+      if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
+        
+      }
+      if (this.selectStat != null && this.selectStat != "") {
+        if (this.selectStat == 1) {
+          allData = allData.filter(function(v) {
+            return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_date == null;
+          });
+        } else if (this.selectStat == 2) {
+          allData = allData.filter(function(v) {
+            return v.head_approve_date != null && v.hr_approve_date == null && v.cancel_date == null && v.emp_leave_id != null;
+          });
+        } 
+      }
+      if(this.selectType != null && this.selectType != "") {
+        allData = allData.filter(function(v) {
+          return v.leave_reason_id == ths.selectType;
+        })
+      }
+      if(this.selectDep != null && this.selectDep != "") {
+        allData = allData.filter(function(v) {
+          return v.dept_id == ths.selectDep;
+        })
+      }
+      if (this.nameSearch != null && this.nameSearch != "" ) {
+        allData = allData.filter(function(v) {
+          return v.emp_id == ths.nameSearch.value;
+        })
+      }
       this.items = allData;
       this.totalRows = this.items.length
-      setTimeout(() => {
-        this.isBusy = false
-      }, 300);
     },
     showMsgBoxTwo(id) {
         this.$bvModal.msgBoxConfirm('คุณต้องการรับทราบการลานี้ใช่หรือไม่?', {
@@ -642,14 +660,13 @@ export default {
       var fullname = "";
       var result = {};
       await authService.getDataAllUser().then(response => {
-        // console.log(response.data);
         if(response.data != null && response.data.length > 0){
           response.data.forEach(function (obj, i){
             fullname = obj.first_name + " " + obj.last_name + " ("+ obj.nick_name + ")";
             result = {value: obj.emp_id, name: fullname}
             dataAllUser.push(result);
           });
-          ths.sizes = dataAllUser;
+          ths.nameSearchArray = dataAllUser;
           ths.empName = dataAllUser;
         }
       });
@@ -657,7 +674,6 @@ export default {
     getDataDept: async function(){
       var dataDept = [];
       await authService.getDataDept().then(response => {
-        // console.log(response.data)
         if (response.data != null && response.data.length > 0) {
           dataDept.push({ text: "--กรุณาเลือกแผนก--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
@@ -704,14 +720,12 @@ export default {
           // response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
           // response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
         } 
-        // console.log(response.data)
         this.items = response.data;
         setTimeout(() => {
           this.isBusy = false
         },300);
         this.tempData = response.data;
       } else {
-          // console.log("else");
           setTimeout(() => {
             this.isBusy = false}, 1200);
           }

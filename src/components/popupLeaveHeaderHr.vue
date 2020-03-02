@@ -44,14 +44,14 @@
               </b-col>
             </b-row><br>
 
-             <!-- <b-row>
+             <b-row>
               <b-col>
                 <p style="margin-bottom:-15px; cursor:default;"><b>เเผนก : </b><br> <label v-if=" Object.keys(size).length > 0 && size != null && size != '' " > {{ size.dept }} </label> </p>
               </b-col>
               <b-col>
                 <p style="margin-bottom:-15px; cursor:default;"><b>ตำเเหน่ง : </b><br> <label v-if=" Object.keys(size).length > 0 && size != null && size != '' " > {{ size.position }} </label> </p>
               </b-col>
-            </b-row><br> -->
+            </b-row><br>
 
             <b-row>
               <b-col>

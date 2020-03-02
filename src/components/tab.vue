@@ -151,7 +151,6 @@ export default {
       types: [
         'date',
       ],
-      editPop:{},
       fullPage:''
     }
   },

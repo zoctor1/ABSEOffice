@@ -22,7 +22,7 @@ const ifAuthenticated = (to, from, next) => {
 }
 export default new Router({
   mode: "history",
-  base: "ABSEOffice",
+  // base: "ABSEOffice",
   routes: [
     { path: '*', redirect: '/HomePage' },
     { path: "/HomePage", name: "Main", component: Main },

@@ -570,53 +570,55 @@ export default {
       var ths = this;
       var allData = this.tempData;
       ths.isBusy = true;
-      if (this.selectStat == null && this.selectType == null && this.selectDep == null) {
-        ths.getDataAsync();
+      if( this.selectStat == null && this.selectType == null && Object.keys(this.valDateStart).length <= 0 && Object.keys(this.valDateStop).length <= 0 ) {
+        this.$swal.fire({
+          heightAuto: false,
+          icon: 'warning',
+          title: 'เลือกข้อมูลที่จะค้นหา...'
+        })
       }
-      if (this.valDateStart != null && this.valDateStart != "") {
-        // console.log("valDateStart")
+      if (ths.valDateStart != null && ths.valDateStart != "" ) {
+        var startTimeSelect = mJS.formatDateFilter(ths.valDateStart);
+        allData = allData.filter(function(v) {
+          var leaveStart = mJS.formatDateFilter(v.leave_start_date);
+          return startTimeSelect == leaveStart;
+        })
       }
-      if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
-        // console.log("valDateStop")
+      if (ths.valDateStop != null && ths.valDateStop != "" ) {
+        var stopTimeSelect = mJS.formatDateFilter(ths.valDateStop);
+        allData = allData.filter(function(v) {
+          var leaveStop = mJS.formatDateFilter(v.leave_stop_date);
+          return stopTimeSelect == leaveStop;
+        })
       }
-      if (this.selectStat != null && this.selectStat != "") {
-        // console.log("selectStat")
-        if (this.selectStat == 1) {
+      if (ths.selectStat != null && ths.selectStat != "") {
+        if (ths.selectStat == 1) {
           allData = allData.filter(function(v) {
             return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_approve_date == null;
-          });
-        } else if (this.selectStat == 2) {
-          allData = allData.filter(function(v) {
-            return v.cancel_header_date != null;
-          });
-        } else if (this.selectStat == 3) {
-          allData = allData.filter(function(v) {
-            return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_header_date == null && v.emp_leave_id != null && v.cancel_date == null;
-          });
-        } else if (this.selectStat == 4) {
-          allData = allData.filter(function(v) {
-            return v.cancel_date != null;
-          });
+        })
+        } else if (ths.selectStat == 2) {
+            allData = allData.filter(function(v) {
+              return v.cancel_header_date != null;
+            })
+        } else if (ths.selectStat == 3) {
+            allData = allData.filter(function(v) {
+              return v.head_approve_date == null && v.hr_approve_date == null && v.cancel_header_date == null && v.emp_leave_id != null && v.cancel_date == null;
+            })
+        } else if (ths.selectStat == 4) {
+            allData = allData.filter(function(v) {
+              return v.cancel_date != null;
+            })
         }
       }
-      if(this.selectType != null && this.selectType != "") {
-        // console.log("selectType")
-        // console.log(this.selectType)
+      if (ths.selectType != null && ths.selectType != "") {
         allData = allData.filter(function(v) {
           return v.leave_reason_id == ths.selectType;
         })
-      }
-      if(this.selectDep != null && this.selectDep != "") {
-        // console.log("selectDep")
-        // console.log(this.selectDep)
-        allData = allData.filter(function(v) {
-          return v.dept_id == ths.selectDep;
-        })
-      }
-      this.items = allData;
-      this.totalRows = this.items.length
+      } 
+      ths.items = allData
+      ths.totalRows = ths.items.length
       setTimeout(() => {
-        this.isBusy = false
+        ths.isBusy = false
       },300);
     },
     showLeavePopup: function(flag) {
@@ -651,7 +653,6 @@ export default {
       var leave_time = [];
       var leave_time_stop = [];
       await authService.getUserLeave(user.uuid).then(response => {
-        // console.log("response.data");
         if (response.data.length > 0) {
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;
@@ -667,18 +668,14 @@ export default {
             response.data[i].cancel_date_format = mJS.setDateFormat(response.data[i].cancel_date);
             response.data[i].cancel_header_date_format = mJS.setDateFormat(response.data[i].cancel_header_date);
           } 
-            // console.log(response.data)
           this.items = response.data;
           this.tempData = response.data;
           setTimeout(() => {
             this.isBusy = false
           },300);
-          // console.log("check")
         } else {
-            // console.log("else");
-            setTimeout(() => {
-              this.isBusy = false}, 1200);
-              // console.log("isbusy");
+          setTimeout(() => {
+            this.isBusy = false}, 1200);
           }
       });
       this.totalRows = this.items.length
