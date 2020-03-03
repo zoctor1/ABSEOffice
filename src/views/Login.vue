@@ -45,8 +45,8 @@
             <b-row style="margin-bottom: 10px;">
               <b-col>
                 <ValidationProvider rules="email" v-slot="{ errors }">
-                  <input class="form-control" type="text" placeholder="อีเมล" v-model="value" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
-                  <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">กรุณากรอกอีเมล*</p>
+                  <input type="text" placeholder="อีเมล์" v-model="email" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
+                  <span v-show="errors[0] != null && errors[0] != ''">กรุณากรอกอีเมล</span>
                 </ValidationProvider>
                 <!-- <b-form-input placeholder="อีเมล"></b-form-input> -->
               </b-col>
@@ -68,20 +68,38 @@
             </b-row>
             <b-row style="margin-bottom: 10px;">
               <b-col>
-                <b-form-input placeholder="ชื่อ"></b-form-input>
+                <b-form-select
+                  v-model="deptId"
+                  :options="optionsDept"
+                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                >
+                </b-form-select>
               </b-col>
               <b-col>
-                <b-form-input placeholder="นามสกุล"></b-form-input>
+                <b-form-select
+                  v-model="positionId"
+                  :options="optionsPosition"
+                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                >
+                </b-form-select>
+              </b-col>
+            </b-row>
+            <b-row style="margin-bottom: 10px;">
+              <b-col>
+                <b-form-input placeholder="ชื่อ" v-model="firstName"></b-form-input>
+              </b-col>
+              <b-col>
+                <b-form-input placeholder="นามสกุล" v-model="lastName"></b-form-input>
               </b-col>
             </b-row>
             <b-row style="margin-bottom: 10px;">
               <b-col sm="4">
-                <b-form-input placeholder="ชื่อเล่น"></b-form-input>
+                <b-form-input placeholder="ชื่อเล่น" v-model="nickName"></b-form-input>
               </b-col>
               <b-col>
                 <ValidationProvider rules="integer" v-slot="{ errors }">
-                  <input class="form-control" type="text" v-model="value" placeholder="เบอร์โทรติดต่อ" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
-                  <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">กรอกเฉพาะตัวเลขเท่านั้น*</p>
+                  <input type="text" v-model="mobile" placeholder="เบอร์โทรติดต่อ" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
+                  <span>{{ errors[0] }}</span>
                 </ValidationProvider>
                 <!-- <b-form-input placeholder="เบอร์โทรศัทพ์"></b-form-input> -->
               </b-col>
@@ -90,6 +108,7 @@
               <b-col>
                 <b-form-textarea
                 style="width:100%;height:80px;"
+                v-model="address"
                 placeholder="ที่อยู่ปัจจุบัน"
                 rows="4"
                 no-resize
@@ -99,7 +118,7 @@
             </b-row>
             <b-row>
               <b-col>
-                <center><b-button style="margin: 15px 0px 10px 0px" variant="outline-primary">ส่งการลงทะเบียน</b-button></center>
+                <center><b-button style="margin: 15px 0px 10px 0px" variant="outline-primary" @click="insertNewEmployee()">ส่งการลงทะเบียน</b-button></center>
               </b-col>
             </b-row>
             <b-row>
@@ -142,29 +161,39 @@ export default {
   data() {
     return {
       output: "aaaa",
-      email: '',
+      email: "",
+      password:"",
+      deptId:"",
+      positionId:"",
+      firstName:"",
+      lastName:"",
+      nickName:"",
+      mobile:"",
+      address:"",
       types: [
         'password'
         ],
       flagShow: 1,
-      email: "hr@abs.co.th",
       pass: "1234",
       textError: "รหัสผ่านไม่ถูกต้อง",
       isLoading: false,
       fullPage:'',
       pass: '',
-      confirmPass: ""
+      confirmPass: "",
+      optionsDept: [],
+      optionsPosition: [],
     }
   },
   computed: {},
   mounted() {
+    this.getDataDept();
+    this.getDataPosition();
     this.isLoading = true;
     setTimeout(() => {
       this.isLoading = false}, 1000);
       
   },
   methods: {
-    
     onEvtEnter: function(evt) {
       if (evt.keyCode == 13) {
         // console.log(evt)
@@ -195,20 +224,60 @@ export default {
           })
       } else {
           authService.loginUser( encodeURI(this.email), encodeURI(this.pass)).then(response => { 
-          // console.log(response)
-          if (response.data != "" && response.data != null && response.data != undefined) {
-            // console.log(response.data)
-            this.toURL("Homepage");
-            localStorage.setItem("user", JSON.stringify(response.data));
-          } else {
-            this.$swal.fire({
-              heightAuto: false,
-              icon: 'error',
-              title: this.textError
-            });
-          }
-        });
+            if (response.data != "" && response.data != null && response.data != undefined) {
+              this.toURL("Homepage");
+              localStorage.setItem("user", JSON.stringify(response.data));
+            } else {
+              this.$swal.fire({
+                heightAuto: false,
+                icon: 'error',
+                title: this.textError
+              });
+            }
+          });
         }
+    },
+    getDataDept: async function(){
+      var dataDept = [];
+      await authService.getDataDept().then(response => {
+        console.log(response.data)
+        if (response.data != null && response.data.length > 0) {
+          dataDept.push({ text: "--กรุณาเลือกแผนก--", value: null, disabled: true})
+          response.data.forEach(function (obj, i) {
+            dataDept.push({ text: obj.dept_name,value: obj.dept_id });
+          });
+          this.optionsDept = dataDept;
+        }
+      });
+    },
+    getDataPosition: async function(){
+      var dataPosition = [];
+      await authService.getDataPosition().then(response => {
+        console.log(response.data)
+        if (response.data != null && response.data.length > 0) {
+          dataPosition.push({ text: "--กรุณาเลือกตำเเหน่ง--", value: null, disabled: true})
+          response.data.forEach(function (obj, i) {
+            dataPosition.push({ text: obj.position_name,value: obj.position_id });
+          });
+          this.optionsPosition = dataPosition;
+        }
+      });
+    },
+    insertNewEmployee: async function(){
+      var obj = {}
+      obj["email"] = this.email;
+      obj["password"] = this.password;
+      obj["dept_id"] = this.deptId;
+      obj["position_id"] = this.positionId;
+      obj["first_name"] = this.firstName;
+      obj["last_name"] = this.lastName;
+      obj["nick_name"] = this.nickName;
+      obj["mobile"] = this.mobile;
+      obj["address"] = this.address;
+      console.log(obj)
+      await authService.insertNewEmployee(obj).then(response =>{
+        console.log(response.data)
+      })
     }
   },
   watch: {}
