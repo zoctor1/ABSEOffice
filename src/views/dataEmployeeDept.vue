@@ -1,10 +1,10 @@
 <template>
-  <div id="NewEmployeeApprove" lg="12" sm="12" xs="12">
+  <div id="dataEmployeeDept" lg="12" sm="12" xs="12">
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
           <h2 align="left" style="font-weight: bold;">
-            ข้อมูลการสมัครของพนักงานใหม่
+            ข้อมูลพนักงานในเเผนกทั้งหมด
           </h2>
             <table width=100% style="margin-top:10px; border: 1px solid black;">
               <div >
@@ -30,7 +30,7 @@
                     </div>
                   </template>
                   <template v-slot:empty>
-                    <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการสมัคร</h2>
+                    <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลพนักงาน</h2>
                   </template>
                 </b-table>
               </div>
@@ -94,7 +94,7 @@ Vue.use(Datetime,VueSweetalert2,VModal);
 Vue.use(VueSuggestion);
 
 export default {
-  name: "NewEmployeeApprove",
+  name: "dataEmployeeDept",
   components: {},
   props: {},
   data() {
@@ -113,7 +113,6 @@ export default {
     //   optionLeaveType: [],
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center no' },
-        { key: 'create_date_format', label: 'วันที่สมัคร', class: 'text-center create_date_format' },
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
         { key: 'nick_name', label: 'ชื่อเล่น', class: 'text-center nick_name'},
         { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
@@ -163,12 +162,12 @@ export default {
   //   window.removeEventListener('resize', this.handleResize);
   // },
   mounted() {
-    this.getNewEmployee()
+    this.getDataEmployee()
   },
   methods: {
-    getNewEmployee: async function(){
+    getDataEmployee: async function(){
       this.isBusy = true;
-      await authService.getNewEmployee().then(response => {
+      await authService.getDataEmployee().then(response => {
         if (response.data != null && response.data.length > 0) { 
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;

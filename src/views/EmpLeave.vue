@@ -201,6 +201,11 @@
 
               <template v-slot:cell(status)="data">
                 <center>
+                <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date == null && data.item.cancel_header_date == null">
+                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
+                    <font color="#ffffff">ผ่านการอนุมัติ</font>
+                  </p>
+                </div>
                 <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_header_date == null">
                   <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
                     <font color="#ffffff">ผ่านการอนุมัติ</font>
@@ -223,12 +228,6 @@
                   </p>
                 </div>
                 <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
-                  <b-badge variant="warning"></b-badge>
-                  <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
-                      <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
-                  </p>
-                </div>
-                <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
                   <b-badge variant="warning"></b-badge>
                   <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
                       <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
@@ -570,13 +569,6 @@ export default {
       var ths = this;
       var allData = this.tempData;
       ths.isBusy = true;
-      if( this.selectStat == null && this.selectType == null && Object.keys(this.valDateStart).length <= 0 && Object.keys(this.valDateStop).length <= 0 ) {
-        this.$swal.fire({
-          heightAuto: false,
-          icon: 'warning',
-          title: 'เลือกข้อมูลที่จะค้นหา...'
-        })
-      }
       if (ths.valDateStart != null && ths.valDateStart != "" ) {
         var startTimeSelect = mJS.formatDateFilter(ths.valDateStart);
         allData = allData.filter(function(v) {

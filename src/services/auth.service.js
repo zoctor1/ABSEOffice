@@ -64,16 +64,14 @@ export function getDataAllUser() {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function getNewEmployee() {
+export function getDataEmployee() {
     return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/dataNewEmployee`, {}, { params: {} }).then(
+        axios.post(`${API_URL}/dataEmployee`, {}, { params: {} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })
     }).catch(error => reject(new ErrorWrapper(error)))
 }
-
-
 
 export function getDataHR() {
     return new Promise((resolve, reject) => {
@@ -219,6 +217,24 @@ export function insertDataByHeader(obj) {
 export function insertNewEmployee(obj) {
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/insertNewEmployee`, JSON.stringify(obj), {}).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function approveNewEmp(empNo, empId) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/ApproveNewEmp`, {}, { headers : {empNo : empNo, empId : empId} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function notApproveNewEmp(empId) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/NotApproveNewEmp`, {}, { headers : {empId : empId} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })

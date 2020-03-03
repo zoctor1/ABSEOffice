@@ -71,6 +71,7 @@
                 <b-form-select
                   v-model="deptId"
                   :options="optionsDept"
+                  @change="filterData()"
                   style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                 >
                 </b-form-select>
@@ -196,12 +197,20 @@ export default {
   methods: {
     onEvtEnter: function(evt) {
       if (evt.keyCode == 13) {
-        // console.log(evt)
         this.loginUser();
       }
     },
     toURL: function(url) {
       this.$router.push("/" + url);
+    },
+    filterData(){
+      var ths = this
+      if(ths.deptId != null && ths.deptId != ""){
+        var dept = ths.optionsDept
+        dept = dept.filter(function(v) {   
+          return v.value == ths.deptId;
+        });
+      }
     },
     loginUser: function(){
       if (this.email == "" && this.pass == "") {
@@ -274,7 +283,6 @@ export default {
       obj["nick_name"] = this.nickName;
       obj["mobile"] = this.mobile;
       obj["address"] = this.address;
-      console.log(obj)
       await authService.insertNewEmployee(obj).then(response =>{
         console.log(response.data)
       })
