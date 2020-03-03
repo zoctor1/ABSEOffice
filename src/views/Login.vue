@@ -1,9 +1,11 @@
 <template>
   <div id="userLogin" class="login" :style="{ backgroundImage: 'url(' + require('@/assets/vacation6.jpg') + ')' }">
     <div class="card-image">
-      <div align="center"><br>
-        <img style="margin-top: 120px;" alt="Vue logo" src="../assets/FontLeave3.png" width="360" height="120" /><br>
-        <img style="margin-top: -15px;" alt="Vue logo" src="../assets/ABSLogo10.png" width="181" height="75" />
+      <div align="center"><br attr>
+        <div v-show="flagShow == 1">
+          <img style="margin-top: 120px;" alt="Vue logo" src="../assets/FontLeave3.png" width="360" height="120" /><br>
+          <img style="margin-top: -15px;" alt="Vue logo" src="../assets/ABSLogo10.png" width="181" height="75" />
+        </div>
 
         <b-card v-if="flagShow == 1" bg-variant="light" tag="article" style="max-width: 22rem; margin-top: 50px;" class="mb-2">
           <p style="font-size:150%; margin:12px 0px 12px; cursor:default;"> เข้าสู่ระบบ </p>
@@ -25,10 +27,11 @@
                 <b-link @click="flagShow = 2">ลงทะเบียน</b-link>
             </b-col> 
         </b-card>
+
         <div v-else-if="flagShow == 2" >
           <b-card bg-variant="light"
             tag="article"
-            style="max-width:550px;"
+            style="max-width:550px; margin-top:230px"
             class="mb-2"
           >
             <b-row style="text-align:left; margin-left:0px;">
@@ -56,9 +59,9 @@
                 </ValidationProvider>
               </b-col>
               <b-col>
-                <ValidationProvider rules="confirmed:confirmation" v-slot="{ errors }">
-                  <input class="inputCheckPass" placeholder="ยืนยันรหัสผ่าน" style="width:235px;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;" v-model="pass" type="text">
-                  <span v-show="errors[0] != null && errors[0] != ''">รหัสผ่านไม่ตรงกัน</span>
+                <ValidationProvider rules="confirmed:confirmation,min:4" v-slot="{ errors }">
+                  <input class="form-control" placeholder="ยืนยันรหัสผ่าน" v-model="pass" type="text"  style="width:235px;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
+                  <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">รหัสผ่านไม่ตรงกัน*</p>
                 </ValidationProvider>
                 <!-- <b-form-input :id="`type-${type}`" :type="type" placeholder="ยืนยันรหัสผ่าน"></b-form-input> -->
               </b-col>
