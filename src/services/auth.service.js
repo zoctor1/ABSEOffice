@@ -89,8 +89,10 @@ export function loginUser(user,pass) {
         axios.post(`${API_URL}/login`, {}, { headers: {username: user, password: pass} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
-            })
-    }).catch(error => reject(new ErrorWrapper(error)))
+            }).catch( reject => {
+                return reject(new ErrorWrapper(error));
+            });
+    })
 }
 
 export function insertData(obj) {

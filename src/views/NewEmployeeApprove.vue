@@ -33,6 +33,9 @@
                   <template v-slot:empty>
                     <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการสมัคร</h2>
                   </template>
+                  <template v-slot:head()="data">
+                    <span style="font-size: 18px;">{{ data.label }}</span>
+                  </template>
                 </b-table>
               </div>
             </table>

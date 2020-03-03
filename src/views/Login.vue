@@ -54,7 +54,7 @@
             <b-row style="margin-bottom: 10px;" id="errors">
               <b-col>
                 <ValidationProvider v-slot="{ errors }" vid="confirmation">
-                  <input class="form-control" placeholder="รหัสผ่าน" v-model="confirmPass" type="text" style="width:235px;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
+                  <input class="form-control" placeholder="รหัสผ่าน" v-model="confirmPass" type="password" style="width:235px;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
                   <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">รหัสผ่านไม่ตรงกัน*</p>
                 </ValidationProvider>
               </b-col>
@@ -160,7 +160,7 @@ export default {
   mounted() {
     this.isLoading = true;
     setTimeout(() => {
-      this.isLoading = false}, 2000);
+      this.isLoading = false}, 1000);
       
   },
   methods: {

@@ -123,7 +123,7 @@
               </template>
 
               <template v-slot:head()="data">
-                  <span style="font-size: 18px;">{{ data.label }}</span>
+                <span style="font-size: 18px;">{{ data.label }}</span>
               </template>
               
               <template v-slot:cell(leave_remark)="data">
