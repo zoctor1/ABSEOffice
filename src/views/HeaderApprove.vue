@@ -603,6 +603,9 @@ export default {
         var ths = this;
         var allData = this.tempData;
         this.isBusy = true;
+          if (this.selectStat == null && this.selectType == null && Object.keys(this.valDateStart).length <= 0 && Object.keys(this.valDateStop).length <= 0 && Object.keys(this.nameSearch).length <= 0 ) {
+            this.getHeaderApprove(); 
+          }
           if (this.valDateStart != null && this.valDateStart != "" ) {
             var startTimeSelect = mJS.formatDateFilter(this.valDateStart)
             allData = allData.filter(function(v) {

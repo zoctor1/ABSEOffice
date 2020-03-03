@@ -582,6 +582,9 @@ export default {
     filterData() {
       var ths = this;
       var allData = this.tempData;
+      if (this.selectStat == null && this.selectType == null && this.selectDep == null && Object.keys(this.valDateStart).length <= 0 && Object.keys(this.valDateStop).length <= 0 && Object.keys(this.nameSearch).length <= 0 ) {
+          this.getHrApprove();
+      }
       if (this.valDateStart != null && this.valDateStart != "") {
         var startTimeSelect = mJS.formatDateFilter(this.valDateStart)
         allData = allData.filter(function(v) {

@@ -28,6 +28,15 @@ export function getDataPosition() {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
+export function insertNewEmployee(obj) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/insertNewEmployee`, JSON.stringify(obj), {}).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
 export function getDataTypeLeave() {
     return new Promise((resolve, reject) => {
         axios.get(`${API_URL}/dataTypeLeave`, {}, { params: {} }).then(
@@ -223,20 +232,3 @@ export function insertNewEmployee(obj) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function approveNewEmp(empNo, empId) {
-    return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/ApproveNewEmp`, {}, { headers : {empNo : empNo, empId : empId} }).then(
-            response => {
-                return resolve(new ResponseWrapper(response, response.data))
-            })
-    }).catch(error => reject(new ErrorWrapper(error)))
-}
-
-export function notApproveNewEmp(empId) {
-    return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/NotApproveNewEmp`, {}, { headers : {empId : empId} }).then(
-            response => {
-                return resolve(new ResponseWrapper(response, response.data))
-            })
-    }).catch(error => reject(new ErrorWrapper(error)))
-}

@@ -15,7 +15,7 @@
       </p>
         <div style="padding: 0px 25px 10px 20px">
           <div class="con-select-example" style="margin-top:10px">
-            <b-row>
+            <b-row style="margin-bottom:27px">
               <b-col>
                 <p style="cursor:default;"><b>ชื่อ-นามสกุล :</b></p>
                 <template>
@@ -42,16 +42,24 @@
                   </vue-suggestion> 
                 </template>
               </b-col>
-            </b-row><br>
+            </b-row>
 
              <b-row>
-              <b-col>
-                <p style="margin-bottom:-15px; cursor:default;"><b>เเผนก : </b><br> <label v-if=" Object.keys(size).length > 0 && size != null && size != '' " > {{ size.dept }} </label> </p>
+              <b-col >
+                <p v-if=" Object.keys(size).length > 0 && size != null && size != '' " style="margin-top:-10px; cursor:default;"><b>เเผนก : </b><br> 
+                  <label style="padding:5px 0px 5px 10px; width:100%; height:auto; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"> 
+                    {{ size.dept }} 
+                  </label>
+                   </p>
               </b-col>
               <b-col>
-                <p style="margin-bottom:-15px; cursor:default;"><b>ตำเเหน่ง : </b><br> <label v-if=" Object.keys(size).length > 0 && size != null && size != '' " > {{ size.position }} </label> </p>
+                <p v-if=" Object.keys(size).length > 0 && size != null && size != '' " style="margin-top:-10px; cursor:default;"><b>ตำเเหน่ง : </b><br> 
+                  <label style="padding:5px 0px 5px 10px; width:100%; height:auto; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"> 
+                    {{ size.position }}
+                  </label> 
+                </p>
               </b-col>
-            </b-row><br>
+            </b-row>
 
             <b-row>
               <b-col>

@@ -1,44 +1,22 @@
 <template>
-  <div id="userLogin" class="login" :style="{ backgroundImage: 'url(' + require('@/assets/vacation6.jpg') + ')' }">
-    <div class="card-image">
-      <div align="center"><br attr>
-        <div v-show="flagShow == 1">
-          <img style="margin-top: 120px;" alt="Vue logo" src="../assets/FontLeave3.png" width="360" height="120" /><br>
-          <img style="margin-top: -15px;" alt="Vue logo" src="../assets/ABSLogo10.png" width="181" height="75" />
-        </div>
+  <div id="popupRegisterUser">
 
-        <b-card v-if="flagShow == 1" bg-variant="light" tag="article" style="max-width: 22rem; margin-top: 50px;" class="mb-2">
-          <p style="font-size:150%; margin:12px 0px 12px; cursor:default;"> เข้าสู่ระบบ </p>
-            <b-col sm="12">
-              <p align="left" style="cursor:default;">อีเมล:</p> 
-              <b-form-input type="text" placeholder="กรุณากรอกอีเมล" v-model="email" @keypress="onEvtEnter"></b-form-input>
-            </b-col>
-            <b-col sm="12">
-              <p style="margin-top:12px; cursor:default;" align="left">รหัสผ่าน:</p>
-              <b-form-input  style="margin-bottom:12px" type="password" placeholder="กรุณากรอกรหัสผ่าน" v-model="pass" @keypress="onEvtEnter"></b-form-input>
-            </b-col>
-            <b-col sm="12">
-              <center>
-                <b-button style="margin:12px 0px 12px 0px" variant="primary" @click="loginUser()">
-                  เข้าสู่ระบบ
-                </b-button>
-                <br>
-              </center>
-                <b-link @click="defaultValue()">ลงทะเบียน</b-link>
-            </b-col> 
-        </b-card>
-
-        <div v-else-if="flagShow == 2">
-          <b-card bg-variant="light"
-            tag="article"
-            style="max-width:550px; margin-top:230px"
-            class="mb-2"
-          >
-            <b-row style="text-align:left; margin-left:0px;">
-              <b-col sm="8" style="margin-top:15px">
-                <p style="font-size:150%; margin-bottom:10px">ลงทะเบียนรหัสเข้าสู่ระบบ</p>
-              </b-col>
-              <b-col sm="4">
+    <modal name="hello-world"
+      id="sizePopupLeave"
+      height="auto"
+      :clickToClose="false"
+      :active.sync="popupRegister"
+    >
+      <p style="background-color: #f1f1f1; font-size: 22px; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
+        กรอกข้อมูลพนักงาน
+        <button type="button" aria-label="Close" class="close" @click="hide()">
+          <img src="../assets/Close-icon.png" width="33" height="33" />
+        </button>
+      </p>
+        <div style="padding: 0px 25px 10px 20px">
+          <div class="con-select-example" style="margin-top:10px">
+            <b-row style="margin-left:0px;">
+              <b-col style="text-align:center;">
                 <img style="margin-top:5px;" alt="Vue logo" src="../assets/ABSLogo10.png" width="127" height="53" />
               </b-col>
             </b-row>
@@ -54,14 +32,14 @@
             <b-row style="margin-bottom: 10px;" id="errors">
               <b-col>
                 <ValidationProvider v-slot="{ errors }" vid="confirmation">
-                  <input class="form-control" placeholder="รหัสผ่าน" v-model="confirmPass" type="password" style="width:235px;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
+                  <input class="form-control" placeholder="รหัสผ่าน" v-model="confirmPass" type="password" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
                   <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">รหัสผ่านไม่ตรงกัน*</p>
                 </ValidationProvider>
               </b-col>
               <b-col>
                 <ValidationProvider rules="confirmed:confirmation" v-slot="{ errors }">
-                         <!-- rules="confirmed:confirmation"  -->
-                  <input class="form-control" placeholder="ยืนยันรหัสผ่าน" v-model="pass" type="password"  style="width:235px;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
+                          <!-- rules="confirmed:confirmation"  -->
+                  <input class="form-control" placeholder="ยืนยันรหัสผ่าน" v-model="pass" type="password"  style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
                   <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">รหัสผ่านไม่ตรงกัน*</p>
                 </ValidationProvider>
                 <!-- <b-form-input :id="`type-${type}`" :type="type" placeholder="ยืนยันรหัสผ่าน"></b-form-input> -->
@@ -72,8 +50,7 @@
                 <b-form-select
                   v-model="deptId"
                   :options="optionsDept"
-                  @change="filterData()"
-                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                  style="height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                 >
                 </b-form-select>
               </b-col>
@@ -82,7 +59,7 @@
                   v-model="positionId"
                   :options="optionsPosition"
                   :disabled="false"
-                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                  style="height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
                 >
                 </b-form-select>
               </b-col>
@@ -124,21 +101,9 @@
                 <center><b-button style="margin: 15px 0px 10px 0px" variant="outline-primary" @click="validationData()">ส่งการลงทะเบียน</b-button></center>
               </b-col>
             </b-row>
-            <b-row>
-              <b-col>
-                <b-link style="text-align:right;" @click="flagShow = 1">ย้อนกลับ</b-link>
-              </b-col>
-            </b-row>
-          </b-card>
+          </div>
         </div>
-        <br>
-      </div>
-      <loading
-        :active.sync="isLoading"
-        :is-full-page="fullPage"
-      >
-      </loading>
-    </div>
+    </modal>
   </div>
 </template>
 
@@ -155,14 +120,15 @@ import { ValidationProvider } from 'vee-validate';
 Vue.use(VueSweetalert2,VeeValidate);
 
 export default {
-  name: "Login",
+  name: "popupRegisterUser",
   components: {
     Loading,
     ValidationProvider
   },
-  props: {},
+  props: ["showPopRegister"],
   data() {
     return {
+      popupRegister:false,
       email: "",
       password:"",
       deptId:'',
@@ -176,8 +142,6 @@ export default {
         'password'
         ],
       flagShow: 1,
-      pass: "1234",
-      textError: "รหัสผ่านไม่ถูกต้อง",
       isLoading: false,
       fullPage:'',
       pass: '',
@@ -195,6 +159,12 @@ export default {
       this.isLoading = false}, 1000);
   },
   methods: {
+    show () {
+      this.$modal.show('hello-world');
+    },
+    hide () {
+      this.$modal.hide('hello-world');
+    },
     validationData() {
       if (this.email == "" || this.deptId == null || this.positionId == null || this.firstName == "" || this.lastName == "" || this.nickName == "" || this.mobile == "" ||  this.address == "") {
           this.$swal.fire({
@@ -208,6 +178,8 @@ export default {
 
     },
     defaultValue() {
+      this.$modal.show('hello-world');
+      this.popupRegister = true;
       this.email = "",
       this.password = "",
       this.deptId = null,
@@ -218,57 +190,6 @@ export default {
       this.mobile = "",
       this.address = "",
       this.flagShow = 2
-    },
-    onEvtEnter: function(evt) {
-      if (evt.keyCode == 13) {
-        this.loginUser();
-      }
-    },
-    toURL: function(url) {
-      this.$router.push("/" + url);
-    },
-    filterData(){
-      var ths = this
-      if(ths.deptId != null && ths.deptId != ""){
-        var dept = ths.optionsDept
-        dept = dept.filter(function(v) {   
-          return v.value == ths.deptId;
-        });
-      }
-    },
-    loginUser: function(){
-      if (this.email == "" && this.pass == "") {
-          this.$swal.fire({
-            heightAuto: false,
-            icon: 'warning',
-            title: 'กรุณากรอกอีเมล และ รหัสผ่าน'
-          })
-      } else if (this.email == "") {
-          this.$swal.fire({
-            heightAuto: false,
-            icon: 'warning',
-            title: 'กรุณากรอกอีเมล'
-          })
-      } else if (this.pass == "") {
-          this.$swal.fire({
-            heightAuto: false,
-            icon: 'warning',
-            title: 'กรุณากรอกรหัสผ่าน'
-          })
-      } else {
-          authService.loginUser( encodeURI(this.email), encodeURI(this.pass)).then(response => { 
-            if (response.data != "" && response.data != null && response.data != undefined) {
-              this.toURL("Homepage");
-              localStorage.setItem("user", JSON.stringify(response.data));
-            } else {
-              this.$swal.fire({
-                heightAuto: false,
-                icon: 'error',
-                title: this.textError
-              });
-            }
-          });
-        }
     },
     getDataDept: async function(){
       var dataDept = [];
@@ -307,35 +228,23 @@ export default {
       obj["nick_name"] = this.nickName;
       obj["mobile"] = this.mobile;
       obj["address"] = this.address;
+      console.log(obj)
       await authService.insertNewEmployee(obj).then(response =>{
         console.log(response.data)
         alert("aa")
       })
     }
   },
-  watch: {}
+  watch: {
+    showPopRegister() {
+      var ths = this;
+      if (ths.showPopRegister) {
+        ths.defaultValue();
+      }
+    }
+  },
 };
 </script>
 
 <style scoped>
-  #userLogin {
-    width: 100%;
-    min-height: 100%;
-    background-size: cover;
-    background-position: 0% 100%;
-    background-position: center;
-    background-repeat: no-repeat; 
-  }
-  body {
-    font-family: 
-    "Open Sans", -apple-system, BlinkMacSystemFont,
-    "Segoe UI",  Roboto, Oxygen-Sans, Ubuntu, Cantarell,
-    "Helvetica Neue", Helvetica,  Arial, sans-serif;
-  }
-  .inputCheckPass:focus {
-    background-color: #0000;
-    background-clip: padding-box;
-    border: 4px;
-    border-radius: 0.25rem;
-  }
 </style>

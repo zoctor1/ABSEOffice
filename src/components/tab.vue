@@ -13,31 +13,27 @@
         </center>
           <b-row>
             <b-col style="margin-top:5px" xs="12">
-              <div>
-                <center>
-                  <vs-button
-                    @click="showLeavePopup(0)"
-                    color="primary"
-                    type="filled"
-                    style="width:114px; height:44px; margin-right:auto;"
-                  >
-                    <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
-                  </vs-button>
-                </center>
+              <div style="text-align:center;">
+                <vs-button
+                  @click="showLeavePopup(0)"
+                  color="primary"
+                  type="filled"
+                  style="width:114px; height:44px; margin-right:auto;"
+                >
+                  <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
+                </vs-button>
               </div>
             </b-col>
-            <b-col style="margin-top:5px" md="4" sm="6" xs="12">
-              <div>
-                <center>
-                  <vs-button 
-                    @click="showPopupOT()"
-                    color="primary" 
-                    type="filled" 
-                    style="width:144px; height:44px;"
-                  >
-                    <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มเวลาทำงาน
-                  </vs-button>
-                </center>
+            <b-col style="margin-top:5px" xs="12">
+              <div style="text-align:center;">
+                <vs-button 
+                  @click="showPopupOT()"
+                  color="primary" 
+                  type="filled" 
+                  style="width:144px; height:44px;"
+                >
+                  <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มเวลาทำงาน
+                </vs-button>
               </div>
             </b-col>
             <!-- <b-col style="margin-top:5px" md="4" sm="6" xs="12">
