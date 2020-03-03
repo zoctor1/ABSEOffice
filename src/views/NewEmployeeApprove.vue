@@ -6,7 +6,6 @@
           <h2 align="left" style="font-weight: bold;">
             ข้อมูลการสมัครของพนักงานใหม่
           </h2>
-
             <table width=100% style="margin-top:10px; border: 1px solid black;">
               <div >
                 <b-table
@@ -111,11 +110,10 @@ export default {
     //     { value: 1 ,text: "ผ่านการอนุมัติ"},
     //     { value: 2 ,text: "รอการรับทราบ"}
     //   ],
-    //   optionsDep: [],
     //   optionLeaveType: [],
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center no' },
-        { key: 'create_date', label: 'วันที่สมัคร', class: 'text-center create_date' },
+        { key: 'create_date_format', label: 'วันที่สมัคร', class: 'text-center create_date_format' },
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
         { key: 'nick_name', label: 'ชื่อเล่น', class: 'text-center nick_name'},
         { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
@@ -166,13 +164,6 @@ export default {
   // },
   mounted() {
     this.getNewEmployee()
-    // this.getHrApprove();
-    // this.selectType = null;
-    // this.selectDep = null;
-    // this.selectStat = null;
-    // this.getDataReasonLeave();
-    // this.getDataDept();
-    // this.getDataAllUser();
   },
   methods: {
     getNewEmployee: async function(){
@@ -182,6 +173,7 @@ export default {
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;
             response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+            response.data[i].create_date_format = mJS.setDateFormat(response.data[i].create_date);
           }
           this.items = response.data;
           setTimeout(() => {
@@ -300,30 +292,7 @@ export default {
     //       } 
     //     })
     //   },
-    // getDataDept: async function(){
-    //   var dataDept = [];
-    //   await authService.getDataDept().then(response => {
-    //     if (response.data != null && response.data.length > 0) {
-    //       dataDept.push({ text: "--กรุณาเลือกแผนก--", value: null, disabled: true})
-    //       response.data.forEach(function (obj, i) {
-    //         dataDept.push({ text: obj.dept_name,value: obj.dept_id });
-    //       });
-    //       this.optionsDep = dataDept;
-    //     }
-    //   });
-    // },
-    // getDataReasonLeave: async function(){
-    //   var dataReason = [];
-    //   await authService.getDataReasonLeave().then(response => {
-    //     if (response.data != null && response.data.length > 0) {
-    //       dataReason.push({ text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true})
-    //       response.data.forEach(function (obj, i) {
-    //         dataReason.push({ text: obj.leave_reason_name,value: obj.leave_reason_id });
-    //       });
-    //       this.optionLeaveType = dataReason;
-    //     }
-    //   });
-    // },
+
     // getHrApprove: async function(){
     // this.isBusy = true;
     // var leave_time = [];
