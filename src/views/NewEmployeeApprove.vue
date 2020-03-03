@@ -1,11 +1,25 @@
 <template>
   <div id="NewEmployeeApprove" lg="12" sm="12" xs="12">
+    <popupRegister v-bind:showPopRegister="showPopRegister"/>
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
           <h2 align="left" style="font-weight: bold;">
-            ข้อมูลการสมัครของพนักงานใหม่
+            ข้อมูลของพนักงาน
           </h2>
+          <vs-button
+            @click="showPopupRegister()"
+            color="primary"
+            type="filled"
+            style="height:42px; width:135px;"
+          >
+            <img 
+            src="../assets/Plus_icon3.png" 
+            style="margin-top:-3px"
+            width="20" 
+            height="20" 
+            /> เพิ่มพนักงาน
+          </vs-button>
             <table width=100% style="margin-top:10px; border: 1px solid black;">
               <div >
                 <b-table
@@ -89,7 +103,7 @@ import { Settings } from 'luxon'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 import VModal from 'vue-js-modal'
-import popupLeaveHeaderHr from "@/components/popupLeaveHeaderHr.vue"
+import popupRegister from "@/components/popupRegister.vue"
 import VueSuggestion from 'vue-suggestion'
 import itemTemplate from '../components/ItemTemplate.vue';
 
@@ -98,7 +112,9 @@ Vue.use(VueSuggestion);
 
 export default {
   name: "NewEmployeeApprove",
-  components: {},
+  components: {
+    popupRegister
+  },
   props: {},
   data() {
     return {
@@ -137,17 +153,13 @@ export default {
       sortBy: '',
       sortDesc: false,
       sortDirection: 'asc',
+      showPopRegister:false,
     //   valDateStart: '',
     //   valDateStop: '',
     //   selectType: '',
     //   selectDep:'',
     //   selectStat: '',
     //   currentDate: '',
-    //   showPopHeader:false,
-    //   window : {
-    //     width: 0,
-    //     height: 0
-    //   }
     }
   },
   computed: {
@@ -189,14 +201,13 @@ export default {
       })
       this.totalRows = this.items.length
     },
-    // showLeavePopup: function(flag) {
-    //   var ths = this;
-    //   ths.showPopHeader = true;
-    //   ths.checkPopup = flag;
-    //   setTimeout(function() {
-    //     ths.showPopHeader = false;
-    //   }, 1000);
-    // },
+    showPopupRegister: function(flag) {
+      var ths = this;
+      ths.showPopRegister = true;
+      setTimeout(function() {
+        ths.showPopRegister = false;
+      }, 1000);
+    },
     // defaultValue() {
     //   this.valDateStart = "";
     //   this.valDateStop = "";

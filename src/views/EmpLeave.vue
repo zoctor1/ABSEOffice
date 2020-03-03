@@ -570,13 +570,6 @@ export default {
       var ths = this;
       var allData = this.tempData;
       ths.isBusy = true;
-      if( this.selectStat == null && this.selectType == null && Object.keys(this.valDateStart).length <= 0 && Object.keys(this.valDateStop).length <= 0 ) {
-        this.$swal.fire({
-          heightAuto: false,
-          icon: 'warning',
-          title: 'เลือกข้อมูลที่จะค้นหา...'
-        })
-      }
       if (ths.valDateStart != null && ths.valDateStart != "" ) {
         var startTimeSelect = mJS.formatDateFilter(ths.valDateStart);
         allData = allData.filter(function(v) {

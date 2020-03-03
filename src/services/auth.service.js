@@ -28,6 +28,15 @@ export function getDataPosition() {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
+export function insertNewEmployee(obj) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/insertNewEmployee`, JSON.stringify(obj), {}).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
 export function getDataTypeLeave() {
     return new Promise((resolve, reject) => {
         axios.get(`${API_URL}/dataTypeLeave`, {}, { params: {} }).then(
@@ -98,10 +107,8 @@ export function loginUser(user,pass) {
         axios.post(`${API_URL}/login`, {}, { headers: {username: user, password: pass} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
-            }).catch( reject => {
-                return reject(new ErrorWrapper(error));
-            });
-    })
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
 }
 
 export function insertData(obj) {
@@ -218,11 +225,11 @@ export function insertDataByHeader(obj) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function insertNewEmployee(obj) {
-    return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/insertNewEmployee`, JSON.stringify(obj), {}).then(
-            response => {
-                return resolve(new ResponseWrapper(response, response.data))
-            })
-    }).catch(error => reject(new ErrorWrapper(error)))
-}
+// export function signInMember(obj) {
+//     return new Promise((resolve, reject) => {
+//         axios.post(`${API_URL}/signInMember`, JSON.stringify(obj), {}).then(
+//             response => {
+//                 return resolve(new ResponseWrapper(response, response.data))
+//             })
+//     }).catch(error => reject(new ErrorWrapper(error)))
+// }
