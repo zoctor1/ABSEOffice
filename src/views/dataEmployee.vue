@@ -1,5 +1,6 @@
 <template>
   <div id="dataEmployee" lg="12" sm="12" xs="12">
+    <popupRegister v-bind:showPopRegister="showPopRegister"/>
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
@@ -44,6 +45,21 @@
                 >
                     เคลียร์ข้อมูล
                 </b-button>
+              </b-col>
+              <b-col>
+                <vs-button
+                  @click="showPopupRegister()"
+                  color="primary"
+                  type="filled"
+                  style="height:42px; width:135px;"
+                >
+                  <img 
+                  src="../assets/Plus_icon3.png" 
+                  style="margin-top:-3px"
+                  width="20" 
+                  height="20" 
+                  /> เพิ่มพนักงาน
+                </vs-button>
               </b-col>
             </b-row>
 
@@ -127,7 +143,7 @@ import { Settings } from 'luxon'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 import VModal from 'vue-js-modal'
-import popupLeaveHeaderHr from "@/components/popupLeaveHeaderHr.vue"
+import popupRegister from "@/components/popupRegister.vue"
 import VueSuggestion from 'vue-suggestion'
 import itemTemplate from '../components/ItemTemplate.vue';
 
@@ -138,11 +154,12 @@ export default {
   name: "dataEmployee",
   components: {
     datetime: Datetime,
-    popupLeaveHeaderHr
+    popupRegister
   },
   props: {},
   data() {
     return {
+      showPopRegister:false,
       tempData: [],
       itemTemplate,
       nameSearch:"",
@@ -221,12 +238,11 @@ export default {
         this.getDataEmployee();   
       }
     },
-    showLeavePopup: function(flag) {
+    showPopupRegister: function(flag) {
       var ths = this;
-      ths.showPopHeader = true;
-      ths.checkPopup = flag;
+      ths.showPopRegister = true;
       setTimeout(function() {
-        ths.showPopHeader = false;
+        ths.showPopRegister = false;
       }, 1000);
     },
     defaultValue() {
