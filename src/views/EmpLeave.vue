@@ -570,19 +570,40 @@ export default {
       var allData = this.tempData;
       ths.isBusy = true;
       if (ths.valDateStart != null && ths.valDateStart != "" ) {
-        var startTimeSelect = mJS.formatDateFilter(ths.valDateStart);
         allData = allData.filter(function(v) {
-          var leaveStart = mJS.formatDateFilter(v.leave_start_date);
-          return startTimeSelect == leaveStart;
+          if(ths.valDateStop == "") {
+            var startTimeSelected = mJS.formatDateFilter(ths.valDateStart);
+            var leavestart = mJS.formatDateFilter(v.leave_start_date);
+            return startTimeSelected == leavestart;
+          }
+          else if(ths.valDateStop != "") {
+            var startTimeSelect = new Date(mJS.formatDateFilter(ths.valDateStart) + " 00:00:00");
+            var leaveStart = new Date(mJS.formatDateFilter(v.leave_start_date));
+            return leaveStart.getTime() >= startTimeSelect.getTime();
+          }
         })
       }
       if (ths.valDateStop != null && ths.valDateStop != "" ) {
-        var stopTimeSelect = mJS.formatDateFilter(ths.valDateStop);
         allData = allData.filter(function(v) {
-          var leaveStop = mJS.formatDateFilter(v.leave_stop_date);
-          return stopTimeSelect == leaveStop;
+          if(ths.valDateStart == ""){
+            var stopTimeSelected = mJS.formatDateFilter(ths.valDateStop);
+            var leavestop = mJS.formatDateFilter(v.leave_stop_date);
+            return stopTimeSelected == leavestop;
+          }
+          else if(ths.valDateStart != "") {
+            var stopTimeSelect = new Date(mJS.formatDateFilter(ths.valDateStop) + " 23:59:59");
+            var leavestop = new Date(mJS.formatDateFilter(v.leave_stop_date));
+            return leavestop.getTime() <= stopTimeSelect.getTime();
+          }
         })
       }
+      // if (ths.valDateStop != null && ths.valDateStop != "" ) {
+      //   var stopTimeSelect = new Date(mJS.formatDateFilter(ths.valDateStop) + " 23:59:59");
+      //   allData = allData.filter(function(v) {
+      //     var leaveStart = new Date(mJS.formatDateFilter(v.leave_start_date));
+      //     return leaveStart.getTime() <= stopTimeSelect.getTime();
+      //   })
+      // }
       if (ths.selectStat != null && ths.selectStat != "") {
         if (ths.selectStat == 1) {
           allData = allData.filter(function(v) {
