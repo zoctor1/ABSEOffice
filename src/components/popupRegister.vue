@@ -15,38 +15,46 @@
       </p>
         <div style="padding: 0px 25px 10px 20px">
           <div class="con-select-example" style="margin-top:10px">
-            <b-row style="margin-left:0px;">
-              <b-col style="text-align:center;">
-                <img style="margin-top:5px;" alt="Vue logo" src="../assets/ABSLogo10.png" width="127" height="53" />
-              </b-col>
-            </b-row>
-            <b-row style="margin-bottom: 10px;">
+            <b-row>
               <b-col>
-                <ValidationProvider  rules="email" v-slot="{ errors }">
-                  <input type="text" placeholder="อีเมล์" v-model="email" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
-                  <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">กรุณากรอกอีเมล*</p>
-                </ValidationProvider>
-                <!-- <b-form-input placeholder="อีเมล"></b-form-input> -->
+                <div>
+                  <div class="form-group" :class="{ 'form-group--error': $v.username.$error, 'form-group--loading': $v.username.$pending }">
+                    <input class="form__input" placeholder="อีเมล" v-model.trim="$v.username.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
+                  </div>
+                  <div class="error" v-if="!$v.username.isUnique" style="margin:-15px 0px 10px 0px; color: red; text-align:left;">
+                    อีเมลนี้มีผู้ใช้แล้ว
+                  </div>
+                </div>
               </b-col>
+              <!-- <b-col>
+                <div class="form-group" :class="{ 'form-group--error': $v.name.$error }">
+                  <input class="form__input" placeholder="อีเมล" v-model.trim="$v.name.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
+                </div>
+                <div class="error" v-if="!$v.name.minLength" style="margin:-15px 0px 10px 0px; color: red; text-align:left;">
+                  กรุณากรอกอย่างต่ำ {{$v.name.$params.minLength.min}} ตัวอักษรขึ้นไป
+                </div>
+              </b-col> -->
             </b-row>
             <b-row style="margin-bottom: 10px;" id="errors">
-              <b-col>
-                <ValidationProvider v-slot="{ errors }" vid="confirmation">
-                  <input class="form-control" placeholder="รหัสผ่าน" v-model="confirmPass" type="password" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
-                  <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">รหัสผ่านไม่ตรงกัน*</p>
-                </ValidationProvider>
+              <b-col style="margin-top:-5px;">
+                <div class="form-group" :class="{ 'form-group--error': $v.password.$error }" >
+                  <input class="form__input" placeholder="รหัสผ่าน" v-model.trim="$v.password.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
+                </div>
+                <div class="error" v-if="!$v.password.minLength" style="margin:-15px 0px 10px 0px; color: red; text-align:left;">
+                  รหัสผ่านใช้ความยาว {{ $v.password.$params.minLength.min }} ตัวอักษรขึ้นไป
+                </div>
               </b-col>
-              <b-col>
-                <ValidationProvider rules="confirmed:confirmation" v-slot="{ errors }">
-                          <!-- rules="confirmed:confirmation"  -->
-                  <input class="form-control" placeholder="ยืนยันรหัสผ่าน" v-model="pass" type="password"  style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
-                  <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">รหัสผ่านไม่ตรงกัน*</p>
-                </ValidationProvider>
-                <!-- <b-form-input :id="`type-${type}`" :type="type" placeholder="ยืนยันรหัสผ่าน"></b-form-input> -->
+              <b-col style="margin-top:-5px;">
+                <div class="form-group" :class="{ 'form-group--error': $v.repeatPassword.$error }" >
+                  <input class="form__input" placeholder="ยืนยันรหัสผ่าน" v-model.trim="$v.repeatPassword.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
+                </div>
+                <div class="error" v-if="!$v.repeatPassword.sameAsPassword" style="margin:-15px 0px 10px 0px; color: red; text-align:left;">
+                  รหัสผ่านไม่ตรงกัน
+                </div>
               </b-col>
             </b-row>
             <b-row style="margin-bottom: 10px;">
-              <b-col>
+              <b-col style="margin-top:-15px;">
                 <b-form-select
                   v-model="deptId"
                   :options="optionsDept"
@@ -54,7 +62,7 @@
                 >
                 </b-form-select>
               </b-col>
-              <b-col>
+              <b-col style="margin-top:-15px;">
                 <b-form-select
                   v-model="positionId"
                   :options="optionsPosition"
@@ -66,68 +74,132 @@
             </b-row>
             <b-row style="margin-bottom: 10px;">
               <b-col>
-                <b-form-input placeholder="ชื่อ" v-model="firstName"></b-form-input>
+                <div class="form-group" :class="{ 'form-group--error': $v.form.nestedFirstname.$error }">
+                  <input class="form__input" placeholder="ชื่อ" v-model.trim="$v.form.nestedFirstname.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
+                </div>
+                <div class="error" v-if="!$v.form.nestedFirstname.required" style="margin:-15px 0px 10px 0px; color: red; text-align:left;">
+                  กรุณากรอกชื่อ
+                </div>
               </b-col>
               <b-col>
-                <b-form-input placeholder="นามสกุล" v-model="lastName"></b-form-input>
+                <div class="form-group" :class="{ 'form-group--error': $v.form.nestedLastname.$error }">
+                  <input class="form__input" placeholder="นามสกุล" v-model.trim="$v.form.nestedLastname.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
+                </div>
+                <div class="error" v-if="!$v.form.nestedLastname.required" style="margin:-15px 0px 10px 0px; color: red; text-align:left;">
+                  กรุณากรอกนามสกุล
+                </div>
+              </b-col>
+                <!-- <b-form-input placeholder="ชื่อ" v-model="firstName"></b-form-input>
+                <b-form-input placeholder="นามสกุล" v-model="lastName"></b-form-input> -->
+            </b-row>
+            <b-row style="margin-bottom: 10px;">
+              <b-col style="margin-top:-15px;" sm="4" >
+                  <div class="form-group" :class="{ 'form-group--error': $v.form.nestedNickname.$error }">
+                    <input class="form__input" placeholder="ชื่อเล่น" v-model.trim="$v.form.nestedNickname.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
+                  </div>
+                  <div class="error" v-if="!$v.form.nestedNickname.required" style="margin:-15px 0px 10px 0px; color: red; text-align:left;">
+                    กรุณากรอกชื่อเล่น
+                  </div>
+                
+                <!-- <b-form-input placeholder="ชื่อเล่น" v-model="nickName"></b-form-input> -->
+              </b-col>
+              <b-col style="margin-top:-15px;">
+                <div class="form-group" :class="{ 'form-group--error': $v.form.nestedPhone.$error }">
+                  <input class="form__input" placeholder="เบอร์โทรติดต่อ" v-model.trim="$v.form.nestedPhone.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
+                </div>
+                <div class="error" v-if="!$v.form.nestedPhone.required" style="margin:-15px 0px 10px 0px; color: red; text-align:left;">
+                  กรุณากรอกเบอร์โทรติดต่อ
+                </div>
+                <!-- <ValidationProvider rules="integer" v-slot="{ errors }">
+                  <input class="form-control" type="text" v-model="mobile" placeholder="เบอร์โทรติดต่อ" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
+                  <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">กรอกเฉพาะตัวเลขเท่านั้น*</p>
+                </ValidationProvider>
+                <b-form-input placeholder="เบอร์โทรศัทพ์"></b-form-input> -->
               </b-col>
             </b-row>
             <b-row style="margin-bottom: 10px;">
-              <b-col sm="4">
-                <b-form-input placeholder="ชื่อเล่น" v-model="nickName"></b-form-input>
+              <b-col style="margin-top:-15px;">
+                <div class="form-group" :class="{ 'form-group--error': $v.form.nestedAddress.$error }" >
+                  <b-form-textarea
+                    style="padding-left:10px; width:100%;height:80px; "
+                    v-model.trim="$v.form.nestedAddress.$model"
+                    placeholder="ที่อยู่ปัจจุบัน"
+                    rows="4"
+                    no-resize
+                    >
+                  </b-form-textarea>
+                  <div class="error" v-if="!$v.form.nestedAddress.required" style="margin:3px 0px 10px 0px; color: red; text-align:left;">
+                  กรุณากรอกที่อยู่
+                </div>
+                  <!-- <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div> -->
+                </div>
               </b-col>
-              <b-col>
-                <ValidationProvider rules="integer" v-slot="{ errors }">
-                  <input type="text" v-model="mobile" placeholder="เบอร์โทรติดต่อ" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
-                  <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">กรอกเฉพาะตัวเลขเท่านั้น*</p>
-                </ValidationProvider>
-                <!-- <b-form-input placeholder="เบอร์โทรศัทพ์"></b-form-input> -->
+            </b-row>
+            <b-row style="margin-bottom: 10px;">
+              <b-col style="margin-top:-20px;">
+                <p style="cursor:default;"><b>วันที่เริ่มเข้ามาทำงาน :</b></p>
+                <div class="form-group" :class="{ 'form-group--error': $v.form.startDate.$error }">
+                  <datetime v-if="popupRegister" type="date" v-model.trim="$v.form.startDate.$model" format="dd/MM/yyyy"></datetime>
+                  <div class="error" v-if="!$v.form.startDate.required"><font color="red">จำเป็น*</font></div>
+                  <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
+                </div>
+              </b-col>
+              <b-col style="margin-top:-20px; text-align:center;">
+                <p style="cursor:default;"> &nbsp; </p>
+                <img style="margin-top:-3px" alt="Vue logo" src="../assets/ABSLogo.png" width="165" height="60" />
               </b-col>
             </b-row>
             <b-row>
               <b-col>
-                <b-form-textarea
-                style="width:100%;height:80px;"
-                v-model="address"
-                placeholder="ที่อยู่ปัจจุบัน"
-                rows="4"
-                no-resize
-                >
-              </b-form-textarea>
               </b-col>
-            </b-row>
-            <b-row>
+              <b-col style="text-align:center;">
+                <b-button style="margin: 0px 0px 10px 0px; width:100%;" variant="outline-primary" @click="validationData()">บันทึก</b-button>
+              </b-col>
+              <b-col style="text-align:center;">
+                <b-button style="margin: 0px 0px 10px 0px; width:100%;" variant="outline-danger" @click="defaultValue()">เคลียร์</b-button>
+              </b-col>
               <b-col>
-                <center><b-button style="margin: 15px 0px 10px 0px" variant="outline-primary" @click="validationData()">ส่งการลงทะเบียน</b-button></center>
               </b-col>
             </b-row>
           </div>
         </div>
     </modal>
+    <loading
+      :active.sync="isLoading"
+      :is-full-page="fullPage"
+    >
+    </loading>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
+import * as mainJs from "@/assets/js/mainJS.js";
 import * as authService from '@/services/auth.service';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
-import VeeValidate from 'vee-validate'; //npm install vee-validate@"<3.0.0" --save
-import { ValidationProvider } from 'vee-validate';
+import { Datetime } from 'vue-datetime' // npm install --save luxon vue-datetime weekstart
+import 'vue-datetime/dist/vue-datetime.css'
+import { Settings } from 'luxon'
+import { required, sameAs, minLength } from "vuelidate/lib/validators";
 
-Vue.use(VueSweetalert2,VeeValidate);
+Vue.use(VueSweetalert2,Datetime);
 
 export default {
   name: "popupRegisterUser",
   components: {
     Loading,
-    ValidationProvider
+    datetime: Datetime
   },
   props: ["showPopRegister"],
   data() {
     return {
+      username: '',
+      name: '',
+      password: '',
+      repeatPassword: '',
       popupRegister:false,
       email: "",
       password:"",
@@ -144,13 +216,24 @@ export default {
       flagShow: 1,
       isLoading: false,
       fullPage:'',
-      pass: '',
+      pass: "",
       confirmPass: "",
       optionsDept: [],
       optionsPosition: [],
+      form: {
+        startDate: '',
+        nestedFirstname: '',
+        nestedLastname: '',
+        nestedNickname: '',
+        nestedPhone: '',
+        nestedAddress: ''
+      },
     }
   },
   computed: {},
+  beforeMount() {
+    this.$v.form.startDate.$model = mainJs.setDateToServer(new Date().toString());
+  }, 
   mounted() {
     this.getDataDept();
     this.getDataPosition();
@@ -166,7 +249,7 @@ export default {
       this.$modal.hide('hello-world');
     },
     validationData() {
-      if (this.email == "" || this.deptId == null || this.positionId == null || this.firstName == "" || this.lastName == "" || this.nickName == "" || this.mobile == "" ||  this.address == "") {
+      if (this.$v.username.$model == "" || this.deptId == null || this.positionId == null || this.$v.form.nestedFirstname.$model == "" || this.$v.form.nestedLastname.$model == "" || this.$v.form.nestedNickname.$model == "" || this.$v.form.nestedPhone.$model == "" ||  this.$v.form.nestedAddress.$model == "") {
           this.$swal.fire({
             heightAuto: false,
             icon: 'warning',
@@ -175,21 +258,43 @@ export default {
       } else {
         this.insertNewEmployee();
       }
-
     },
     defaultValue() {
-      this.$modal.show('hello-world');
-      this.popupRegister = true;
-      this.email = "",
-      this.password = "",
-      this.deptId = null,
-      this.positionId = null,
-      this.firstName = "",
-      this.lastName = "",
-      this.nickName = "",
-      this.mobile = "",
-      this.address = "",
-      this.flagShow = 2
+      var ths = this;
+      if (ths.showPopRegister) {
+        this.$modal.show('hello-world');
+        this.popupRegister = true;
+        this.deptId = null,
+        this.positionId = null,
+        this.flagShow = 2,
+        this.$v.username.$model = '',
+        this.$v.name.$model = '',
+        this.$v.password.$model = '',
+        this.$v.repeatPassword.$model = '',
+        this.$v.form.startDate.$model = "";
+        this.$v.form.nestedFirstname.$model = '',
+        this.$v.form.nestedLastname.$model = '',
+        this.$v.form.nestedNickname.$model = '',
+        this.$v.form.nestedPhone.$model = '',
+        this.$v.form.nestedAddress.$model = ''
+        console.log("showregister")
+      }
+      else {
+        this.deptId = null,
+        this.positionId = null,
+        this.flagShow = 2,
+        this.$v.username.$model = '',
+        this.$v.name.$model = '',
+        this.$v.password.$model = '',
+        this.$v.repeatPassword.$model = '',
+        this.$v.form.startDate.$model = "";
+        this.$v.form.nestedFirstname.$model = '',
+        this.$v.form.nestedLastname.$model = '',
+        this.$v.form.nestedNickname.$model = '',
+        this.$v.form.nestedPhone.$model = '',
+        this.$v.form.nestedAddress.$model = ''
+        console.log("popup register")
+      }
     },
     getDataDept: async function(){
       var dataDept = [];
@@ -217,17 +322,29 @@ export default {
         }
       });
     },
+    chkIsEmpty: function(value) {
+      return value == undefined || value == null || (value + "").trim() == "";
+    },
+    validation: function(value) {
+      var key = Object.keys(value);
+      for (var i = 0; i < key.length; i++) {
+        if (this.chkIsEmpty(value[key[i]])) {
+          return false;
+        }
+      }
+      return true;
+    },
     insertNewEmployee: async function(){
       var obj = {}
-      obj["email"] = this.email;
-      obj["password"] = this.password;
+      obj["email"] = this.$v.username.$model;
+      obj["password"] = this.$v.password.$model;
       obj["dept_id"] = this.deptId;
       obj["position_id"] = this.positionId;
-      obj["first_name"] = this.firstName;
-      obj["last_name"] = this.lastName;
-      obj["nick_name"] = this.nickName;
-      obj["mobile"] = this.mobile;
-      obj["address"] = this.address;
+      obj["first_name"] = this.$v.form.nestedFirstname.$model;
+      obj["last_name"] = this.$v.form.nestedLastname.$model;
+      obj["nick_name"] = this.$v.form.nestedNickname.$model;
+      obj["mobile"] = this.$v.form.nestedPhone.$model;
+      obj["address"] = this.$v.form.nestedAddress.$model;
       console.log(obj)
       await authService.insertNewEmployee(obj).then(response =>{
         console.log(response.data)
@@ -243,8 +360,63 @@ export default {
       }
     }
   },
+    validations: {
+      username: {
+        minLength: minLength(6),
+        required,
+          isUnique(value) {
+            // standalone validator ideally should not assume a field is required
+            if (value === '') return true
+
+            // simulate async call, fail for all logins with even length
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                resolve(typeof value === 'string' && value.length % 2 !== 0)
+              }, 300)
+            })
+          }
+      },
+      password: {
+        minLength: minLength(6)
+      },
+      repeatPassword: {
+        sameAsPassword: sameAs('password')
+      },
+      name: {
+        minLength: minLength(6)
+      },
+      form: {
+        startDate: {
+          required
+        },
+        nestedFirstname: {
+          required
+        },
+        nestedLastname: {
+          required
+        },
+        nestedNickname: {
+          required
+        },
+        nestedPhone: {
+          required
+        },
+        nestedAddress: {
+          required
+        }
+      }
+  }
 };
 </script>
 
-<style scoped>
+<style>
+  #popupRegisterUser .vdatetime-input {
+      padding-left:10px;
+      font-family: Kanit, Arial, Helvetica, sans-serif !important;
+      font-size: 16px;
+      height:42px; 
+      width: 100%;
+      border: 1px solid rgba(0,0,0,.2); 
+      border-radius: 4px;
+    }
 </style>

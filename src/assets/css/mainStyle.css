@@ -28,20 +28,24 @@ html, body {
 .custom-radio input[type="radio"] {
   cursor: pointer !important;
 }
-
 .custom-radio label {
   cursor: pointer !important;
 }
-
 #calendarMain #locale {
   display: none;
 }
-
 #calendarMain label[for="locale"] {
   display: none;
 }
-
 .btn-secondary {
   font-size: 12px;
 }
+
 /* ========= bootstrap ========= */
+
+.swal2-icon.swal2-warning::before {
+  display: none;
+}
+.swal2-icon.swal2-question::before {
+  display: none;
+}

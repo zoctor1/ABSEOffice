@@ -24,7 +24,7 @@
                 </b-button>
                 <br>
               </center>
-                <b-link @click="defaultValue()">ลงทะเบียน</b-link>
+                <!-- <b-link @click="defaultValue()">ลงทะเบียน</b-link> -->
             </b-col> 
         </b-card>
 
@@ -323,11 +323,5 @@ export default {
     "Open Sans", -apple-system, BlinkMacSystemFont,
     "Segoe UI",  Roboto, Oxygen-Sans, Ubuntu, Cantarell,
     "Helvetica Neue", Helvetica,  Arial, sans-serif;
-  }
-  .inputCheckPass:focus {
-    background-color: #0000;
-    background-clip: padding-box;
-    border: 4px;
-    border-radius: 0.25rem;
   }
 </style>

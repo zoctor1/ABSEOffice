@@ -320,6 +320,7 @@ export default {
     confirmMessage () {
       var ths = this;
       Swal.fire({
+        icon: 'question',
         title: 'ต้องการยืนยันการอนุมัติใช่หรือไม่?',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -546,6 +547,7 @@ export default {
             this.isLoading = false;
             this.$swal.fire({
               heightAuto: false,
+              icon: 'warning',
               title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
             })},250);
         }

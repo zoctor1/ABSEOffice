@@ -184,6 +184,7 @@ export default {
     getNewEmployee: async function(){
       this.isBusy = true;
       await authService.getNewEmployee().then(response => {
+        console.log(this.getNewEmployee)
         if (response.data != null && response.data.length > 0) { 
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;

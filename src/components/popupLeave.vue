@@ -269,6 +269,7 @@ export default {
     confirmMessage () {
       var ths = this;
       Swal.fire({
+        icon: 'question',
         title: 'ต้องการยืนยันการอนุมัติใช่หรือไม่?',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -424,6 +425,7 @@ export default {
           this.isLoading = false;
           this.$swal.fire({
             heightAuto: false,
+            icon: 'warning',
             title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
           })},250);
       }
@@ -525,6 +527,7 @@ export default {
               ' ',
               'success'
             )
+            
             ths.$emit("leaveSuccess", true);
           } else {
             setTimeout(() => {
@@ -537,7 +540,14 @@ export default {
             this.isLoading = false;
             this.$swal.fire({
               heightAuto: false,
-              title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
+              icon: 'warning',
+              title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+              backdrop: `
+                rgba(0,0,123,0.4)
+                url("https://media.giphy.com/media/sIIhZliB2McAo/giphy.gif")
+                left bottom
+                no-repeat
+              `,
             })},250);
         }
     }
@@ -635,18 +645,9 @@ export default {
     font-size: 16px !important;
     padding: none;
   }
-  /* #sizePopupLeave .vdatetime-input {
-    width: 235px !important;
-    height: 40px !important;
-    font-size: 16px !important;
-    border: none;
-  } */
   #sizePopupLeave .fs-16 {
     display: none;
   }
-  /* #sizePopupLeave .before {
-    display: none;
-  } */
   #sizePopupLeave .custom-select {
     border: none;
   }
