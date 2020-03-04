@@ -19,24 +19,24 @@
     <vs-navbar-item index="1">
       <a style="cursor: pointer;" @click="toUrl('EmpLeave'), indexActive = 1"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการลางาน</font></a>
     </vs-navbar-item>
-    <!-- <vs-navbar-item index="2" >
-      <a style="cursor: pointer;" @click="toUrl('EmpOT')"><font size=3 color="#FEFCFF">(User) ข้อมูลการทำงานนอกเวลา(OT)</font></a>
-    </vs-navbar-item> -->
     <vs-navbar-item index="2">
       <!-- v-if="userIn.header_flag == 1" -->
       <a style="cursor: pointer;" @click="toUrl('HeaderApprove'), indexActive = 2"><font style="font-size: 20px;" color="#FEFCFF">คำขออนุมัติการลางาน</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="3">
-      <!-- v-if="userIn.dept_id == 3" -->
-      <a style="cursor: pointer;" @click="toUrl('HrLeave'), indexActive = 3"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการลางานของพนักงาน</font></a>
+      <!-- v-if="userIn.header_flag == 1" -->
+      <a style="cursor: pointer;" @click="toUrl('dataEmployeeDept'), indexActive = 3"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลพนักงานในเเผนก</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="4">
       <!-- v-if="userIn.dept_id == 3" -->
-      <a style="cursor: pointer;" @click="toUrl('NewEmployeeApprove'), indexActive = 4"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลของพนักงาน</font></a>
+      <a style="cursor: pointer;" @click="toUrl('HrLeave'), indexActive = 4"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการลางานของพนักงาน</font></a>
     </vs-navbar-item>
-    <!-- <vs-navbar-item index="5" style="margin-right:10px;">
-      <a style="cursor: pointer;" @click="toUrl('HrOT')"><font size=3 color="#FEFCFF">(Hr) ข้อมูลการทำงานนอกเวลาของพนักงาน</font></a>
-    </vs-navbar-item> -->
+    <vs-navbar-item index="5">
+      <!-- v-if="userIn.dept_id == 3" -->
+      <a style="cursor: pointer;" @click="toUrl('dataEmployee'), indexActive = 5"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลพนักงานทั้งหมด</font></a>
+    </vs-navbar-item>
+    
+
 
     <vs-spacer></vs-spacer>
     <p class="my-4" style="margin: 0px 30px 0px 10px; border-left: 2px solid rgb(255, 255, 255); cursor:default; text-align: right;">
@@ -176,10 +176,12 @@ export default {
       this.indexActive = 1;
     } else if (this.$route.name == "HeaderApprove") {
       this.indexActive = 2;
-    } else if (this.$route.name == "HrLeave") {
+    } else if (this.$route.name == "dataEmployeeDept") {
       this.indexActive = 3;
-    } else if (this.$route.name == "NewEmployeeApprove") {
+    } else if (this.$route.name == "HrLeave") {
       this.indexActive = 4;
+    } else if (this.$route.name == "dataEmployee") {
+      this.indexActive = 5;
     } else {
       this.indexActive = 0;
     }

@@ -299,7 +299,6 @@ export default {
     getDataDept: async function(){
       var dataDept = [];
       await authService.getDataDept().then(response => {
-        console.log(response.data)
         if (response.data != null && response.data.length > 0) {
           dataDept.push({ text: "--กรุณาเลือกแผนก--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
@@ -312,7 +311,6 @@ export default {
     getDataPosition: async function(){
       var dataPosition = [];
       await authService.getDataPosition().then(response => {
-        console.log(response.data)
         if (response.data != null && response.data.length > 0) {
           dataPosition.push({ text: "--กรุณาเลือกตำเเหน่ง--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
@@ -348,7 +346,6 @@ export default {
       console.log(obj)
       await authService.insertNewEmployee(obj).then(response =>{
         console.log(response.data)
-        alert("aa")
       })
     }
   },

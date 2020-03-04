@@ -201,6 +201,11 @@
 
               <template v-slot:cell(status)="data">
                 <center>
+                <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date == null && data.item.cancel_header_date == null">
+                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
+                    <font color="#ffffff">ผ่านการอนุมัติ</font>
+                  </p>
+                </div>
                 <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_header_date == null">
                   <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
                     <font color="#ffffff">ผ่านการอนุมัติ</font>
@@ -223,12 +228,6 @@
                   </p>
                 </div>
                 <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
-                  <b-badge variant="warning"></b-badge>
-                  <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
-                      <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
-                  </p>
-                </div>
-                <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
                   <b-badge variant="warning"></b-badge>
                   <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
                       <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
@@ -571,19 +570,40 @@ export default {
       var allData = this.tempData;
       ths.isBusy = true;
       if (ths.valDateStart != null && ths.valDateStart != "" ) {
-        var startTimeSelect = mJS.formatDateFilter(ths.valDateStart);
         allData = allData.filter(function(v) {
-          var leaveStart = mJS.formatDateFilter(v.leave_start_date);
-          return startTimeSelect == leaveStart;
+          if(ths.valDateStop == "") {
+            var startTimeSelected = mJS.formatDateFilter(ths.valDateStart);
+            var leavestart = mJS.formatDateFilter(v.leave_start_date);
+            return startTimeSelected == leavestart;
+          }
+          else if(ths.valDateStop != "") {
+            var startTimeSelect = new Date(mJS.formatDateFilter(ths.valDateStart) + " 00:00:00");
+            var leaveStart = new Date(mJS.formatDateFilter(v.leave_start_date));
+            return leaveStart.getTime() >= startTimeSelect.getTime();
+          }
         })
       }
       if (ths.valDateStop != null && ths.valDateStop != "" ) {
-        var stopTimeSelect = mJS.formatDateFilter(ths.valDateStop);
         allData = allData.filter(function(v) {
-          var leaveStop = mJS.formatDateFilter(v.leave_stop_date);
-          return stopTimeSelect == leaveStop;
+          if(ths.valDateStart == ""){
+            var stopTimeSelected = mJS.formatDateFilter(ths.valDateStop);
+            var leavestop = mJS.formatDateFilter(v.leave_stop_date);
+            return stopTimeSelected == leavestop;
+          }
+          else if(ths.valDateStart != "") {
+            var stopTimeSelect = new Date(mJS.formatDateFilter(ths.valDateStop) + " 23:59:59");
+            var leavestop = new Date(mJS.formatDateFilter(v.leave_stop_date));
+            return leavestop.getTime() <= stopTimeSelect.getTime();
+          }
         })
       }
+      // if (ths.valDateStop != null && ths.valDateStop != "" ) {
+      //   var stopTimeSelect = new Date(mJS.formatDateFilter(ths.valDateStop) + " 23:59:59");
+      //   allData = allData.filter(function(v) {
+      //     var leaveStart = new Date(mJS.formatDateFilter(v.leave_start_date));
+      //     return leaveStart.getTime() <= stopTimeSelect.getTime();
+      //   })
+      // }
       if (ths.selectStat != null && ths.selectStat != "") {
         if (ths.selectStat == 1) {
           allData = allData.filter(function(v) {

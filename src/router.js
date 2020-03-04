@@ -9,7 +9,8 @@ import EmpLeave from "./views/EmpLeave.vue";
 import EmpOT from "./views/EmpOT.vue";
 import HrLeave from "./views/HrLeave.vue";
 import HrOT from "./views/HrOT.vue";
-import NewEmployeeApprove from "./views/NewEmployeeApprove.vue"
+import dataEmployee from "./views/dataEmployee.vue"
+import dataEmployeeDept from "./views/dataEmployeeDept.vue"
 
 // ============= Views ============= //
 
@@ -33,6 +34,7 @@ export default new Router({
     { path: "/EmpOT", name: "EmpOT", component: EmpOT },
     { path: "/HrLeave", name: "HrLeave", component: HrLeave },
     { path: "/HrOT", name: "HrOT", component: HrOT },
-    { path: "/NewEmployeeApprove", name: "NewEmployeeApprove", component: NewEmployeeApprove }
+    { path: "/dataEmployee", name: "dataEmployee", component: dataEmployee },
+    { path: "/dataEmployeeDept", name: "dataEmployeeDept", component: dataEmployeeDept }
   ]
 });
