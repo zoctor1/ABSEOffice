@@ -3,6 +3,7 @@
     <popupRegister v-bind:showPopRegister="showPopRegister"/>
     <center>
       <div><br>
+       <popupRegister v-bind:showPopRegister="showPopRegister"/>
         <b-col lg="12" sm="12" xs="12">
           <h2 align="left" style="font-weight: bold;">
             ข้อมูลการลาของพนักงาน
@@ -45,6 +46,19 @@
                 >
                     เคลียร์ข้อมูล
                 </b-button>
+                  <vs-button
+                    @click="showPopupRegister()"
+                    color="primary"
+                    type="filled"
+                    style="height:42px; width:135px;"
+                  >
+                    <img 
+                    src="../assets/Plus_icon3.png" 
+                    style="margin-top:-3px"
+                    width="20" 
+                    height="20" 
+                    /> เพิ่มพนักงาน
+                  </vs-button>
               </b-col>
               <b-col>
                 <vs-button
@@ -146,6 +160,7 @@ import VModal from 'vue-js-modal'
 import popupRegister from "@/components/popupRegister.vue"
 import VueSuggestion from 'vue-suggestion'
 import itemTemplate from '../components/ItemTemplate.vue';
+import popupRegister from "@/components/popupRegister.vue"
 
 Vue.use(Datetime,VueSweetalert2,VModal);
 Vue.use(VueSuggestion);
@@ -176,7 +191,6 @@ export default {
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center no' },
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
-        { key: 'nick_name', label: 'ชื่อเล่น', class: 'text-center nick_name'},
         { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
         { key: 'address', label: 'ที่อยู่', class: 'text-center address' },
@@ -202,6 +216,7 @@ export default {
       selectStat: '',
       currentDate: '',
       showPopHeader:false,
+      showPopRegister:false,
       window : {
         width: 0,
         height: 0
@@ -245,6 +260,14 @@ export default {
         ths.showPopRegister = false;
       }, 1000);
     },
+    // showLeavePopup: function(flag) {
+    //   var ths = this;
+    //   ths.showPopHeader = true;
+    //   ths.checkPopup = flag;
+    //   setTimeout(function() {
+    //     ths.showPopHeader = false;
+    //   }, 1000);
+    // },
     defaultValue() {
       this.valDateStart = "";
       this.valDateStop = "";
@@ -335,7 +358,7 @@ export default {
         this.selectedFilter = null;
         for (var i = 0; i < response.data.length; i++) {
           response.data[i].no = i+1;
-          response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+          response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name + " " + "(" + response.data[i].nick_name + ")";
         } 
         this.items = response.data;
         setTimeout(() => {

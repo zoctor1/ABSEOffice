@@ -150,7 +150,6 @@ export default {
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center no' },
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
-        { key: 'nick_name', label: 'ชื่อเล่น', class: 'text-center nick_name'},
         { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
         { key: 'address', label: 'ที่อยู่', class: 'text-center address' },
@@ -305,7 +304,7 @@ export default {
         this.selectedFilter = null;
         for (var i = 0; i < response.data.length; i++) {
           response.data[i].no = i+1;
-          response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+          response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name + " " + "(" + response.data[i].nick_name + ")";
         } 
         this.items = response.data;
         setTimeout(() => {
