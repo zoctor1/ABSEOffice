@@ -1,5 +1,6 @@
 <template>
   <div id="dataEmployee" lg="12" sm="12" xs="12">
+    <popupRegister v-bind:showPopRegister="showPopRegister"/>
     <center>
       <div><br>
         <b-col lg="12" sm="12" xs="12">
@@ -111,7 +112,9 @@ Vue.use(VueSuggestion);
 
 export default {
   name: "dataEmployee",
-  components: {},
+  components: {
+    popupRegister
+  },
   props: {},
   data() {
     return {

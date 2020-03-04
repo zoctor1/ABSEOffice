@@ -162,17 +162,18 @@ export default {
   //   window.removeEventListener('resize', this.handleResize);
   // },
   mounted() {
-    this.getDataEmployee()
+    this.getDataUserDept()
   },
   methods: {
-    getDataEmployee: async function(){
+    getDataUserDept: async function(){
       this.isBusy = true;
-      await authService.getDataEmployee().then(response => {
+      var user = JSON.parse(localStorage.getItem("user"));
+      await authService.getDataUserDept(user.dept_id).then(response => {
+        console.log(response.data)
         if (response.data != null && response.data.length > 0) { 
           for (var i = 0; i < response.data.length; i++) {
             response.data[i].no = i+1;
             response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-            response.data[i].create_date_format = mJS.setDateFormat(response.data[i].create_date);
           }
           this.items = response.data;
           setTimeout(() => {

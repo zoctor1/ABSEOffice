@@ -223,12 +223,3 @@ export function insertDataByHeader(obj) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function insertNewEmployee(obj) {
-    return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/insertNewEmployee`, JSON.stringify(obj), {}).then(
-            response => {
-                return resolve(new ResponseWrapper(response, response.data))
-            })
-    }).catch(error => reject(new ErrorWrapper(error)))
-}
-

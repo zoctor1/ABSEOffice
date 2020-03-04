@@ -24,113 +24,8 @@
                 </b-button>
                 <br>
               </center>
-                <b-link @click="defaultValue()">ลงทะเบียน</b-link>
             </b-col> 
         </b-card>
-
-        <div v-else-if="flagShow == 2">
-          <b-card bg-variant="light"
-            tag="article"
-            style="max-width:550px; margin-top:230px"
-            class="mb-2"
-          >
-            <b-row style="text-align:left; margin-left:0px;">
-              <b-col sm="8" style="margin-top:15px">
-                <p style="font-size:150%; margin-bottom:10px">ลงทะเบียนรหัสเข้าสู่ระบบ</p>
-              </b-col>
-              <b-col sm="4">
-                <img style="margin-top:5px;" alt="Vue logo" src="../assets/ABSLogo10.png" width="127" height="53" />
-              </b-col>
-            </b-row>
-            <b-row style="margin-bottom: 10px;">
-              <b-col>
-                <ValidationProvider  rules="email" v-slot="{ errors }">
-                  <input type="text" placeholder="อีเมล์" v-model="email" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
-                  <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">กรุณากรอกอีเมล*</p>
-                </ValidationProvider>
-                <!-- <b-form-input placeholder="อีเมล"></b-form-input> -->
-              </b-col>
-            </b-row>
-            <b-row style="margin-bottom: 10px;" id="errors">
-              <b-col>
-                <ValidationProvider v-slot="{ errors }" vid="confirmation">
-                  <input class="form-control" placeholder="รหัสผ่าน" v-model="confirmPass" type="password" style="width:235px;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
-                  <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">รหัสผ่านไม่ตรงกัน*</p>
-                </ValidationProvider>
-              </b-col>
-              <b-col>
-                <ValidationProvider rules="confirmed:confirmation" v-slot="{ errors }">
-                         <!-- rules="confirmed:confirmation"  -->
-                  <input class="form-control" placeholder="ยืนยันรหัสผ่าน" v-model="pass" type="password"  style="width:235px;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
-                  <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">รหัสผ่านไม่ตรงกัน*</p>
-                </ValidationProvider>
-                <!-- <b-form-input :id="`type-${type}`" :type="type" placeholder="ยืนยันรหัสผ่าน"></b-form-input> -->
-              </b-col>
-            </b-row>
-            <b-row style="margin-bottom: 10px;">
-              <b-col>
-                <b-form-select
-                  v-model="deptId"
-                  :options="optionsDept"
-                  @change="filterData()"
-                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                >
-                </b-form-select>
-              </b-col>
-              <b-col>
-                <b-form-select
-                  v-model="positionId"
-                  :options="optionsPosition"
-                  :disabled="false"
-                  style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                >
-                </b-form-select>
-              </b-col>
-            </b-row>
-            <b-row style="margin-bottom: 10px;">
-              <b-col>
-                <b-form-input placeholder="ชื่อ" v-model="firstName"></b-form-input>
-              </b-col>
-              <b-col>
-                <b-form-input placeholder="นามสกุล" v-model="lastName"></b-form-input>
-              </b-col>
-            </b-row>
-            <b-row style="margin-bottom: 10px;">
-              <b-col sm="4">
-                <b-form-input placeholder="ชื่อเล่น" v-model="nickName"></b-form-input>
-              </b-col>
-              <b-col>
-                <ValidationProvider rules="integer" v-slot="{ errors }">
-                  <input type="text" v-model="mobile" placeholder="เบอร์โทรติดต่อ" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
-                  <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">กรอกเฉพาะตัวเลขเท่านั้น*</p>
-                </ValidationProvider>
-                <!-- <b-form-input placeholder="เบอร์โทรศัทพ์"></b-form-input> -->
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-form-textarea
-                style="width:100%;height:80px;"
-                v-model="address"
-                placeholder="ที่อยู่ปัจจุบัน"
-                rows="4"
-                no-resize
-                >
-              </b-form-textarea>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <center><b-button style="margin: 15px 0px 10px 0px" variant="outline-primary" @click="validationData()">ส่งการลงทะเบียน</b-button></center>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-link style="text-align:right;" @click="flagShow = 1">ย้อนกลับ</b-link>
-              </b-col>
-            </b-row>
-          </b-card>
-        </div>
         <br>
       </div>
       <loading
@@ -188,8 +83,6 @@ export default {
   },
   computed: {},
   mounted() {
-    this.getDataDept();
-    this.getDataPosition();
     this.isLoading = true;
     setTimeout(() => {
       this.isLoading = false}, 1000);
@@ -202,10 +95,7 @@ export default {
             icon: 'warning',
             title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
           })
-      } else {
-        this.insertNewEmployee();
-      }
-
+      } 
     },
     defaultValue() {
       this.email = "",
@@ -269,52 +159,10 @@ export default {
             }
           });
         }
-    },
-    getDataDept: async function(){
-      var dataDept = [];
-      await authService.getDataDept().then(response => {
-        console.log(response.data)
-        if (response.data != null && response.data.length > 0) {
-          dataDept.push({ text: "--กรุณาเลือกแผนก--", value: null, disabled: true})
-          response.data.forEach(function (obj, i) {
-            dataDept.push({ text: obj.dept_name,value: obj.dept_id });
-          });
-          this.optionsDept = dataDept;
-        }
-      });
-    },
-    getDataPosition: async function(){
-      var dataPosition = [];
-      await authService.getDataPosition().then(response => {
-        console.log(response.data)
-        if (response.data != null && response.data.length > 0) {
-          dataPosition.push({ text: "--กรุณาเลือกตำเเหน่ง--", value: null, disabled: true})
-          response.data.forEach(function (obj, i) {
-            dataPosition.push({ text: obj.position_name,value: obj.position_id });
-          });
-          this.optionsPosition = dataPosition;
-        }
-      });
-    },
-    insertNewEmployee: async function(){
-      var obj = {}
-      obj["email"] = this.email;
-      obj["password"] = this.password;
-      obj["dept_id"] = this.deptId;
-      obj["position_id"] = this.positionId;
-      obj["first_name"] = this.firstName;
-      obj["last_name"] = this.lastName;
-      obj["nick_name"] = this.nickName;
-      obj["mobile"] = this.mobile;
-      obj["address"] = this.address;
-      await authService.insertNewEmployee(obj).then(response =>{
-        console.log(response.data)
-        alert("aa")
-      })
     }
   },
   watch: {}
-};
+}
 </script>
 
 <style scoped>

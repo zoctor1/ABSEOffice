@@ -32,7 +32,7 @@
             <b-row style="margin-bottom: 10px;" id="errors">
               <b-col>
                 <ValidationProvider v-slot="{ errors }" vid="confirmation">
-                  <input class="form-control" placeholder="รหัสผ่าน" v-model="confirmPass" type="password" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
+                  <input class="form-control" placeholder="รหัสผ่าน" v-model="password" type="password" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;">
                   <p v-show="errors[0] != null && errors[0] != ''" style="color: red; text-align:left; margin-left:20px;">รหัสผ่านไม่ตรงกัน*</p>
                 </ValidationProvider>
               </b-col>
@@ -175,7 +175,6 @@ export default {
       } else {
         this.insertNewEmployee();
       }
-
     },
     defaultValue() {
       this.$modal.show('hello-world');
@@ -194,7 +193,6 @@ export default {
     getDataDept: async function(){
       var dataDept = [];
       await authService.getDataDept().then(response => {
-        console.log(response.data)
         if (response.data != null && response.data.length > 0) {
           dataDept.push({ text: "--กรุณาเลือกแผนก--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
@@ -207,7 +205,6 @@ export default {
     getDataPosition: async function(){
       var dataPosition = [];
       await authService.getDataPosition().then(response => {
-        console.log(response.data)
         if (response.data != null && response.data.length > 0) {
           dataPosition.push({ text: "--กรุณาเลือกตำเเหน่ง--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
@@ -231,7 +228,6 @@ export default {
       console.log(obj)
       await authService.insertNewEmployee(obj).then(response =>{
         console.log(response.data)
-        alert("aa")
       })
     }
   },
