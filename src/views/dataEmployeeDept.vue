@@ -4,8 +4,40 @@
       <div><br>
         <b-col lg="12" sm="12" xs="12">
           <h2 align="left" style="font-weight: bold;">
-            ข้อมูลพนักงานในเเผนกทั้งหมด
+            ข้อมูลการลาของพนักงาน
           </h2>
+            <b-row style="margin:10px 0px 0px 10px; width:100%">
+              <b-col md="6" lg="2">
+                <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
+                  <vue-suggestion 
+                    :items="nameSearchArray" 
+                    v-model="nameSearch"
+                    :setLabel="setLabel"
+                    :itemTemplate="itemTemplate"
+                    @changed="inputChange"
+                    @selected="itemSelected"
+                  >
+                  </vue-suggestion> 
+              </b-col>
+              <b-col md="12" lg="2">
+                <b-button
+                  variant="outline-primary"
+                  @click="filterData()"
+                  style="height:42px; width:135px; margin:0px 10px 10px 0px;"
+                >
+                  ค้นหา
+                </b-button>
+             
+                <b-button
+                  variant="outline-danger"
+                  @click="defaultValue()"
+                  style="height:42px; width:135px; margin:0px 0px 10px 0px" 
+                >
+                    เคลียร์ข้อมูล
+                </b-button>
+              </b-col>
+            </b-row>
+
             <table width=100% style="margin-top:10px; border: 1px solid black;">
               <div >
                 <b-table
@@ -95,22 +127,26 @@ Vue.use(VueSuggestion);
 
 export default {
   name: "dataEmployeeDept",
-  components: {},
+  components: {
+    datetime: Datetime,
+    popupLeaveHeaderHr
+  },
   props: {},
   data() {
     return {
-    //   tempData: [],
-    //   itemTemplate,
-    //   nameSearch:"",
-    //   nameSearchArray: [],
-    //   empName:[],
+      tempData: [],
+      itemTemplate,
+      nameSearch:"",
+      nameSearchArray: [],
+      empName:[],
       items: [],
-    //   optionStat: [
-    //     { value: null ,text: "--เลือกสถานะ--"},
-    //     { value: 1 ,text: "ผ่านการอนุมัติ"},
-    //     { value: 2 ,text: "รอการรับทราบ"}
-    //   ],
-    //   optionLeaveType: [],
+      optionStat: [
+        { value: null ,text: "--เลือกสถานะ--"},
+        { value: 1 ,text: "ผ่านการอนุมัติ"},
+        { value: 2 ,text: "รอการรับทราบ"}
+      ],
+      optionsDep: [],
+      optionLeaveType: [],
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center no' },
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
@@ -121,8 +157,8 @@ export default {
         { key: 'mobile', label: 'เบอร์โทรศัพท์', class: 'text-center mobile' },
         { key: 'email', label: 'อีเมล', class: 'text-center email' },
       ],
-    //   dataModal:{},
-    //   checkPopup:'',
+      dataModal:{},
+      checkPopup:'',
       isBusy: false,
       totalRows:1,
       currentPage: 1,
@@ -133,17 +169,17 @@ export default {
       sortBy: '',
       sortDesc: false,
       sortDirection: 'asc',
-    //   valDateStart: '',
-    //   valDateStop: '',
-    //   selectType: '',
-    //   selectDep:'',
-    //   selectStat: '',
-    //   currentDate: '',
-    //   showPopHeader:false,
-    //   window : {
-    //     width: 0,
-    //     height: 0
-    //   }
+      valDateStart: '',
+      valDateStop: '',
+      selectType: '',
+      selectDep:'',
+      selectStat: '',
+      currentDate: '',
+      showPopHeader:false,
+      window : {
+        width: 0,
+        height: 0
+      }
     }
   },
   computed: {
@@ -155,213 +191,166 @@ export default {
         })
     }
   },
-  // created(){
-  //   window.addEventListener("resize", this.handleResize);
-  // },
-  // destroyed(){
-  //   window.removeEventListener('resize', this.handleResize);
-  // },
+  created(){
+    window.addEventListener("resize", this.handleResize);
+  },
+  destroyed(){
+    window.removeEventListener('resize', this.handleResize);
+  },
   mounted() {
-    this.getDataUserDept()
+    this.getDataEmployee();
+    this.selectType = null;
+    this.selectDep = null;
+    this.selectStat = null;
+    this.getDataReasonLeave();
+    this.getDataDept();
+    this.getDataAllUser();
   },
   methods: {
-    getDataUserDept: async function(){
-      this.isBusy = true;
-      var user = JSON.parse(localStorage.getItem("user"));
-      await authService.getDataUserDept(user.dept_id).then(response => {
-        console.log(response.data)
-        if (response.data != null && response.data.length > 0) { 
-          for (var i = 0; i < response.data.length; i++) {
-            response.data[i].no = i+1;
-            response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
-          }
-          this.items = response.data;
-          setTimeout(() => {
-            this.isBusy = false
-          },300);
-        } else {
-          setTimeout(() => {
-            this.isBusy = false}, 1200);
-        }
-      })
+    handelLeaveSave(value) {
+      if (value) {
+        this.getDataEmployee();   
+      }
+    },
+    showLeavePopup: function(flag) {
+      var ths = this;
+      ths.showPopHeader = true;
+      ths.checkPopup = flag;
+      setTimeout(function() {
+        ths.showPopHeader = false;
+      }, 1000);
+    },
+    defaultValue() {
+      this.valDateStart = "";
+      this.valDateStop = "";
+      this.selectStat = null;
+      this.selectType = null;
+      this.selectDep = null;
+      this.getDataEmployee();
+    },
+    show (name) {
+        this.$modal.show(name);
+    },
+    hide (name) {
+      this.$modal.hide(name);
+    },
+    itemSelected (nameSearch) {
+        this.nameSearch = nameSearch;
+    },
+    setLabel (nameSearch) {
+      return nameSearch.name;
+    },
+    inputChange (text) {
+      this.nameSearchArray = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
+    },
+    filterData() {
+      var ths = this;
+      var allData = this.tempData;
+      if (this.selectStat == null && this.selectType == null && this.selectDep == null && Object.keys(this.valDateStart).length <= 0 && Object.keys(this.valDateStop).length <= 0 && Object.keys(this.nameSearch).length <= 0 ) {
+          this.getDataEmployee();
+      }
+      if (this.nameSearch != null && this.nameSearch != "" ) {
+        allData = allData.filter(function(v) {
+          return v.emp_id == ths.nameSearch.value;
+        })
+      }
+      this.items = allData;
       this.totalRows = this.items.length
     },
-    // showLeavePopup: function(flag) {
-    //   var ths = this;
-    //   ths.showPopHeader = true;
-    //   ths.checkPopup = flag;
-    //   setTimeout(function() {
-    //     ths.showPopHeader = false;
-    //   }, 1000);
-    // },
-    // defaultValue() {
-    //   this.valDateStart = "";
-    //   this.valDateStop = "";
-    //   this.selectStat = null;
-    //   this.selectType = null;
-    //   this.selectDep = null;
-    //   this.getHrApprove();
-    // },
-    // show (name) {
-    //     this.$modal.show(name);
-    // },
-    // hide (name) {
-    //   this.$modal.hide(name);
-    // },
-    // itemSelected (nameSearch) {
-    //     this.nameSearch = nameSearch;
-    // },
-    // setLabel (nameSearch) {
-    //   return nameSearch.name;
-    // },
-    // inputChange (text) {
-    //   this.nameSearchArray = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
-    // },
-    // filterData() {
-    //   var ths = this;
-    //   var allData = this.tempData;
-    //   if (this.selectStat == null && this.selectType == null && this.selectDep == null && Object.keys(this.valDateStart).length <= 0 && Object.keys(this.valDateStop).length <= 0 && Object.keys(this.nameSearch).length <= 0 ) {
-    //       this.$swal.fire({
-    //         heightAuto: false,
-    //         icon: 'warning',
-    //         title: 'เลือกข้อมูลที่จะค้นหา...'
-    //       })
-    //   }
-    //   if (this.valDateStart != null && this.valDateStart != "") {
-    //     var startTimeSelect = mJS.formatDateFilter(this.valDateStart)
-    //     allData = allData.filter(function(v) {
-    //       var leavestart = mJS.formatDateFilter(v.leave_start_date)
-    //       return startTimeSelect == leavestart;
-    //     });
-    //   }
-    //   if(this.valDateStop != null && this.valDateStop != "" ) {
-    //     var stopTimeSelect = mJS.formatDateFilter(this.valDateStop)
-    //     allData = allData.filter(function(v) {
-    //       var leavestop = mJS.formatDateFilter(v.leave_stop_date)
-    //       return stopTimeSelect == leavestop;
-    //     });
-    //   }
-    //   if(this.valDateStop != null && this.valDateStop != "" && this.valDateStart != null && this.valDateStart != "") {
-        
-    //   }
-    //   if (this.selectStat != null && this.selectStat != "") {
-    //     if (this.selectStat == 1) {
-    //       allData = allData.filter(function(v) {
-    //         return v.head_approve_date != null && v.hr_approve_date != null && v.cancel_date == null;
-    //       });
-    //     } else if (this.selectStat == 2) {
-    //       allData = allData.filter(function(v) {
-    //         return v.head_approve_date != null && v.hr_approve_date == null && v.cancel_date == null && v.emp_leave_id != null;
-    //       });
-    //     } 
-    //   }
-    //   if(this.selectType != null && this.selectType != "") {
-    //     allData = allData.filter(function(v) {
-    //       return v.leave_reason_id == ths.selectType;
-    //     })
-    //   }
-    //   if(this.selectDep != null && this.selectDep != "") {
-    //     allData = allData.filter(function(v) {
-    //       return v.dept_id == ths.selectDep;
-    //     })
-    //   }
-    //   if (this.nameSearch != null && this.nameSearch != "" ) {
-    //     allData = allData.filter(function(v) {
-    //       return v.emp_id == ths.nameSearch.value;
-    //     })
-    //   }
-    //   this.items = allData;
-    //   this.totalRows = this.items.length
-    // },
-    // showMsgBoxTwo(id) {
-    //     this.$bvModal.msgBoxConfirm('คุณต้องการรับทราบการลานี้ใช่หรือไม่?', {
-    //       title: 'รับทราบการลา',
-    //       size: 'sm',
-    //       buttonSize: 'sm',
-    //       okVariant: 'danger',
-    //       okTitle: 'รับทราบ',
-    //       cancelTitle: 'ปิด',
-    //       footerClass: 'p-2',
-    //       hideHeaderClose: false,
-    //       centered: true
-    //     }).then(value => {
-    //       if (value == true) {
-    //         authService.postApproveHr(id).then(response => {
-    //           this.getHrApprove();
-    //         });
-    //       } 
-    //     })
-    //   },
-
-    // getHrApprove: async function(){
-    // this.isBusy = true;
-    // var leave_time = [];
-    // var leave_time_stop = [];
-    // await authService.getDataHR().then(response => {
-    //   if (response.data != null && response.data.length > 0) { 
-    //     this.selectedFilter = null;
-    //     for (var i = 0; i < response.data.length; i++) {
-    //       response.data[i].no = i+1;
-    //       response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name + " " + "(" + response.data[i].nick_name + ")";
-    //       response.data[i].HrbtnApprove = false;
-    //       leave_time = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[1] : "");
-    //       leave_time_stop = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[1] : "");
-    //       response.data[i].leave_time = (response.data[i].leave_start_date != null ? leave_time.split(":")[0] + ":" + leave_time.split(":")[1] : "") + ' - ' + (response.data[i].leave_stop_date != null ? leave_time_stop.split(":")[0] + ":" + leave_time_stop.split(":")[1] : "");
-    //       response.data[i].leave_date_format = mJS.setDateFormat(response.data[i].leave_date);
-    //       response.data[i].leave_start_date_format = mJS.setDateFormat(response.data[i].leave_start_date);
-    //       response.data[i].leave_stop_date_format = mJS.setDateFormat(response.data[i].leave_stop_date);
-    //       response.data[i].modify_date_format = mJS.setDateFormat(response.data[i].modify_date);
-    //       response.data[i].head_approve_date_format = mJS.setDateFormat(response.data[i].head_approve_date);
-    //       response.data[i].hr_approve_date_format = mJS.setDateFormat(response.data[i].hr_approve_date);
-    //       response.data[i].cancel_date_format = mJS.setDateFormat(response.data[i].cancel_date);
-    //       response.data[i].cancel_header_date_format = mJS.setDateFormat(response.data[i].cancel_header_date);
-    //       // response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
-    //       // response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
-    //     } 
-    //     this.items = response.data;
-    //     setTimeout(() => {
-    //       this.isBusy = false
-    //     },300);
-    //     this.tempData = response.data;
-    //   } else {
-    //       setTimeout(() => {
-    //         this.isBusy = false}, 1200);
-    //       }
-    //     });
-    //   this.totalRows = this.items.length
-    // },
-    // handleResize: function() {
-    //   this.window.width = window.innerWidth;
-    //   this.window.height = window.innerHeight;
-    //   if(this.window.width <= 750){
-    //     this.fields = [
-    //       { key: 'no', label: 'ลำดับ', class: 'text-center' },
-    //       { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
-    //       { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
-    //       // { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
-    //       // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
-    //       // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
-    //       { key: 'hr_approve_date_format', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-    //       { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
-    //     ]
-    //   }
-    //   else{
-    //     this.fields = [
-    //       { key: 'no', label: 'ลำดับ', class: 'text-center' },
-    //       { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
-    //       { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
-    //       { key: 'dept_name', label: 'เเผนก', class: 'text-center' },
-    //       { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center' },
-    //       { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
-    //       // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
-    //       // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
-    //       { key: 'head_approve_date_format', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
-    //       { key: 'hr_approve_date_format', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-    //       { key: 'status', label: 'สถานะ', class: 'text-center' },
-    //       { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
-    //     ]
-    //   }
-    // },
+    getDataAllUser: async function(){
+      var ths = this;
+      var dataAllUser = [];
+      var fullname = "";
+      var result = {};
+      await authService.getDataAllUser().then(response => {
+        if(response.data != null && response.data.length > 0){
+          response.data.forEach(function (obj, i){
+            fullname = obj.first_name + " " + obj.last_name + " ("+ obj.nick_name + ")";
+            result = {value: obj.emp_id, name: fullname}
+            dataAllUser.push(result);
+          });
+          ths.nameSearchArray = dataAllUser;
+          ths.empName = dataAllUser;
+        }
+      });
+    },
+    getDataDept: async function(){
+      var dataDept = [];
+      await authService.getDataDept().then(response => {
+        if (response.data != null && response.data.length > 0) {
+          dataDept.push({ text: "--กรุณาเลือกแผนก--", value: null, disabled: true})
+          response.data.forEach(function (obj, i) {
+            dataDept.push({ text: obj.dept_name,value: obj.dept_id });
+          });
+          this.optionsDep = dataDept;
+        }
+      });
+    },
+    getDataReasonLeave: async function(){
+      var dataReason = [];
+      await authService.getDataReasonLeave().then(response => {
+        if (response.data != null && response.data.length > 0) {
+          dataReason.push({ text: "--กรุณาเลือกประเภทการลา--", value: null, disabled: true})
+          response.data.forEach(function (obj, i) {
+            dataReason.push({ text: obj.leave_reason_name,value: obj.leave_reason_id });
+          });
+          this.optionLeaveType = dataReason;
+        }
+      });
+    },
+    getDataEmployee: async function(){
+    this.isBusy = true;
+    await authService.getDataEmployee().then(response => {
+      if (response.data != null && response.data.length > 0) { 
+        this.selectedFilter = null;
+        for (var i = 0; i < response.data.length; i++) {
+          response.data[i].no = i+1;
+          response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name;
+        } 
+        this.items = response.data;
+        setTimeout(() => {
+          this.isBusy = false
+        },300);
+        this.tempData = response.data;
+      } else {
+          setTimeout(() => {
+            this.isBusy = false}, 1200);
+          }
+        });
+      this.totalRows = this.items.length
+    },
+    handleResize: function() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+      if(this.window.width <= 750){
+        this.fields = [
+          { key: 'no', label: 'ลำดับ', class: 'text-center' },
+          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
+          { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
+          // { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
+          // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
+          // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'hr_approve_date_format', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+          { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
+        ]
+      }
+      else{
+        this.fields = [
+          { key: 'no', label: 'ลำดับ', class: 'text-center' },
+          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
+          { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
+          { key: 'dept_name', label: 'เเผนก', class: 'text-center' },
+          { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center' },
+          { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
+          // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
+          // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
+          { key: 'head_approve_date_format', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+          { key: 'hr_approve_date_format', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+          { key: 'status', label: 'สถานะ', class: 'text-center' },
+          { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
+        ]
+      }
+    },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`
       this.infoModal.content = JSON.stringify(item, null, 2)
@@ -380,7 +369,7 @@ export default {
     }
   },
   watch: {}
-}
+};
 </script>
 
 <style>
