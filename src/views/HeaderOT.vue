@@ -4,7 +4,7 @@
       <b-col sm="12">
         <div style="position: relative;">    
           <h2 align="left" style="font-weight: bold;">
-            ข้อมูลการทำงานนอกเวลาของพนักงาน
+            ข้อมูลการทำงานนอกเวลาของพนักงานในแผนก
           </h2>
         </div>
           <table width=100% style="border :1px solid black; margin-top:10px;" >
@@ -90,9 +90,8 @@ export default {
         { key: 'leave_date_start',  label: 'วันที่ขอทำงาน', class: 'text-center leave_date_start' },
         { key: 'time',              label: 'ช่วงเวลา', class: 'text-center time'  },
         { key: 'time_start',        label: 'เวลาที่ทำงาน', class: 'text-center time_start' },
-        { key: 'user_approve',      label: 'พนักงานยืนยัน', class: 'text-center user_approve' },
-        { key: 'header_approve',    label: 'หัวหน้ายืนยัน', class: 'text-center header_approve' },
-        { key: 'hr_approve',        label: 'สถานะ', class: 'text-center hr_approve' },
+        { key: 'header_accept',     label: 'ยืนยัน', class: 'text-center header_accept' },
+        { key: 'header_approve',    label: 'ยืนยันการทำงาน', class: 'text-center header_approve' },
         { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
       ],
       isBusy: false,

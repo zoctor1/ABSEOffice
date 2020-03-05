@@ -38,7 +38,7 @@
             <b-row style="margin-bottom: 10px;" id="errors">
               <b-col style="margin-top:-5px;">
                 <div class="form-group" :class="{ 'form-group--error': $v.password.$error }" >
-                  <input class="form__input" placeholder="รหัสผ่าน" v-model.trim="$v.password.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
+                  <input class="form__input" placeholder="รหัสผ่าน" type="password" v-model.trim="$v.password.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
                 </div>
                 <div class="error" v-if="!$v.password.minLength" style="margin:-15px 0px 10px 0px; color: red; text-align:left;">
                   รหัสผ่านใช้ความยาว {{ $v.password.$params.minLength.min }} ตัวอักษรขึ้นไป
@@ -46,7 +46,7 @@
               </b-col>
               <b-col style="margin-top:-5px;">
                 <div class="form-group" :class="{ 'form-group--error': $v.repeatPassword.$error }" >
-                  <input class="form__input" placeholder="ยืนยันรหัสผ่าน" v-model.trim="$v.repeatPassword.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
+                  <input class="form__input" placeholder="ยืนยันรหัสผ่าน" type="password" v-model.trim="$v.repeatPassword.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
                 </div>
                 <div class="error" v-if="!$v.repeatPassword.sameAsPassword" style="margin:-15px 0px 10px 0px; color: red; text-align:left;">
                   รหัสผ่านไม่ตรงกัน
@@ -237,9 +237,6 @@ export default {
   mounted() {
     this.getDataDept();
     this.getDataPosition();
-    this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false}, 1000);
   },
   methods: {
     show () {

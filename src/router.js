@@ -11,7 +11,7 @@ import HrLeave from "./views/HrLeave.vue";
 import HrOT from "./views/HrOT.vue";
 import dataEmployee from "./views/dataEmployee.vue"
 import dataEmployeeDept from "./views/dataEmployeeDept.vue"
-
+import HeaderOT from "./views/HeaderOT.vue"
 // ============= Views ============= //
 
 // ============= Components =============
@@ -35,6 +35,7 @@ export default new Router({
     { path: "/HrLeave", name: "HrLeave", component: HrLeave },
     { path: "/HrOT", name: "HrOT", component: HrOT },
     { path: "/dataEmployee", name: "dataEmployee", component: dataEmployee },
-    { path: "/dataEmployeeDept", name: "dataEmployeeDept", component: dataEmployeeDept }
+    { path: "/dataEmployeeDept", name: "dataEmployeeDept", component: dataEmployeeDept },
+    { path: "/HeaderOT", name: "HeaderOT", component: HeaderOT }
   ]
 });

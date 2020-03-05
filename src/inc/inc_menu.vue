@@ -27,22 +27,27 @@
       <!-- v-if="userIn.header_flag == 1" -->
       <a style="cursor: pointer;" @click="toUrl('dataEmployeeDept'), indexActive = 3"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลพนักงานในเเผนก</font></a>
     </vs-navbar-item>
-    <!-- <vs-navbar-item index="4">
-      v-if="userIn.header_flag == 1"
-      <a style="cursor: pointer;" @click="toUrl('EmpOT'), indexActive = 4"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการขอทำ OT ของพนักงาน(Header)</font></a>
-    </vs-navbar-item> -->
-    <vs-navbar-item index="5">
+    
+    <vs-navbar-item index="4">
       <!-- v-if="userIn.dept_id == 3" -->
       <a style="cursor: pointer;" @click="toUrl('HrLeave'), indexActive = 5"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการลางานของพนักงาน</font></a>
     </vs-navbar-item>
-    <vs-navbar-item index="6">
+    <vs-navbar-item index="5">
       <!-- v-if="userIn.dept_id == 3" -->
       <a style="cursor: pointer;" @click="toUrl('dataEmployee'), indexActive = 6"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลพนักงานทั้งหมด</font></a>
     </vs-navbar-item>
-    <!-- <vs-navbar-item index="7">
-      v-if="userIn.dept_id == 3"
-      <a style="cursor: pointer;" @click="toUrl('HrOT'), indexActive = 7"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการขอทำงาน OT ของพนักงาน(HR)</font></a>
-    </vs-navbar-item> -->
+    <vs-navbar-item index="6">
+      <!-- v-if="userIn.header_flag == 1" -->
+      <a style="cursor: pointer;" @click="toUrl('EmpOT'), indexActive = 4"><font style="font-size: 20px;" color="#FEFCFF">(User)การทำงานนอกเวลา</font></a>
+    </vs-navbar-item>
+    <vs-navbar-item index="7">
+      <!-- v-if="userIn.dept_id == 3" -->
+      <a style="cursor: pointer;" @click="toUrl('HeaderOT'), indexActive = 7"><font style="font-size: 20px;" color="#FEFCFF">(Header)ข้อมูลการทำงานนอกเวลาของพนักงาน</font></a>
+    </vs-navbar-item>
+    <vs-navbar-item index="8">
+      <!-- v-if="userIn.dept_id == 3" -->
+      <a style="cursor: pointer;" @click="toUrl('HrOT'), indexActive = 8"><font style="font-size: 20px;" color="#FEFCFF">(HR)ข้อมูลการทำงานนอกเวลาของพนักงาน</font></a>
+    </vs-navbar-item>
     
 
 
@@ -186,14 +191,16 @@ export default {
       this.indexActive = 2;
     } else if (this.$route.name == "dataEmployeeDept") {
       this.indexActive = 3;
-    // } else if (this.$route.name == "EmpOT") {
-    //   this.indexActive = 4;
     } else if (this.$route.name == "HrLeave") {
+      this.indexActive = 4;
+    } else if (this.$route.name == "dataEmployee") {
       this.indexActive = 5;
-    }else if (this.$route.name == "dataEmployee") {
+    }else if (this.$route.name == "EmpOT") {
       this.indexActive = 6;
-    // }else if (this.$route.name == "HrOT") {
-    //   this.indexActive = 7;
+    }else if (this.$route.name == "HeaderOT") {
+      this.indexActive = 7;
+    }else if (this.$route.name == "HrOT") {
+      this.indexActive = 8;
     } else {
       this.indexActive = 0;
     }
