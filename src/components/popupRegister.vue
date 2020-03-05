@@ -237,9 +237,7 @@ export default {
   mounted() {
     this.getDataDept();
     this.getDataPosition();
-    this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false}, 1000);
+    this.getDataEmail();
   },
   methods: {
     show () {
@@ -320,6 +318,11 @@ export default {
         }
       });
     },
+    getDataEmail: async function(){
+      await authService.getDataEmail().then(response => {
+        console.log(response.data)
+      });
+    },
     chkIsEmpty: function(value) {
       return value == undefined || value == null || (value + "").trim() == "";
     },
@@ -343,6 +346,7 @@ export default {
       obj["nick_name"] = this.$v.form.nestedNickname.$model;
       obj["mobile"] = this.$v.form.nestedPhone.$model;
       obj["address"] = this.$v.form.nestedAddress.$model;
+      obj["work_start"] = mainJs.setDateToServer(this.$v.form.startDate.$model);
       console.log(obj)
       await authService.insertNewEmployee(obj).then(response =>{
         console.log(response.data)

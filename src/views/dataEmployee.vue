@@ -3,7 +3,6 @@
     <popupRegister v-bind:showPopRegister="showPopRegister"/>
     <center>
       <div><br>
-       <popupRegister v-bind:showPopRegister="showPopRegister"/>
         <b-col lg="12" sm="12" xs="12">
           <h2 align="left" style="font-weight: bold;">
             ข้อมูลการลาของพนักงาน
@@ -59,21 +58,6 @@
                     height="20" 
                     /> เพิ่มพนักงาน
                   </vs-button>
-              </b-col>
-              <b-col>
-                <vs-button
-                  @click="showPopupRegister()"
-                  color="primary"
-                  type="filled"
-                  style="height:42px; width:135px;"
-                >
-                  <img 
-                  src="../assets/Plus_icon3.png" 
-                  style="margin-top:-3px"
-                  width="20" 
-                  height="20" 
-                  /> เพิ่มพนักงาน
-                </vs-button>
               </b-col>
             </b-row>
 
@@ -160,7 +144,6 @@ import VModal from 'vue-js-modal'
 import popupRegister from "@/components/popupRegister.vue"
 import VueSuggestion from 'vue-suggestion'
 import itemTemplate from '../components/ItemTemplate.vue';
-import popupRegister from "@/components/popupRegister.vue"
 
 Vue.use(Datetime,VueSweetalert2,VModal);
 Vue.use(VueSuggestion);
@@ -260,14 +243,6 @@ export default {
         ths.showPopRegister = false;
       }, 1000);
     },
-    // showLeavePopup: function(flag) {
-    //   var ths = this;
-    //   ths.showPopHeader = true;
-    //   ths.checkPopup = flag;
-    //   setTimeout(function() {
-    //     ths.showPopHeader = false;
-    //   }, 1000);
-    // },
     defaultValue() {
       this.valDateStart = "";
       this.valDateStop = "";

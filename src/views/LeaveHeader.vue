@@ -311,6 +311,17 @@
           </b-col>
         </b-row>
 
+        <b-row v-if="dataModal.image_leave != null && dataModal.leave_reason_id == 1" style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-col>
+            <p><b style="font-size: 16px;">รูป :</b></p>
+          </b-col>
+           <b-col style="text-align: center; margin:10px -80px 0px 0px">
+            <button  @click="getImage()" style="width:110px;height:28px; cursor: pointer; border: 2px solid rgb(213, 217, 13); border-radius: 4px; background-color: rgba(255, 255, 126, 1);"> 
+              <font color="#00000" style="font-size: 16px">ดู</font>
+            </button>
+          </b-col>
+        </b-row>
+
         <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
           <b-col>
             <p><b style="font-size: 16px;">ช่วงเวลา :</b></p>
@@ -712,23 +723,23 @@ export default {
         });
       },
       getDataUserDept: async function(){
-      var ths = this;
-      var user = JSON.parse(localStorage.getItem("user"));
-      var dataUserDept = [];
-      var fullname = "";
-      var result = {};
-      await authService.getDataUserDept(user.dept_id).then(response => {
-        if(response.data != null && response.data.length > 0){
-          response.data.forEach(function (obj, i){
-            fullname = obj.first_name + " " + obj.last_name + " ("+ obj.nick_name + ")";
-            result = {value: obj.emp_id, name: fullname}
-            dataUserDept.push(result);
-          });
-          ths.nameSearchArray = dataUserDept;
-          ths.empName = dataUserDept
-        }
-      });
-     },
+        var ths = this;
+        var user = JSON.parse(localStorage.getItem("user"));
+        var dataUserDept = [];
+        var fullname = "";
+        var result = {};
+        await authService.getDataUserDept(user.dept_id).then(response => {
+          if(response.data != null && response.data.length > 0){
+            response.data.forEach(function (obj, i){
+              fullname = obj.first_name + " " + obj.last_name + " ("+ obj.nick_name + ")";
+              result = {value: obj.emp_id, name: fullname}
+              dataUserDept.push(result);
+            });
+            ths.nameSearchArray = dataUserDept;
+            ths.empName = dataUserDept
+          }
+        });
+      },
       getDataReasonLeave: async function(){
         var dataReason = [];
         await authService.getDataReasonLeave().then(response => {
@@ -742,76 +753,83 @@ export default {
         });
       },
       getHeaderApprove: async function() {
-      this.isBusy = true;
-      var user = JSON.parse(localStorage.getItem("user"));
-      var leave_time = [];
-      var leave_time_stop = [];
-      await authService.getDataHeader(user.dept_id).then(response => {
-        if (response.data != null && response.data.length > 0) {
-          this.selectedFilter = null;
-          this.responseData = response.data;
-          for (var i = 0; i < response.data.length; i++) {
-            response.data[i].no = i+1;
-            response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name + " " + "(" + response.data[i].nick_name + ")";
-            response.data[i].HeaderbtnApprove = false;
-            leave_time = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[1] : "");
-            leave_time_stop = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[1] : "");
-            response.data[i].leave_time = (response.data[i].leave_start_date != null ? leave_time.split(":")[0] + ":" + leave_time.split(":")[1] : "") + ' - ' + (response.data[i].leave_stop_date != null ? leave_time_stop.split(":")[0] + ":" + leave_time_stop.split(":")[1] : "");
-            response.data[i].leave_date_format = mJS.setDateFormat(response.data[i].leave_date);
-            response.data[i].leave_start_date_format = mJS.setDateFormat(response.data[i].leave_start_date);
-            response.data[i].leave_stop_date_format = mJS.setDateFormat(response.data[i].leave_stop_date);
-            response.data[i].modify_date_format = mJS.setDateFormat(response.data[i].modify_date);
-            response.data[i].head_approve_date_format = mJS.setDateFormat(response.data[i].head_approve_date);
-            response.data[i].hr_approve_date_format = mJS.setDateFormat(response.data[i].hr_approve_date);
-            response.data[i].cancel_date_format = mJS.setDateFormat(response.data[i].cancel_date);
-            response.data[i].cancel_header_date_format = mJS.setDateFormat(response.data[i].cancel_header_date);
-            // response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
-            // response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
-            }
-          this.tempData = response.data;
-          this.itemHeader = response.data;
-          setTimeout(() => {
-            this.isBusy = false
-          },300);
-        } else {
+        this.isBusy = true;
+        var user = JSON.parse(localStorage.getItem("user"));
+        var leave_time = [];
+        var leave_time_stop = [];
+        await authService.getDataHeader(user.dept_id).then(response => {
+          if (response.data != null && response.data.length > 0) {
+            this.selectedFilter = null;
+            this.responseData = response.data;
+            for (var i = 0; i < response.data.length; i++) {
+              response.data[i].no = i+1;
+              response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name + " " + "(" + response.data[i].nick_name + ")";
+              response.data[i].HeaderbtnApprove = false;
+              leave_time = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[1] : "");
+              leave_time_stop = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[1] : "");
+              response.data[i].leave_time = (response.data[i].leave_start_date != null ? leave_time.split(":")[0] + ":" + leave_time.split(":")[1] : "") + ' - ' + (response.data[i].leave_stop_date != null ? leave_time_stop.split(":")[0] + ":" + leave_time_stop.split(":")[1] : "");
+              response.data[i].leave_date_format = mJS.setDateFormat(response.data[i].leave_date);
+              response.data[i].leave_start_date_format = mJS.setDateFormat(response.data[i].leave_start_date);
+              response.data[i].leave_stop_date_format = mJS.setDateFormat(response.data[i].leave_stop_date);
+              response.data[i].modify_date_format = mJS.setDateFormat(response.data[i].modify_date);
+              response.data[i].head_approve_date_format = mJS.setDateFormat(response.data[i].head_approve_date);
+              response.data[i].hr_approve_date_format = mJS.setDateFormat(response.data[i].hr_approve_date);
+              response.data[i].cancel_date_format = mJS.setDateFormat(response.data[i].cancel_date);
+              response.data[i].cancel_header_date_format = mJS.setDateFormat(response.data[i].cancel_header_date);
+              // response.data[i].leave_start_date = (response.data[i].leave_start_date != null ? response.data[i].leave_start_date.split(" ")[0] : "");
+              // response.data[i].leave_stop_date = (response.data[i].leave_stop_date != null ? response.data[i].leave_stop_date.split(" ")[0] : "");
+              }
+            this.tempData = response.data;
+            this.itemHeader = response.data;
             setTimeout(() => {
-              this.isBusy = false}, 1200);
-          }
-      });
-      this.totalRows = this.itemHeader.length
-    },
-    handleResize: function() {
-      this.window.width = window.innerWidth;
-      this.window.height = window.innerHeight;
-      if(this.window.width <= 750){
-        this.fieldHeader = [
-          { key: 'no', label: 'ลำดับ', class: 'text-center' },
-          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
-          { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
-          // { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
-          // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
-          // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
-          { key: 'head_approve_date_format', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
-          { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
-        ]
-      }
-      else{
-        this.fieldHeader = [
-          { key: 'no', label: 'ลำดับ', class: 'text-center' },
-          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
-          { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
-          { key: 'dept_name', label: 'เเผนก', class: 'text-center' },
-          { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center' },
-          { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
-          // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
-          // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
-          { key: 'head_approve_date_format', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
-          // { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-          { key: 'status', label: 'สถานะ', class: 'text-center' },
-          { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
-        ]
-      }
-    },
+              this.isBusy = false
+            },300);
+          } else {
+              setTimeout(() => {
+                this.isBusy = false}, 1200);
+            }
+        });
+        this.totalRows = this.itemHeader.length
+      },
+      getImage: async function(){
+        var img = "";
+        await authService.getImage(this.dataModal.emp_leave_id).then(response => {
+          img = response.data;
+          console.log(img);
+        });
+      },
+      handleResize: function() {
+        this.window.width = window.innerWidth;
+        this.window.height = window.innerHeight;
+        if(this.window.width <= 750){
+          this.fieldHeader = [
+            { key: 'no', label: 'ลำดับ', class: 'text-center' },
+            { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
+            { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
+            // { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
+            // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
+            // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
+            { key: 'head_approve_date_format', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+            { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
+          ]
+        }
+        else{
+          this.fieldHeader = [
+            { key: 'no', label: 'ลำดับ', class: 'text-center' },
+            { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
+            { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
+            { key: 'dept_name', label: 'เเผนก', class: 'text-center' },
+            { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center' },
+            { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
+            // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
+            // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
+            { key: 'head_approve_date_format', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+            // { key: 'hr_approve_date', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+            { key: 'status', label: 'สถานะ', class: 'text-center' },
+            { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
+          ]
+        }
+      },
       info(item, index, button) {
         this.infoModal.title = `Row index: ${index}`
         this.infoModal.content = JSON.stringify(item, null, 2)
