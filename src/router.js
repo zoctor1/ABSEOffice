@@ -26,7 +26,7 @@ export default new Router({
   mode: "history",
   // base: "ABSEOffice",
   routes: [
-    { path: '*', redirect: '/HomePage' },
+    { path: '*', redirect: '/Login' },
     { path: "/HomePage", name: "Main", component: Main },
     { path: "/Login", name: "Login", component: Login },
     { path: "/LeaveEmp", name: "LeaveEmp", component: LeaveEmp },

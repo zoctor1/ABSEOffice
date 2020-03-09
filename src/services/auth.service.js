@@ -55,6 +55,15 @@ export function getDataReasonLeave() {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
+export function getDataEmail() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${API_URL}/dataEmail`, {}, { params: {} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
 export function getDataUserDept(deptId) {
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/dataUserDept`, {}, { headers: {dataDept : deptId} }).then(
@@ -121,6 +130,16 @@ export function insertData(obj) {
 export function addImage(formData) {
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/addImage`, formData, {headers: {"Content-Type": "multipart/form-data"}}).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function getImage(leaveId) {
+    console.log(leaveId)
+    return new Promise((resolve, reject) => {
+        axios.get(`${API_URL}/getImage`, {}, { params: {fileName : leaveId} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })
