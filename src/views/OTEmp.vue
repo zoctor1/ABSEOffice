@@ -1,31 +1,29 @@
 <template>
-  <div id="DataEmployee">
+  <div id="OTEmp">
     <b-row>
       <div><br>
         <h2 style="font-weight: bold; margin-left:30px;">
-          ข้อมูลของพนักงาน
+          ข้อมูลการทำงานนอกเวลา
         </h2>
       </div>
     </b-row>
     <b-row style="padding:0px 40px 0px 40px; width:100%;">
-      <b-col sm="2">
-        <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
-          <vue-suggestion 
-            :items="nameSearchArray" 
-            v-model="nameSearch"
-            :setLabel="setLabel"
-            :itemTemplate="itemTemplate"
-            @changed="inputChange"
-            @selected="itemSelected"
-            placeholder="พิมพ์ชื่อเพื่อค้นหา..."
+      <b-col sm="12" md="6" lg="2">
+        <p style="cursor:default;"><b>วันที่ปฏิบัติงาน :</b></p>
+        <datetime 
+          type="date" 
+          v-model="valDateStart" 
+          format="dd/MM/yyyy" 
+          :min-datetime="currentDate"
+          placeholder="เลือกวันเพื่อค้นหา..."
           >
-          </vue-suggestion> 
+        </datetime>
       </b-col>
-      <b-col md="12" lg="2">
-        <p style="cursor:default;"><b>แผนก :</b></p>
+      <b-col sm="12" md="6" lg="2">
+        <p style="cursor:default;"><b>สถานะ :</b></p>
         <b-form-select
-          v-model="selectDep"
-          :options="optionsDep"
+          v-model="selectStat"
+          :options="optionStat"
           style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
         >
         </b-form-select>
@@ -46,6 +44,21 @@
         >
             เคลียร์ข้อมูล
         </b-button>
+      </b-col>
+      <b-col lg="2" style="padding-top:24px">
+        <vs-button
+          @click="showLeavePopup(0)"
+          color="primary"
+          type="filled"
+          style="height:42px; "
+        >
+          <img 
+          src="../assets/Plus_icon3.png" 
+          style="margin-top:-3px"
+          width="20" 
+          height="20" 
+          /> เพิ่มการลาของพนักงาน
+        </vs-button>
       </b-col>
     </b-row>
     <b-row style="padding:0px 30px 0px 30px;">
@@ -88,7 +101,7 @@
                     style="cursor: pointer" 
                     width="33" 
                     height="33"  
-                    @click="dataModal = data.item, show('dataEmployeeModal')"
+                    @click="dataModal = data.item, show('OTEmpModal')"
                   >
                 </div>
               </template>
@@ -129,80 +142,85 @@
     </b-row>
       <br>
       <modal 
-        name="dataEmployeeModal" 
+        name="OTEmpModal" 
         :clickToClose="false"
         height="auto"
         width="400px"
       >
         <p style="background-color: #f1f1f1; font-size: 20px; text-align: center; margin-bottom:10px; font-weight:bold; padding: 10px 10px 10px 20px; cursor:default;">
-          รายละเอียดข้อมูลของพนักงาน 
+          รายละเอียดการทำงานนอกเวลา
         </p>
         <div style="padding-bottom:15px;">
           
           <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
             <b-col>
-              <p><b style="font-size: 16px;">ชื่อ :</b></p>
+              <p><b style="font-size: 16px;">วันที่กรอก :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> ชื่อจริง (ชื่อเล่น) </p>
-            </b-col>
-          </b-row>
-
-          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-            <b-col>
-              <p><b style="font-size: 16px;">แผนก :</b></p>
-            </b-col>
-            <b-col>
-              <p style="font-size: 16px;"> ชื่อแผนก </p>
-            </b-col>
-          </b-row>
-
-          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-            <b-col>
-              <p><b style="font-size: 16px;">ตำแหน่ง :</b></p>
-            </b-col>
-            <b-col>
-              <p style="font-size: 16px;"> ชื่อตำแหน่ง </p>
-            </b-col>
-          </b-row>
-
-          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-            <b-col>
-              <p><b style="font-size: 16px;">วันที่เริ่มเข้าทำงาน :</b></p>
-            </b-col>
-            <b-col>
-              <p style="font-size: 16px;"> dd-mm-yyyy </p>
-            </b-col>
-          </b-row>
-
-          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-            <b-col>
-              <p><b style="font-size: 16px;">ผ่านการทดลองงาน :</b></p>
-            </b-col>
-            <b-col>
-              <p style="font-size: 16px;"> ผ่านแล้ว (dd-mm-yyyy) </p>
-            </b-col>
-          </b-row>
-
-          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
-            <b-col>
-              <p><b style="font-size: 16px;">เบอร์โทรติดต่อ :</b></p>
-            </b-col>
-            <b-col>
-              <p style="font-size: 16px;"> 0881593571 </p>
+              <p style="font-size: 16px;"> dd-mm-yyyy hh:mm </p>
             </b-col>
           </b-row>
           
           <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
             <b-col>
-              <p><b style="font-size: 16px;">ที่อยู่ปัจจุบัน :</b></p>
+              <p><b style="font-size: 16px; color: red;">วันที่แก้ไขข้อมูล :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> ที่อยู่ </p>
+              <p style="font-size: 16px; color: red;"> dd-mm-yyyy hh:mm </p>
             </b-col>
           </b-row>
+
+          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+            <b-col>
+              <p><b style="font-size: 16px;">วันที่ปฏิบัติงาน :</b></p>
+            </b-col>
+            <b-col>
+              <p style="font-size: 16px;"> dd-mm-yyyy - dd-mm-yyyy </p>
+            </b-col>
+          </b-row>
+
+          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+            <b-col>
+              <p><b style="font-size: 16px;">ช่วงเวลาที่ทำ :</b></p>
+            </b-col>
+            <b-col>
+              <p style="font-size: 16px;"> วันหยุด || ก่อนงาน || หลังงาน </p>
+            </b-col>
+          </b-row>
+
+          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+            <b-col>
+              <p><b style="font-size: 16px;">เวลาที่ทำงาน :</b></p>
+            </b-col>
+            <b-col>
+              <p style="font-size: 16px;"> hh:mm (เริ่มเวลา, สิ้นสุด, รวมกี่ชัวโมง) </p>
+            </b-col>
+          </b-row>
+
+          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+            <b-col>
+              <p><b style="font-size: 16px;">รายละเอียดงาน :</b></p>
+            </b-col>
+            <b-col>
+              <p style="font-size: 16px;"> รายละเอียดงาน </p>
+            </b-col>
+          </b-row>
+          
+          <b-row>
+          <b-col style="text-align: center; margin:10px -80px 0px 0px">
+            <button style="width:145px; height:28px; cursor: pointer; border: 2px solid rgb(213, 217, 13); border-radius: 4px; background-color: rgba(255, 255, 126, 1);"> 
+              <font color="#00000" style="font-size: 16px">แก้ไขงาน</font>
+            </button>
+          </b-col>
+          <b-col style="text-align: center; margin-top:10px">
+            <button style="width:145px; height:28px; cursor: pointer; border: 2px solid rgb(255, 112, 77); border-radius: 4px; background-color: rgb(255, 133, 102);"> 
+              <font color="#fffff" style="font-size: 16px">ยกเลิกงาน</font>
+            </button>
+          </b-col>
+        </b-row>
+
         </div>
-        <b-button block variant="secondary" style="font-size: 16px;" @click="hide('dataEmployeeModal')">ปิด</b-button>
+        <b-button block variant="secondary" style="font-size: 16px;" @click="hide('OTEmpModal')">ปิด</b-button>
       </modal> 
     </div>
 </template>
@@ -226,7 +244,7 @@ Vue.use(Datetime,VueSweetalert2,VModal);
 Vue.use(VueSuggestion);
 
 export default {
-  name: "DataEmployee",
+  name: "OTEmp",
   components: {
     datetime: Datetime,
     popupLeaveHeaderHr
@@ -234,6 +252,13 @@ export default {
   props: {},
   data() {
     return {
+      optionStat: [
+        { value: null ,text: "--เลือกสถานะ--"},
+        { value: 1 ,text: "ผ่านการอนุมัติ"},
+        { value: 2 ,text: "ไม่อนุมัติ"},
+        { value: 3 ,text: "รอการอนุมัติ" },
+        { value: 4 ,text: "ถูกยกเลิก" }
+      ],
       tempData: [],
       itemTemplate,
       nameSearch:"",
@@ -243,15 +268,15 @@ export default {
       optionsDep: [],
       optionLeaveType: [],
       fields: [
-        { key: 'no', label: 'ลำดับ', class: 'text-center no' },
-        { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
-        { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
-        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
-        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
-        { key: 'address', label: 'ที่อยู่', class: 'text-center address' },
-        { key: 'mobile', label: 'เบอร์โทรศัพท์', class: 'text-center mobile' },
-        { key: 'email', label: 'อีเมล', class: 'text-center email' },
-        { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' }
+        { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
+        { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date_format' },
+        { key: 'full_Name',         label: 'ชื่อ', class: 'text-center name' },
+        { key: 'dept_name',         label: 'แผนก', class: 'text-center dept' },
+        { key: 'position_name',     label: 'ตำแหน่ง', class: 'text-center position' },
+        { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
+        { key: 'header_approve',    label: 'หัวหน้ายืนยัน', class: 'text-center header_approve' },
+        { key: 'hr_approve',        label: 'สถานะ', class: 'text-center hr_approve' },
+        { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
       ],
       dataModal:{},
       checkPopup:'',
@@ -273,7 +298,8 @@ export default {
       window : {
         width: 0,
         height: 0
-      }
+      },
+      currentDate: '',
     }
   },
   computed: {
@@ -302,10 +328,10 @@ export default {
   },
   methods: {
     show () {
-      this.$modal.show('dataEmployeeModal');
+      this.$modal.show('OTEmpModal');
     },
     hide () {
-      this.$modal.hide('dataEmployeeModal');
+      this.$modal.hide('OTEmpModal');
     },
     handelLeaveSave(value) {
       if (value) {
@@ -419,39 +445,37 @@ export default {
       if(this.window.width >= 1270){
         console.log("1200")
         this.fields = [
-          { key: 'no', label: 'ลำดับ', class: 'text-center no' },
-          { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
-          { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
-          { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
-          { key: 'address', label: 'ที่อยู่', class: 'text-center address' },
-          { key: 'mobile', label: 'เบอร์โทรศัพท์', class: 'text-center mobile' },
-          { key: 'email', label: 'อีเมล', class: 'text-center email' },
-          { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
-        ]   
+          { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
+          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date_format' },
+          { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
+          { key: 'time',              label: 'ช่วงเวลา', class: 'text-center time'  },
+          { key: 'time_start',        label: 'เวลาที่ทำงาน', class: 'text-center time_start' },
+          { key: 'hr_approve',        label: 'สถานะ', class: 'text-center hr_approve' },
+          { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
+        ]
       } else if(this.window.width < 1270 && this.window.width >= 1000){
         console.log("800")
         this.fields = [
-          { key: 'no', label: 'ลำดับ', class: 'text-center no' },
-          { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
-          { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
-          { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
-          { key: 'mobile', label: 'เบอร์โทรศัพท์', class: 'text-center mobile' },
-          { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
-        ]
+          { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
+          { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
+          { key: 'time',              label: 'ช่วงเวลา', class: 'text-center time'  },
+          { key: 'time_start',        label: 'เวลาที่ทำงาน', class: 'text-center time_start' },
+          { key: 'hr_approve',        label: 'สถานะ', class: 'text-center hr_approve' },
+          { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
+        ] 
       } else if(this.window.width < 1000 && this.window.width >= 800){
         console.log("800")
         this.fields = [
-          { key: 'no', label: 'ลำดับ', class: 'text-center no' },
-          { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
-          { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
-          { key: 'mobile', label: 'เบอร์โทรศัพท์', class: 'text-center mobile' },
-          { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
+          { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
+          { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
+          { key: 'hr_approve',        label: 'สถานะ', class: 'text-center hr_approve' },
+          { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
         ]
       } else{
           this.fields = [
-            { key: 'no', label: 'ลำดับ', class: 'text-center no' },
-            { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
-            { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
+            { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
+            { key: 'hr_approve',        label: 'สถานะ', class: 'text-center hr_approve' },
+            { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
           ]
         }
     },
@@ -471,10 +495,10 @@ export default {
   .close:hover {
     cursor: pointer;
   }
-  #DataEmployee .btn-secondary {
+  #OTEmp .btn-secondary {
     font-size: 12px;
   }
-  #DataEmployee .vdatetime-input {
+  #OTEmp .vdatetime-input {
     padding-left:10px;
     width: 100%;
     height: 42px !important;
@@ -482,29 +506,29 @@ export default {
     border: 1px solid rgba(0,0,0,.2); 
     border-radius: 4px;
   }
-  #DataEmployee .no {
+  #OTEmp .no {
     width : 65px !important;
   }
-  #DataEmployee .full_Name {
+  #OTEmp .full_Name {
     width : 280px !important;
   }
-  #DataEmployee .position_name {
+  #OTEmp .position_name {
     width : 320px !important;
   }
-  #DataEmployee .address {
+  #OTEmp .address {
     width : 400px !important;
   }
-  #DataEmployee .mobile {
+  #OTEmp .mobile {
     width : 150px !important;
   }
-  #DataEmployee .email {
+  #OTEmp .email {
     width : 300px !important;
   }
-  #DataEmployee .leave_remark {
+  #OTEmp .leave_remark {
     width : 150px !important;
   }
   
-  #DataEmployee .vs__input {
+  #OTEmp .vs__input {
     padding-left:10px;
     font-family: Kanit, Arial, Helvetica, sans-serif !important;
     font-size: 16px;
@@ -513,7 +537,7 @@ export default {
     border: 1px solid rgba(0,0,0,.2); 
     border-radius: 4px;
   }
-  #DataEmployee .popupRemark:hover {
+  #OTEmp .popupRemark:hover {
     background-color:#f5f5f5;
   }
 </style>

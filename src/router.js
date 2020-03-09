@@ -4,14 +4,14 @@ import Router from "vue-router";
 // ============= Views ============= //
 import Main from "./views/Main.vue";
 import Login from "./views/Login.vue";
-import HeaderApprove from "./views/HeaderApprove.vue";
-import EmpLeave from "./views/EmpLeave.vue";
-import EmpOT from "./views/EmpOT.vue";
-import HrLeave from "./views/HrLeave.vue";
-import HrOT from "./views/HrOT.vue";
+import LeaveEmp from "./views/LeaveEmp.vue";
+import LeaveHeader from "./views/LeaveHeader.vue";
+import LeaveHr from "./views/LeaveHr.vue";
+import OTEmp from "./views/OTEmp.vue";
+import OTHeader from "./views/OTHeader.vue"
+import OTHr from "./views/OTHr.vue";
 import dataEmployee from "./views/dataEmployee.vue"
-import dataEmployeeDept from "./views/dataEmployeeDept.vue"
-import HeaderOT from "./views/HeaderOT.vue"
+import dataDeptEmployee from "./views/dataDeptEmployee.vue"
 // ============= Views ============= //
 
 // ============= Components =============
@@ -29,13 +29,13 @@ export default new Router({
     { path: '*', redirect: '/HomePage' },
     { path: "/HomePage", name: "Main", component: Main },
     { path: "/Login", name: "Login", component: Login },
-    { path: "/HeaderApprove", name: "HeaderApprove", component: HeaderApprove },
-    { path: "/EmpLeave", name: "EmpLeave", component: EmpLeave },
-    { path: "/EmpOT", name: "EmpOT", component: EmpOT },
-    { path: "/HrLeave", name: "HrLeave", component: HrLeave },
-    { path: "/HrOT", name: "HrOT", component: HrOT },
+    { path: "/LeaveEmp", name: "LeaveEmp", component: LeaveEmp },
+    { path: "/LeaveHeader", name: "LeaveHeader", component: LeaveHeader },
+    { path: "/LeaveHr", name: "LeaveHr", component: LeaveHr },
+    { path: "/OTEmp", name: "OTEmp", component: OTEmp },
+    { path: "/OTHeader", name: "OTHeader", component: OTHeader },
+    { path: "/OTHr", name: "OTHr", component: OTHr },
     { path: "/dataEmployee", name: "dataEmployee", component: dataEmployee },
-    { path: "/dataEmployeeDept", name: "dataEmployeeDept", component: dataEmployeeDept },
-    { path: "/HeaderOT", name: "HeaderOT", component: HeaderOT }
+    { path: "/dataDeptEmployee", name: "dataDeptEmployee", component: dataDeptEmployee }
   ]
 });

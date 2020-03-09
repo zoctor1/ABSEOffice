@@ -149,7 +149,7 @@ export default {
       } else {
           authService.loginUser( encodeURI(this.email), encodeURI(this.pass)).then(response => { 
             if (response.data != "" && response.data != null && response.data != undefined) {
-              this.toURL("Homepage");
+              this.toURL("HomePage");
               localStorage.setItem("user", JSON.stringify(response.data));
             } else {
               this.$swal.fire({

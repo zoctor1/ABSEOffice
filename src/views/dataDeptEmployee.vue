@@ -1,9 +1,9 @@
 <template>
-  <div id="DataEmployee">
+  <div id="DataDeptEmployee">
     <b-row>
       <div><br>
         <h2 style="font-weight: bold; margin-left:30px;">
-          ข้อมูลของพนักงาน
+          ข้อมูลของพนักงานภายในแผนก
         </h2>
       </div>
     </b-row>
@@ -20,15 +20,6 @@
             placeholder="พิมพ์ชื่อเพื่อค้นหา..."
           >
           </vue-suggestion> 
-      </b-col>
-      <b-col md="12" lg="2">
-        <p style="cursor:default;"><b>แผนก :</b></p>
-        <b-form-select
-          v-model="selectDep"
-          :options="optionsDep"
-          style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-        >
-        </b-form-select>
       </b-col>
       <b-col sm="2" style="margin-top:24px">
         <b-button
@@ -88,7 +79,7 @@
                     style="cursor: pointer" 
                     width="33" 
                     height="33"  
-                    @click="dataModal = data.item, show('dataEmployeeModal')"
+                    @click="dataModal = data.item, show('dataDeptEmployeeModal')"
                   >
                 </div>
               </template>
@@ -129,7 +120,7 @@
     </b-row>
       <br>
       <modal 
-        name="dataEmployeeModal" 
+        name="dataDeptEmployeeModal" 
         :clickToClose="false"
         height="auto"
         width="400px"
@@ -202,7 +193,7 @@
             </b-col>
           </b-row>
         </div>
-        <b-button block variant="secondary" style="font-size: 16px;" @click="hide('dataEmployeeModal')">ปิด</b-button>
+        <b-button block variant="secondary" style="font-size: 16px;" @click="hide('dataDeptEmployeeModal')">ปิด</b-button>
       </modal> 
     </div>
 </template>
@@ -226,7 +217,7 @@ Vue.use(Datetime,VueSweetalert2,VModal);
 Vue.use(VueSuggestion);
 
 export default {
-  name: "DataEmployee",
+  name: "DataDeptEmployee",
   components: {
     datetime: Datetime,
     popupLeaveHeaderHr
@@ -245,13 +236,11 @@ export default {
       fields: [
         { key: 'no', label: 'ลำดับ', class: 'text-center no' },
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
-        { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
-        { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
         { key: 'address', label: 'ที่อยู่', class: 'text-center address' },
         { key: 'mobile', label: 'เบอร์โทรศัพท์', class: 'text-center mobile' },
         { key: 'email', label: 'อีเมล', class: 'text-center email' },
-        { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' }
+        { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
       ],
       dataModal:{},
       checkPopup:'',
@@ -302,10 +291,10 @@ export default {
   },
   methods: {
     show () {
-      this.$modal.show('dataEmployeeModal');
+      this.$modal.show('dataDeptEmployeeModal');
     },
     hide () {
-      this.$modal.hide('dataEmployeeModal');
+      this.$modal.hide('dataDeptEmployeeModal');
     },
     handelLeaveSave(value) {
       if (value) {
@@ -421,19 +410,17 @@ export default {
         this.fields = [
           { key: 'no', label: 'ลำดับ', class: 'text-center no' },
           { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
-          { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
           { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
           { key: 'address', label: 'ที่อยู่', class: 'text-center address' },
           { key: 'mobile', label: 'เบอร์โทรศัพท์', class: 'text-center mobile' },
           { key: 'email', label: 'อีเมล', class: 'text-center email' },
           { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
-        ]   
+        ]
       } else if(this.window.width < 1270 && this.window.width >= 1000){
         console.log("800")
         this.fields = [
           { key: 'no', label: 'ลำดับ', class: 'text-center no' },
           { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
-          { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
           { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
           { key: 'mobile', label: 'เบอร์โทรศัพท์', class: 'text-center mobile' },
           { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
@@ -443,7 +430,6 @@ export default {
         this.fields = [
           { key: 'no', label: 'ลำดับ', class: 'text-center no' },
           { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
-          { key: 'dept_name', label: 'เเผนก', class: 'text-center dept_name' },
           { key: 'mobile', label: 'เบอร์โทรศัพท์', class: 'text-center mobile' },
           { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
         ]
@@ -471,10 +457,10 @@ export default {
   .close:hover {
     cursor: pointer;
   }
-  #DataEmployee .btn-secondary {
+  #DataDeptEmployee .btn-secondary {
     font-size: 12px;
   }
-  #DataEmployee .vdatetime-input {
+  #DataDeptEmployee .vdatetime-input {
     padding-left:10px;
     width: 100%;
     height: 42px !important;
@@ -482,29 +468,29 @@ export default {
     border: 1px solid rgba(0,0,0,.2); 
     border-radius: 4px;
   }
-  #DataEmployee .no {
+  #DataDeptEmployee .no {
     width : 65px !important;
   }
-  #DataEmployee .full_Name {
+  #DataDeptEmployee .full_Name {
     width : 280px !important;
   }
-  #DataEmployee .position_name {
+  #DataDeptEmployee .position_name {
     width : 320px !important;
   }
-  #DataEmployee .address {
+  #DataDeptEmployee .address {
     width : 400px !important;
   }
-  #DataEmployee .mobile {
+  #DataDeptEmployee .mobile {
     width : 150px !important;
   }
-  #DataEmployee .email {
+  #DataDeptEmployee .email {
     width : 300px !important;
   }
-  #DataEmployee .leave_remark {
+  #DataDeptEmployee .leave_remark {
     width : 150px !important;
   }
   
-  #DataEmployee .vs__input {
+  #DataDeptEmployee .vs__input {
     padding-left:10px;
     font-family: Kanit, Arial, Helvetica, sans-serif !important;
     font-size: 16px;
@@ -513,7 +499,7 @@ export default {
     border: 1px solid rgba(0,0,0,.2); 
     border-radius: 4px;
   }
-  #DataEmployee .popupRemark:hover {
+  #DataDeptEmployee .popupRemark:hover {
     background-color:#f5f5f5;
   }
 </style>
