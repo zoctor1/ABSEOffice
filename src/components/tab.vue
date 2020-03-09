@@ -71,6 +71,41 @@
           <b-tr v-for="i in responseData" :key="i.leave_reason_id">
             <b-th>{{ i.leave_reason_name }}</b-th>
             <b-td><center>{{ i.leave_limit }}</center></b-td>
+            <b-td v-if="i.hh == null"><center>{{ 0 +' / '+ 0 }}</center></b-td>
+            <b-td v-else-if="i.hh < 8"><center>{{ 0  +' / '+ i.hh }}</center></b-td>
+            <b-td v-else-if="i.hh >= 8"><center>{{ Math.round(i.hh / 8)  +' / '+ (i.hh % 8) }}</center></b-td>
+            <!-- <b-td v-else-if="i.hh = 8"><center>{{ Math.round(i.hh / 8)  +' / '+ (i.hh % 8)) }}</center></b-td> -->
+            <b-td v-if="i.hh == null"><center>{{ i.leave_limit +' / '+ 0 }}</center></b-td>
+            <b-td v-else-if="i.hh % 8 == 0"><center>{{ (i.leave_limit - Math.round(i.hh / 8))  +' / ' + 0 }}</center></b-td>
+            <b-td v-else-if="i.hh < 8"><center>{{ (i.leave_limit - 1) +' / '+ (8 - (i.hh % 8)) }}</center></b-td>
+            <b-td v-else-if="i.hh > 8"><center>{{ ((i.leave_limit - Math.round(i.hh / 8)) - 1) +' / '+ (8 - (i.hh % 8)) }}</center></b-td>
+            <b-td v-else-if="i.hh = 8"><center>{{ (i.leave_limit - Math.round(i.hh / 8))  +' / ' + 0 }}</center></b-td>
+            
+            
+          </b-tr>
+        </b-tbody>
+        <b-thead class="thead-light" head-variant="danger">
+          <b-tr v-if="responseData">
+            <b-th><b>รวมทั้งหมด : </b></b-th>
+            <b-th><center><b>{{ sumLimits(responseData) }}</b></center></b-th>
+            <b-th v-if="sumLeaveHour(responseData) == 0"><center><b> 0 / 0 </b></center></b-th>
+            <!-- <b-th v-else-if="sumLeaveHour(responseData) == 8"><center><b>{{ (Math.round(sumLeaveHour(responseData) / 8) )  +' / '+ sumLeaveHour(responseData) % 8 }}</b></center></b-th> -->
+            <b-th v-else-if="sumLeaveHour(responseData) >= 8"><center><b>{{ (Math.floor(sumLeaveHour(responseData) / 8) )  +' / '+ sumLeaveHour(responseData) % 8 }}</b></center></b-th>
+            <b-th v-else-if="sumLeaveHour(responseData) < 8"><center><b>{{ 0 + " / " + sumLeaveHour(responseData) }}</b></center></b-th>
+            <b-th v-if="sumLeaveHour(responseData) == 0"><center><b> 161 / 0 </b></center></b-th>
+            <b-th v-else-if="sumLeaveHour(responseData) >= 8"><center><b>{{ ((161 - (Math.floor(sumLeaveHour(responseData) / 8))) -1) +' / '+ (8 - (sumLeaveHour(responseData) % 8)) }}</b></center></b-th>
+            <b-th v-else-if="sumLeaveHour(responseData) < 8"><center><b>{{ (161 - 1 ) +' / '+ 0 }}</b></center></b-th>
+            <!-- <b-th v-else-if="(8 - (sumLeaveHour(responseData) % 8)) < 8"><center><b>{{ (161 - (Math.round(sumLeaveHour(responseData) / 8)) - 1)  +' / '+ (8 - (sumLeaveHour(responseData) % 8)) }}</b></center></b-th>
+            <b-th v-else-if="(8 - (sumLeaveHour(responseData) % 8)) > 8"><center><b>{{ ((161 - (Math.round(sumLeaveHour(responseData) / 8))) + sumLeaveHour(responseData) / 8) +' / '+ (8 - (sumLeaveHour(responseData) % 8)) }}</b></center></b-th>
+            <b-th v-else-if="(8 - (sumLeaveHour(responseData) % 8)) == 8"><center><b>{{ ((161 - (Math.round(sumLeaveHour(responseData) / 8))) ) +' / ' + 0 }}</b></center></b-th> -->
+            <!-- <b-th v-if="sumLeaveHour(responseData) >= 8"><center><b>{{ ((161 - (Math.round(sumLeaveHour(responseData) / 8))) ) +' / '+ (8 - (sumLeaveHour(responseData) % 8)) }}</b></center></b-th>
+            <b-th v-else-if="sumLeaveHour(responseData) < 8"><center><b>{{ ((161 - (Math.round(sumLeaveHour(responseData) / 8))) ) +' / '+ (8 - (sumLeaveHour(responseData) % 8)) }}</b></center></b-th> -->
+          </b-tr>
+        </b-thead>
+        <!-- <b-tbody>
+          <b-tr v-for="i in responseData" :key="i.leave_reason_id">
+            <b-th>{{ i.leave_reason_name }}</b-th>
+            <b-td><center>{{ i.leave_limit }}</center></b-td>
             <b-td v-if="i.dd == null && i.hh == null"><center>{{ 0 +' / '+ 0}}</center></b-td>
             <b-td v-else><center>{{ i.dd +' / '+ i.hh +'  '}}</center></b-td>
             <b-td v-if="i.hh == 0"><center>{{ (i.leave_limit - i.dd) +' / '+ 0}}</center></b-td>
@@ -86,7 +121,7 @@
               <b-th v-if="sumLeaveHour(responseData) > 0"><center><b>{{ (sumLimits(responseData) - sumLeaveDay(responseData) - 1) + ' / ' + (9 - sumLeaveHour(responseData))}}</b></center></b-th>
               <b-th v-if="sumLeaveHour(responseData) == 0"><center><b>{{ (sumLimits(responseData) - sumLeaveDay(responseData)) + ' / 0'}}</b></center></b-th>
             </b-tr>
-          </b-thead>
+          </b-thead> -->
       </b-table-simple>
     </b-col>
     <loading
@@ -190,61 +225,43 @@ export default {
 	  		  return acc + parseInt(val.leave_limit);
         }, 0);  
       },
-      sumLeaveDay: function (responseData) {
-  	      return responseData.reduce((acc, val) => {
-            if(val.dd != null){
-              var resultDay = acc + parseInt(val.dd);
-              return resultDay;
-            }
-            else {
-              return acc;
-            }
-          }, 0);
-      },
+      // sumLeaveDay: function (responseData) {
+  	  //     return responseData.reduce((acc, val) => {
+      //       if(val.dd != null){
+      //         var resultDay = acc + parseInt(val.dd);
+      //         return resultDay;
+      //       }
+      //       else {
+      //         return acc;
+      //       }
+      //     }, 0);
+      // },
       sumLeaveHour: function (responseData) {
-  	      return responseData.reduce((acc, val) => {
-            if(val.hh != null){
-              var resultHour = acc + parseInt(val.hh); 
-	  		      return resultHour;
-            }
-            else{
-              return acc;
-            }
-          }, 0);
-      },
-      sumRemain1: function (responseData) {
   	    return responseData.reduce((acc, val) => {
-          if(val.dd == 0){
-            var sum1 = val.leave_limit - val.dd;
-            var remain1 = acc + parseInt(sum1);
-            return remain1; 
+          if(val.hh != null){
+            var resultHour = acc + parseInt(val.hh); 
+	  		    return resultHour;
           }
-          else if(val.dd == null && val.hh == null){
-            var sum2 = val.leave_limit - val.dd;
-            var remain2 = acc + parseInt(sum2);
-            return remain2; 
+          else{
+            return acc;
           }
-          else if(val.hh != 0){
-            var sum3 = (val.leave_limit - val.dd) - 1;
-            var remain3 = acc + parseInt(sum3);
-            return remain3;
-          }
-			  }, 0);
+        }, 0);
       },
-      sumRemain2: function (responseData) {
+      sumRemain: function (responseData) {
   	    return responseData.reduce((acc, val) => {
-          if(val.hh == 0){
-
-          }
-          var sum2 = 9 - val.hh;
-          var remain2 = Math.abs(acc - parseInt(sum2));
-          return remain2;
+          // var sum = 8 - val.hh;
+          
+            var remain = acc + parseInt(val.hh);
+            var remainFinal = this.sumLimits(responseData) - remain;
+            return remainFinal;
+         
 			  }, 0);
       },
       showStat: async function(){
         this.isLoading = true;
         var user = JSON.parse(localStorage.getItem("user"));
         await authService.getLeaveStat(user.uuid).then(response => {
+          console.log(response.data);
           this.responseData = response.data;
         });
         this.isLoading = false;

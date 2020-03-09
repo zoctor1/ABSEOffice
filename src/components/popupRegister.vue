@@ -22,7 +22,7 @@
                     <input class="form__input" placeholder="อีเมล" v-model.trim="$v.username.$model" style="width:100%;height:37px; padding-left:10px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px; font-family: Kanit, Arial, Helvetica, sans-serif !important; font-size: 16px;"/>
                   </div>
                   <div class="error" v-if="!$v.username.isUnique" style="margin:-15px 0px 10px 0px; color: red; text-align:left;">
-                    อีเมลนี้มีผู้ใช้แล้ว
+                    กรุณากรอกอีเมล์ให้ถูกต้อง
                   </div>
                 </div>
               </b-col>
@@ -177,6 +177,7 @@ import Vue from "vue";
 import * as mainJs from "@/assets/js/mainJS.js";
 import * as authService from '@/services/auth.service';
 import VueSweetalert2 from 'vue-sweetalert2';
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import 'sweetalert2/dist/sweetalert2.min.css'
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
@@ -228,6 +229,7 @@ export default {
         nestedPhone: '',
         nestedAddress: ''
       },
+      allEmail:{}
     }
   },
   computed: {},
@@ -237,6 +239,7 @@ export default {
   mounted() {
     this.getDataDept();
     this.getDataPosition();
+    this.getDataEmail();
   },
   methods: {
     show () {
@@ -319,8 +322,18 @@ export default {
     },
     getDataEmail: async function(){
       await authService.getDataEmail().then(response => {
-        console.log(response.data)
-      });
+        console.log(response.data);
+        this.allEmail = response.data;
+        // var email = "dsg@email.vom"
+        // for(var i = 0;i < this.allEmail.length; i++){
+        //   if(email != this.allEmail[i].email){
+        //     console.log("true")
+        //   }
+        //   else if (email == this.allEmail[i].email) {
+        //     console.log("false")
+        //   }
+        // }
+      })
     },
     chkIsEmpty: function(value) {
       return value == undefined || value == null || (value + "").trim() == "";
@@ -334,7 +347,18 @@ export default {
       }
       return true;
     },
+    // checkEmail(email){
+    //   for(var i = 0;i < this.allEmail.length; i++){
+    //       if(email != this.allEmail[i].email){
+    //         console.log("true")
+    //       }
+    //       else if (email == this.allEmail[i].email) {
+    //         console.log("false")
+    //       }
+    //     }
+    // },
     insertNewEmployee: async function(){
+      this.isLoading = true
       var obj = {}
       obj["email"] = this.$v.username.$model;
       obj["password"] = this.$v.password.$model;
@@ -347,8 +371,36 @@ export default {
       obj["address"] = this.$v.form.nestedAddress.$model;
       obj["work_start"] = mainJs.setDateToServer(this.$v.form.startDate.$model);
       console.log(obj)
+        // var email = this.$v.username.$model
+        // for(var i = 0;i < this.allEmail.length; i++){
+        //   if(email != this.allEmail[i].email){
+        //     console.log("true")
+        //     await authService.insertNewEmployee(obj).then(response =>{
+        //       console.log(response.data)
+        //     })
+        //   }
+        //   else if (email == this.allEmail[i].email) {
+        //     console.log("false")
+        //   }
+        // }
       await authService.insertNewEmployee(obj).then(response =>{
-        console.log(response.data)
+        console.log(response.data);
+        if (response.data != 0) {
+          Swal.fire (
+              'การส่งอนุมัติเสร็จสิ้น',
+              ' ',
+              'success'
+          )
+          this.isLoading = false
+        }
+        else if (response.data == 0) {
+          Swal.fire (
+              'Email นี้มีผู้ใช้เเล้ว',
+              ' ',
+              'success'
+          )
+          this.isLoading = false
+        }
       })
     }
   },
@@ -365,15 +417,14 @@ export default {
         minLength: minLength(6),
         required,
           isUnique(value) {
-            // standalone validator ideally should not assume a field is required
-            if (value === '') return true
-
-            // simulate async call, fail for all logins with even length
-            return new Promise((resolve, reject) => {
-              setTimeout(() => {
-                resolve(typeof value === 'string' && value.length % 2 !== 0)
-              }, 300)
-            })
+            var status = true;
+            var validateEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
+            if (!validateEmail.test(value)) {
+              status = false;
+            } else {
+              status = true;
+            }
+            return status;
           }
       },
       password: {

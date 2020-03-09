@@ -141,6 +141,7 @@ import { Settings } from 'luxon'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 import VModal from 'vue-js-modal'
+import popupRegister from "@/components/popupRegister.vue"
 import VueSuggestion from 'vue-suggestion'
 import itemTemplate from '../components/ItemTemplate.vue';
 
@@ -346,38 +347,38 @@ export default {
         });
       this.totalRows = this.items.length
     },
-    handleResize: function() {
-      this.window.width = window.innerWidth;
-      this.window.height = window.innerHeight;
-      if(this.window.width <= 750){
-        this.fields = [
-          { key: 'no', label: 'ลำดับ', class: 'text-center' },
-          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
-          { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
-          // { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
-          // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
-          // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
-          { key: 'hr_approve_date_format', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-          { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
-        ]
-      }
-      else{
-        this.fields = [
-          { key: 'no', label: 'ลำดับ', class: 'text-center' },
-          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
-          { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
-          { key: 'dept_name', label: 'เเผนก', class: 'text-center' },
-          { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center' },
-          { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
-          // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
-          // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
-          { key: 'head_approve_date_format', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
-          { key: 'hr_approve_date_format', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
-          { key: 'status', label: 'สถานะ', class: 'text-center' },
-          { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
-        ]
-      }
-    },
+    // handleResize: function() {
+    //   this.window.width = window.innerWidth;
+    //   this.window.height = window.innerHeight;
+    //   if(this.window.width <= 750){
+    //     this.fields = [
+    //       { key: 'no', label: 'ลำดับ', class: 'text-center' },
+    //       { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
+    //       { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
+    //       // { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
+    //       // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
+    //       // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
+    //       { key: 'hr_approve_date_format', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+    //       { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
+    //     ]
+    //   }
+    //   else{
+    //     this.fields = [
+    //       { key: 'no', label: 'ลำดับ', class: 'text-center' },
+    //       { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center' },
+    //       { key: 'full_Name', label: 'ชื่อ', class: 'text-center' },
+    //       { key: 'dept_name', label: 'เเผนก', class: 'text-center' },
+    //       { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center' },
+    //       { key: 'leave_reason_name', label: 'รายละเอียดเวลา', class: 'text-center' },
+    //       // { key: 'leave_start_date', label: 'วันที่ลา', class: 'text-center' },
+    //       // { key: 'leave_stop_date', label: 'ลาถึงวันที่', class: 'text-center' },
+    //       { key: 'head_approve_date_format', label: 'วันที่หัวหน้าอนุมัติ', class: 'text-center' },
+    //       { key: 'hr_approve_date_format', label: 'วันที่ Hr รับทราบ', class: 'text-center' },
+    //       { key: 'status', label: 'สถานะ', class: 'text-center' },
+    //       { key: 'leave_remark', label: 'รายละเอียดการลา', class: 'text-center' }
+    //     ]
+    //   }
+    // },
     info(item, index, button) {
       this.infoModal.title = `Row index: ${index}`
       this.infoModal.content = JSON.stringify(item, null, 2)

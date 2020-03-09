@@ -9,45 +9,44 @@
       class="myNavbar">
     <div slot="title">
       <vs-navbar-title>
-        <img style="cursor: pointer;" @click="toUrl('Main'), indexActive = 0" alt="Vue logo" src="../assets/ABSLogo9.png" width="180" height="60" /> 
+        <img style="cursor: pointer;" @click="toUrl('HomePage'), indexActive = 0" alt="Vue logo" src="../assets/ABSLogo9.png" width="180" height="60" /> 
       </vs-navbar-title>
     </div>
 
     <vs-navbar-item index="0">
-      <a style="cursor: pointer;" @click="toUrl('Main'), indexActive = 0"><font style="font-size: 20px;" color="#FEFCFF">หน้าหลัก</font></a>
+      <a style="cursor: pointer;" @click="toUrl('HomePage'), indexActive = 0"><font style="font-size: 20px;" color="#FEFCFF">หน้าหลัก</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="1">
-      <a style="cursor: pointer;" @click="toUrl('EmpLeave'), indexActive = 1"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการลางาน</font></a>
+      <a style="cursor: pointer;" @click="toUrl('LeaveEmp'), indexActive = 1"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการลางาน</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="2">
       <!-- v-if="userIn.header_flag == 1" -->
-      <a style="cursor: pointer;" @click="toUrl('HeaderApprove'), indexActive = 2"><font style="font-size: 20px;" color="#FEFCFF">คำขออนุมัติการลางาน</font></a>
+      <a style="cursor: pointer;" @click="toUrl('LeaveHeader'), indexActive = 2"><font style="font-size: 20px;" color="#FEFCFF">คำขออนุมัติการลางาน</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="3">
-      <!-- v-if="userIn.header_flag == 1" -->
-      <a style="cursor: pointer;" @click="toUrl('dataEmployeeDept'), indexActive = 3"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลพนักงานในเเผนก</font></a>
-    </vs-navbar-item>
-    
-    <vs-navbar-item index="4">
       <!-- v-if="userIn.dept_id == 3" -->
-      <a style="cursor: pointer;" @click="toUrl('HrLeave'), indexActive = 5"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการลางานของพนักงาน</font></a>
+      <a style="cursor: pointer;" @click="toUrl('LeaveHr'), indexActive = 3"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลการลางานของพนักงาน</font></a>
+    </vs-navbar-item>
+    <vs-navbar-item index="4">
+      <a style="cursor: pointer;" @click="toUrl('OTEmp'), indexActive = 4"><font style="font-size: 20px;" color="#FEFCFF">(User)การทำงานนอกเวลา</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="5">
-      <!-- v-if="userIn.dept_id == 3" -->
-      <a style="cursor: pointer;" @click="toUrl('dataEmployee'), indexActive = 6"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลพนักงานทั้งหมด</font></a>
+      <!-- v-if="userIn.header_flag == 1" -->
+      <a style="cursor: pointer;" @click="toUrl('OTHeader'), indexActive = 5"><font style="font-size: 20px;" color="#FEFCFF">(Header)ข้อมูลการทำงานนอกเวลาของพนักงาน</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="6">
-      <!-- v-if="userIn.header_flag == 1" -->
-      <a style="cursor: pointer;" @click="toUrl('EmpOT'), indexActive = 4"><font style="font-size: 20px;" color="#FEFCFF">(User)การทำงานนอกเวลา</font></a>
+      <!-- v-if="userIn.dept_id == 3" -->
+      <a style="cursor: pointer;" @click="toUrl('OTHr'), indexActive = 6"><font style="font-size: 20px;" color="#FEFCFF">(HR)ข้อมูลการทำงานนอกเวลาของพนักงาน</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="7">
-      <!-- v-if="userIn.dept_id == 3" -->
-      <a style="cursor: pointer;" @click="toUrl('HeaderOT'), indexActive = 7"><font style="font-size: 20px;" color="#FEFCFF">(Header)ข้อมูลการทำงานนอกเวลาของพนักงาน</font></a>
+      <!-- v-if="userIn.header_flag == 1" -->
+      <a style="cursor: pointer;" @click="toUrl('dataDeptEmployee'), indexActive = 7"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลพนักงานในเเผนก</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="8">
       <!-- v-if="userIn.dept_id == 3" -->
-      <a style="cursor: pointer;" @click="toUrl('HrOT'), indexActive = 8"><font style="font-size: 20px;" color="#FEFCFF">(HR)ข้อมูลการทำงานนอกเวลาของพนักงาน</font></a>
+      <a style="cursor: pointer;" @click="toUrl('dataEmployee'), indexActive = 8"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลพนักงานทั้งหมด</font></a>
     </vs-navbar-item>
+    
     
 
 
@@ -185,21 +184,21 @@ export default {
   computed: {},
   beforeMount() {
     this.userIn = JSON.parse(localStorage.getItem("user"));
-    if (this.$route.name == "EmpLeave") {
+    if (this.$route.name == "LeaveEmp") {
       this.indexActive = 1;
-    } else if (this.$route.name == "HeaderApprove") {
+    } else if (this.$route.name == "LeaveHeader") {
       this.indexActive = 2;
-    } else if (this.$route.name == "dataEmployeeDept") {
+    } else if (this.$route.name == "LeaveHr") {
       this.indexActive = 3;
-    } else if (this.$route.name == "HrLeave") {
+    } else if (this.$route.name == "OTEmp") {
       this.indexActive = 4;
-    } else if (this.$route.name == "dataEmployee") {
+    } else if (this.$route.name == "OTHeader") {
       this.indexActive = 5;
-    }else if (this.$route.name == "EmpOT") {
+    }else if (this.$route.name == "OTHr") {
       this.indexActive = 6;
-    }else if (this.$route.name == "HeaderOT") {
+    }else if (this.$route.name == "dataDeptEmployee") {
       this.indexActive = 7;
-    }else if (this.$route.name == "HrOT") {
+    }else if (this.$route.name == "dataEmployee") {
       this.indexActive = 8;
     } else {
       this.indexActive = 0;

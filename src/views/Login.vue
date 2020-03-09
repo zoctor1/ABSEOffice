@@ -84,11 +84,22 @@ export default {
   },
   computed: {},
   mounted() {
+    this.checkSession();
     this.isLoading = true;
     setTimeout(() => {
       this.isLoading = false}, 1000);
   },
   methods: {
+    checkSession(){
+      var user = JSON.parse(localStorage.getItem("user"));
+      console.log(user)
+      if(user != null && user != ""){
+        this.toURL("Homepage");
+      }
+      else{
+        this.toURL("Login");
+      }
+    },
     validationData() {
       if (this.email == "" || this.deptId == null || this.positionId == null || this.firstName == "" || this.lastName == "" || this.nickName == "" || this.mobile == "" ||  this.address == "") {
           this.$swal.fire({
