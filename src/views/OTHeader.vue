@@ -1,127 +1,139 @@
 <template>
   <div id="OTHeader">
-    <b-row>
-      <div><br>
-        <h2 style="font-weight: bold; margin-left:30px;">
+    <br>
+    <div id="rowTable">
+      <b-row>
+        <h2 style="font-weight: bold; cursor:default; padding:0px 15px 0px 15px">
           ข้อมูลการทำงานนอกเวลาของพนักงานภายในแผนก
         </h2>
-      </div>
-    </b-row>
-    <b-row style="padding:0px 40px 0px 40px; width:100%;">
-      <b-col sm="12" md="6" lg="2">
-        <p style="cursor:default;"><b>วันที่ปฏิบัติงาน :</b></p>
-        <datetime 
-          type="date" 
-          v-model="valDateStart" 
-          format="dd/MM/yyyy" 
-          :min-datetime="currentDate"
-          placeholder="เลือกวันเพื่อค้นหา..."
-          >
-        </datetime>
-      </b-col>
-      <b-col sm="2">
-        <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
-          <vue-suggestion 
-            :items="nameSearchArray" 
-            v-model="nameSearch"
-            :setLabel="setLabel"
-            :itemTemplate="itemTemplate"
-            @changed="inputChange"
-            @selected="itemSelected"
-            placeholder="พิมพ์ชื่อเพื่อค้นหา..."
-          >
-          </vue-suggestion> 
-      </b-col>
-      <b-col sm="12" md="6" lg="2">
-        <p style="cursor:default;"><b>สถานะ :</b></p>
-        <b-form-select
-          v-model="selectStat"
-          :options="optionStat"
-          style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-        >
-        </b-form-select>
-      </b-col>
-      <b-col sm="2" style="margin-top:24px">
-        <b-button
-          variant="outline-primary"
-          @click="filterData()"
-          style="height:42px; width:127px; margin:0px 10px 10px 0px;"
-        >
-          ค้นหา
-        </b-button>
-      
-        <b-button
-          variant="outline-danger"
-          @click="defaultValue()"
-          style="height:42px; width:127px; margin:0px 0px 10px 0px" 
-        >
-            เคลียร์ข้อมูล
-        </b-button>
-      </b-col>
-      <b-col lg="2" style="padding-top:24px">
-        <vs-button
-          @click="showLeavePopup(0)"
-          color="primary"
-          type="filled"
-          style="height:42px; "
-        >
-          <img 
-          src="../assets/Plus_icon3.png" 
-          style="margin-top:-3px"
-          width="20" 
-          height="20" 
-          /> เพิ่มการลาของพนักงาน
-        </vs-button>
-      </b-col>
-    </b-row>
-    <b-row style="padding:0px 30px 0px 30px;">
-      <table width=100% style="margin-top:10px; border: 1px solid black;">
-          <div >
-            <b-table
-              responsive
-              :busy="isBusy"
-              striped hover 
-              :items="items"
-              :fields="fields"
-              :filter="filter"
-              :current-page="currentPage"
-              :per-page="perPage"
-              :sort-by.sync="sortBy"
-              :sort-desc.sync="sortDesc"
-              :sort-direction="sortDirection"
-              @filtered="onFiltered" 
-              show-empty
+      </b-row>
+    </div>
+    <div id="rowTable">
+      <b-row> 
+        <b-col sm="12" md="6" lg="2">
+          <p style="cursor:default;"><b>วันเริ่มต้น :</b></p>
+          <datetime 
+            type="date" 
+            v-model="valDateStart" 
+            format="dd/MM/yyyy" 
+            :min-datetime="currentDate"
+            placeholder="ค้นหาวันเริ่มต้น..."
             >
-              <template v-slot:table-busy>
-                <div class="text-center text-danger ">
-                  <b-spinner class="align-middle"></b-spinner>
-                  <strong> Loading...</strong>
-                </div>
-              </template>
-
-              <template v-slot:head()="data">
-                <span style="font-size: 18px;">{{ data.label }}</span>
-              </template>
-
-              <template v-slot:empty>
-                <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลพนักงาน</h2>
-              </template>
-
-              <template v-slot:cell(leave_remark)="data">
-                <div>
-                  <img 
-                    src="../assets/Details.png" 
-                    style="cursor: pointer" 
-                    width="33" 
-                    height="33"  
-                    @click="dataModal = data.item, show('OTHeaderModal')"
-                  >
-                </div>
-              </template>
-            </b-table>
+          </datetime>
+        </b-col>
+        <b-col sm="12" md="6" lg="2">
+          <p style="cursor:default;"><b>วันสิ้นสุด :</b></p>
+          <datetime 
+            type="date" 
+            v-model="valDateStop" 
+            format="dd/MM/yyyy" 
+            :min-datetime="currentDate"
+            placeholder="ค้นหาวันสิ้นสุด..."
+            >
+          </datetime>
+        </b-col>
+        <b-col md="6" lg="2">
+          <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
+            <vue-suggestion 
+              :items="nameSearchArray" 
+              v-model="nameSearch"
+              :setLabel="setLabel"
+              :itemTemplate="itemTemplate"
+              @changed="inputChange"
+              @selected="itemSelected"
+              placeholder="พิมพ์ชื่อเพื่อค้นหา..."
+            >
+            </vue-suggestion> 
+        </b-col>
+        <b-col sm="12" md="6" lg="2">
+          <p style="cursor:default;"><b>สถานะ :</b></p>
+          <b-form-select
+            v-model="selectStat"
+            :options="optionStat"
+            style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+          >
+          </b-form-select>
+        </b-col>
+        <b-col sm="12" md="6" lg="2">
+          <p style="cursor:default;"><b>ประเภทการปฏิบัติงาน :</b></p>
+          <div style="margin-top:-16px;">
+            <b-form-select
+              v-model="selectType"
+              :options="optionOtType"
+              @change="getDataTypeOT()"
+              class="mt-3"
+              style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+            >
+            </b-form-select>
           </div>
+        </b-col>
+        <b-col sm="2" style="margin-top:24px">
+          <b-button
+            variant="outline-primary"
+            @click="filterData()"
+            style="height:42px; width:127px; margin:0px 10px 10px 0px;"
+          >
+            ค้นหา
+          </b-button>
+        
+          <b-button
+            variant="outline-danger"
+            @click="defaultValue()"
+            style="height:42px; width:127px; margin:0px 0px 10px 0px" 
+          >
+              เคลียร์ข้อมูล
+          </b-button>
+        </b-col>
+      </b-row>
+    </div>
+    <div id="rowTable">
+      <b-row>
+        <table width=100% style="margin-top:10px; border: 1px solid black;">
+          <b-table
+            responsive
+            :busy="isBusy"
+            striped hover 
+            :items="items"
+            :fields="fields"
+            :filter="filter"
+            :current-page="currentPage"
+            :per-page="perPage"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
+            :sort-direction="sortDirection"
+            @filtered="onFiltered" 
+            show-empty
+          >
+            <template v-slot:table-busy>
+              <div class="text-center text-danger ">
+                <b-spinner class="align-middle"></b-spinner>
+                <strong> Loading...</strong>
+              </div>
+            </template>
+
+            <template v-slot:head()="data">
+              <span style="font-size: 18px;">{{ data.label }}</span>
+            </template>
+
+            <template v-slot:empty>
+              <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลพนักงาน</h2>
+            </template>
+
+            <template v-slot:cell(leave_remark)="data">
+              <div>
+                <img 
+                  src="../assets/Details.png" 
+                  style="cursor: pointer" 
+                  width="33" 
+                  height="33"  
+                  @click="dataModal = data.item, show('OTHeaderModal')"
+                >
+              </div>
+            </template>
+          </b-table>
         </table>
-    </b-row>
+      </b-row>
+    </div>
     <b-row style="margin:5px 0px 0px 30px; text-align:right;" >
       <b-col sm="1">
       </b-col>
@@ -212,6 +224,15 @@
 
           <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
             <b-col>
+              <p><b style="font-size: 16px;">ประเภทการปฏิบัติงาน :</b></p>
+            </b-col>
+            <b-col>
+              <p style="font-size: 16px;"> ประเภทการปฏิบัติงาน </p>
+            </b-col>
+          </b-row>
+
+          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+            <b-col>
               <p><b style="font-size: 16px;">ช่วงเวลาที่ทำ :</b></p>
             </b-col>
             <b-col>
@@ -267,7 +288,6 @@ import { Settings } from 'luxon'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 import VModal from 'vue-js-modal'
-import popupLeaveHeaderHr from "@/components/popupLeaveHeaderHr.vue"
 import VueSuggestion from 'vue-suggestion'
 import itemTemplate from '../components/ItemTemplate.vue';
 
@@ -277,8 +297,7 @@ Vue.use(VueSuggestion);
 export default {
   name: "OTHeader",
   components: {
-    datetime: Datetime,
-    popupLeaveHeaderHr
+    datetime: Datetime
   },
   props: {},
   data() {
@@ -305,6 +324,7 @@ export default {
         { key: 'dept_name',         label: 'แผนก', class: 'text-center dept' },
         { key: 'position_name',     label: 'ตำแหน่ง', class: 'text-center position' },
         { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
+        { key: 'type_work',  label: 'ประเภทการปฏิบัติงาน', class: 'text-center type_work' },
         { key: 'header_approve',    label: 'หัวหน้ายืนยัน', class: 'text-center header_approve' },
         { key: 'hr_approve',        label: 'สถานะ', class: 'text-center hr_approve' },
         { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
@@ -323,9 +343,7 @@ export default {
       valDateStart: '',
       valDateStop: '',
       selectType: '',
-      selectDep:'',
       selectStat: '',
-      showPopHeader:false,
       window : {
         width: 0,
         height: 0
@@ -349,9 +367,9 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   mounted() {
+    this.getDataTypeOT();
     this.getDataEmployee();
     this.selectType = null;
-    this.selectDep = null;
     this.selectStat = null;
     this.getDataReasonLeave();
     this.getDataDept();
@@ -369,20 +387,11 @@ export default {
         this.getDataEmployee();   
       }
     },
-    showLeavePopup: function(flag) {
-      var ths = this;
-      ths.showPopHeader = true;
-      ths.checkPopup = flag;
-      setTimeout(function() {
-        ths.showPopHeader = false;
-      }, 1000);
-    },
     defaultValue() {
       this.valDateStart = "";
       this.valDateStop = "";
       this.selectStat = null;
       this.selectType = null;
-      this.selectDep = null;
       this.getDataEmployee();
     },
     itemSelected (nameSearch) {
@@ -407,6 +416,19 @@ export default {
       }
       this.items = allData;
       this.totalRows = this.items.length
+    },
+    getDataTypeOT: async function(){
+      var dataType = [];
+      await authService.getDataTypeOT().then(response => {
+        console.log(response.data);
+        if (response.data != null && response.data.length > 0) {
+          dataType.push({ text: "--เลือกประเภทการปฏิบัติงาน	--", value: null, disabled: true})
+          response.data.forEach(function (obj, i) {
+            dataType.push({ text: obj.overtime_type_name, value: obj.overtime_type_id });
+          });
+          this.optionOtType = dataType;
+        }
+      });
     },
     getDataAllUser: async function(){
       var ths = this;
@@ -476,14 +498,15 @@ export default {
       if(this.window.width >= 1270){
         console.log("1200")
         this.fields = [
-          { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
+          { key: 'no', label: 'ลำดับ', class: 'text-center no' },
           { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date_format' },
-          { key: 'full_Name',              label: 'ชื่อ', class: 'text-center name' },
-          { key: 'position_name',          label: 'ตำแหน่ง', class: 'text-center position' },
+          { key: 'full_Name', label: 'ชื่อ', class: 'text-center name' },
+          { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position' },
           { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
-          { key: 'header_accept',     label: 'การอนุมัติ', class: 'text-center header_accept' },
-          { key: 'header_approve',    label: 'การปฏิบัติงานจริง', class: 'text-center header_approve' },
-          { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
+          { key: 'type_work', label: 'ประเภทการปฏิบัติงาน', class: 'text-center type_work' },
+          { key: 'header_accept', label: 'การอนุมัติ', class: 'text-center header_accept' },
+          { key: 'header_approve', label: 'การปฏิบัติงานจริง', class: 'text-center header_approve' },
+          { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
         ]
       } else if(this.window.width < 1270 && this.window.width >= 1000){
         console.log("800")
@@ -577,6 +600,10 @@ export default {
   }
   #OTHeader .popupRemark:hover {
     background-color:#f5f5f5;
+  }
+  #rowTable .row {
+    margin-right: 15px;
+    margin-left: 15px;
   }
 </style>
 

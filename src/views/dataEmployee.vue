@@ -1,5 +1,6 @@
 <template>
   <div id="DataEmployee">
+    <popupRegister v-bind:showPopRegister="showPopRegister"/>
     <b-row>
       <div><br>
         <h2 style="font-weight: bold; margin-left:30px;">
@@ -47,54 +48,67 @@
             เคลียร์ข้อมูล
         </b-button>
       </b-col>
+      <b-col xs="6" sm="6" md="6" lg="2" >
+        <vs-button
+          @click="showLeavePopup()"
+          color="primary"
+          type="filled"
+          style="height:42px; width:135px;"
+        >
+          <img 
+          src="../assets/Plus_icon3.png" 
+          style="margin-top:-3px"
+          width="20" 
+          height="20" 
+          /> เพิ่มการลา
+        </vs-button>
+      </b-col>
     </b-row>
     <b-row style="padding:0px 30px 0px 30px;">
       <table width=100% style="margin-top:10px; border: 1px solid black;">
-          <div >
-            <b-table
-              responsive
-              :busy="isBusy"
-              striped hover 
-              :items="items"
-              :fields="fields"
-              :filter="filter"
-              :current-page="currentPage"
-              :per-page="perPage"
-              :sort-by.sync="sortBy"
-              :sort-desc.sync="sortDesc"
-              :sort-direction="sortDirection"
-              @filtered="onFiltered" 
-              show-empty
-            >
-              <template v-slot:table-busy>
-                <div class="text-center text-danger ">
-                  <b-spinner class="align-middle"></b-spinner>
-                  <strong> Loading...</strong>
-                </div>
-              </template>
+        <b-table
+          responsive
+          :busy="isBusy"
+          striped hover 
+          :items="items"
+          :fields="fields"
+          :filter="filter"
+          :current-page="currentPage"
+          :per-page="perPage"
+          :sort-by.sync="sortBy"
+          :sort-desc.sync="sortDesc"
+          :sort-direction="sortDirection"
+          @filtered="onFiltered" 
+          show-empty
+        >
+          <template v-slot:table-busy>
+            <div class="text-center text-danger ">
+              <b-spinner class="align-middle"></b-spinner>
+              <strong> Loading...</strong>
+            </div>
+          </template>
 
-              <template v-slot:head()="data">
-                <span style="font-size: 18px;">{{ data.label }}</span>
-              </template>
+          <template v-slot:head()="data">
+            <span style="font-size: 18px;">{{ data.label }}</span>
+          </template>
 
-              <template v-slot:empty>
-                <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลพนักงาน</h2>
-              </template>
+          <template v-slot:empty>
+            <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลพนักงาน</h2>
+          </template>
 
-              <template v-slot:cell(leave_remark)="data">
-                <div>
-                  <img 
-                    src="../assets/Details.png" 
-                    style="cursor: pointer" 
-                    width="33" 
-                    height="33"  
-                    @click="dataModal = data.item, show('dataEmployeeModal')"
-                  >
-                </div>
-              </template>
-            </b-table>
-          </div>
-        </table>
+          <template v-slot:cell(leave_remark)="data">
+            <div>
+              <img 
+                src="../assets/Details.png" 
+                style="cursor: pointer" 
+                width="33" 
+                height="33"  
+                @click="dataModal = data.item, show('dataEmployeeModal')"
+              >
+            </div>
+          </template>
+        </b-table>
+      </table>
     </b-row>
     <b-row style="margin:5px 0px 0px 30px; text-align:right;" >
       <b-col sm="1">
@@ -218,7 +232,7 @@ import { Settings } from 'luxon'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 import VModal from 'vue-js-modal'
-import popupLeaveHeaderHr from "@/components/popupLeaveHeaderHr.vue"
+import popupRegister from "@/components/popupRegister.vue"
 import VueSuggestion from 'vue-suggestion'
 import itemTemplate from '../components/ItemTemplate.vue';
 
@@ -229,7 +243,7 @@ export default {
   name: "DataEmployee",
   components: {
     datetime: Datetime,
-    popupLeaveHeaderHr
+    popupRegister
   },
   props: {},
   data() {
@@ -269,11 +283,11 @@ export default {
       selectType: '',
       selectDep:'',
       selectStat: '',
-      showPopHeader:false,
+      showPopRegister:false,
       window : {
         width: 0,
         height: 0
-      }
+      },
     }
   },
   computed: {
@@ -314,10 +328,10 @@ export default {
     },
     showLeavePopup: function(flag) {
       var ths = this;
-      ths.showPopHeader = true;
+      ths.showPopRegister = true;
       ths.checkPopup = flag;
       setTimeout(function() {
-        ths.showPopHeader = false;
+        ths.showPopRegister = false;
       }, 1000);
     },
     defaultValue() {

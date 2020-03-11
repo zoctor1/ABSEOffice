@@ -153,7 +153,7 @@
               <b-col>
               </b-col>
               <b-col style="text-align:center;">
-                <b-button style="margin: 0px 0px 10px 0px; width:100%;" variant="outline-primary" @click="validationData()">บันทึก</b-button>
+                <b-button style="margin: 0px 0px 10px 0px; width:100%;" variant="outline-primary" @click="insertNewEmployee()">บันทึก</b-button>
               </b-col>
               <b-col style="text-align:center;">
                 <b-button style="margin: 0px 0px 10px 0px; width:100%;" variant="outline-danger" @click="defaultValue()">เคลียร์</b-button>
@@ -184,12 +184,14 @@ import { Datetime } from 'vue-datetime' // npm install --save luxon vue-datetime
 import 'vue-datetime/dist/vue-datetime.css'
 import { Settings } from 'luxon'
 import { required, sameAs, minLength } from "vuelidate/lib/validators";
+import Swal from "sweetalert2/dist/sweetalert2.js"; //npm install sweetalert2
 
 Vue.use(VueSweetalert2,Datetime);
 
 export default {
   name: "popupRegisterUser",
   components: {
+    Swal,
     Loading,
     datetime: Datetime
   },
@@ -246,7 +248,7 @@ export default {
       this.$modal.hide('hello-world');
     },
     validationData() {
-      if (this.$v.username.$model == "" || this.deptId == null || this.positionId == null || this.$v.form.nestedFirstname.$model == "" || this.$v.form.nestedLastname.$model == "" || this.$v.form.nestedNickname.$model == "" || this.$v.form.nestedPhone.$model == "" ||  this.$v.form.nestedAddress.$model == "") {
+      if (this.$v.username.$model == "" || this.deptId == null || this.positionId == null || this.$v.form.nestedFirstname.$model == "" || this.$v.form.nestedLastname.$model == "" || this.$v.form.nestedNickname.$model == "" || this.$v.form.nestedPhone.$model == "" ||  this.$v.form.nestedAddress.$model == "" || this.$v.form.startDate.$model == null || this.$v.form.startDate.$model == "") {
           this.$swal.fire({
             heightAuto: false,
             icon: 'warning',
@@ -348,7 +350,27 @@ export default {
       obj["work_start"] = mainJs.setDateToServer(this.$v.form.startDate.$model);
       console.log(obj)
       await authService.insertNewEmployee(obj).then(response =>{
-        console.log(response.data)
+        if (this.$v.username.$model == "" || this.deptId == null || this.positionId == null || this.$v.form.nestedFirstname.$model == "" || this.$v.form.nestedLastname.$model == "" || this.$v.form.nestedNickname.$model == "" || this.$v.form.nestedPhone.$model == "" ||  this.$v.form.nestedAddress.$model == "" || this.$v.form.startDate.$model == null || this.$v.form.startDate.$model == "") {
+            this.$swal.fire({
+              heightAuto: false,
+              icon: 'warning',
+              title: 'กรุณากรอกข้อมูลให้ครบถ้วน'
+            })
+        } else if (response.data > 0) {
+          console.log(response.data)
+          setTimeout(() => {
+            this.Loading = false;
+          }, 1000);
+          this.$modal.hide('hello-world');
+          Swal.fire (
+            'การส่งอนุมัติเสร็จสิ้น',
+            ' ',
+            'success'
+          )
+        } else {
+          setTimeout(() => {
+            this.isLoading = false}, 500);
+          }
       })
     }
   },

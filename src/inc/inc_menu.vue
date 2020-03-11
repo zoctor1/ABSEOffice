@@ -36,12 +36,12 @@
     <vs-navbar-item index="6">
       <a style="cursor: pointer;" @click="toUrl('OTHr'), indexActive = 6"><font style="font-size: 20px;" color="#FEFCFF">(HR)ข้อมูลการทำงานนอกเวลาของพนักงาน</font></a>
     </vs-navbar-item>
-    <vs-navbar-item index="7">
+    <!-- <vs-navbar-item index="7">
       <a style="cursor: pointer;" @click="toUrl('dataDeptEmployee'), indexActive = 7"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลพนักงานในเเผนก</font></a>
     </vs-navbar-item>
     <vs-navbar-item index="8">
       <a style="cursor: pointer;" @click="toUrl('dataEmployee'), indexActive = 8"><font style="font-size: 20px;" color="#FEFCFF">ข้อมูลพนักงานทั้งหมด</font></a>
-    </vs-navbar-item>
+    </vs-navbar-item> -->
     
     <vs-spacer></vs-spacer>
     <p class="my-4" style="margin: 0px 30px 0px 10px; border-left: 2px solid rgb(255, 255, 255); cursor:default; text-align: right;">

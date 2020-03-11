@@ -18,7 +18,7 @@
                   @click="showLeavePopup(0)"
                   color="primary"
                   type="filled"
-                  style="width:114px; height:44px; margin-right:auto;"
+                  style="width:144px; height:44px; margin-right:auto;"
                 >
                   <img src="../assets/Plus_icon3.png" width="20" height="20" /> เพิ่มการลา
                 </vs-button>
