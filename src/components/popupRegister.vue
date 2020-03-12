@@ -239,7 +239,6 @@ export default {
   mounted() {
     this.getDataDept();
     this.getDataPosition();
-    this.getDataEmail();
   },
   methods: {
     show () {
@@ -320,21 +319,6 @@ export default {
         }
       });
     },
-    getDataEmail: async function(){
-      await authService.getDataEmail().then(response => {
-        console.log(response.data);
-        this.allEmail = response.data;
-        // var email = "dsg@email.vom"
-        // for(var i = 0;i < this.allEmail.length; i++){
-        //   if(email != this.allEmail[i].email){
-        //     console.log("true")
-        //   }
-        //   else if (email == this.allEmail[i].email) {
-        //     console.log("false")
-        //   }
-        // }
-      })
-    },
     chkIsEmpty: function(value) {
       return value == undefined || value == null || (value + "").trim() == "";
     },
@@ -371,18 +355,6 @@ export default {
       obj["address"] = this.$v.form.nestedAddress.$model;
       obj["work_start"] = mainJs.setDateToServer(this.$v.form.startDate.$model);
       console.log(obj)
-        // var email = this.$v.username.$model
-        // for(var i = 0;i < this.allEmail.length; i++){
-        //   if(email != this.allEmail[i].email){
-        //     console.log("true")
-        //     await authService.insertNewEmployee(obj).then(response =>{
-        //       console.log(response.data)
-        //     })
-        //   }
-        //   else if (email == this.allEmail[i].email) {
-        //     console.log("false")
-        //   }
-        // }
       await authService.insertNewEmployee(obj).then(response =>{
         console.log(response.data);
         if (response.data != 0) {

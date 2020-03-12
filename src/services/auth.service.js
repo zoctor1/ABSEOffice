@@ -55,9 +55,18 @@ export function getDataReasonLeave() {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
-export function getDataEmail() {
+export function getDataPeriod() {
     return new Promise((resolve, reject) => {
-        axios.get(`${API_URL}/dataEmail`, {}, { params: {} }).then(
+        axios.get(`${API_URL}/dataPeriod`, {}, { params: {} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function getDataTypeOT() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${API_URL}/dataTypeOT`, {}, { params: {} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })
@@ -109,6 +118,33 @@ export function getDataHeader(deptId) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
+export function getDataOtForHR() {
+    return new Promise((resolve, reject) => {
+        axios.get(`${API_URL}/dataOtForHR`, {}, { params: {} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function getDataOtForHeader(deptId) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/dataOtForHeader`, {}, { headers: {dataDept : deptId} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function getUserOt(userId) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/UserOt`, {}, { headers: {dataEmp : userId} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
 export function loginUser(user,pass) {
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/login`, {}, { headers: {username: user, password: pass} }).then(
@@ -121,6 +157,15 @@ export function loginUser(user,pass) {
 export function insertData(obj) {
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/addDataLeave`, JSON.stringify(obj), {}).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function insertDataOT(obj) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/insertOT`, JSON.stringify(obj), {}).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })
@@ -173,6 +218,15 @@ export function postApproveHr(approveHr) {
     }).catch(error => reject(new ErrorWrapper(error)))
 }
 
+export function approveOtHr(otId) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/ApproveOtHR`, {}, { headers: {otIdHR : otId} }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
 export function postApproveHead(approveH) {
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/ApproveHead`, {}, { headers: {dataHead : approveH} }).then(
@@ -193,18 +247,56 @@ export function notApproveHead(notApproveH, commentHeader) {
             })
     }).catch(error => reject(new ErrorWrapper(error)))
 }
-
-export function notApproveHR(notApproveHr,commentHR) {
-    if (commentHR == undefined) {
-        commentHR = "";
-    }
+//////////////////////////////////////////////////////////////////
+export function ApproveOTHeader(overtimeId) {
     return new Promise((resolve, reject) => {
-        axios.post(`${API_URL}/NotApproveHR`, {}, { params: {commentHR : commentHR, leaveID : notApproveHr} }).then(
+        axios.post(`${API_URL}/ApproveOTHeader`, {}, { headers : { otID : overtimeId } }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })
     }).catch(error => reject(new ErrorWrapper(error)))
 }
+
+export function NotApproveOTHeader(commentApprove, overtimeId) {
+    console.log(commentApprove)
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/NotApproveOTHeader`, {}, { headers : { appRemarkOt : commentApprove, otID : overtimeId } }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function ConfirmOTHeader(overtimeId) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/ConfirmOTHeader`, {}, { headers : { otID : overtimeId } }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function NotConfirmOTHeader(commentConfirm, overtimeId) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/NotConfirmOTHeader`, {}, { headers : { conRemarkOt : commentConfirm, otID : overtimeId } }).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+
+// export function notApproveHR(notApproveHr,commentHR) {
+//     if (commentHR == undefined) {
+//         commentHR = "";
+//     }
+//     return new Promise((resolve, reject) => {
+//         axios.post(`${API_URL}/NotApproveHR`, {}, { params: {commentHR : commentHR, leaveID : notApproveHr} }).then(
+//             response => {
+//                 return resolve(new ResponseWrapper(response, response.data))
+//             })
+//     }).catch(error => reject(new ErrorWrapper(error)))
+// }
 
 export function getEvent(empId, deptId, header, choice) {
     return new Promise((resolve, reject) => {
@@ -227,6 +319,25 @@ export function postcancelCheck(cancel) {
 export function EditLeave(obj) {
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/EditLeave`, JSON.stringify(obj), {}).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function editDataOT(obj) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/EditOT`, JSON.stringify(obj), {}).then(
+            response => {
+                return resolve(new ResponseWrapper(response, response.data))
+            })
+    }).catch(error => reject(new ErrorWrapper(error)))
+}
+
+export function cancelOT(cancel) {
+    console.log(cancel)
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/CancelOT`, {}, { headers : {otId : cancel} }).then(
             response => {
                 return resolve(new ResponseWrapper(response, response.data))
             })

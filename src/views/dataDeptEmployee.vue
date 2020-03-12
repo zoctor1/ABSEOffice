@@ -135,7 +135,7 @@
               <p><b style="font-size: 16px;">ชื่อ :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> ชื่อจริง (ชื่อเล่น) </p>
+              <p style="font-size: 16px;"> {{ dataModal.full_Name }} </p>
             </b-col>
           </b-row>
 
@@ -144,7 +144,7 @@
               <p><b style="font-size: 16px;">แผนก :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> ชื่อแผนก </p>
+              <p style="font-size: 16px;"> {{ dataModal.dept_name }} </p>
             </b-col>
           </b-row>
 
@@ -153,7 +153,7 @@
               <p><b style="font-size: 16px;">ตำแหน่ง :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> ชื่อตำแหน่ง </p>
+              <p style="font-size: 16px;"> {{ dataModal.position_name }} </p>
             </b-col>
           </b-row>
 
@@ -162,7 +162,7 @@
               <p><b style="font-size: 16px;">วันที่เริ่มเข้าทำงาน :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> dd-mm-yyyy </p>
+              <p style="font-size: 16px;"> {{ dataModal.work_start_format }} </p>
             </b-col>
           </b-row>
 
@@ -171,7 +171,8 @@
               <p><b style="font-size: 16px;">ผ่านการทดลองงาน :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> ผ่านแล้ว (dd-mm-yyyy) </p>
+              <p v-if="dataModal.test_past == null" style="font-size: 16px;"> กำลังพิจารณา </p>
+              <p v-else-if="dataModal.test_past != null" style="font-size: 16px;"> ผ่านเเล้ว ({{ dataModal.test_past_format }}) </p>
             </b-col>
           </b-row>
 
@@ -180,7 +181,7 @@
               <p><b style="font-size: 16px;">เบอร์โทรติดต่อ :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> 0881593571 </p>
+              <p style="font-size: 16px;"> {{ dataModal.mobile }} </p>
             </b-col>
           </b-row>
           
@@ -189,7 +190,16 @@
               <p><b style="font-size: 16px;">ที่อยู่ปัจจุบัน :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> ที่อยู่ </p>
+              <p style="font-size: 16px;"> {{ dataModal.address }} </p>
+            </b-col>
+          </b-row>
+
+          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+            <b-col>
+              <p><b style="font-size: 16px;">อีเมล :</b></p>
+            </b-col>
+            <b-col>
+              <p style="font-size: 16px;"> {{ dataModal.email }} </p>
             </b-col>
           </b-row>
         </div>
@@ -237,9 +247,7 @@ export default {
         { key: 'no', label: 'ลำดับ', class: 'text-center no' },
         { key: 'full_Name', label: 'ชื่อ', class: 'text-center full_Name'},
         { key: 'position_name', label: 'ตำแหน่ง', class: 'text-center position_name' },
-        { key: 'address', label: 'ที่อยู่', class: 'text-center address' },
         { key: 'mobile', label: 'เบอร์โทรศัพท์', class: 'text-center mobile' },
-        { key: 'email', label: 'อีเมล', class: 'text-center email' },
         { key: 'leave_remark', label: 'รายละเอียด', class: 'text-center leave_remark' },
       ],
       dataModal:{},
@@ -389,7 +397,10 @@ export default {
         for (var i = 0; i < response.data.length; i++) {
           response.data[i].no = i+1;
           response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name + " " + "(" + response.data[i].nick_name + ")";
+          response.data[i].work_start_format = mJS.setDateFormat(response.data[i].work_start);
+          response.data[i].test_past_format = mJS.setDateFormat(response.data[i].test_past);
         } 
+        console.log(response.data)
         this.items = response.data;
         setTimeout(() => {
           this.isBusy = false

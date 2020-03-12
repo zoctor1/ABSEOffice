@@ -342,7 +342,7 @@ export default {
       this.selectType = null;
       this.selected = 3;
     },
-    EditLeave:async function() {
+    EditLeave: async function() {
       var ths = this;
       this.isLoading = false; 
       var obj = {};
@@ -494,7 +494,7 @@ export default {
         this.sel2
       );
       obj["leave_remark"] = this.$v.form.description.$model;
-
+      console.log(obj)
       if (mainJs.checkStopTime(obj["leave_start_date"], obj["leave_stop_date"]) == false) {
         Swal.fire (
           'กรอกช่วงเวลาให้ถูกต้อง',
@@ -513,6 +513,7 @@ export default {
       }
       else if (this.validation(obj)) {
         await authService.insertData(obj).then(response => {
+          console.log(obj)
           if (response.data > 0) {
             this.Loading = false;
             this.$modal.hide('hello-world');
@@ -550,7 +551,8 @@ export default {
               `,
             })},250);
         }
-    }
+       }
+    
   },
   watch: {
     showPop() {

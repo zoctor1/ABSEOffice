@@ -107,6 +107,92 @@
                 <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลพนักงาน</h2>
               </template>
 
+              <template v-slot:cell(headApprove)="data">
+                <center>
+                  <div v-if="data.item.head_approve_date == null">
+                    <p> - </p>
+                  </div>
+                  <div v-else-if="data.item.head_approve_date != null" >
+                    <p> {{ data.item.headApprove }} </p>
+                  </div>
+                </center>
+              </template>
+
+              <template v-slot:cell(headConfirm)="data">
+                <center>
+                  <div v-if="data.item.head_confirm_date == null">
+                    <p> - </p>
+                  </div>
+                  <div v-else-if="data.item.head_confirm_date != null" >
+                    <p> {{ data.item.headConfirm }} </p>
+                  </div>
+                </center>
+              </template>
+
+              <template v-slot:cell(status)="data">
+                <center>
+                <div v-if="data.item.head_approve_date != null && data.item.cancel_header_date == null">
+                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
+                    <font color="#ffffff">ผ่านการอนุมัติ</font>
+                  </p>
+                </div>
+                <div v-else-if="data.item.cancel_header_date != null">
+                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(226,106,106);"> 
+                    <font color="#ffffff">ไม่อนุมัติ</font>
+                  </p>
+                </div>
+                <div v-else-if="data.item.cancel_date != null">
+                  <b-badge variant="warning"></b-badge>
+                    <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
+                      <font color="#ffffff">ถูกยกเลิก</font>
+                    </p>
+                </div>
+                <div v-else-if="data.item.head_approve_date == null && data.item.cancel_header_date == null">
+                  <b-badge variant="warning"></b-badge>
+                  <button v-if="!data.item.HeaderbtnApprove" @click="ApproveOT(data.item.overtime_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
+                    <font color="#00000" >รอการอนุมัติ</font>
+                  </button>
+                </div>
+                </center>
+              </template>
+
+             <template v-slot:cell(confirm)="data">
+                <center>
+                <div v-if="data.item.head_approve_date != null && data.item.cancel_header_date == null && data.item.head_confirm_date != null && data.item.cancel_confirm_date == null">
+                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
+                    <font color="#ffffff">ผ่านการยืนยัน</font>
+                  </p>
+                </div>
+                <div v-else-if="data.item.cancel_header_date != null">
+                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(226,106,106);"> 
+                    <font color="#ffffff">ไม่ยืนยัน</font>
+                  </p>
+                </div>
+                <div v-else-if="data.item.cancel_header_date == null && data.item.cancel_confirm_date != null">
+                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(226,106,106);"> 
+                    <font color="#ffffff">ไม่ยืนยัน</font>
+                  </p>
+                </div>
+                <div v-else-if="data.item.cancel_date != null">
+                  <b-badge variant="warning"></b-badge>
+                    <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
+                      <font color="#ffffff">ถูกยกเลิก</font>
+                    </p>
+                </div>
+                <div v-else-if="data.item.head_approve_date == null && data.item.cancel_header_date == null">
+                  <p style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
+                    <font color="#ffffff">ยังไม่อนุมัติ</font>
+                  </p>
+                </div>
+                <div v-else-if="data.item.head_approve_date != null && data.item.cancel_header_date == null && data.item.head_confirm_date == null && data.item.cancel_confirm_date == null">
+                  <b-badge variant="warning"></b-badge>
+                  <button v-if="!data.item.HeaderbtnApprove" @click="confirmOT(data.item.overtime_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
+                    <font color="#00000" >รอการยืนยัน</font>
+                  </button>
+                </div>
+                </center>
+              </template>
+
               <template v-slot:cell(leave_remark)="data">
                 <div>
                   <img 
@@ -170,7 +256,7 @@
               <p><b style="font-size: 16px;">ชื่อ :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> ชื่อ นามสกุล (ชื่อเล่น) </p>
+              <p style="font-size: 16px;"> {{ dataModal.full_Name }} </p>
             </b-col>
           </b-row>
           
@@ -179,7 +265,16 @@
               <p><b style="font-size: 16px;">ตำแหน่ง :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> ตำแหน่ง </p>
+              <p style="font-size: 16px;"> {{ dataModal.dept_name }} </p>
+            </b-col>
+          </b-row>
+
+          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+            <b-col>
+              <p><b style="font-size: 16px;">ประเภทการทำงาน :</b></p>
+            </b-col>
+            <b-col>
+              <p style="font-size: 16px;"> {{ dataModal.overtime_type_name }} </p>
             </b-col>
           </b-row>
 
@@ -188,16 +283,16 @@
               <p><b style="font-size: 16px;">วันที่กรอก :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> dd-mm-yyyy hh:mm </p>
+              <p style="font-size: 16px;"> {{ dataModal.createDate }} </p>
             </b-col>
           </b-row>
           
-          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-row v-if="dataModal.update_datetime != null" style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
             <b-col>
               <p><b style="font-size: 16px; color: red;">วันที่แก้ไขข้อมูล :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px; color: red;"> dd-mm-yyyy hh:mm </p>
+              <p style="font-size: 16px; color: red;"> {{ dataModal.updateDate }} </p>
             </b-col>
           </b-row>
 
@@ -206,7 +301,7 @@
               <p><b style="font-size: 16px;">วันที่ปฏิบัติงาน :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> dd-mm-yyyy - dd-mm-yyyy </p>
+              <p style="font-size: 16px;"> {{ dataModal.workDate }} </p>
             </b-col>
           </b-row>
 
@@ -215,7 +310,7 @@
               <p><b style="font-size: 16px;">ช่วงเวลาที่ทำ :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> วันหยุด || ก่อนงาน || หลังงาน </p>
+              <p style="font-size: 16px;"> {{ dataModal.overtime_period_name }} </p>
             </b-col>
           </b-row>
 
@@ -224,7 +319,7 @@
               <p><b style="font-size: 16px;">เวลาที่ทำงาน :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> hh:mm (เริ่มเวลา, สิ้นสุด, รวมกี่ชัวโมง) </p>
+              <p style="font-size: 16px;"> {{ dataModal.time }} </p>
             </b-col>
           </b-row>
 
@@ -233,18 +328,18 @@
               <p><b style="font-size: 16px;">รายละเอียดงาน :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> รายละเอียดงาน </p>
+              <p style="font-size: 16px;"> {{ dataModal.ot_remark }} </p>
             </b-col>
           </b-row>
           
           <b-row>
-          <b-col style="text-align: center; margin:10px -80px 0px 0px">
+          <!-- <b-col style="text-align: center; margin:10px -80px 0px 0px">
             <button style="width:145px; height:28px; cursor: pointer; border: 2px solid rgb(213, 217, 13); border-radius: 4px; background-color: rgba(255, 255, 126, 1);"> 
               <font color="#00000" style="font-size: 16px">แก้ไขงาน</font>
             </button>
-          </b-col>
+          </b-col> -->
           <b-col style="text-align: center; margin-top:10px">
-            <button style="width:145px; height:28px; cursor: pointer; border: 2px solid rgb(255, 112, 77); border-radius: 4px; background-color: rgb(255, 133, 102);"> 
+            <button v-if="dataModal.head_approve_date != null && dataModal.head_remark == null && dataModal.cancel_header_date == null" @click="cancelBtn(dataModal.overtime_id)" style="width:145px; height:28px; cursor: pointer; border: 2px solid rgb(255, 112, 77); border-radius: 4px; background-color: rgb(255, 133, 102);"> 
               <font color="#fffff" style="font-size: 16px">ยกเลิกงาน</font>
             </button>
           </b-col>
@@ -300,13 +395,15 @@ export default {
       optionLeaveType: [],
       fields: [
         { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
-        { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date_format' },
+        { key: 'createDate',        label: 'วันที่กรอก', class: 'text-center createDate' },
         { key: 'full_Name',         label: 'ชื่อ', class: 'text-center name' },
         { key: 'dept_name',         label: 'แผนก', class: 'text-center dept' },
         { key: 'position_name',     label: 'ตำแหน่ง', class: 'text-center position' },
-        { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
-        { key: 'header_approve',    label: 'หัวหน้ายืนยัน', class: 'text-center header_approve' },
-        { key: 'hr_approve',        label: 'สถานะ', class: 'text-center hr_approve' },
+        { key: 'workDate',          label: 'วันที่ปฏิบัติงาน', class: 'text-center workDate' },
+        { key: 'headApprove',       label: 'หัวหน้าอนุมัติ', class: 'text-center headApprove' },
+        { key: 'headConfirm',       label: 'หัวหน้ายืนยัน', class: 'text-center headConfirm' },
+        { key: 'status',            label: 'สถานะ', class: 'text-center status' },
+        { key: 'confirm',           label: 'ยืนยัน', class: 'text-center confirm' },
         { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
       ],
       dataModal:{},
@@ -349,7 +446,7 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   mounted() {
-    this.getDataEmployee();
+    this.getDataOtForHeader();
     this.selectType = null;
     this.selectDep = null;
     this.selectStat = null;
@@ -366,7 +463,7 @@ export default {
     },
     handelLeaveSave(value) {
       if (value) {
-        this.getDataEmployee();   
+        this.getDataOtForHeader();   
       }
     },
     showLeavePopup: function(flag) {
@@ -383,7 +480,7 @@ export default {
       this.selectStat = null;
       this.selectType = null;
       this.selectDep = null;
-      this.getDataEmployee();
+      this.getDataOtForHeader();
     },
     itemSelected (nameSearch) {
         this.nameSearch = nameSearch;
@@ -394,11 +491,112 @@ export default {
     inputChange (text) {
       this.nameSearchArray = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
     },
+    cancelBtn(cancel){
+      this.$bvModal.msgBoxConfirm('คุณต้องการยกเลิกการทำงานนี้ใช่หรือไม่?', {
+          headerClass: 'header-1',
+          title: 'ยกเลิกการขอทำงาน',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'ใช่',
+          cancelTitle: 'ไม่',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        }).then(value => {
+          if (value == true) {
+            authService.cancelOT(cancel).then(response => {
+              this.getDataOtForHeader();
+              this.hide('OTHeaderModal');
+            });
+          } 
+      })
+    },
+    ApproveOT(id) {
+      this.$bvModal.msgBoxConfirm('คุณต้องการอนุมัติการทำงานนี้ใช่หรือไม่?', {
+        headerClass: 'header-1',
+        title: 'การอนุมัติ',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'อนุมัติ',
+        cancelTitle: 'ไม่อนุมัติ',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      }).then(value => {
+        if (value == true) {
+          authService.ApproveOTHeader(id).then(response => {
+            this.getDataOtForHeader();
+          });
+        } else if (value == false) {
+            this.notApproveOT(id);
+        }
+      })
+    },
+    notApproveOT(id) {
+      const h = this.$createElement
+      const titleVNode = h('div', { domProps: { innerHTML: 'สาเหตุที่ไม่อนุมัติ' } })
+      const messageVNode = h('div', { class: ['foobar'] }, [
+        h('b-form-textarea', { class: ['textarea-large'] })
+      ])
+      this.$bvModal.msgBoxConfirm([messageVNode], {
+        title: [titleVNode],
+        buttonSize: 'sm',
+        centered: true, size: 'sm'
+      }).then(value => {
+        if(value == true){
+          authService.NotApproveOTHeader(messageVNode.children[0].elm.value, id).then(response => {
+            this.getDataOtForHeader();
+          });
+        }
+      });
+    },
+    confirmOT(id) {
+      this.$bvModal.msgBoxConfirm('คุณต้องการยืนยันการทำงานนี้ใช่หรือไม่?', {
+        headerClass: 'header-1',
+        title: 'การอนุมัติ',
+        size: 'sm',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'ยืนยัน',
+        cancelTitle: 'ไม่ยืนยัน',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      }).then(value => {
+        if (value == true) {
+          authService.ConfirmOTHeader(id).then(response => {
+            this.getDataOtForHeader();
+          });
+        } else if (value == false) {
+            this.notConfirmOT(id);
+        }
+      })
+    },
+    notConfirmOT(id) {
+      const h = this.$createElement
+      const titleVNode = h('div', { domProps: { innerHTML: 'สาเหตุที่ไม่ยืนยัน' } })
+      const messageVNode = h('div', { class: ['foobar'] }, [
+        h('b-form-textarea', { class: ['textarea-large'] })
+      ])
+      this.$bvModal.msgBoxConfirm([messageVNode], {
+        title: [titleVNode],
+        buttonSize: 'sm',
+        centered: true, size: 'sm'
+      }).then(value => {
+        if(value == true){
+          authService.NotConfirmOTHeader(messageVNode.children[0].elm.value, id).then(response => {
+            this.getDataOtForHeader();
+          });
+        }
+      });
+    },
     filterData() {
       var ths = this;
       var allData = this.tempData;
       if (this.selectStat == null && this.selectType == null && this.selectDep == null && Object.keys(this.valDateStart).length <= 0 && Object.keys(this.valDateStop).length <= 0 && Object.keys(this.nameSearch).length <= 0 ) {
-          this.getDataEmployee();
+          this.getDataOtForHeader();
       }
       if (this.nameSearch != null && this.nameSearch != "" ) {
         allData = allData.filter(function(v) {
@@ -449,20 +647,35 @@ export default {
         }
       });
     },
-    getDataEmployee: async function(){
+    getDataOtForHeader: async function(){
     this.isBusy = true;
-    await authService.getDataEmployee().then(response => {
+    var user = JSON.parse(localStorage.getItem("user"));
+    await authService.getDataOtForHeader(user.dept_id).then(response => {
       if (response.data != null && response.data.length > 0) { 
         this.selectedFilter = null;
         for (var i = 0; i < response.data.length; i++) {
           response.data[i].no = i+1;
           response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name + " " + "(" + response.data[i].nick_name + ")";
+          response.data[i].time = mJS.setDateFormat(response.data[i].overtime_start).split(" ")[1] + " - " + mJS.setDateFormat(response.data[i].overtime_end).split(" ")[1];
+          response.data[i].createDate = mJS.setDateFormat(response.data[i].create_datetime);
+          if (mJS.setDateFormat(response.data[i].overtime_start).split(" ")[0] !== mJS.setDateFormat(response.data[i].overtime_end).split(" ")[0]) {
+            response.data[i].workDate = mJS.setDateFormat(response.data[i].overtime_start).split(" ")[0] + " - " + mJS.setDateFormat(response.data[i].overtime_end).split(" ")[0];
+          }
+          else {
+            response.data[i].workDate = mJS.setDateFormat(response.data[i].overtime_start).split(" ")[0];
+          }
+          response.data[i].updateDate = mJS.setDateFormat(response.data[i].update_datetime);
+          response.data[i].cancelDate = mJS.setDateFormat(response.data[i].cancel_date);
+          response.data[i].headApprove = mJS.setDateFormat(response.data[i].head_approve_date);
+          response.data[i].cancelHeadApprove = mJS.setDateFormat(response.data[i].cancel_header_date);
+          response.data[i].headConfirm = mJS.setDateFormat(response.data[i].head_confirm_date);
+          response.data[i].cancelHeadConfirm = mJS.setDateFormat(response.data[i].cancel_confirm_date);
         } 
+        console.log(response.data)
         this.items = response.data;
         setTimeout(() => {
           this.isBusy = false
         },300);
-        this.tempData = response.data;
       } else {
           setTimeout(() => {
             this.isBusy = false}, 1200);
@@ -477,43 +690,48 @@ export default {
         console.log("1200")
         this.fields = [
           { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
-          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date_format' },
-          { key: 'full_Name',              label: 'ชื่อ', class: 'text-center name' },
-          { key: 'position_name',          label: 'ตำแหน่ง', class: 'text-center position' },
-          { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
-          { key: 'header_accept',     label: 'การอนุมัติ', class: 'text-center header_accept' },
-          { key: 'header_approve',    label: 'การปฏิบัติงานจริง', class: 'text-center header_approve' },
+          { key: 'createDate',        label: 'วันที่กรอก', class: 'text-center createDate' },
+          { key: 'full_Name',         label: 'ชื่อ', class: 'text-center name' },
+          { key: 'dept_name',         label: 'แผนก', class: 'text-center dept' },
+          { key: 'position_name',     label: 'ตำแหน่ง', class: 'text-center position' },
+          { key: 'workDate',          label: 'วันที่ปฏิบัติงาน', class: 'text-center workDate' },
+          { key: 'headApprove',       label: 'หัวหน้ายืนยัน', class: 'text-center headApprove' },
+          { key: 'headConfirm',       label: 'หัวหน้ายืนยัน', class: 'text-center headConfirm' },
+          { key: 'status',            label: 'การอนุมัติ', class: 'text-center status' },
+          { key: 'confirm',           label: 'การยืนยัน', class: 'text-center confirm' },
           { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
-        ]
+        ] 
       } else if(this.window.width < 1270 && this.window.width >= 1000){
         console.log("800")
         this.fields = [
           { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
-          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date_format' },
-          { key: 'full_Name',              label: 'ชื่อ', class: 'text-center name' },
-          { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
-          { key: 'header_accept',     label: 'การอนุมัติ', class: 'text-center header_accept' },
-          { key: 'header_approve',    label: 'การปฏิบัติงานจริง', class: 'text-center header_approve' },
+          { key: 'createDate',        label: 'วันที่กรอก', class: 'text-center createDate' },
+          { key: 'full_Name',         label: 'ชื่อ', class: 'text-center full_Name'},
+          { key: 'position_name',     label: 'ตำแหน่ง', class: 'text-center position' },
+          { key: 'workDate',          label: 'วันที่ปฏิบัติงาน', class: 'text-center workDate' },
+          { key: 'status',            label: 'การอนุมัติ', class: 'text-center status' },
+          { key: 'confirm',           label: 'การยืนยัน', class: 'text-center confirm' },
           { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
         ]
       } else if(this.window.width < 1000 && this.window.width >= 800){
         console.log("800")
         this.fields = [
           { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
-          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date_format' },
-          { key: 'full_Name',              label: 'ชื่อ', class: 'text-center name' },
-          { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
-          { key: 'header_accept',     label: 'การอนุมัติ', class: 'text-center header_accept' },
-          { key: 'header_approve',    label: 'การปฏิบัติงานจริง', class: 'text-center header_approve' },
+          { key: 'full_Name',         label: 'ชื่อ', class: 'text-center full_Name'},
+          { key: 'position_name',     label: 'ตำแหน่ง', class: 'text-center position' },
+          { key: 'workDate',          label: 'วันที่ปฏิบัติงาน', class: 'text-center workDate' },
+          { key: 'status',            label: 'การอนุมัติ', class: 'text-center status' },
+          { key: 'confirm',           label: 'การยืนยัน', class: 'text-center confirm' },
           { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
         ]
       } else{
           this.fields = [
-            { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
-            { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date_format' },
-            { key: 'full_Name',              label: 'ชื่อ', class: 'text-center name' },
-            { key: 'header_accept',     label: 'การอนุมัติ', class: 'text-center header_accept' },
-            { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
+            { key: 'no',              label: 'ลำดับ', class: 'text-center no' },
+            { key: 'full_Name',       label: 'ชื่อ', class: 'text-center full_Name'},
+            { key: 'position_name',   label: 'ตำแหน่ง', class: 'text-center position' },
+            { key: 'status',          label: 'การอนุมัติ', class: 'text-center status' },
+            { key: 'confirm',         label: 'การยืนยัน', class: 'text-center confirm' },
+            { key: 'leave_remark',    label: 'รายละเอียด', class: 'text-center leave_remark' },
           ]
         }
     },

@@ -89,7 +89,6 @@
             <b-th><b>รวมทั้งหมด : </b></b-th>
             <b-th><center><b>{{ sumLimits(responseData) }}</b></center></b-th>
             <b-th v-if="sumLeaveHour(responseData) == 0"><center><b> 0 / 0 </b></center></b-th>
-            <!-- <b-th v-else-if="sumLeaveHour(responseData) == 8"><center><b>{{ (Math.round(sumLeaveHour(responseData) / 8) )  +' / '+ sumLeaveHour(responseData) % 8 }}</b></center></b-th> -->
             <b-th v-else-if="sumLeaveHour(responseData) >= 8"><center><b>{{ (Math.floor(sumLeaveHour(responseData) / 8) )  +' / '+ sumLeaveHour(responseData) % 8 }}</b></center></b-th>
             <b-th v-else-if="sumLeaveHour(responseData) < 8"><center><b>{{ 0 + " / " + sumLeaveHour(responseData) }}</b></center></b-th>
             <b-th v-if="sumLeaveHour(responseData) == 0"><center><b> 161 / 0 </b></center></b-th>
@@ -247,16 +246,16 @@ export default {
           }
         }, 0);
       },
-      sumRemain: function (responseData) {
-  	    return responseData.reduce((acc, val) => {
-          // var sum = 8 - val.hh;
+      // sumRemain: function (responseData) {
+  	  //   return responseData.reduce((acc, val) => {
+      //     // var sum = 8 - val.hh;
           
-            var remain = acc + parseInt(val.hh);
-            var remainFinal = this.sumLimits(responseData) - remain;
-            return remainFinal;
+      //       var remain = acc + parseInt(val.hh);
+      //       var remainFinal = this.sumLimits(responseData) - remain;
+      //       return remainFinal;
          
-			  }, 0);
-      },
+			//   }, 0);
+      // },
       showStat: async function(){
         this.isLoading = true;
         var user = JSON.parse(localStorage.getItem("user"));

@@ -3,31 +3,31 @@
     <popupLeaveHeaderHr v-bind:showPopHeader="showPopHeader" @leaveSuccess="handelLeaveSave" v-bind:checkPopup="checkPopup"/>
     <!-- {{window}} -->
       <br>
-      <b-row style="padding-right:50px;">
+      <b-row style="padding-right:40px;">
         <b-col>
-          <h2 lg="2" style="font-weight: bold; margin-left:30px;">
+          <h2 lg="2" style="font-weight: bold; margin-left:15px;">
             ข้อมูลบันทึกการลา
           </h2>
         </b-col>
         <b-col lg="8">
         </b-col>
-        <b-col lg="2" style="text-align:right;">
-            <vs-button
-              @click="showLeavePopup(0)"
-              color="primary"
-              type="filled"
-              style="height:42px; "
-            >
-              <img 
-              src="../assets/Plus_icon3.png" 
-              style="margin-top:-3px"
-              width="20" 
-              height="20" 
-              /> เพิ่มการลาของพนักงาน
-            </vs-button>
+        <b-col lg="2" style="text-align:right; padding-left:25px;">
+          <vs-button
+            @click="showLeavePopup(0)"
+            color="primary"
+            type="filled"
+            style="height:42px; "
+          >
+            <img 
+            src="../assets/Plus_icon3.png" 
+            style="margin-top:-3px"
+            width="20" 
+            height="20" 
+            /> เพิ่มการลาของพนักงาน
+          </vs-button>
         </b-col>
       </b-row>
-      <b-row style="padding:0px 35px 0px 50px; width:100%;">
+      <b-row style="padding:0px 30px 0px 40px; width:100%;">
         <b-col md="12" lg="2">
           <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
           <datetime
@@ -108,7 +108,7 @@
           <b-button
             variant="outline-primary"
             @click="filterData()"
-            style="height:42px; width:135px; margin:0px 10px 10px 0px; "
+            style="height:42px; width:140px; margin:0px 10px 10px 0px; "
           >
             ค้นหา
           </b-button>
@@ -117,7 +117,7 @@
           <b-button
             variant="outline-danger"
             @click="defaultValue()"
-            style="height:42px; width:135px; margin:0px 0px 10px 0px; " 
+            style="height:42px; width:140px; margin:0px 0px 10px 0px; " 
           >
             เคลียร์ข้อมูล
           </b-button>

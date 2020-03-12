@@ -3,23 +3,25 @@
     <popupLeave v-bind:showPop="showPop" v-bind:editPop="editPop" @leaveSuccess="handelLeaveSave" />
       <br>
       <b-row>
-        <h2 style="font-weight: bold; margin-left:30px;">
-          ข้อมูลบันทึกการลา
-        </h2>
+        <b-col>
+          <h2 style="font-weight: bold; margin-left:15px;">
+            ข้อมูลบันทึกการลา
+          </h2>
+        </b-col>
       </b-row>
-      <b-row style="padding:0px 40px 0px 40px; width:100%;">
-        <b-col sm="12" md="6" lg="2">
+      <b-row style="padding:0px 0px 0px 40px; width:100%;">
+        <b-col md="12" lg="2">
           <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
-            <datetime 
-              type="date" 
-              v-model="valDateStart" 
-              format="dd/MM/yyyy" 
+            <datetime
+              type="date"
+              v-model="valDateStart"
+              format="dd/MM/yyyy"
               :min-datetime="currentDate"
               placeholder="เลือกวันเพื่อค้นหา..."
               >
             </datetime>
         </b-col>
-        <b-col sm="12" md="6" lg="2">
+        <b-col md="6" lg="2">
           <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
           <datetime 
             type="date"
@@ -30,7 +32,7 @@
             >
           </datetime>
         </b-col>
-        <b-col sm="12" md="6" lg="2">
+        <b-col  md="6" lg="2">
           <p style="cursor:default;"><b>สถานะ :</b></p>
           <b-form-select
             v-model="selectStat"

@@ -127,6 +127,46 @@
                   >
                 </div>
               </template>
+
+              <template v-slot:cell(status)="data">
+                <center>
+                <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_header_date == null && data.item.cancel_date == null">
+                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
+                    <font color="#ffffff">ผ่านการรับทราบเเล้ว</font>
+                  </p>
+                </div>
+                <div v-else-if="data.item.cancel_header_date != null">
+                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(226,106,106);"> 
+                      <font color="#ffffff">ไม่รับทราบ</font>
+                  </p>
+                </div>
+                <!-- <div v-else-if="data.item.cancel_date != null">
+                  <b-badge variant="warning"></b-badge>
+                    <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
+                      <font color="#ffffff">ถูกยกเลิก</font>
+                    </p>
+                </div> -->
+                <!-- <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
+                  <b-badge variant="warning"></b-badge>
+                  <button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.item.overtime_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
+                      <font color="#00000" >รอการรับทราบ</font>
+                  </button>
+                </div>
+                <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
+                  <b-badge variant="warning"></b-badge>
+                  <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
+                      <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
+                  </p>
+                </div> -->
+                <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_header_date == null">
+                  <b-badge variant="warning"></b-badge>
+                  <button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.item.overtime_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
+                      <font color="#00000" >รอการรับทราบ</font>
+                  </button>
+                </div>
+                </center>
+              </template>
+
             </b-table>
           </div>
         </table>
@@ -179,7 +219,7 @@
               <p><b style="font-size: 16px;">ชื่อ :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> ชื่อ นามสกุล (ชื่อเล่น) </p>
+              <p style="font-size: 16px;"> {{ dataModal.full_Name }} </p>
             </b-col>
           </b-row>
           
@@ -188,7 +228,7 @@
               <p><b style="font-size: 16px;">แผนก :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> แผนก </p>
+              <p style="font-size: 16px;"> {{ dataModal.dept_name }} </p>
             </b-col>
           </b-row>
           
@@ -197,7 +237,16 @@
               <p><b style="font-size: 16px;">ตำแหน่ง :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> ตำแหน่ง </p>
+              <p style="font-size: 16px;"> {{ dataModal.position_name }} </p>
+            </b-col>
+          </b-row>
+
+          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+            <b-col>
+              <p><b style="font-size: 16px;">ประเภทการทำงาน :</b></p>
+            </b-col>
+            <b-col>
+              <p style="font-size: 16px;"> {{ dataModal.overtime_type_name }} </p>
             </b-col>
           </b-row>
 
@@ -206,16 +255,16 @@
               <p><b style="font-size: 16px;">วันที่กรอก :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> dd-mm-yyyy hh:mm </p>
+              <p style="font-size: 16px;"> {{ dataModal.createDate }} </p>
             </b-col>
           </b-row>
           
-          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+          <b-row v-if="dataModal.update_datetime != null" style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
             <b-col>
               <p><b style="font-size: 16px; color: red;">วันที่แก้ไขข้อมูล :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px; color: red;"> dd-mm-yyyy hh:mm </p>
+              <p style="font-size: 16px; color: red;"> {{ dataModal.updateDate }} </p>
             </b-col>
           </b-row>
 
@@ -224,7 +273,7 @@
               <p><b style="font-size: 16px;">วันที่ปฏิบัติงาน :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> dd-mm-yyyy - dd-mm-yyyy </p>
+              <p style="font-size: 16px;"> {{ dataModal.workDate }} </p>
             </b-col>
           </b-row>
 
@@ -233,7 +282,7 @@
               <p><b style="font-size: 16px;">ช่วงเวลาที่ทำ :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> วันหยุด || ก่อนงาน || หลังงาน </p>
+              <p style="font-size: 16px;"> {{ dataModal.overtime_period_name }} </p>
             </b-col>
           </b-row>
 
@@ -242,7 +291,7 @@
               <p><b style="font-size: 16px;">เวลาที่ทำงาน :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> hh:mm (เริ่มเวลา, สิ้นสุด, รวมกี่ชัวโมง) </p>
+              <p style="font-size: 16px;"> {{ dataModal.time }} </p>
             </b-col>
           </b-row>
 
@@ -251,7 +300,7 @@
               <p><b style="font-size: 16px;">รายละเอียดงาน :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> รายละเอียดงาน </p>
+              <p style="font-size: 16px;"> {{ dataModal.ot_remark }} </p>
             </b-col>
           </b-row>
 
@@ -260,22 +309,18 @@
               <p><b style="font-size: 16px;">วันที่หัวหน้าอนุมัติ :</b></p>
             </b-col>
             <b-col>
-              <p style="font-size: 16px;"> dd-mm-yyyy hh:mm </p>
+              <p style="font-size: 16px;"> {{ dataModal.headApprove }} </p>
             </b-col>
           </b-row>
-          
-          <b-row>
-          <b-col style="text-align: center; margin:10px -80px 0px 0px">
-            <button style="width:145px; height:28px; cursor: pointer; border: 2px solid rgb(213, 217, 13); border-radius: 4px; background-color: rgba(255, 255, 126, 1);"> 
-              <font color="#00000" style="font-size: 16px">แก้ไขงาน</font>
-            </button>
-          </b-col>
-          <b-col style="text-align: center; margin-top:10px">
-            <button style="width:145px; height:28px; cursor: pointer; border: 2px solid rgb(255, 112, 77); border-radius: 4px; background-color: rgb(255, 133, 102);"> 
-              <font color="#fffff" style="font-size: 16px">ยกเลิกงาน</font>
-            </button>
-          </b-col>
-        </b-row>
+
+          <b-row style=" margin:0px 10px 5px 10px; border-bottom: 1px dashed #ddd;" class="popupRemark">
+            <b-col>
+              <p><b style="font-size: 16px;">วันที่หัวหน้ายืนยัน :</b></p>
+            </b-col>
+            <b-col>
+              <p style="font-size: 16px;"> {{ dataModal.headConfirm }} </p>
+            </b-col>
+          </b-row>
 
         </div>
         <b-button block variant="secondary" style="font-size: 16px;" @click="hide('OTHrModal')">ปิด</b-button>
@@ -327,13 +372,13 @@ export default {
       optionLeaveType: [],
       fields: [
         { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
-        { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date_format' },
+        { key: 'createDate',        label: 'วันที่กรอก', class: 'text-center createDate' },
         { key: 'full_Name',         label: 'ชื่อ', class: 'text-center name' },
         { key: 'dept_name',         label: 'แผนก', class: 'text-center dept' },
         { key: 'position_name',     label: 'ตำแหน่ง', class: 'text-center position' },
-        { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
-        { key: 'header_approve',    label: 'หัวหน้ายืนยัน', class: 'text-center header_approve' },
-        { key: 'hr_approve',        label: 'สถานะ', class: 'text-center hr_approve' },
+        { key: 'workDate',          label: 'วันที่ปฏิบัติงาน', class: 'text-center workDate' },
+        { key: 'headApprove',       label: 'หัวหน้ายืนยัน', class: 'text-center headApprove' },
+        { key: 'status',            label: 'สถานะ', class: 'text-center status' },
         { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
       ],
       dataModal:{},
@@ -376,7 +421,7 @@ export default {
     window.removeEventListener('resize', this.handleResize);
   },
   mounted() {
-    this.getDataEmployee();
+    this.getDataOtForHR();
     this.selectType = null;
     this.selectDep = null;
     this.selectStat = null;
@@ -393,7 +438,7 @@ export default {
     },
     handelLeaveSave(value) {
       if (value) {
-        this.getDataEmployee();   
+        this.getDataOtForHR();   
       }
     },
     showLeavePopup: function(flag) {
@@ -410,7 +455,7 @@ export default {
       this.selectStat = null;
       this.selectType = null;
       this.selectDep = null;
-      this.getDataEmployee();
+      this.getDataOtForHR();
     },
     itemSelected (nameSearch) {
         this.nameSearch = nameSearch;
@@ -421,11 +466,30 @@ export default {
     inputChange (text) {
       this.nameSearchArray = this.empName.filter(function(v) { return v.name.toUpperCase().includes(text.toUpperCase()) } );
     },
+    showMsgBoxTwo(id) {
+        this.$bvModal.msgBoxConfirm('คุณต้องการรับทราบการทำงานครั้งนี้ใช่หรือไม่?', {
+          title: 'รับทราบการทำงาน',
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'รับทราบ',
+          cancelTitle: 'ปิด',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        }).then(value => {
+          if (value == true) {
+            authService.approveOtHr(id).then(response => {
+              this.getDataOtForHR();
+            });
+          } 
+        })
+    },
     filterData() {
       var ths = this;
       var allData = this.tempData;
       if (this.selectStat == null && this.selectType == null && this.selectDep == null && Object.keys(this.valDateStart).length <= 0 && Object.keys(this.valDateStop).length <= 0 && Object.keys(this.nameSearch).length <= 0 ) {
-          this.getDataEmployee();
+          this.getDataOtForHR();
       }
       if (this.nameSearch != null && this.nameSearch != "" ) {
         allData = allData.filter(function(v) {
@@ -476,20 +540,34 @@ export default {
         }
       });
     },
-    getDataEmployee: async function(){
+    getDataOtForHR: async function(){
     this.isBusy = true;
-    await authService.getDataEmployee().then(response => {
+    await authService.getDataOtForHR().then(response => {
       if (response.data != null && response.data.length > 0) { 
         this.selectedFilter = null;
         for (var i = 0; i < response.data.length; i++) {
           response.data[i].no = i+1;
           response.data[i].full_Name = response.data[i].first_name + " " + response.data[i].last_name + " " + "(" + response.data[i].nick_name + ")";
+          response.data[i].time = mJS.setDateFormat(response.data[i].overtime_start).split(" ")[1] + " - " + mJS.setDateFormat(response.data[i].overtime_end).split(" ")[1];
+          response.data[i].createDate = mJS.setDateFormat(response.data[i].create_datetime);
+          if (mJS.setDateFormat(response.data[i].overtime_start).split(" ")[0] !== mJS.setDateFormat(response.data[i].overtime_end).split(" ")[0]) {
+            response.data[i].workDate = mJS.setDateFormat(response.data[i].overtime_start).split(" ")[0] + " - " + mJS.setDateFormat(response.data[i].overtime_end).split(" ")[0];
+          }
+          else {
+            response.data[i].workDate = mJS.setDateFormat(response.data[i].overtime_start).split(" ")[0];
+          }
+          response.data[i].updateDate = mJS.setDateFormat(response.data[i].update_datetime);
+          response.data[i].cancelDate = mJS.setDateFormat(response.data[i].cancel_date);
+          response.data[i].headApprove = mJS.setDateFormat(response.data[i].head_approve_date);
+          response.data[i].cancelHeadApprove = mJS.setDateFormat(response.data[i].cancel_header_date);
+          response.data[i].headConfirm = mJS.setDateFormat(response.data[i].head_confirm_date);
+          response.data[i].cancelHeadConfirm = mJS.setDateFormat(response.data[i].cancel_confirm_date);
         } 
+        console.log(response.data)
         this.items = response.data;
         setTimeout(() => {
           this.isBusy = false
         },300);
-        this.tempData = response.data;
       } else {
           setTimeout(() => {
             this.isBusy = false}, 1200);
@@ -504,24 +582,24 @@ export default {
         console.log("1200")
         this.fields = [
           { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
-          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date_format' },
+          { key: 'create_datetime',   label: 'วันที่กรอก', class: 'text-center create_datetime' },
           { key: 'full_Name',         label: 'ชื่อ', class: 'text-center full_Name' },
           { key: 'dept_name',         label: 'แผนก', class: 'text-center dept_name' },
           { key: 'position_name',     label: 'ตำแหน่ง', class: 'text-center position' },
-          { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
-          { key: 'header_approve',    label: 'หัวหน้ายืนยัน', class: 'text-center header_approve' },
-          { key: 'hr_approve',        label: 'สถานะ', class: 'text-center hr_approve' },
+          { key: 'workDate',          label: 'วันที่ปฏิบัติงาน', class: 'text-center workDate' },
+          { key: 'headApprove',       label: 'หัวหน้ายืนยัน', class: 'text-center headApprove' },
+          { key: 'status',            label: 'สถานะ', class: 'text-center status' },
           { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
         ] 
       } else if(this.window.width < 1270 && this.window.width >= 1000){
         console.log("800")
         this.fields = [
           { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
-          { key: 'leave_date_format', label: 'วันที่กรอก', class: 'text-center leave_date_format' },
+          { key: 'create_datetime',   label: 'วันที่กรอก', class: 'text-center create_datetime' },
           { key: 'full_Name',         label: 'ชื่อ', class: 'text-center full_Name'},
           { key: 'dept_name',         label: 'เเผนก', class: 'text-center dept_name' },
-          { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
-          { key: 'hr_approve',        label: 'สถานะ', class: 'text-center hr_approve' },
+          { key: 'workDate',          label: 'วันที่ปฏิบัติงาน', class: 'text-center workDate' },
+          { key: 'status',            label: 'สถานะ', class: 'text-center status' },
           { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
         ]
       } else if(this.window.width < 1000 && this.window.width >= 800){
@@ -530,8 +608,8 @@ export default {
           { key: 'no',                label: 'ลำดับ', class: 'text-center no' },
           { key: 'full_Name',         label: 'ชื่อ', class: 'text-center full_Name'},
           { key: 'dept_name',         label: 'เเผนก', class: 'text-center dept_name' },
-          { key: 'leave_date_start',  label: 'วันที่ปฏิบัติงาน', class: 'text-center leave_date_start' },
-          { key: 'hr_approve',        label: 'สถานะ', class: 'text-center hr_approve' },
+          { key: 'workDate',          label: 'วันที่ปฏิบัติงาน', class: 'text-center workDate' },
+          { key: 'status',            label: 'สถานะ', class: 'text-center status' },
           { key: 'leave_remark',      label: 'รายละเอียด', class: 'text-center leave_remark' },
         ]
       } else{
@@ -539,7 +617,7 @@ export default {
             { key: 'no',              label: 'ลำดับ', class: 'text-center no' },
             { key: 'full_Name',       label: 'ชื่อ', class: 'text-center full_Name'},
             { key: 'dept_name',       label: 'เเผนก', class: 'text-center dept_name' },
-            { key: 'hr_approve',      label: 'สถานะ', class: 'text-center hr_approve' },
+            { key: 'status',      label: 'สถานะ', class: 'text-center status' },
             { key: 'leave_remark',    label: 'รายละเอียด', class: 'text-center leave_remark' },
           ]
         }

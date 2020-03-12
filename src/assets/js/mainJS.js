@@ -3,7 +3,7 @@ export function toPage(page) {
 }
 
 export function setDateToServer(d, flag) {
-    if (d == undefined || d == null || d.trim() == "") {
+    if (d == undefined || d == null) {
         return null;
     } else {
         var dd = new Date(d);
@@ -19,7 +19,7 @@ export function setDateToServer(d, flag) {
 }
 
 export function formatDateFilter(d) {
-    if (d == undefined || d == null || d.trim() == "") {
+    if (d == undefined || d == null) {
         return null;
     } else {
         var dd = new Date(d);
@@ -29,7 +29,7 @@ export function formatDateFilter(d) {
 }
 
 export function setDateFormat(d){
-    if (d == undefined || d == null || d.trim() == ""){
+    if (d == undefined || d == null){
         return null;
     }
     else{
@@ -66,3 +66,22 @@ export function validateTime(Start, Stop) {
 
     return status;
 }
+
+// export function checkTimeLeave(start, stop) {
+//     var startDate = new Date(start);
+//     var stopDate = new Date(stop);  
+  
+//     // var msDay = 36000000; // 10
+//     var msDay = 32400000; // 9
+//     // var msDay = 28800000; // 8
+//     // var msDay = 25200000; // 7
+//     //if (type == 3) {
+//     // msDay = 32400000;
+//     //}
+//     var ms = (stopDate - startDate);
+//     var days = Math.floor(ms / msDay); // days
+//     var hrs = Math.floor((ms % msDay) / 3600000); // hours
+//     var mins = Math.round(((ms % msDay) % 3600000) / 60000); // min
+  
+//     return days + " " + hrs + " " + mins;
+//   }
