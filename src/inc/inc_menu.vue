@@ -194,11 +194,11 @@ export default {
       this.indexActive = 4;
     } else if (this.$route.name == "OTHeader") {
       this.indexActive = 5;
-    }else if (this.$route.name == "OTHr") {
+    } else if (this.$route.name == "OTHr") {
       this.indexActive = 6;
-    }else if (this.$route.name == "dataDeptEmployee") {
+    } else if (this.$route.name == "dataDeptEmployee") {
       this.indexActive = 7;
-    }else if (this.$route.name == "dataEmployee") {
+    } else if (this.$route.name == "dataEmployee") {
       this.indexActive = 8;
     } else {
       this.indexActive = 0;

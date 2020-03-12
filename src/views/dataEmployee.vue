@@ -1,23 +1,14 @@
 <template>
   <div id="DataEmployee">
+    <popupRegister v-bind:showPopRegister="showPopRegister"/>
     <b-row>
       <div><br>
-      <popupRegister v-bind:showPopRegister="showPopRegister"/>
         <h2 style="font-weight: bold; margin-left:30px;">
           ข้อมูลของพนักงาน
         </h2>
       </div>
     </b-row>
     <b-row style="padding:0px 40px 0px 40px; width:100%;">
-      <b-col md="12" lg="2">
-          <p style="cursor:default;"><b>แผนก :</b></p>
-          <b-form-select
-            v-model="selectDep"
-            :options="optionsDep"
-            style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-          >
-          </b-form-select>
-      </b-col>
       <b-col sm="2">
         <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
           <vue-suggestion 
@@ -30,6 +21,15 @@
             placeholder="พิมพ์ชื่อเพื่อค้นหา..."
           >
           </vue-suggestion> 
+      </b-col>
+      <b-col md="12" lg="2">
+        <p style="cursor:default;"><b>แผนก :</b></p>
+        <b-form-select
+          v-model="selectDep"
+          :options="optionsDep"
+          style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+        >
+        </b-form-select>
       </b-col>
       <b-col sm="2" style="margin-top:24px">
         <b-button
@@ -48,69 +48,67 @@
             เคลียร์ข้อมูล
         </b-button>
       </b-col>
-      <b-col sm="2" style="margin-top:24px">
+      <b-col xs="6" sm="6" md="6" lg="2" >
         <vs-button
-          @click="showPopupRegister()"
+          @click="showLeavePopup()"
           color="primary"
           type="filled"
           style="height:42px; width:135px;"
         >
           <img 
-            src="../assets/Plus_icon3.png" 
-            style="margin-top:-3px"
-            width="20" 
-            height="20" 
-          /> เพิ่มพนักงาน
+          src="../assets/Plus_icon3.png" 
+          style="margin-top:-3px"
+          width="20" 
+          height="20" 
+          /> เพิ่มการลา
         </vs-button>
       </b-col>
     </b-row>
     <b-row style="padding:0px 30px 0px 30px;">
       <table width=100% style="margin-top:10px; border: 1px solid black;">
-          <div >
-            <b-table
-              responsive
-              :busy="isBusy"
-              striped hover 
-              :items="items"
-              :fields="fields"
-              :filter="filter"
-              :current-page="currentPage"
-              :per-page="perPage"
-              :sort-by.sync="sortBy"
-              :sort-desc.sync="sortDesc"
-              :sort-direction="sortDirection"
-              @filtered="onFiltered" 
-              show-empty
-            >
-              <template v-slot:table-busy>
-                <div class="text-center text-danger ">
-                  <b-spinner class="align-middle"></b-spinner>
-                  <strong> Loading...</strong>
-                </div>
-              </template>
+        <b-table
+          responsive
+          :busy="isBusy"
+          striped hover 
+          :items="items"
+          :fields="fields"
+          :filter="filter"
+          :current-page="currentPage"
+          :per-page="perPage"
+          :sort-by.sync="sortBy"
+          :sort-desc.sync="sortDesc"
+          :sort-direction="sortDirection"
+          @filtered="onFiltered" 
+          show-empty
+        >
+          <template v-slot:table-busy>
+            <div class="text-center text-danger ">
+              <b-spinner class="align-middle"></b-spinner>
+              <strong> Loading...</strong>
+            </div>
+          </template>
 
-              <template v-slot:head()="data">
-                <span style="font-size: 18px;">{{ data.label }}</span>
-              </template>
+          <template v-slot:head()="data">
+            <span style="font-size: 18px;">{{ data.label }}</span>
+          </template>
 
-              <template v-slot:empty>
-                <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลพนักงาน</h2>
-              </template>
+          <template v-slot:empty>
+            <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลพนักงาน</h2>
+          </template>
 
-              <template v-slot:cell(leave_remark)="data">
-                <div>
-                  <img 
-                    src="../assets/Details.png" 
-                    style="cursor: pointer" 
-                    width="33" 
-                    height="33"  
-                    @click="dataModal = data.item, show('dataEmployeeModal')"
-                  >
-                </div>
-              </template>
-            </b-table>
-          </div>
-        </table>
+          <template v-slot:cell(leave_remark)="data">
+            <div>
+              <img 
+                src="../assets/Details.png" 
+                style="cursor: pointer" 
+                width="33" 
+                height="33"  
+                @click="dataModal = data.item, show('dataEmployeeModal')"
+              >
+            </div>
+          </template>
+        </b-table>
+      </table>
     </b-row>
     <b-row style="margin:5px 0px 0px 30px; text-align:right;" >
       <b-col sm="1">
@@ -244,10 +242,9 @@ import { Settings } from 'luxon'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css'
 import VModal from 'vue-js-modal'
-import popupLeaveHeaderHr from "@/components/popupLeaveHeaderHr.vue"
+import popupRegister from "@/components/popupRegister.vue"
 import VueSuggestion from 'vue-suggestion'
 import itemTemplate from '../components/ItemTemplate.vue';
-import popupRegister from "@/components/popupRegister.vue"
 
 Vue.use(Datetime,VueSweetalert2,VModal);
 Vue.use(VueSuggestion);
@@ -256,7 +253,6 @@ export default {
   name: "DataEmployee",
   components: {
     datetime: Datetime,
-    popupLeaveHeaderHr,
     popupRegister
   },
   props: {},
@@ -296,11 +292,11 @@ export default {
       selectType: '',
       selectDep:'',
       selectStat: '',
-      showPopHeader:false,
+      showPopRegister:false,
       window : {
         width: 0,
         height: 0
-      }
+      },
     }
   },
   computed: {
@@ -339,11 +335,12 @@ export default {
         this.getDataEmployee();   
       }
     },
-    showPopupRegister: function(flag) {
+    showLeavePopup: function(flag) {
       var ths = this;
       ths.showPopHeader = true;
       ths.checkPopup = flag;
       ths.showPopRegister = true;
+      ths.checkPopup = flag;
       setTimeout(function() {
         ths.showPopHeader = false;
         ths.showPopRegister = false;
@@ -371,11 +368,6 @@ export default {
       var allData = this.tempData;
       if (this.selectStat == null && this.selectType == null && this.selectDep == null && Object.keys(this.valDateStart).length <= 0 && Object.keys(this.valDateStop).length <= 0 && Object.keys(this.nameSearch).length <= 0 ) {
           this.getDataEmployee();
-      }
-      if(this.selectDep != null && this.selectDep != "") {
-        allData = allData.filter(function(v) {
-          return v.dept_id == ths.selectDep;
-        })
       }
       if (this.nameSearch != null && this.nameSearch != "" ) {
         allData = allData.filter(function(v) {
@@ -522,9 +514,6 @@ export default {
     width : 65px !important;
   }
   #DataEmployee .full_Name {
-    width : 280px !important;
-  }
-  #DataEmployee .dept_name {
     width : 280px !important;
   }
   #DataEmployee .position_name {

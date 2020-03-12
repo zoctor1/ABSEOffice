@@ -3,271 +3,262 @@
     <popupLeaveHeaderHr v-bind:showPopHeader="showPopHeader" @leaveSuccess="handelLeaveSave" v-bind:checkPopup="checkPopup"/>
     <!-- {{window}} -->
       <br>
-      <b-row style="padding-right:40px;">
-        <b-col>
-          <h2 lg="4" style="font-weight: bold; margin-left:15px;">
-            ข้อมูลการลาของพนักงาน
-          </h2>
-        </b-col>
-        <b-col lg="4">
-        </b-col>
-        <b-col lg="2" style="text-align:right;">
-          <b-button
-            variant="outline-primary"
-            @click="filterData()"
-            style="height:42px; width:135px; margin-right:10px;"
-          >
-            ค้นหา
-          </b-button>
-          
-          <b-button
-            variant="outline-danger"
-            @click="defaultValue()"
-            style="height:42px; width:135px;" 
-          >
+      <div id="rowTable">
+        <b-row>
+          <b-col>
+            <h2 lg="4" style="font-weight: bold; cursor:default;">
+              ข้อมูลการลาของพนักงาน
+            </h2>
+          </b-col>
+          <b-col lg="4">
+          </b-col>
+          <b-col lg="2">
+            <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
+              <vue-suggestion 
+                :items="nameSearchArray" 
+                v-model="nameSearch"
+                :setLabel="setLabel"
+                :itemTemplate="itemTemplate"
+                @changed="inputChange"
+                @selected="itemSelected"
+                placeholder="พิมพ์ชื่อเพื่อค้นหา..."
+              >
+              </vue-suggestion> 
+          </b-col>
+          <b-col lg="2" style="padding-top:24px; text-align:right;">
+            <vs-button
+              @click="showLeavePopup(1)"
+              color="primary"
+              type="filled"
+              style="height:42px; "
+            >
+              <img 
+              src="../assets/Plus_icon3.png" 
+              style="margin-top:-3px"
+              width="20" 
+              height="20" 
+              /> เพิ่มการลาของพนักงาน
+            </vs-button>
+          </b-col>
+        </b-row>
+      </div>
+      <div id="rowTable">
+        <b-row> 
+          <b-col md="12" lg="2">
+            <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
+            <datetime 
+              type="date" 
+              v-model="valDateStart" 
+              format="dd/MM/yyyy" 
+              :min-datetime="currentDate"
+              placeholder="เลือกวันเพื่อค้นหา..."
+              >
+            </datetime>
+          </b-col>
+          <b-col md="12" lg="2">
+            <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
+            <datetime 
+              type="date"
+              v-model="valDateStop" 
+              format="dd/MM/yyyy" 
+              :min-datetime="currentDate" 
+              placeholder="เลือกวันเพื่อค้นหา..."
+              >
+            </datetime>
+          </b-col>
+          <b-col md="12" lg="2">
+            <p style="cursor:default;"><b>ประเภทการลา :</b></p>
+            <b-form-select
+              v-model="selectType"
+              :options="optionLeaveType"
+              style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+            >
+            </b-form-select>
+            
+          </b-col>
+          <b-col md="12" lg="2">
+            <p style="cursor:default;"><b>แผนก :</b></p>
+            <b-form-select
+              v-model="selectDep"
+              :options="optionsDep"
+              style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+            >
+            </b-form-select>
+          </b-col>
+          <b-col md="6" lg="2">
+            <p style="cursor:default;"><b>สถานะ :</b></p>
+            <b-form-select
+              v-model="selectStat"
+              :options="optionStat"
+              style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+            >
+            </b-form-select>
+          </b-col>
+          <b-col md="12" lg="1" style="padding-top:24px;">
+            <b-button
+              variant="outline-primary"
+              @click="filterData()"
+              style="height:42px; width:126px; margin:0px 10px 10px 0px; "
+            >
+              ค้นหา
+            </b-button>
+          </b-col>
+          <b-col md="12" lg="1" style="padding-top:24px;">
+            <b-button
+              variant="outline-danger"
+              @click="defaultValue()"
+              style="height:42px; width:126px; margin:0px 0px 10px 0px; " 
+            >
               เคลียร์ข้อมูล
-          </b-button>
-        </b-col>
-        <b-col lg="2" style="text-align:right;">
-          <vs-button
-            @click="showLeavePopup(1)"
-            color="primary"
-            type="filled"
-            style="height:42px; "
-          >
-            <img 
-            src="../assets/Plus_icon3.png" 
-            style="margin-top:-3px"
-            width="20" 
-            height="20" 
-            /> เพิ่มการลาของพนักงาน
-          </vs-button>
-        </b-col>
-      </b-row>
-      <b-row style="padding: 0px 10px 0px 40px; width: 100%;"> 
-        <b-col md="12" lg="2">
-          <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
-          <datetime 
-            type="date" 
-            v-model="valDateStart" 
-            format="dd/MM/yyyy" 
-            :min-datetime="currentDate"
-            placeholder="เลือกวันเพื่อค้นหา..."
+            </b-button>
+          </b-col>
+        </b-row>
+      </div>
+      <div id="rowTable">
+        <b-row>  
+          <table width=100% style="margin-top:20px; border: 1px solid black;">
+            <b-table
+              responsive
+              :busy="isBusy"
+              striped hover 
+              :items="items"
+              :fields="fields"
+              :filter="filter"
+              :current-page="currentPage"
+              :per-page="perPage"
+              :sort-by.sync="sortBy"
+              :sort-desc.sync="sortDesc"
+              :sort-direction="sortDirection"
+              @filtered="onFiltered" 
+              show-empty
             >
-          </datetime>
-        </b-col>
-        <b-col md="12" lg="2">
-          <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
-          <datetime 
-            type="date"
-            v-model="valDateStop" 
-            format="dd/MM/yyyy" 
-            :min-datetime="currentDate" 
-            placeholder="เลือกวันเพื่อค้นหา..."
-            >
-          </datetime>
-        </b-col>
-        <b-col md="12" lg="2">
-          <p style="cursor:default;"><b>ประเภทการลา :</b></p>
-          <b-form-select
-            v-model="selectType"
-            :options="optionLeaveType"
-            style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-          >
-          </b-form-select>
-          
-        </b-col>
-        <b-col md="12" lg="2">
-          <p style="cursor:default;"><b>แผนก :</b></p>
-          <b-form-select
-            v-model="selectDep"
-            :options="optionsDep"
-            style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-          >
-          </b-form-select>
-        </b-col>
-        <b-col md="6" lg="2">
-          <p style="cursor:default;"><b>สถานะ :</b></p>
-          <b-form-select
-            v-model="selectStat"
-            :options="optionStat"
-            style="height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-          >
-          </b-form-select>
-        </b-col>
-        <b-col md="6" lg="2">
-          <p style="cursor:default;"><b>ค้นหาชื่อ :</b></p>
-            <vue-suggestion 
-              :items="nameSearchArray" 
-              v-model="nameSearch"
-              :setLabel="setLabel"
-              :itemTemplate="itemTemplate"
-              @changed="inputChange"
-              @selected="itemSelected"
-              placeholder="พิมพ์ชื่อเพื่อค้นหา..."
-            >
-            </vue-suggestion> 
-            <!-- <b-form-group
-              label-align ="left"
-              label-size="md"
-              label-for="filterInput"
-              class="mb-0"
-            >
-              <b-input-group size="md">
-                <b-form-input
-                  v-model="filter"
-                  type="search"
-                  id="filterInput"
-                  placeholder="พิมพ์ชื่อเพื่อค้นหา..."
-                  style="height:42px; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
-                ></b-form-input>
-              </b-input-group>
-            </b-form-group> -->
-        </b-col>
-      </b-row>
-      <b-row style="padding:0px 30px 0px 30px;">  
-        <table width=100% style="margin-top:20px; border: 1px solid black;">
-          <b-table
-            responsive
-            :busy="isBusy"
-            striped hover 
-            :items="items"
-            :fields="fields"
-            :filter="filter"
-            :current-page="currentPage"
-            :per-page="perPage"
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
-            :sort-direction="sortDirection"
-            @filtered="onFiltered" 
-            show-empty
-          >
-            <template v-slot:table-busy>
-              <div class="text-center text-danger ">
-                <b-spinner class="align-middle"></b-spinner>
-                <strong> Loading...</strong>
-              </div>
-            </template>
-            <template v-slot:empty>
-              <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
-            </template>
+              <template v-slot:table-busy>
+                <div class="text-center text-danger ">
+                  <b-spinner class="align-middle"></b-spinner>
+                  <strong> Loading...</strong>
+                </div>
+              </template>
+              <template v-slot:empty>
+                <h2 style="text-align:center;" color="#00000">ไม่มีข้อมูลการลา</h2>
+              </template>
 
-            <template v-slot:head()="data">
-                <span style="font-size: 18px;">{{ data.label }}</span>
-            </template>
-            
-            <template v-slot:cell(leave_remark)="data">
-              <div>
-                <img 
-                  src="../assets/Details.png" 
-                  style="cursor: pointer" 
-                  width="33" 
-                  height="33"  
-                  @click="dataModal = data.item, show('remarkModal')"
-                >
-              </div>
-            </template>
-            
-            <template v-slot:cell(leave_time)="data">
-              <center>
-                <div v-if="data.item.leave_type_id == 4">
-                    <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(255, 148, 120, 1);"> 
-                      {{ data.item.leave_time }}
-                    </p>
+              <template v-slot:head()="data">
+                  <span style="font-size: 18px;">{{ data.label }}</span>
+              </template>
+              
+              <template v-slot:cell(leave_remark)="data">
+                <div>
+                  <img 
+                    src="../assets/Details.png" 
+                    style="cursor: pointer" 
+                    width="33" 
+                    height="33"  
+                    @click="dataModal = data.item, show('remarkModal')"
+                  >
                 </div>
-                <div v-else-if="data.item.leave_type_id == 3" >
-                    <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(129, 207, 224, 1);"> 
-                      {{ data.item.leave_type_name }} 
-                    </p>
-                </div>
-                <div v-else-if="data.item.leave_type_id == 2" >
-                    <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(252, 214, 112, 1);">
-                      {{ data.item.leave_type_name }} 
-                    </p>
-                </div>
-                <div v-else-if="data.item.leave_type_id == 1" >
-                    <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(255, 255, 126, 1);"> 
-                      {{ data.item.leave_type_name }} 
-                    </p>
-                </div>
-              </center>
-            </template>
+              </template>
+              
+              <template v-slot:cell(leave_time)="data">
+                <center>
+                  <div v-if="data.item.leave_type_id == 4">
+                      <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(255, 148, 120, 1);"> 
+                        {{ data.item.leave_time }}
+                      </p>
+                  </div>
+                  <div v-else-if="data.item.leave_type_id == 3" >
+                      <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(129, 207, 224, 1);"> 
+                        {{ data.item.leave_type_name }} 
+                      </p>
+                  </div>
+                  <div v-else-if="data.item.leave_type_id == 2" >
+                      <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(252, 214, 112, 1);">
+                        {{ data.item.leave_type_name }} 
+                      </p>
+                  </div>
+                  <div v-else-if="data.item.leave_type_id == 1" >
+                      <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(255, 255, 126, 1);"> 
+                        {{ data.item.leave_type_name }} 
+                      </p>
+                  </div>
+                </center>
+              </template>
 
-            <template v-slot:cell(hr_approve_date_format)="data">
-              <center>
-              <div v-if="data.item.cancel_date != null">
-                <font>{{data.item.cancel_date_format}}</font>
-              </div>
-              <div v-else-if="data.item.hr_approve_date != null">
-                <font>{{data.item.head_approve_date_format}}</font>
-              </div>
-              <div v-else-if="data.item.hr_approve_date == null && data.item.emp_leave_id != null">
-                <font> - </font>
-              </div>
-              </center>
-            </template>
+              <template v-slot:cell(hr_approve_date_format)="data">
+                <center>
+                <div v-if="data.item.cancel_date != null">
+                  <font>{{data.item.cancel_date_format}}</font>
+                </div>
+                <div v-else-if="data.item.hr_approve_date != null">
+                  <font>{{data.item.head_approve_date_format}}</font>
+                </div>
+                <div v-else-if="data.item.hr_approve_date == null && data.item.emp_leave_id != null">
+                  <font> - </font>
+                </div>
+                </center>
+              </template>
 
-            <!-- <template v-slot:cell(head_approve_date)="data">
-              <center>
-                <div v-if="data.item.cancel_approve_date != null">
+              <!-- <template v-slot:cell(head_approve_date)="data">
+                <center>
+                  <div v-if="data.item.cancel_approve_date != null">
+                    <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(226,106,106);"> 
+                      <font color="#ffffff">ไม่อนุมัติ</font>
+                    </p>
+                  </div>
+                  <div v-else-if="data.item.cancel_approve_date == null && data.item.head_approve_date != null">
+                    <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
+                      <font color="#ffffff" >{{data.item.head_approve_date}}</font>
+                    </p>
+                  </div>
+                  <div v-else-if="data.item.cancel_approve_date == null && data.item.head_approve_date == null && data.item.emp_leave_id != null">
+                    <p v-if="!data.item.HeaderbtnApprove" style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
+                      <font color="#00000" >รอการอนุมัติ</font>
+                    </p>
+                  </div>
+                </center>
+              </template> -->
+
+              <template v-slot:cell(status)="data">
+                <center>
+                <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_header_date == null && data.item.cancel_date == null">
+                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
+                    <font color="#ffffff">ผ่านการอนุมัติ</font>
+                  </p>
+                </div>
+                <div v-else-if="data.item.cancel_header_date != null">
                   <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(226,106,106);"> 
-                    <font color="#ffffff">ไม่อนุมัติ</font>
+                      <font color="#ffffff">ไม่อนุมัติ</font>
                   </p>
                 </div>
-                <div v-else-if="data.item.cancel_approve_date == null && data.item.head_approve_date != null">
-                  <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
-                    <font color="#ffffff" >{{data.item.head_approve_date}}</font>
+                <div v-else-if="data.item.cancel_date != null">
+                  <b-badge variant="warning"></b-badge>
+                    <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
+                      <font color="#ffffff">ถูกยกเลิก</font>
+                    </p>
+                </div>
+                <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
+                  <b-badge variant="warning"></b-badge>
+                  <button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
+                      <font color="#00000" >รอการรับทราบ</font>
+                  </button>
+                </div>
+                <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
+                  <b-badge variant="warning"></b-badge>
+                  <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
+                      <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
                   </p>
                 </div>
-                <div v-else-if="data.item.cancel_approve_date == null && data.item.head_approve_date == null && data.item.emp_leave_id != null">
-                  <p v-if="!data.item.HeaderbtnApprove" style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
-                    <font color="#00000" >รอการอนุมัติ</font>
-                  </p>
+                <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
+                  <b-badge variant="warning"></b-badge>
+                  <button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
+                      <font color="#00000" >รอการรับทราบ</font>
+                  </button>
                 </div>
-              </center>
-            </template> -->
-
-            <template v-slot:cell(status)="data">
-              <center>
-              <div v-if="data.item.head_approve_date != null && data.item.hr_approve_date != null && data.item.cancel_header_date == null && data.item.cancel_date == null">
-                <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(54,215,183);"> 
-                  <font color="#ffffff">ผ่านการรับทราบเเล้ว</font>
-                </p>
-              </div>
-              <div v-else-if="data.item.cancel_header_date != null">
-                <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(226,106,106);"> 
-                    <font color="#ffffff">ไม่รับทราบ</font>
-                </p>
-              </div>
-              <!-- <div v-else-if="data.item.cancel_date != null">
-                <b-badge variant="warning"></b-badge>
-                  <p style="width:115px;height:28px; cursor: default; border-radius: 4px; background-color: rgba(240, 52, 52, 1);"> 
-                    <font color="#ffffff">ถูกยกเลิก</font>
-                  </p>
-              </div> -->
-              <!-- <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date == null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
-                <b-badge variant="warning"></b-badge>
-                <button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
-                    <font color="#00000" >รอการรับทราบ</font>
-                </button>
-              </div>
-              <div v-else-if="data.item.head_approve_date == null && data.item.hr_approve_date != null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
-                <b-badge variant="warning"></b-badge>
-                <p style="width:135px;height:28px; cursor: default; border-radius: 4px; background-color: rgb(245,201,71);"> 
-                    <font color="#00000" style="font-size: 13px">อยู่ในระหว่างดำเนินการ</font>
-                </p>
-              </div> -->
-              <div v-else-if="data.item.hr_approve_date == null && data.item.head_approve_date != null && data.item.cancel_header_date == null && data.item.emp_leave_id != null">
-                <b-badge variant="warning"></b-badge>
-                <button v-if="!data.item.HeaderbtnApprove" @click="showMsgBoxTwo(data.item.emp_leave_id)" style="width:115px;height:28px; cursor: pointer; border-radius: 4px; background-color: rgb(245,201,71);"> 
-                    <font color="#00000" >รอการรับทราบ</font>
-                </button>
-              </div>
-              </center>
-            </template>
-          </b-table>
-        </table>
-      </b-row>
+                </center>
+              </template>
+            </b-table>
+          </table>
+        </b-row>
+      </div>
       <b-row style="margin:5px 0px 0px 30px; text-align:right;">
         <b-col sm="1">
         </b-col>
@@ -863,5 +854,9 @@ export default {
   }
   #LeaveHr .popupRemark:hover {
     background-color:#f5f5f5;
+  }
+  #rowTable .row {
+    margin-right: 15px;
+    margin-left: 15px;
   }
 </style>

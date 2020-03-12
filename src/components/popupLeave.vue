@@ -14,9 +14,6 @@
         </button>
       </p>
         <div style="padding: 0px 25px 10px 20px">
-        <center><h4 style="cursor:default;">{{userIn.first_name}} {{userIn.last_name}}</h4></center>
-        <center><h5 style="cursor:default;">แผนก : {{userIn.dept_name}}</h5></center>
-        <center><h5 style="cursor:default;">ตำแหน่ง : {{userIn.position_name}}</h5></center>
 
         <div class="con-select-example" style="margin-top:15px">
           <b-row>
@@ -53,7 +50,7 @@
                 <b-col>
                   <p style="cursor:default;"><b>ขอลางานในวันที่ :</b></p>
                   <div class="form-group" :class="{ 'form-group--error': $v.form.valDate1.$error }">
-                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" :max-datetime="maxDate"></datetime>
+                    <datetime v-if="popupLeave" type="date" placeholder="เลือกวันลางาน" v-model.trim="$v.form.valDate1.$model" format="dd/MM/yyyy" :min-datetime="currentDate" :max-datetime="maxDate"></datetime>
                     <div class="error" v-if="!$v.form.valDate1.required"><font color="red">จำเป็น*</font></div>
                     <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                   </div>
@@ -62,7 +59,7 @@
                   <div v-if="selected != 1 && selected != 2">
                   <p style="cursor:default;"><b>ลางานถึงวันที่ :</b></p>
                   <div class="form-group" :class="{ 'form-group--error': $v.form.valDate2.$error }">
-                    <datetime v-if="popupLeave" type="date" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="$v.form.valDate1.$model !='' ? $v.form.valDate1.$model : currentDate" :max-datetime="maxDate"></datetime>
+                    <datetime v-if="popupLeave" type="date" placeholder="เลือกวันลางาน" v-model.trim="$v.form.valDate2.$model" format="dd/MM/yyyy" :min-datetime="$v.form.valDate1.$model !='' ? $v.form.valDate1.$model : currentDate" :max-datetime="maxDate"></datetime>
                     <div class="error" v-if="!$v.form.valDate2.required"><font color="red">จำเป็น*</font></div>
                     <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div> 
                   </div>
@@ -131,7 +128,7 @@
             <div class="form-group" :class="{ 'form-group--error': $v.form.description.$error }" style="margin-top:10px">
               <p style="cursor:default;"><b>รายละเอียดการลา :</b></p>
               <b-form-textarea
-                style="width:340px;height:80px; padding:1px"
+                style="width:340px;height:80px; padding:5px 10px 5px 10px; "
                 v-model.trim="$v.form.description.$model"
                 placeholder="กรอกข้อมูลรายละเอียดการลา"
                 rows="4"

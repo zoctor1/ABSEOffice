@@ -22,7 +22,7 @@
                 :options="optionOtType"
                 @change="getDataTypeOT()"
                 class="mt-3"
-                style="width:235px;height:37px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
+                style="width:235px;height:42px; cursor: pointer; border: 1px solid rgba(0,0,0,.2); border-radius: 4px;"
               >
               </b-form-select>
           </b-col>
@@ -38,28 +38,30 @@
         <b-row style="margin-bottom: -15px;">
           <b-col lg="6">
             <div class="form-group" :class="{ 'form-group--error': $v.form.startDate.$error }">
-              <p style="cursor:default;"><b>วันเริ่มปฏิบัติงาน :</b></p>
+              <p style="cursor:default;"><b>วันเริ่มต้น :</b></p>
                 <div class="form-group" :class="{ 'form-group--error': $v.form.startDate.$error }">
-                  <datetime type="date" placeholder="เลือกวันปฏิบัติงาน" v-model.trim="$v.form.startDate.$model" format="dd/MM/yyyy"></datetime>
+                  <datetime type="date" placeholder="เลือกวันเริ่มต้น" v-model.trim="$v.form.startDate.$model" format="dd/MM/yyyy"></datetime>
                   <div class="error" v-if="!$v.form.startDate.required"><font color="red">จำเป็น*</font></div>
                   <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                 </div>
             </div>
           </b-col>
           <b-col lg="6">
+            <div v-if="selectType != null && selectType != 1 && selectType != 3">
             <div class="form-group" :class="{ 'form-group--error': $v.form.stopDate.$error }">
-              <p style="cursor:default;"><b>วันสิ้นสุดปฏิบัติงาน :</b></p>
+              <p style="cursor:default;"><b>วันสิ้นสุด :</b></p>
                 <div class="form-group" :class="{ 'form-group--error': $v.form.stopDate.$error }">
-                  <datetime type="date" placeholder="เลือกวันปฏิบัติงาน" v-model.trim="$v.form.stopDate.$model" format="dd/MM/yyyy"></datetime>
+                  <datetime type="date" placeholder="เลือกวันสิ้นสุด" v-model.trim="$v.form.stopDate.$model" format="dd/MM/yyyy"></datetime>
                   <div class="error" v-if="!$v.form.stopDate.required"><font color="red">จำเป็น*</font></div>
                   <div class="error" v-else><img src="../assets/Success_icon2.png" width="20" height="20" /></div>
                 </div>
+            </div>
             </div>
           </b-col>
         </b-row>
         <b-row class="my-1" v-for="type in types" :key="type">
           <b-col>
-            <p style="cursor:default;"><b>เวลาเริ่มทำงาน :</b></p>
+            <p style="cursor:default;"><b>เวลาเริ่มต้น :</b></p>
               <VueCtkDateTimePicker
                 v-model="selectTimeStart"
                 format="H:mm:ss"
@@ -72,7 +74,7 @@
               />
           </b-col>
           <b-col>
-            <p style="cursor:default;"><b>เวลาสิ้นสุดทำงาน :</b></p>
+            <p style="cursor:default;"><b>เวลาสิ้นสุด :</b></p>
               <VueCtkDateTimePicker
                 v-model="selectTimeStop"
                 format="H:mm:ss"
@@ -139,6 +141,7 @@ export default {
   props: ["showPopOT", "editPopOT"],
   data() {
     return {
+      userIn:{},
       optionTime: [],
       optionOtType:[],
       popupOT:false,
@@ -162,11 +165,11 @@ export default {
   computed: {},
   beforeMount() {
     this.$v.form.startDate.$model = mainJs.setDateToServer(new Date().toString());
-  },
+  }, 
   mounted() {
     this.getDataTypeOT();
     this.getDataPeriod();
-    // this.userIn = JSON.parse(localStorage.getItem("user"));
+    this.userIn = JSON.parse(localStorage.getItem("user"));
   },
   methods: {
     confirmMessage () {
@@ -189,6 +192,16 @@ export default {
             }
           }
         })
+    },
+    defaultValue() {
+      this.$modal.show('showhidePopupOT');
+      this.popupOT = true;
+      this.selectType = null;
+      this.selectWorkTime = 1;
+      this.$v.form.startDate.$model = null;
+      this.$v.form.stopDate.$model = null;
+      this.selectTimeStart = "";
+      this.selectTimeStop = "";
     },
     insertOT: async function() {
       var user = JSON.parse(localStorage.getItem("user"));
@@ -257,7 +270,7 @@ export default {
       await authService.getDataTypeOT().then(response => {
         console.log(response.data);
         if (response.data != null && response.data.length > 0) {
-          dataType.push({ text: "--เลือกประเภทการปฏิบัติงาน --", value: null, disabled: true})
+          dataType.push({ text: "--เลือกประเภทการปฏิบัติงาน	--", value: null, disabled: true})
           response.data.forEach(function (obj, i) {
             dataType.push({ text: obj.overtime_type_name, value: obj.overtime_type_id });
           });
@@ -281,16 +294,6 @@ export default {
     },
     hide () {
       this.$modal.hide('showhidePopupOT');
-    },
-    defaultValue() {
-      this.$modal.show('showhidePopupOT');
-      this.popupOT = true;
-      this.selectType = null;
-      this.selectWorkTime = 1;
-      this.$v.form.startDate.$model = null;
-      this.$v.form.stopDate.$model = null;
-      this.selectTimeStart = "";
-      this.selectTimeStop = "";
     },
     validation: function(value) {
       var key = Object.keys(value);
